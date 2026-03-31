@@ -1,0 +1,178 @@
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const { processMessageUnified } = require("./modules/pipeline");
+const availabilityService = require("./modules/calendar/availabilityService");
+
+const app = express();
+
+/* ===============================
+   CORS SEGURO
+=============================== */
+const allowedOrigins = [
+    "https://abolegal.cl",
+    "https://ai-team-backend.onrender.com",
+    "https://ai-team-frontend.onrender.com",
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:8080"
+];
+
+app.use(
+    cors({
+        origin: function (origin, callback) {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                console.warn(`CORS bloqueado: ${origin}`);
+                callback(new Error("Origen no permitido por CORS"));
+            }
+        },
+        credentials: true,
+    })
+);
+
+/* ===============================
+   MIDDLEWARE BASE
+=============================== */
+app.use(express.json());
+
+/* ===============================
+   STATIC FILES (ANTI-CACHE BLINDADO)
+=============================== */
+const publicPath = path.join(__dirname, "public");
+
+app.use(express.static(publicPath, {
+    etag: false,
+    lastModified: false,
+    setHeaders: (res, filePath) => {
+        res.setHeader("Cache-Control", "no-store");
+        res.setHeader("X-Served-File", path.basename(filePath));
+    }
+}));
+
+/* ===============================
+   HEALTH CHECK
+=============================== */
+app.get("/health", (req, res) => {
+    res.json({
+        status: "ok",
+        timestamp: new Date().toISOString(),
+        build: "2026-01-27"
+    });
+});
+
+/* ===============================
+   API CHAT
+=============================== */
+app.post("/api/chat", async (req, res) => {
+    const start = Date.now();
+
+    try {
+        const { message, sessionId } = req.body;
+
+        if (!message || !sessionId) {
+            return res.status(400).json({ error: "Message and sessionId are required" });
+        }
+
+        const result = await processMessageUnified(sessionId, message);
+
+        const duration = Date.now() - start;
+        console.log(
+            `[CHAT] session=${sessionId} time=${duration}ms chars=${message.length}`
+        );
+
+        res.json(result);
+
+    } catch (error) {
+        console.error("SERVER ERROR", error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+});
+
+/* ===============================
+   CALENDAR CREATE EVENT (PLACEHOLDER)
+=============================== */
+app.post("/api/calendar/create-event", async (req, res) => {
+    try {
+        const { email, name, date, time } = req.body;
+
+        console.log(`Calendar event request for: ${name} (${email}) at ${date} ${time}`);
+
+        res.json({
+            success: true,
+            message: "Calendar endpoint ready - integration pending",
+            eventId: "placeholder-" + Date.now()
+        });
+
+    } catch (error) {
+        console.error("CALENDAR ERROR", error);
+        res.status(500).json({ error: "Error al crear evento en calendario" });
+    }
+});
+
+/* ================================================
+   ENDPOINT DE DISPONIBILIDAD - NUEVO (FASE 2)
+   ================================================ */
+app.get("/api/availability", async (req, res) => {
+  try {
+    const block = parseInt(req.query.block) || 1;
+    const excludeDates = req.query.excludeDates ? req.query.excludeDates.split(',') : [];
+
+    console.log(`[AVAILABILITY] Bloque ${block}, excluir: ${excludeDates.length} fechas`);
+
+    const availability = await availabilityService.getAvailability(block, excludeDates);
+
+    res.json(availability);
+  } catch (error) {
+    console.error("[AVAILABILITY] Error:", error);
+    res.status(500).json({
+      error: "Error al obtener disponibilidad",
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+/* ================================================
+   ENDPOINT ANTIGUO - MARCADO COMO DEPRECATED
+   ================================================ */
+app.get("/api/calendar/availability", async (req, res) => {
+  try {
+    console.warn("[DEPRECATED] Endpoint /api/calendar/availability llamado. Usar /api/availability en su lugar.");
+
+    const { date } = req.query;
+    console.log(`[DEPRECATED] Availability request for: ${date}`);
+
+    // Mantener respuesta compatible temporalmente
+    res.setHeader('X-API-Deprecated', 'true');
+    res.setHeader('X-API-Replacement', '/api/availability');
+
+    res.json({
+      date,
+      availableSlots: ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
+      timezone: "America/Santiago",
+      _warning: "Este endpoint está deprecado. Usa /api/availability en su lugar."
+    });
+  } catch (error) {
+    console.error("[DEPRECATED AVAILABILITY] Error:", error);
+    res.status(500).json({ error: "Error al obtener disponibilidad" });
+  }
+});
+
+/* ===============================
+   FALLBACK - INDEX.HTML (LOG EXPLÍCITO)
+=============================== */
+app.get("*", (req, res) => {
+    console.log("INDEX.HTML SERVED AT:", new Date().toISOString());
+    res.setHeader("Cache-Control", "no-store");
+    res.sendFile(path.join(publicPath, "index.html"));
+});
+
+/* ===============================
+   START SERVER
+=============================== */
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+    console.log(`ABOLEGAL LANDING ONLINE - PUERTO ${PORT}`);
+    console.log(`Public path: ${publicPath}`);
+});

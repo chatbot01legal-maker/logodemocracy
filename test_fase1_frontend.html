@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prueba FASE 1 FRONTEND</title>
+    <style>
+        .btn-book { padding: 10px 20px; background: #19213a; color: white; border: none; }
+    </style>
+</head>
+<body>
+    <h1>Prueba: Submit debe interceptarse SIN recarga</h1>
+    
+    <form id="bookingForm">
+        <input type="text" placeholder="Nombre">
+        <input type="email" placeholder="Email">
+        <button type="submit" class="btn-book">Reservar Videollamada</button>
+    </form>
+    
+    <script>
+    // Código mínimo de FASE 1 FRONTEND
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('bookingForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // ⭐ ESTO ES FASE 1
+                console.log('✅ FASE 1: Submit interceptado - Página NO se recarga');
+                
+                // Feedback visual
+                const btn = form.querySelector('.btn-book');
+                btn.textContent = '✅ Interceptado!';
+                setTimeout(() => btn.textContent = 'Reservar Videollamada', 1000);
+            });
+        }
+    });
+    </script>
+    
+    <p><strong>Instrucciones de prueba:</strong></p>
+    <ol>
+        <li>Haz click en "Reservar Videollamada"</li>
+        <li>✅ La página NO debe recargarse</li>
+        <li>✅ Debe aparecer "Interceptado!" en el botón por 1 segundo</li>
+        <li>✅ Ver consola para mensaje de confirmación</li>
+    </ol>
+</body>
+</html>

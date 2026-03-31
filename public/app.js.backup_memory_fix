@@ -1,0 +1,494 @@
+// ==============================================
+// ABOLEGAL - Chat Logic
+// ==============================================
+
+// Configuración
+const BACKEND_URL = window.location.origin; // Mismo dominio que el backend
+const SESSION_KEY = 'abolegal_session_id';
+const HISTORY_KEY = 'abolegal_chat_history';
+
+// Elementos del DOM
+const chatMessages = document.getElementById('chatMessages');
+const userInput = document.getElementById('userInput');
+const sendButton = document.getElementById('sendButton');
+
+// Estado
+let sessionId = sessionStorage.getItem(SESSION_KEY) || generateSessionId();
+let conversationHistory = JSON.parse(sessionStorage.getItem(HISTORY_KEY)) || [];
+let isProcessing = false;
+
+// Generar ID de sesión
+function generateSessionId() {
+    const id = 'abolegal-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+    sessionStorage.setItem(SESSION_KEY, id);
+    return id;
+}
+
+// Guardar historial
+function saveHistory() {
+    sessionStorage.setItem(HISTORY_KEY, JSON.stringify(conversationHistory));
+}
+
+// Mostrar indicador de "escribiendo"
+function showTypingIndicator() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message bot typing-indicator';
+    typingDiv.id = 'typingIndicator';
+    typingDiv.innerHTML = `
+        <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <span>Lex está escribiendo...</span>
+    `;
+    chatMessages.appendChild(typingDiv);
+    scrollToBottom();
+}
+
+// Ocultar indicador
+function hideTypingIndicator() {
+    const indicator = document.getElementById('typingIndicator');
+    if (indicator) {
+        indicator.remove();
+    }
+}
+
+// Agregar mensaje al chat
+function addMessage(text, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+    messageDiv.textContent = text;
+    
+    chatMessages.appendChild(messageDiv);
+    
+    // Guardar en historial
+    conversationHistory.push({
+        role: isUser ? 'user' : 'assistant',
+        content: text,
+        timestamp: new Date().toISOString()
+    });
+    
+    // Mantener solo los últimos 50 mensajes
+    if (conversationHistory.length > 50) {
+        conversationHistory = conversationHistory.slice(-50);
+    }
+    
+    saveHistory();
+    scrollToBottom();
+}
+
+// Scroll al final del chat
+function scrollToBottom() {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Enviar mensaje al backend
+async function sendMessage() {
+    if (isProcessing) return;
+    
+    const message = userInput.value.trim();
+    if (!message) {
+        userInput.focus();
+        return;
+    }
+    
+    // Agregar mensaje del usuario
+    addMessage(message, true);
+    userInput.value = '';
+    
+    // Deshabilitar input temporalmente
+    isProcessing = true;
+    userInput.disabled = true;
+    sendButton.disabled = true;
+    
+    // Mostrar indicador de escritura
+    showTypingIndicator();
+    
+    try {
+        console.log('Enviando mensaje a:', `${BACKEND_URL}/api/chat`);
+        
+        const response = await fetch(`${BACKEND_URL}/api/chat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                sessionId: sessionId,
+                message: message
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status} ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        console.log('Respuesta recibida:', data);
+        
+        hideTypingIndicator();
+        addMessage(data.reply, false);
+        
+    } catch (error) {
+        console.error('Error al enviar mensaje:', error);
+        hideTypingIndicator();
+        
+        // Mensajes de error amigables
+        let errorMessage = 'Lo siento, hubo un error al procesar tu consulta. ';
+        
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+            errorMessage += 'Parece que hay un problema de conexión. Por favor, verifica tu internet e intenta nuevamente.';
+        } else {
+            errorMessage += 'Por favor, intenta nuevamente en un momento.';
+        }
+        
+        addMessage(errorMessage, false);
+    } finally {
+        // Rehabilitar input
+        isProcessing = false;
+        userInput.disabled = false;
+        sendButton.disabled = false;
+        userInput.focus();
+    }
+}
+
+// Cargar historial previo
+function loadHistory() {
+    if (conversationHistory.length === 0) {
+        // Mensaje de bienvenida inicial
+        setTimeout(() => {
+            addMessage('¡Hola! Soy Lex, tu asistente legal de ABOLEGAL. ¿En qué puedo ayudarte hoy?', false);
+        }, 500);
+        return;
+    }
+    
+    // Mostrar historial previo
+    conversationHistory.forEach(msg => {
+        addMessage(msg.content, msg.role === 'user');
+    });
+    
+    // Mensaje de continuidad
+    setTimeout(() => {
+        addMessage('Continuemos nuestra conversación. ¿En qué más puedo ayudarte?', false);
+    }, 300);
+}
+
+// Inicializar chat
+function initializeChat() {
+    // Event listeners
+    sendButton.addEventListener('click', sendMessage);
+    
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+    
+    // Focus en el input
+    userInput.focus();
+    
+    // Cargar historial
+    loadHistory();
+    
+    console.log('Chat inicializado con sesión:', sessionId);
+    console.log('Backend URL:', BACKEND_URL);
+}
+
+// Scroll suave para navegación
+function initializeSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                const headerOffset = 80;
+                const elementPosition = targetElement.offsetTop;
+                const offsetPosition = elementPosition - headerOffset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', () => {
+    initializeChat();
+    initializeSmoothScroll();
+    
+    // Estilos para el indicador de escritura
+    const style = document.createElement('style');
+    style.textContent = `
+        .typing-indicator {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .typing-dots {
+            display: inline-flex;
+            align-items: center;
+            height: 20px;
+            margin-right: 8px;
+        }
+        
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: #999;
+            border-radius: 50%;
+            margin-right: 4px;
+            animation: typingDot 1.4s infinite both;
+        }
+        
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typingDot {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+    `;
+    document.head.appendChild(style);
+});
+
+// Manejar formulario de contacto
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Gracias por tu mensaje. Esta funcionalidad está en desarrollo. Pronto podrás contactarnos directamente desde aquí.');
+        this.reset();
+    });
+}
+
+// Exponer funciones para debugging
+window.debugChat = {
+    getSessionId: () => sessionId,
+    getHistory: () => conversationHistory,
+    clearHistory: () => {
+        conversationHistory = [];
+        sessionStorage.removeItem(HISTORY_KEY);
+        chatMessages.innerHTML = '';
+        addMessage('¡Hola! Soy Lex, tu asistente legal. ¿En qué puedo ayudarte hoy?', false);
+    },
+    testConnection: async () => {
+        try {
+            const response = await fetch(`${BACKEND_URL}/health`);
+            const data = await response.json();
+            console.log('Conexión OK:', data);
+            return true;
+        } catch (error) {
+            console.error('Error de conexión:', error);
+            return false;
+        }
+    }
+};
+
+// ==============================================
+// CALENDAR WIDGET FUNCTIONALITY
+// ==============================================
+
+let selectedDate = null;
+let selectedTime = null;
+
+// Función para seleccionar fecha
+window.selectDate = function(date) {
+    selectedDate = date;
+    updateSelectedDateTime();
+    
+    // Actualizar UI
+    document.querySelectorAll('.date-option').forEach(btn => {
+        btn.classList.remove('selected');
+        if (btn.getAttribute('onclick').includes(date)) {
+            btn.classList.add('selected');
+        }
+    });
+};
+
+// Función para seleccionar hora
+window.selectTime = function(time) {
+    selectedTime = time;
+    updateSelectedDateTime();
+    
+    // Actualizar UI
+    document.querySelectorAll('.time-slot').forEach(btn => {
+        btn.classList.remove('selected');
+        if (btn.textContent.includes(time)) {
+            btn.classList.add('selected');
+        }
+    });
+};
+
+// Actualizar texto de fecha/hora seleccionada
+function updateSelectedDateTime() {
+    const displayElement = document.getElementById('selectedDateTime');
+    if (displayElement && selectedDate && selectedTime) {
+        const dateObj = new Date(selectedDate);
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = dateObj.toLocaleDateString('es-CL', options);
+        displayElement.innerHTML = `Fecha y hora seleccionadas: <span class="highlight">${formattedDate} a las ${selectedTime}</span>`;
+    }
+}
+
+// Manejar envío del formulario de reserva
+const bookingForm = document.getElementById('bookingForm');
+if (bookingForm) {
+    bookingForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (!selectedDate || !selectedTime) {
+            alert('Por favor, selecciona una fecha y hora.');
+            return;
+        }
+        
+        const name = document.getElementById('clientName').value.trim();
+        const email = document.getElementById('clientEmail').value.trim();
+        const phone = document.getElementById('clientPhone').value.trim();
+        const topic = document.getElementById('clientTopic').value.trim();
+        
+        if (!name || !email) {
+            alert('Por favor, completa al menos tu nombre y email.');
+            return;
+        }
+        
+        // Mostrar loading
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+        submitBtn.disabled = true;
+        
+        try {
+            // Enviar datos al backend (endpoint placeholder por ahora)
+            const response = await fetch(`${BACKEND_URL}/api/calendar/create-event`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    phone,
+                    topic,
+                    date: selectedDate,
+                    time: selectedTime
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Mostrar éxito
+                alert(`¡Gracias ${name}! Hemos reservado tu videollamada para el ${selectedDate} a las ${selectedTime}. Revisa tu email (${email}) para confirmación y el link de Zoom.`);
+                
+                // Resetear formulario
+                this.reset();
+                selectedDate = null;
+                selectedTime = null;
+                updateSelectedDateTime();
+                
+                // Resetear UI
+                document.querySelectorAll('.date-option, .time-slot').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+            } else {
+                alert('Hubo un error al procesar tu reserva. Por favor, intenta nuevamente o contáctanos directamente.');
+            }
+            
+        } catch (error) {
+            console.error('Error al reservar:', error);
+            alert('Error de conexión. Por favor, intenta nuevamente.');
+            
+        } finally {
+            // Restaurar botón
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+}
+
+// Función para mostrar botón de agendamiento en el chat
+function showScheduleButtonInChat() {
+    const chatMessages = document.getElementById('chatMessages');
+    if (!chatMessages) return;
+    
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'chat-schedule-button';
+    buttonContainer.innerHTML = `
+        <button class="schedule-btn" onclick="scrollToCalendarWidget()">
+            <i class="fas fa-calendar-alt"></i> Agendar Videollamada con Abogado
+        </button>
+    `;
+    
+    chatMessages.appendChild(buttonContainer);
+    scrollToBottom();
+}
+
+// Función para hacer scroll al widget de calendario
+window.scrollToCalendarWidget = function() {
+    const calendarSection = document.getElementById('agendar');
+    if (calendarSection) {
+        window.scrollTo({
+            top: calendarSection.offsetTop - 100,
+            behavior: 'smooth'
+        });
+    }
+};
+
+// Modificar la función sendMessage para mostrar botón cuando corresponda
+const originalSendMessage = window.sendMessage;
+window.sendMessage = async function() {
+    const message = userInput.value.trim();
+    if (!message) return;
+    
+    addMessage(message, true);
+    userInput.value = '';
+    
+    userInput.disabled = true;
+    sendButton.disabled = true;
+    
+    showTypingIndicator();
+    
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                sessionId: sessionId,
+                message: message
+            })
+        });
+        
+        const data = await response.json();
+        hideTypingIndicator();
+        addMessage(data.reply, false);
+        
+        // 🔥 MOSTRAR BOTÓN DE AGENDAMIENTO SI CORRESPONDE
+        if (data.context && data.context.widgetRelevant) {
+            setTimeout(() => {
+                showScheduleButtonInChat();
+            }, 500);
+        }
+        
+    } catch (error) {
+        console.error('Error:', error);
+        hideTypingIndicator();
+        addMessage('Lo siento, hubo un error. Por favor, intenta nuevamente.', false);
+    } finally {
+        userInput.disabled = false;
+        sendButton.disabled = false;
+        userInput.focus();
+    }
+};
+
+// Inicializar fechas disponibles (próximos 7 días)
+document.addEventListener('DOMContentLoaded', function() {
+    // Esta función podría cargar fechas reales desde el backend
+    // Por ahora, usamos fechas estáticas
+    console.log('Calendar widget inicializado');
+});

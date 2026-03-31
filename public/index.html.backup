@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABOLEGAL - Asistente Legal Inteligente</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header con Logo ABOLEGAL -->
+    <header class="header">
+        <div class="header-container">
+            <img src="https://assets.zyrosite.com/YBgeevgVBWuK9oxP/logo-abolegal-Yanqqv4opDI900al.png" alt="ABOLEGAL" class="header-logo">
+        </div>
+    </header>
+    <!-- Header / Navegación -->
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Asistente Legal 24/7</h1>
+                <p class="hero-subtitle">Orientación legal inicial clara y empática. Obtén orientación clara, empática y precisa.</p>
+                <div class="hero-buttons">
+                    <a href="#contacto" class="btn btn-primary">
+                        <i class="fas fa-envelope"></i> Contacto
+                    </a>
+                    <a href="#agendar" class="btn btn-secondary">
+                        <i class="fas fa-calendar-alt"></i> Agenda
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="chat-preview">
+                    <div class="chat-preview-header">
+                        <i class="fas fa-robot"></i>
+                        <span>Lex - Asistente Legal</span>
+                    </div>
+                    <div class="chat-preview-messages">
+                        <div class="message bot">¡Hola! Soy Lex, ¿en qué puedo ayudarte?</div>
+                        <div class="message user">Me despidieron de mi trabajo</div>
+                        <div class="message bot">Lamento escuchar eso. ¿Tenías contrato firmado?</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Widget Section -->
+    <section id="chat" class="chat-section">
+<section id="agendar" class="calendar-section">
+<div class="section-header">
+<h2 class="section-title">Agenda una <span class="highlight">Videollamada con un Abogado</span></h2>
+<p class="section-subtitle">Consulta de 30 minutos sin costo inicial • Horarios flexibles • Confidencialidad garantizada</p>
+</div>
+
+<div class="calendar-container">
+<div class="calendar-widget">
+<div class="calendar-header">
+<h3><i class="fas fa-calendar-alt"></i> Selecciona Fecha y Hora</h3>
+<p>Disponibilidad para las próximas 2 semanas</p>
+</div>
+
+<div class="calendar-content">
+<!-- Selector de fecha simplificado -->
+<div class="date-selector">
+<h4><i class="fas fa-calendar-day"></i> Próximas fechas disponibles:</h4>
+<div class="date-options">
+<button class="date-option" onclick="selectDate('2024-01-26')">
+<span class="day">Vie</span>
+<span class="date">26 Ene</span>
+</button>
+<button class="date-option" onclick="selectDate('2024-01-29')">
+<span class="day">Lun</span>
+<span class="date">29 Ene</span>
+</button>
+<button class="date-option" onclick="selectDate('2024-01-30')">
+<span class="day">Mar</span>
+<span class="date">30 Ene</span>
+</button>
+<button class="date-option" onclick="selectDate('2024-01-31')">
+<span class="day">Mié</span>
+<span class="date">31 Ene</span>
+</button>
+</div>
+</div>
+
+<!-- Selector de hora -->
+<div class="time-selector">
+<h4><i class="fas fa-clock"></i> Horarios disponibles:</h4>
+<div class="time-slots">
+<button class="time-slot" onclick="selectTime('09:00')">09:00 AM</button>
+<button class="time-slot" onclick="selectTime('10:00')">10:00 AM</button>
+<button class="time-slot" onclick="selectTime('11:00')">11:00 AM</button>
+<button class="time-slot" onclick="selectTime('14:00')">02:00 PM</button>
+<button class="time-slot" onclick="selectTime('15:00')">03:00 PM</button>
+<button class="time-slot" onclick="selectTime('16:00')">04:00 PM</button>
+</div>
+</div>
+
+<!-- Formulario de reserva -->
+<div class="booking-form">
+<h4><i class="fas fa-user"></i> Tus datos:</h4>
+<form id="bookingForm">
+<div class="form-group">
+<input type="text" id="clientName" placeholder="Nombre completo" required>
+</div>
+<div class="form-group">
+<input type="email" id="clientEmail" placeholder="Email" required>
+</div>
+<div class="form-group">
+<input type="tel" id="clientPhone" placeholder="Teléfono (opcional)">
+</div>
+<div class="form-group">
+<textarea id="clientTopic" placeholder="Breve descripción del tema legal (opcional)" rows="2"></textarea>
+</div>
+
+<div class="selected-slot">
+<p id="selectedDateTime">Fecha y hora seleccionadas: <span class="highlight">Por favor selecciona fecha y hora</span></p>
+</div>
+
+<button type="submit" class="btn-book">
+<i class="fas fa-calendar-check"></i> Reservar Videollamada
+</button>
+
+<p class="form-note">
+<i class="fas fa-lock"></i> Tus datos son confidenciales. Recibirás un email de confirmación con el link de Zoom.
+</p>
+</form>
+</div>
+</div>
+</div>
+
+<div class="calendar-info">
+<h3><i class="fas fa-info-circle"></i> ¿Qué incluye la videollamada?</h3>
+<ul class="benefits-list">
+<li><i class="fas fa-check"></i> <strong>30 minutos</strong> con abogado especializado</li>
+<li><i class="fas fa-check"></i> <strong>Análisis inicial</strong> de tu situación legal</li>
+<li><i class="fas fa-check"></i> <strong>Orientación</strong> sobre próximos pasos</li>
+<li><i class="fas fa-check"></i> <strong>Presupuesto</strong> sin compromiso si necesitas más ayuda</li>
+</ul>
+
+<div class="how-it-works">
+<h4><i class="fas fa-play-circle"></i> Cómo funciona:</h4>
+<ol>
+<li>Selecciona fecha y hora</li>
+<li>Completa tus datos</li>
+<li>Recibe email con link de Zoom</li>
+<li>Conéctate en el horario agendado</li>
+</ol>
+</div>
+
+<div class="contact-alternative">
+<p><i class="fas fa-phone"></i> ¿Prefieres contactarnos directamente?</p>
+<p>Tel: <strong>+56 2 2345 6789</strong></p>
+<p>Email: <strong>agenda@abolegal.cl</strong></p>
+</div>
+</div>
+</div>
+</section>
+<section id="servicios" class="services-section">
+<div class="section-header">
+<h2>Nuestras <span class="highlight">Áreas de Especialización</span></h2>
+<p class="section-subtitle">Lex está entrenado en múltiples áreas del derecho chileno</p>
+</div>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3>Derecho Laboral</h3>
+                <p>Despidos, finiquitos, acoso laboral, contratos, horas extras</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h3>Derecho de Familia</h3>
+                <p>Divorcios, pensión alimenticia, cuidado personal, violencia intrafamiliar</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <h3>Derecho Civil</h3>
+                <p>Contratos, arrendamiento, propiedad, sucesiones, obligaciones</p>
+            </div>
+        </div>
+<h3>Derecho Laboral</h3>
+<p>Despidos, finiquitos, acoso laboral, contratos, horas extras</p>
+</div>
+
+<div class="service-card">
+<div class="service-icon">
+<i class="fas fa-home"></i>
+</div>
+<h3>Derecho de Familia</h3>
+<p>Divorcios, pensión alimenticia, cuidado personal, violencia intrafamiliar</p>
+</div>
+
+<div class="service-card">
+<div class="service-icon">
+<i class="fas fa-car-crash"></i>
+</div>
+<h3>Accidentes</h3>
+<p>Accidentes de tránsito, laborales, responsabilidad civil, indemnizaciones</p>
+</div>
+
+<div class="service-card">
+<div class="service-icon">
+<i class="fas fa-balance-scale"></i>
+</div>
+<h3>Derecho Civil</h3>
+<p>Contratos, arrendamiento, propiedad, sucesiones, obligaciones</p>
+</div>
+</div>
+</section>
+<section id="contacto" class="contact-section">
+<div class="section-header">
+<h2><span class="highlight">Contacto</span></h2>
+<p class="section-subtitle">¿Necesitas asesoría legal personalizada?</p>
+</div>
+
+<div class="contact-container">
+<div class="contact-info">
+<h3><i class="fas fa-map-marker-alt"></i> Estudio ABOLEGAL</h3>
+<p><i class="fas fa-envelope"></i> contacto@abolegal.cl</p>
+<p><i class="fas fa-phone"></i> +56 2 2345 6789</p>
+<p><i class="fas fa-clock"></i> Lunes a Viernes: 9:00 - 18:00</p>
+
+<div class="social-links">
+<a href="#"><i class="fab fa-linkedin"></i></a>
+<a href="#"><i class="fab fa-twitter"></i></a>
+<a href="#"><i class="fab fa-instagram"></i></a>
+</div>
+</div>
+
+<div class="contact-form">
+<h3>Envíanos un mensaje</h3>
+<form id="contactForm">
+<input type="text" placeholder="Nombre" required>
+<input type="email" placeholder="Email" required>
+<textarea placeholder="Tu mensaje" rows="4" required></textarea>
+<button type="submit" class="btn btn-primary">
+<i class="fas fa-paper-plane"></i> Enviar Mensaje
+</button>
+</form>
+</div>
+</div>
+</section>
+<footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="https://assets.zyrosite.com/YBgeevgVBWuK9oxP/logo-abolegal-Yanqqv4opDI900al.png" alt="ABOLEGAL" class="footer-logo-img">
+            </div>
+            
+            <div class="footer-legal">
+                <p>© 2026 ABOLEGAL. Todos los derechos reservados.</p>
+                <p>Este servicio es informativo y no constituye asesoría legal formal.</p>
+            </div>
+        </div>
+
+<div class="footer-links">
+<a href="#inicio">Inicio</a>
+<a href="#chat">Chat</a>
+<a href="#servicios">Servicios</a>
+<a href="#contacto">Contacto</a>
+</div>
+
+<div class="footer-legal">
+<p>© 2024 ABOLEGAL. Todos los derechos reservados.</p>
+<p>Este servicio es informativo y no constituye asesoría legal formal.</p>
+</div>
+</div>
+</footer>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Test de animación</h1>
+<div id="testChat">
+  <div class="message">Mensaje 1</div>
+  <div class="message">Mensaje 2</div>
+</div>
+
+<script>
+console.log('TEST: Script inline cargado');
+const container = document.getElementById('testChat');
+if (container) {
+  console.log('TEST: Contenedor encontrado');
+  const messages = container.querySelectorAll('.message');
+  console.log(`TEST: ${messages.length} mensajes encontrados`);
+  
+  messages.forEach((msg, i) => {
+    msg.style.opacity = '0';
+    setTimeout(() => {
+      msg.style.opacity = '1';
+      msg.style.transition = 'opacity 1s';
+    }, i * 1000);
+  });
+} else {
+  console.error('TEST: Contenedor NO encontrado');
+}
+</script>
+</body>
+</html>

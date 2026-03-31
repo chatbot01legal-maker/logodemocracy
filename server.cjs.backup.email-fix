@@ -1,0 +1,296 @@
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const { processMessageUnified } = require("./modules/pipeline");
+const availabilityService = require("./modules/calendar/availabilityService");
+const googleCalendar = require("./modules/calendar/googleCalendar");
+const emailService = require("./modules/emailService");
+
+const app = express();
+
+/* ===============================
+   CORS SEGURO
+=============================== */
+const allowedOrigins = [
+    "https://abolegal.cl",
+    "https://ai-team-backend.onrender.com",
+    "https://ai-team-frontend.onrender.com",
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:8080"
+];
+
+app.use(
+    cors({
+        origin: function (origin, callback) {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                console.warn(`CORS bloqueado: ${origin}`);
+                callback(new Error("Origen no permitido por CORS"));
+            }
+        },
+        credentials: true,
+    })
+);
+
+/* ===============================
+   MIDDLEWARE BASE
+=============================== */
+app.use(express.json());
+
+/* ===============================
+   STATIC FILES (ANTI-CACHE BLINDADO)
+=============================== */
+const publicPath = path.join(__dirname, "public");
+
+app.use(express.static(publicPath, {
+    etag: false,
+    lastModified: false,
+    setHeaders: (res, filePath) => {
+        res.setHeader("Cache-Control", "no-store");
+        res.setHeader("X-Served-File", path.basename(filePath));
+    }
+}));
+
+/* ===============================
+   HEALTH CHECK
+=============================== */
+app.get("/health", (req, res) => {
+    res.json({
+        status: "ok",
+        timestamp: new Date().toISOString(),
+        build: "2026-01-27"
+    });
+});
+
+/* ===============================
+   API CHAT
+=============================== */
+app.post("/api/chat", async (req, res) => {
+    const start = Date.now();
+
+    try {
+        const { message, sessionId } = req.body;
+
+        if (!message || !sessionId) {
+            return res.status(400).json({ error: "Message and sessionId are required" });
+        }
+
+        const result = await processMessageUnified(sessionId, message);
+
+        const duration = Date.now() - start;
+        console.log(
+            `[CHAT] session=${sessionId} time=${duration}ms chars=${message.length}`
+        );
+
+        res.json(result);
+    } catch (error) {
+        console.error("SERVER ERROR", error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+});
+
+/* ===============================
+   CALENDAR CREATE EVENT - IMPLEMENTACIÓN REAL (FASE 2.3)
+=============================== */
+app.post("/api/calendar/create-event", async (req, res) => {
+    try {
+        // VALIDACIÓN DE DATOS
+        const { sessionId, clientName, clientEmail, appointmentDate, appointmentTime } = req.body;
+
+        if (!sessionId || !clientName || !clientEmail || !appointmentDate || !appointmentTime) {
+            console.warn("[CALENDAR CREATE] ❌ Datos incompletos:", req.body);
+            return res.status(400).json({
+                success: false,
+                error: "Datos incompletos para agendamiento. Requeridos: sessionId, clientName, clientEmail, appointmentDate, appointmentTime"
+            });
+        }
+
+        // Validar formato de fecha (YYYY-MM-DD)
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!dateRegex.test(appointmentDate)) {
+            return res.status(400).json({
+                success: false,
+                error: "Formato de fecha inválido. Use YYYY-MM-DD"
+            });
+        }
+
+        // Validar formato de hora (HH:MM)
+        const timeRegex = /^\d{2}:\d{2}$/;
+        if (!timeRegex.test(appointmentTime)) {
+            return res.status(400).json({
+                success: false,
+                error: "Formato de hora inválido. Use HH:MM (24h)"
+            });
+        }
+
+        console.log(`[CALENDAR CREATE] 📅 Creando cita para ${clientName} (${clientEmail}) - ${appointmentDate} ${appointmentTime}`);
+
+        // 1. PREPARAR DATOS PARA GOOGLE CALENDAR
+        const [year, month, day] = appointmentDate.split("-").map(Number);
+        const [hour, minute] = appointmentTime.split(":").map(Number);
+
+        const startDateTime = new Date(year, month - 1, day, hour, minute);
+        const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000); // +1 hora
+
+        const timeZone = process.env.CALENDAR_TIMEZONE || "America/Santiago";
+
+        const eventData = {
+            summary: `Consulta Legal - ${clientName}`,
+            description: `Agendamiento via widget ABOLEGAL\n\n` +
+                        `• Session ID: ${sessionId}\n` +
+                        `• Cliente: ${clientName}\n` +
+                        `• Email: ${clientEmail}\n` +
+                        `• Sistema: Widget de Agendamiento`,
+            start: {
+                dateTime: startDateTime.toISOString(),
+                timeZone: timeZone
+            },
+            end: {
+                dateTime: endDateTime.toISOString(),
+                timeZone: timeZone
+            },
+            attendees: [
+                {
+                    email: process.env.LAWYER_EMAIL || "nicolas.blanco@abolegal.cl",
+                    displayName: "Abogado ABOLEGAL"
+                },
+                {
+                    email: "chatbot.01.legal@gmail.com",
+                    displayName: "Sistema ABOLEGAL (Notificaciones)"
+                }
+            ],
+            conferenceData: {
+                createRequest: {
+                    requestId: `meet-${sessionId}-${Date.now()}`,
+                    conferenceSolutionKey: { type: "hangoutsMeet" }
+                }
+            },
+            reminders: {
+                useDefault: true
+            }
+        };
+
+        // 2. CREAR EVENTO EN GOOGLE CALENDAR
+        const calendarResult = await googleCalendar.createEvent(eventData);
+
+        // 3. ENVIAR NOTIFICACIÓN AL ABOGADO
+        await emailService.sendAppointmentNotification({
+            lawyerEmail: process.env.LAWYER_EMAIL || "nicolas.blanco@abolegal.cl",
+            clientName,
+            clientEmail,
+            appointmentDateTime: `${appointmentDate} ${appointmentTime}`,
+            meetLink: calendarResult.meetLink,
+            sessionId
+        });
+
+        // 4. RESPUESTA AL FRONTEND
+        res.json({
+            success: true,
+            message: "Cita agendada exitosamente",
+            data: {
+                eventId: calendarResult.eventId,
+                meetLink: calendarResult.meetLink,
+                sessionId,
+                appointmentDetails: {
+                    clientName,
+                    clientEmail,
+                    date: appointmentDate,
+                    time: appointmentTime,
+                    timeZone: timeZone
+                }
+            },
+            metadata: {
+                service: "calendar-infrastructure",
+                timestamp: new Date().toISOString(),
+                version: "1.0.0"
+            }
+        });
+
+    } catch (error) {
+        console.error("[CALENDAR CREATE] ❌ Error:", error);
+
+        // Clasificación de errores para mejor debugging
+        let errorType = "unknown";
+        if (error.message.includes("Google Calendar")) errorType = "calendar";
+        if (error.message.includes("email")) errorType = "email";
+        if (error.message.includes("credenciales")) errorType = "credentials";
+
+        res.status(500).json({
+            success: false,
+            error: "Error en servicio de agendamiento",
+            errorType: errorType,
+            details: process.env.NODE_ENV === "development" ? error.message : undefined,
+            suggestion: errorType === "credentials"
+                ? "Verificar variables de entorno CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN"
+                : "Contactar al administrador del sistema"
+        });
+    }
+});
+
+/* ===============================
+   ENDPOINT DE DISPONIBILIDAD
+=============================== */
+app.get("/api/availability", async (req, res) => {
+    try {
+        const block = parseInt(req.query.block) || 1;
+        const excludeDates = req.query.excludeDates ? req.query.excludeDates.split(',') : [];
+
+        console.log(`[AVAILABILITY] Bloque ${block}, excluir: ${excludeDates.length} fechas`);
+
+        const availability = await availabilityService.getAvailability(block, excludeDates);
+
+        res.json(availability);
+    } catch (error) {
+        console.error("[AVAILABILITY] Error:", error);
+        res.status(500).json({
+            error: "Error al obtener disponibilidad",
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+});
+
+/* ===============================
+   ENDPOINT ANTIGUO - MARCADO COMO DEPRECATED
+=============================== */
+app.get("/api/calendar/availability", async (req, res) => {
+    try {
+        console.warn("[DEPRECATED] Endpoint /api/calendar/availability llamado. Usar /api/availability en su lugar.");
+
+        const { date } = req.query;
+        console.log(`[DEPRECATED] Availability request for: ${date}`);
+
+        // Mantener respuesta compatible temporalmente
+        res.setHeader('X-API-Deprecated', 'true');
+        res.setHeader('X-API-Replacement', '/api/availability');
+
+        res.json({
+            date,
+            availableSlots: ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
+            timezone: "America/Santiago",
+            _warning: "Este endpoint está deprecado. Usa /api/availability en su lugar."
+        });
+    } catch (error) {
+        console.error("[DEPRECATED AVAILABILITY] Error:", error);
+        res.status(500).json({ error: "Error al obtener disponibilidad" });
+    }
+});
+
+/* ===============================
+   FALLBACK - INDEX.HTML (LOG EXPLÍCITO)
+=============================== */
+app.get("*", (req, res) => {
+    console.log("INDEX.HTML SERVED AT:", new Date().toISOString());
+    res.setHeader("Cache-Control", "no-store");
+    res.sendFile(path.join(publicPath, "index.html"));
+});
+
+/* ===============================
+   START SERVER
+=============================== */
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+    console.log(`ABOLEGAL LANDING ONLINE - PUERTO ${PORT}`);
+    console.log(`Public path: ${publicPath}`);
+});

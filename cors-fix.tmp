@@ -1,0 +1,36 @@
+/* ===============================
+   CORS ULTRA ROBUSTO (FIX FINAL)
+=============================== */
+app.use(
+    cors({
+        origin: function (origin, callback) {
+            console.log("🌍 Origin recibido:", origin);
+
+            // ✅ Permitir requests sin origin (Render, server-to-server, etc)
+            if (!origin) {
+                return callback(null, true);
+            }
+
+            // ✅ Permitir cualquier subdominio de onrender
+            if (origin.includes("onrender.com")) {
+                return callback(null, true);
+            }
+
+            // ✅ Lista blanca explícita
+            const allowed = [
+                "https://abolegal.cl",
+                "http://localhost:3000",
+                "http://localhost:5173",
+                "http://localhost:8080"
+            ];
+
+            if (allowed.includes(origin)) {
+                return callback(null, true);
+            }
+
+            console.warn(`🚨 CORS bloqueado: ${origin}`);
+            return callback(null, false); // 👈 IMPORTANTE: no tirar error
+        },
+        credentials: true,
+    })
+);

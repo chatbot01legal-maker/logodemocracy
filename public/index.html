@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>ABOLEGAL - Asistente Legal Inteligente | 2026</title>
+    <link rel="stylesheet" href="styles.css?v=NUCLEAR_2026_2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 🚀 NUCLEAR DEPLOY: NUCLEAR_2026_2 - Febrero 2026 -->
+    <!-- KILL SWITCH SERVICE WORKERS -->
+    <script>
+        // KILL SWITCH NUCLEAR - Ejecutado INMEDIATAMENTE
+        (function() {
+            console.log('🚀 NUCLEAR DEPLOY ACTIVADO: NUCLEAR_2026_2');
+            console.log('📅 Año navegador:', new Date().getFullYear());
+            console.log('⏰ Timestamp:', Date.now());
+            
+            // 1. ELIMINAR SERVICE WORKERS
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    console.log('🔍 Service Workers encontrados:', registrations.length);
+                    for(let registration of registrations) {
+                        console.log('🗑️ Desregistrando:', registration.scope);
+                        registration.unregister().then(function(success) {
+                            console.log('✅ Desregistrado:', success);
+                        });
+                    }
+                });
+            }
+            
+            // 2. LIMPIAR CACHES
+            if ('caches' in window) {
+                caches.keys().then(function(cacheNames) {
+                    cacheNames.forEach(function(cacheName) {
+                        console.log('🗑️ Eliminando cache:', cacheName);
+                        caches.delete(cacheName);
+                    });
+                });
+            }
+            
+            // 3. LIMPIAR LOCALSTORAGE ANTIGUO
+            try {
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.includes('2024') || key.includes('calendar') || key.includes('date')) {
+                        keysToRemove.push(key);
+                    }
+                }
+                keysToRemove.forEach(key => localStorage.removeItem(key));
+            } catch(e) {}
+            
+            // 4. SEÑAL VISUAL INMEDIATA
+            const nuclearBadge = document.createElement('div');
+            nuclearBadge.id = 'nuclearBadge';
+            nuclearBadge.innerHTML = '🚀 NUCLEAR_2026_2';
+            nuclearBadge.style.cssText = `
+                position: fixed;
+                top: 10px;
+                left: 10px;
+                background: #e74c3c;
+                color: white;
+                padding: 8px 12px;
+                border-radius: 5px;
+                font-size: 14px;
+                font-weight: bold;
+                z-index: 9999;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                animation: pulse 1s infinite;
+            `;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(nuclearBadge);
+            
+            // 5. FORZAR RECARGA SI VIENE DE CACHE
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    console.log('🔄 Página cargada desde cache, FORZANDO RECARGA...');
+                    window.location.reload();
+                }
+            });
+        })();
+    </script>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="footer-logo">
+                <img src="https://assets.zyrosite.com/YBgeevgVBWuK9oxP/logo-abolegal-Yanqqv4opDI900al.png" alt="ABOLEGAL" class="footer-logo-img">
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-section">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title-centered">Asistente Legal 24/7</h1>
+                <p class="hero-subtitle">Orientación legal clara, empática y precisa.</p>
+                <div class="hero-buttons">
+                    <a href="#chat" class="btn btn-secondary">Asistente Legal</a>
+                    <a href="#servicios" class="btn btn-secondary">Servicios</a>
+                    <a href="#contacto" class="btn btn-secondary">Contacto</a>
+                    <a href="#agendar" class="btn btn-secondary">Videollamada gratuita</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="chat-preview">
+                    <div class="chat-preview-header">
+                        <i class="fas fa-robot"></i>
+                        <span>Lex - Asistente Legal</span>
+                    </div>
+                    <div class="chat-preview-messages">
+                        <div class="message bot">¡Hola! Soy Lex, ¿en qué puedo ayudarte?</div>
+                        <div class="message user">Me despidieron de mi trabajo</div>
+                        <div class="message bot">Lamento escuchar eso. ¿Tenías contrato firmado?</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Widget Section -->
+    <section id="chat" class="chat-section">
+        <div class="section-header">
+            <h2 class="section-title">Habla con <span class="highlight">Lex, nuestro Asistente Legal</span></h2>
+            <p class="section-subtitle">Orientación legal inicial 24/7 • Respuestas en tiempo real • Especializado en derecho chileno</p>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-widget">
+                <div class="chat-header">
+                    <div class="chat-title">
+                        <i class="fas fa-robot"></i>
+                        <div>
+                            <h3>Lex - Asistente Legal</h3>
+                            <p class="chat-subtitle">Especializado en derecho chileno</p>
+                        </div>
+                    </div>
+                    <div class="chat-status">
+                        <div class="status-dot"></div>
+                        <span>En línea 24/7</span>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot">
+                        <strong>Lex:</strong> ¡Hola! Soy Lex, tu asistente legal. Estoy aquí para orientarte en temas legales de Chile. ¿En qué puedo ayudarte hoy?
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="userInput" placeholder="Escribe tu consulta legal aquí...">
+                    <button id="sendButton">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-info">
+                <h3><i class="fas fa-lightbulb"></i> ¿Cómo te ayuda Lex?</h3>
+                <ul>
+                    <li><i class="fas fa-check"></i> <strong>Orientación inmediata</strong> las 24 horas</li>
+                    <li><i class="fas fa-check"></i> <strong>Explicaciones claras</strong> en lenguaje simple</li>
+                    <li><i class="fas fa-check"></i> <strong>Información actualizada</strong> sobre leyes chilenas</li>
+                    <li><i class="fas fa-check"></i> <strong>Derivación a abogado</strong> cuando sea necesario</li>
+                </ul>
+
+                <div class="disclaimer-box">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Importante</h4>
+                    <p>Lex es un asistente informativo. No reemplaza la asesoría de un abogado. Para situaciones complejas, recomendamos agendar consulta.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calendar Section -->
+    <section id="agendar" class="calendar-section">
+        <div class="section-header">
+            <h2 class="section-title">Agenda una <span class="highlight">Videollamada con un Abogado</span></h2>
+            <p class="section-subtitle">Consulta de 30 minutos sin costo inicial • Horarios flexibles • Confidencialidad garantizada</p>
+            
+            <!-- SEÑAL VISUAL DE VERIFICACIÓN -->
+            <div id="nuclearVerification" style="text-align:center;margin:15px 0;padding:10px;background:#f8f9fa;border-radius:5px;">
+                <div id="verificationStatus">
+                    <i class="fas fa-spinner fa-spin"></i> Verificando sistema 2026...
+                </div>
+                <div id="apiStatus" style="font-size:12px;color:#666;margin-top:5px;">
+                    <i class="fas fa-sync-alt"></i> Conectando con backend...
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar-container">
+            <div class="calendar-widget">
+                <div class="calendar-header">
+                    <h3><i class="fas fa-calendar-alt"></i> Selecciona Fecha y Hora</h3>
+                    <p>Disponibilidad para las próximas 2 semanas - <span id="currentYearDisplay" style="color:#e74c3c;font-weight:bold;">2026</span></p>
+                </div>
+
+                <div class="calendar-content">
+                    <!-- Selector de fecha -->
+                    <div class="date-selector">
+                        <h4><i class="fas fa-calendar-day"></i> Próximas fechas disponibles: <span id="dateSourceInfo" style="font-size:12px;color:#27ae60;"></span></h4>
+                        <div class="date-options" id="dateOptions">
+                            <div class="loading-dates">
+                                <i class="fas fa-spinner fa-spin"></i> Cargando fechas disponibles 2026 desde API...
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Selector de hora -->
+                    <div class="time-selector">
+                        <h4><i class="fas fa-clock"></i> Horarios disponibles:</h4>
+                        <div class="time-slots" id="timeSlots">
+                            <p class="select-date-first">Por favor, selecciona una fecha primero</p>
+                        </div>
+                    </div>
+
+                    <!-- Formulario de reserva -->
+                    <form class="booking-form" id="bookingForm">
+                        <h4><i class="fas fa-user-edit"></i> Completa tus datos</h4>
+
+                        <div class="selected-slot">
+                            <p id="selectedDateTime">Fecha y hora seleccionadas: <span class="highlight">Por favor selecciona fecha y hora</span></p>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" id="clientName" placeholder="Nombre completo" required>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="email" id="clientEmail" placeholder="Correo electrónico" required>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="tel" id="clientPhone" placeholder="Teléfono (opcional)">
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="clientTopic" rows="3" placeholder="Breve descripción del tema legal (opcional)"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="button" class="btn btn-secondary" id="sendSummaryBtn">
+                                <i class="fas fa-file-alt"></i> Enviar un resumen de la conversación con Lex al abogado
+                            </button>
+                        </div>
+
+                        <button type="submit" class="btn-book" id="submitButton">
+                            <i class="fas fa-calendar-check"></i> <span id="buttonText">Reservar Videollamada</span>
+                        </button>
+
+                        <p class="form-note">
+                            <i class="fas fa-lock"></i> Tus datos son confidenciales. Recibirás un email de confirmación con el link de Google Meet.
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+            <div class="calendar-info">
+                <h3><i class="fas fa-info-circle"></i> ¿Qué incluye la videollamada?</h3>
+                <ul class="benefits-list">
+                    <li><i class="fas fa-check"></i> <strong>30 minutos</strong> con abogado especializado</li>
+                    <li><i class="fas fa-check"></i> <strong>Análisis inicial</strong> de tu situación legal</li>
+                    <li><i class="fas fa-check"></i> <strong>Orientación</strong> sobre próximos pasos</li>
+                    <li><i class="fas fa-check"></i> <strong>Presupuesto</strong> sin compromiso si necesitas más ayuda</li>
+                </ul>
+
+                <div class="how-it-works">
+                    <h4><i class="fas fa-play-circle"></i> Cómo funciona:</h4>
+                    <ol>
+                        <li><strong>Selecciona fecha y hora</strong> que te acomoden</li>
+                        <li><strong>Completa tus datos</strong> de contacto</li>
+                        <li><strong>Recibirás confirmación</strong> por email con link de Google Meet</li>
+                        <li><strong>Conéctate a la videollamada</strong> en el horario agendado</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicios" class="services-section">
+        <div class="section-header">
+            <h2>Nuestras <span class="highlight">Áreas de Especialización</span></h2>
+            <p class="section-subtitle">Lex está entrenado en múltiples áreas del derecho chileno</p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3>Derecho Laboral</h3>
+                <p>Despidos, finiquitos, acoso laboral, contratos, horas extras</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h3>Derecho de Familia</h3>
+                <p>Divorcios, pensión alimenticia, cuidado personal, violencia intrafamiliar</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <h3>Derecho Civil</h3>
+                <p>Contratos, arriendos, compraventa, responsabilidad civil, sucesiones</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="contact-section">
+        <div class="section-header">
+            <h2><span class="highlight">Contacto</span></h2>
+            <p class="section-subtitle">¿Necesitas asesoría legal personalizada?</p>
+        </div>
+
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3><i class="fas fa-map-marker-alt"></i> Estudio ABOLEGAL</h3>
+                <p><i class="fas fa-envelope"></i> contacto@abolegal.cl</p>
+                <p><i class="fas fa-phone"></i> +56 2 2345 6789</p>
+                <p><i class="fas fa-clock"></i> Lunes a Viernes: 9:00 - 18:00</p>
+
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <form id="contactForm">
+                    <input type="text" placeholder="Tu nombre" required>
+                    <input type="email" placeholder="Correo electrónico" required>
+                    <input type="tel" placeholder="Teléfono (opcional)">
+                    <textarea placeholder="¿En qué podemos ayudarte?" rows="4" required></textarea>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Enviar Mensaje
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="https://assets.zyrosite.com/YBgeevgVBWuK9oxP/logo-abolegal-Yanqqv4opDI900al.png" alt="ABOLEGAL" class="footer-logo-img">
+            </div>
+
+            <div class="footer-links">
+                <a href="#inicio">Inicio</a>
+                <a href="#chat">Asistente Legal</a>
+                <a href="#servicios">Servicios</a>
+                <a href="#agendar">Agendar</a>
+                <a href="#contacto">Contacto</a>
+            </div>
+
+            <div class="footer-legal">
+                <p>© 2026 ABOLEGAL. Todos los derechos reservados.</p>
+                <p>Este servicio es informativo y no constituye asesoría legal formal.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts con CACHE BUSTING NUCLEAR -->
+    <script src="app.js?v=NUCLEAR_2026_2"></script>
+    <script src="script.js?v=NUCLEAR_2026_2"></script>
+    <script src="calendar-loader.js?v=NUCLEAR_2026_2"></script>
+    
+    <!-- PRUEBA DE VIDA VISIBLE SIN CONSOLA -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. ACTUALIZAR BOTÓN CON AÑO REAL
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const buttonText = document.getElementById('buttonText');
+            if (buttonText) {
+                buttonText.innerHTML = `✅ Sistema ${currentYear} activo`;
+                setTimeout(() => {
+                    buttonText.innerHTML = 'Reservar Videollamada';
+                }, 5000);
+            }
+            
+            // 2. ACTUALIZAR DISPLAY DE AÑO
+            const yearDisplay = document.getElementById('currentYearDisplay');
+            if (yearDisplay) {
+                yearDisplay.textContent = currentYear;
+                yearDisplay.style.color = currentYear === 2026 ? '#27ae60' : '#e74c3c';
+            }
+            
+            // 3. VERIFICACIÓN DE VERSIÓN
+            const verificationStatus = document.getElementById('verificationStatus');
+            if (verificationStatus) {
+                verificationStatus.innerHTML = `
+                    <i class="fas fa-check-circle" style="color:#27ae60"></i>
+                    Sistema ${currentYear} cargado correctamente
+                    <span style="font-size:10px;color:#666;">(NUCLEAR_2026_2)</span>
+                `;
+            }
+            
+            // 4. TEST API CONEXIÓN VISIBLE
+            const apiStatus = document.getElementById('apiStatus');
+            if (apiStatus) {
+                fetch('/api/availability?v=' + Date.now())
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            apiStatus.innerHTML = `
+                                <i class="fas fa-check-circle" style="color:#27ae60"></i>
+                                Backend 2026 conectado: ${data.fechas.length} fechas disponibles
+                            `;
+                            const dateSource = document.getElementById('dateSourceInfo');
+                            if (dateSource) {
+                                dateSource.textContent = `(Fuente: API / año ${data.fechas[0]?.fecha?.split('-')[0] || '2026'})`;
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        apiStatus.innerHTML = `
+                            <i class="fas fa-exclamation-triangle" style="color:#e74c3c"></i>
+                            Error conectando con backend
+                        `;
+                    });
+            }
+            
+            // 5. OCULTAR BADGE NUCLEAR DESPUÉS DE 10s
+            setTimeout(() => {
+                const badge = document.getElementById('nuclearBadge');
+                if (badge) badge.style.opacity = '0.3';
+            }, 10000);
+        });
+    </script>
+<script src='https://unpkg.com/vconsole@latest/dist/vconsole.min.js'></script><script>var vConsole = new window.VConsole();</script><script src='calendar-loader.js'></script>
+</body>
+</html>
