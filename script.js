@@ -8,3 +8,10 @@ function actualizarContador() {
 }
 
 document.querySelector("button").addEventListener("click", actualizarContador);
+
+const toggle = document.getElementById("menu-toggle");
+const menu = document.getElementById("menu");
+
+toggle.addEventListener("click", () => {
+  menu.classList.toggle("active");
+});
