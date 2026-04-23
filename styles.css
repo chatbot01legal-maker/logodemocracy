@@ -270,3 +270,39 @@ footer {
   font-size: 20px;
   font-weight: 500;
 }
+
+/* HAMBURGUESA */
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  .menu-toggle {
+    display: block;
+  }
+
+  nav {
+    position: relative;
+  }
+
+  nav ul {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: var(--bg-secondary);
+    flex-direction: column;
+    width: 200px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    display: none;
+  }
+
+  nav ul.active {
+    display: flex;
+  }
+}
