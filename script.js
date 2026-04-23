@@ -1,17 +1,21 @@
 let contador = 128; // número inicial fake
 
 const contadorElemento = document.getElementById("contador");
+const boton = document.querySelector("button");
 
-function actualizarContador() {
-  contador++;
-  contadorElemento.textContent = contador + " ciudadanos";
+if (boton && contadorElemento) {
+  boton.addEventListener("click", () => {
+    contador++;
+    contadorElemento.textContent = contador + " ciudadanos";
+  });
 }
 
-document.querySelector("button").addEventListener("click", actualizarContador);
-
+// MENU HAMBURGUESA
 const toggle = document.getElementById("menu-toggle");
 const menu = document.getElementById("menu");
 
-toggle.addEventListener("click", () => {
-  menu.classList.toggle("active");
-});
+if (toggle && menu) {
+  toggle.addEventListener("click", () => {
+    menu.classList.toggle("active");
+  });
+}
