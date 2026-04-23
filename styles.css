@@ -62,21 +62,31 @@ nav a:hover {
 /* HERO */
 .hero {
   text-align: center;
-  padding: 120px 20px;
+  padding: 140px 20px 100px;
   max-width: 900px;
   margin: auto;
 }
 
 .hero h1 {
-  font-size: 42px;
+  font-size: 48px;
+  line-height: 1.1;
   margin-bottom: 20px;
-  line-height: 1.2;
+  background: linear-gradient(90deg, #ffffff, #22c55e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero p {
   font-size: 18px;
   color: var(--text-secondary);
   margin-bottom: 30px;
+}
+
+.hero-extra {
+  margin-top: 40px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  opacity: 0.8;
 }
 
 /* BOTONES */
