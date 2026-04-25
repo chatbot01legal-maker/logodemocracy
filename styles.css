@@ -23,20 +23,27 @@
 
 /* BASE */
 body {
-  body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: transparent; /* 🔥 clave */
   color: var(--text);
   line-height: 1.6;
 }
 
-  body::before {
+/* CAPA OSCURA SOBRE EL CANVAS */
+body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.88); /* mismo color pero con transparencia */
+  background: rgba(15, 23, 42, 0.88);
   z-index: -1;
-  }
+}
+
+/* 🔥 CLAVE: separa contenido del canvas */
+.content {
+  position: relative;
+  z-index: 1;
+}
+
 /* NAV */
 nav {
   display: flex;
@@ -44,7 +51,7 @@ nav {
   align-items: center;
   padding: 20px 40px;
   border-bottom: 1px solid var(--border);
-  background: rgba(15, 23, 42, 0.7); /* 👈 solo esto cambió */
+  background: rgba(15, 23, 42, 0.7);
   position: sticky;
   top: 0;
   backdrop-filter: blur(10px);
@@ -217,7 +224,7 @@ section div {
   transition: all 0.3s ease;
 }
 
-/* EFECTO GLOW SUTIL */
+/* EFECTO GLOW */
 .card::after {
   content: "";
   position: absolute;
@@ -346,12 +353,13 @@ footer {
   transform: translateY(0);
 }
 
+/* CANVAS */
 #bg-canvas {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; /* 👈 lo manda al fondo */
-  pointer-events: none; /* 👈 no bloquea clicks */
+  z-index: -1;
+  pointer-events: none;
 }
