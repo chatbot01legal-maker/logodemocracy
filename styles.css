@@ -34,7 +34,7 @@ body {
   color: var(--text);
   line-height: 1.6;
   position: relative; /* 🔥 IMPORTANTE */
-  z-index: 0;         /* 🔥 IMPORTANTE */
+  z-index: 2;         /* 🔥 IMPORTANTE */
 }
 
 /* CAPA OSCURA SOBRE EL CANVAS */
@@ -43,7 +43,7 @@ body::before {
   position: fixed;
   inset: 0;
   background: rgba(15, 23, 42, 0.88);
-  z-index: -1; /* 🔥 ahora queda SOBRE el canvas pero BAJO el contenido */
+  z-index: 1; /* 🔥 ahora queda SOBRE el canvas pero BAJO el contenido */
 }
 
 /* 🔥 ELIMINAR O IGNORAR .content si no lo usas en HTML */
@@ -195,6 +195,6 @@ section {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -2; /* 🔥 CLAVE: detrás de TODO */
+  z-index: 0; /* 🔥 CLAVE: detrás de TODO */
   pointer-events: none;
 }
