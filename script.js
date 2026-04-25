@@ -21,23 +21,22 @@ if (toggle && menu) {
 }
 
 // SCROLL ANIMATIONS
-const elements = document.querySelectorAll("section, .card");
+// SCROLL ANIMATIONS (PRO)
+const elements = document.querySelectorAll(".fade-in");
 
-elements.forEach(el => {
-  el.classList.add("fade-in");
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+    } else {
+      entry.target.classList.remove("visible"); // 🔥 efecto foco
+    }
+
+  });
+}, {
+  threshold: 0.2
 });
 
-function revealOnScroll() {
-  const trigger = window.innerHeight * 0.85;
-
-  elements.forEach(el => {
-    const top = el.getBoundingClientRect().top;
-
-    if (top < trigger) {
-      el.classList.add("visible");
-    }
-  });
-}
-
-window.addEventListener("scroll", revealOnScroll);
-window.addEventListener("load", revealOnScroll);
+// observar elementos
+elements.forEach(el => observer.observe(el));
