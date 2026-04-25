@@ -10,7 +10,7 @@
   --bg: #0f172a;
   --bg-secondary: #111827;
 
-  /* NUEVO (más profundidad visual) */
+  /* MÁS PROFUNDIDAD */
   --card-bg: #1e293b;
   --card-bg-hover: #243447;
 
@@ -47,7 +47,6 @@ nav h2 {
   font-weight: 600;
 }
 
-/* contenedor izquierdo */
 .nav-left {
   display: flex;
   align-items: center;
@@ -86,13 +85,13 @@ nav a:hover {
   background: linear-gradient(90deg, #ffffff, #22c55e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-.hero h1 {
   animation: fadeHero 1s ease forwards;
 }
 
 .hero p {
+  font-size: 18px;
+  color: var(--text-secondary);
+  margin-bottom: 30px;
   animation: fadeHero 1.2s ease forwards;
 }
 
@@ -106,11 +105,6 @@ nav a:hover {
     transform: translateY(0);
   }
 }
-.hero p {
-  font-size: 18px;
-  color: var(--text-secondary);
-  margin-bottom: 30px;
-}
 
 .hero-extra {
   margin-top: 40px;
@@ -120,6 +114,12 @@ nav a:hover {
 }
 
 /* BOTONES */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
 .buttons a {
   text-decoration: none;
   padding: 12px 20px;
@@ -172,63 +172,13 @@ section p {
   margin-bottom: 15px;
 }
 
-/* BLOQUES INTERNOS */
+/* BLOQUES */
 section div {
   margin-top: 30px;
   padding: 20px;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--card-bg);
-}
-
-/* LISTAS */
-ul {
-  margin-top: 15px;
-  padding-left: 20px;
-}
-
-li {
-  margin-bottom: 10px;
-  color: var(--text-secondary);
-}
-
-/* COMUNIDAD */
-#contador {
-  font-size: 32px;
-  margin: 20px 0;
-  color: var(--accent);
-}
-
-/* BOTÓN GENERAL */
-button {
-  padding: 12px 20px;
-  border: none;
-  background: var(--accent);
-  color: black;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover {
-  background: var(--accent-hover);
-}
-
-/* CTA FINAL */
-section:last-of-type {de
-  text-align: center;
-}
-
-section:last-of-type h2 {
-  font-size: 32px;
-}
-
-/* FOOTER */
-footer {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text-secondary);
-  font-size: 14px;
 }
 
 /* GRID */
@@ -247,23 +197,19 @@ footer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
-  margin-top: 40px;
 }
 
 .card {
+  position: relative;
+  overflow: hidden;
   background: var(--card-bg);
   padding: 25px;
   border-radius: 12px;
   border: 1px solid var(--border);
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
-.card:hover {
-  .card {
-  position: relative;
-  overflow: hidden;
-}
-
+/* EFECTO GLOW SUTIL */
 .card::after {
   content: "";
   position: absolute;
@@ -279,6 +225,8 @@ footer {
 
 .card:hover {
   transform: translateY(-6px) scale(1.01);
+  background: var(--card-bg-hover);
+  border-color: var(--accent);
 }
 
 .card h3 {
@@ -286,14 +234,48 @@ footer {
 }
 
 .card p {
-  color: var(--text-secondary);
   font-size: 14px;
+  color: var(--text-secondary);
 }
 
-.closing {
-  margin-top: 60px;
-  font-size: 20px;
-  font-weight: 500;
+/* COMUNIDAD */
+#contador {
+  font-size: 32px;
+  margin: 20px 0;
+  color: var(--accent);
+}
+
+/* BOTÓN */
+button {
+  padding: 12px 20px;
+  border: none;
+  background: var(--accent);
+  color: black;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+/* CTA FINAL */
+section:last-of-type {
+  text-align: center;
+}
+
+section:last-of-type h2 {
+  font-size: 32px;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
 /* HAMBURGUESA */
@@ -306,7 +288,6 @@ footer {
 /* MOBILE */
 @media (max-width: 768px) {
 
-  /* 🔥 CLAVE: ya no baja el nav */
   nav {
     flex-direction: row;
   }
@@ -345,7 +326,7 @@ footer {
   }
 }
 
-/* ANIMACIONES BASE */
+/* ANIMACIÓN BASE */
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
