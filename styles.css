@@ -130,7 +130,7 @@ nav a:hover {
   margin: auto;
   position: relative;
   z-index: 1;
-  background: radial-gradient(circle at center, rgba(34,197,94,0.08), transparent 60%);
+  background: radial-gradient(circle at center, rgba(34,197,94,0.12), transparent 60%);
 border-radius: 20px;
 }
 
@@ -239,8 +239,8 @@ section .intro p:last-child {
   margin-bottom: 0;
 }
 
-/* SOLO CAJAS GENERALES (NO intro NI problem-box) */
-section > div:not(.intro):not(.problem-box) {
+/* SOLO CAJAS GENERALES (NO intro NI grid) */
+section > div:not(.intro):not(.grid) {
   margin-top: 30px;
   padding: 20px;
   border: 1px solid var(--border);
