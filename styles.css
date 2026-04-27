@@ -382,3 +382,19 @@ section h2::after {
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(34,197,94,0.3);
 }
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+footer p:first-child {
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 10px;
+}
