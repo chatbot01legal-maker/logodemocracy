@@ -170,6 +170,12 @@ border-radius: 20px;
   opacity: 0.8;
 }
 
+.hero-extra p {
+  background: linear-gradient(90deg, #ffffff, #22c55e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 500;
+}
 /* BOTONES */
 .buttons {
   display: flex;
