@@ -301,6 +301,22 @@ section > div:not(.intro):not(.grid) {
   margin-right: auto;
 }
 
+/* etiqueta tipo “+1 idea poderosa” */
+.closing-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+/* idea principal */
+.closing-main {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.4;
+}
+
 .closing p {
   background: linear-gradient(90deg, #ffffff, #22c55e);
   -webkit-background-clip: text;
