@@ -428,3 +428,90 @@ footer p:first-child {
   color: var(--text);
   margin-bottom: 10px;
 }
+.community {
+  text-align: center;
+}
+
+/* intro conceptual */
+.community-intro {
+  max-width: 700px;
+  margin: 20px auto 40px;
+  color: var(--text-secondary);
+}
+
+/* etiqueta tipo “+1 voz” */
+.community-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+/* formulario más enfocado */
+.community-form {
+  max-width: 500px;
+  margin: 0 auto 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.community-form input,
+.community-form textarea {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text);
+  outline: none;
+}
+
+.community-form textarea {
+  min-height: 100px;
+  resize: none;
+}
+
+/* botón más “acción” */
+.community-form button {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: black;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.community-form button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+/* muro más limpio */
+.muro {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* posts */
+.post {
+  text-align: left;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card-bg);
+}
+
+/* meta final */
+.community-meta {
+  margin-top: 50px;
+  color: var(--text-secondary);
+}
+
+.community-meta h3 {
+  color: var(--text);
+  margin-bottom: 5px;
+  }
