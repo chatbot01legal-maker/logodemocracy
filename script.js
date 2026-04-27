@@ -100,3 +100,36 @@ function draw() {
 }
 
 draw();
+
+// COMUNIDAD
+
+const boton = document.getElementById("publicar");
+const muro = document.getElementById("muro");
+const contador = document.getElementById("contador");
+
+let total = 0;
+
+if (boton) {
+  boton.addEventListener("click", () => {
+    const nombre = document.getElementById("nombre").value.trim();
+    const mensaje = document.getElementById("mensaje").value.trim();
+
+    if (!nombre || !mensaje) return;
+
+    const post = document.createElement("div");
+    post.classList.add("post");
+
+    post.innerHTML = `
+      <strong>${nombre}</strong>
+      <p>${mensaje}</p>
+    `;
+
+    muro.prepend(post);
+
+    total++;
+    contador.textContent = total + " ciudadanos";
+
+    document.getElementById("nombre").value = "";
+    document.getElementById("mensaje").value = "";
+  });
+}
