@@ -70,7 +70,7 @@ function draw() {
       const dist = Math.sqrt(dx * dx + dy * dy);
 
       if (dist < 120) {
-        ctx.strokeStyle = "rgba(34,197,94,0.1)";
+        ctx.strokeStyle = "rgba(34,197,94,0.25)";
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -82,7 +82,7 @@ function draw() {
 
   // dibujar nodos
   nodes.forEach(n => {
-    ctx.fillStyle = "rgba(34,197,94,0.6)";
+    ctx.fillStyle = "rgba(34,197,94,0.9)";
     ctx.beginPath();
     ctx.arc(n.x, n.y, 2, 0, Math.PI * 2);
     ctx.fill();
