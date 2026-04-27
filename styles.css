@@ -215,7 +215,18 @@ section {
   position: relative; /* 🔥 */
   z-index: 1;         /* 🔥 */
 }
+section > p,
+section > h2 {
+  position: relative;
+  z-index: 1;
+}
 
+section .intro {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
 /* ... (todo lo demás igual, sin cambios) ... */
 
 /* CANVAS */
