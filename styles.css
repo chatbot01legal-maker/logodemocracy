@@ -33,8 +33,8 @@ body {
   background: transparent;
   color: var(--text);
   line-height: 1.6;
-  position: relative; /* 🔥 IMPORTANTE */
-  z-index: 2;         /* 🔥 IMPORTANTE */
+  position: relative;
+  z-index: 2;
 }
 
 /* CAPA OSCURA SOBRE EL CANVAS */
@@ -43,11 +43,9 @@ body::before {
   position: fixed;
   inset: 0;
   background: rgba(15, 23, 42, 0.88);
-  z-index: 1; /* 🔥 ahora queda SOBRE el canvas pero BAJO el contenido */
+  z-index: 1;
 }
 
-/* 🔥 ELIMINAR O IGNORAR .content si no lo usas en HTML */
-/* (lo dejamos pero no afecta) */
 .content {
   position: relative;
   z-index: 1;
@@ -64,7 +62,7 @@ nav {
   position: sticky;
   top: 0;
   backdrop-filter: blur(10px);
-  z-index: 10; /* 🔥 para que quede sobre todo */
+  z-index: 10;
 }
 
 nav h2 {
@@ -84,7 +82,6 @@ nav ul {
   list-style: none;
 }
 
-/* 👇 ESTO FALTA */
 .menu-toggle {
   display: none;
 }
@@ -131,8 +128,8 @@ nav a:hover {
   padding: 140px 20px 100px;
   max-width: 900px;
   margin: auto;
-  position: relative; /* 🔥 */
-  z-index: 1;         /* 🔥 */
+  position: relative;
+  z-index: 1;
 }
 
 .hero h1 {
@@ -212,9 +209,10 @@ section {
   max-width: 900px;
   margin: auto;
   border-bottom: 1px solid var(--border);
-  position: relative; /* 🔥 */
-  z-index: 1;         /* 🔥 */
+  position: relative;
+  z-index: 1;
 }
+
 section > p,
 section > h2 {
   position: relative;
@@ -227,7 +225,17 @@ section .intro {
   border-radius: 10px;
   border: 1px solid var(--border);
 }
-/* ... (todo lo demás igual, sin cambios) ... */
+
+/* 🔥 ESTE ES EL CAMBIO CLAVE */
+section > div {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-secondary);
+}
+
+/* GRID Y CARDS */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -270,6 +278,6 @@ section .intro {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0; /* 🔥 CLAVE: detrás de TODO */
+  z-index: 0;
   pointer-events: none;
 }
