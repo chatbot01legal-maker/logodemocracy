@@ -221,9 +221,19 @@ section > h2 {
 
 section .intro {
   background: var(--bg-secondary);
-  padding: 20px;
-  border-radius: 10px;
+  padding: 25px;
+  border-radius: 12px;
   border: 1px solid var(--border);
+  max-width: 700px;
+  margin: 20px auto 40px;
+}
+
+section .intro p {
+  margin-bottom: 15px;
+}
+
+section .intro p:last-child {
+  margin-bottom: 0;
 }
 
 /* 🔥 ESTE ES EL CAMBIO CLAVE */
