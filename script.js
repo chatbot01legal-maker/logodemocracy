@@ -15,7 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!menuToggle || !menu) return;
 
-  menuToggle.addEventListener("click", () => {
+  menuToggle.addEventListener("click", (e) => {
+    e.preventDefault();
     menu.classList.toggle("active");
   });
 });
