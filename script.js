@@ -1,14 +1,12 @@
-let contador = 128; // número inicial fake
+let contador = 128;
 
 const contadorElemento = document.getElementById("contador");
-const boton = document.querySelector("button");
 
-if (boton && contadorElemento) {
-  boton.addEventListener("click", () => {
-    contador++;
-    contadorElemento.textContent = contador + " ciudadanos";
-  });
-}
+// SOLO botón de comunidad
+const botonComunidad = document.getElementById("publicar");
+const muro = document.getElementById("muro");
+
+let total = 0;
 
 // MENU HAMBURGUESA
 const toggle = document.getElementById("menu-toggle");
