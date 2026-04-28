@@ -105,7 +105,7 @@ draw();
 
 const boton = document.getElementById("publicar");
 const muro = document.getElementById("muro");
-const contador = document.getElementById("contador");
+const contadorDOM = document.getElementById("contador");
 
 let total = 0;
 
@@ -124,19 +124,18 @@ if (boton) {
       <p>${mensaje}</p>
     `;
 
-    muro.prepend(post);
+    if (muro) {
+      muro.prepend(post);
+    }
 
     total++;
-    contador.textContent = total + " ciudadanos";
+
+    if (contadorDOM) {
+      contadorDOM.textContent = total + " ciudadanos";
+    }
 
     document.getElementById("nombre").value = "";
     document.getElementById("mensaje").value = "";
   });
 }
 
-const menuToggle = document.getElementById("menu-toggle");
-const menu = document.getElementById("menu");
-
-menuToggle.addEventListener("click", () => {
-  menu.classList.toggle("active");
-});
