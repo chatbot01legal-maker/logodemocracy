@@ -9,16 +9,17 @@ const muro = document.getElementById("muro");
 let total = 0;
 
 // MENU HAMBURGUESA
-const toggle = document.getElementById("menu-toggle");
-const menu = document.getElementById("menu");
+document.addEventListener("DOMContentLoaded", () => {
+  const menuToggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("menu");
 
-if (toggle && menu) {
-  toggle.addEventListener("click", () => {
+  if (!menuToggle || !menu) return;
+
+  menuToggle.addEventListener("click", () => {
     menu.classList.toggle("active");
   });
-}
+});
 
-// SCROLL ANIMATIONS
 // SCROLL ANIMATIONS (PRO)
 const elements = document.querySelectorAll(".fade-in");
 
