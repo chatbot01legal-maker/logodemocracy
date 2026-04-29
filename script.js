@@ -8,6 +8,62 @@ const muro = document.getElementById("muro");
 
 let total = 0;
 
+
+/* =====================
+   TRADUCCIONES
+===================== */
+
+const translations = {
+  es: {
+    "edu.title": "Educación Cívica",
+    "edu.intro1": "El problema de la democracia no se resuelve solo con instituciones o tecnología. Se resuelve con ciudadanos.",
+    "edu.intro2": "Un ciudadano que comprenda las limitaciones del sistema en el que vive, pero también sus posibilidades.",
+
+    "edu.card1_title": "🧭 Conciencia del sistema",
+    "edu.card1_desc": "Entiende que la democracia no es perfecta, pero es el espacio donde se toman decisiones que afectan su vida y la de otros.",
+
+    "edu.card2_title": "🗳️ Responsabilidad del voto",
+    "edu.card2_desc": "Comprende que votar no es un acto pasivo, sino una forma de ejercer poder y responsabilidad sobre el futuro colectivo.",
+
+    "edu.card3_title": "⚙️ Lectura de la tecnología",
+    "edu.card3_desc": "Reconoce que la tecnología no reemplaza la democracia, pero puede ampliar o distorsionar su capacidad de decisión.",
+
+    "edu.closing_label": "+1 principio:",
+    "edu.closing_main": "Una democracia no mejora solo con mejores sistemas. Mejora cuando sus ciudadanos aprenden a pensar."
+  },
+
+  en: {
+    "edu.title": "Civic Education",
+    "edu.intro1": "The problem of democracy is not solved only with institutions or technology. It is solved with citizens.",
+    "edu.intro2": "A citizen who understands both the limitations and the possibilities of the system they live in.",
+
+    "edu.card1_title": "🧭 System awareness",
+    "edu.card1_desc": "Understands that democracy is not perfect, but it is the space where decisions affecting lives are made.",
+
+    "edu.card2_title": "🗳️ Voting responsibility",
+    "edu.card2_desc": "Understands that voting is not passive, but an exercise of power and responsibility.",
+
+    "edu.card3_title": "⚙️ Understanding technology",
+    "edu.card3_desc": "Recognizes that technology does not replace democracy, but can amplify or distort it.",
+
+    "edu.closing_label": "+1 principle:",
+    "edu.closing_main": "A democracy does not improve only with better systems. It improves when citizens learn to think."
+  }
+};
+
+function applyTranslations(lang) {
+  const elements = document.querySelectorAll("[data-i18n]");
+
+  elements.forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    const text = translations[lang]?.[key];
+
+    if (text) {
+      el.innerHTML = text;
+    }
+  });
+}
+
 // MENU HAMBURGUESA
 document.addEventListener("DOMContentLoaded", () => {
 
