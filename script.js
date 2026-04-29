@@ -75,7 +75,7 @@ function setLanguage(lang) {
 // MENU HAMBURGUESA
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* =====================
+
   /* =====================
    MENÚ
 ===================== */
@@ -236,6 +236,7 @@ ctx.strokeStyle = `rgba(34,197,94,${opacity * 0.6})`;
 /* =====================
    TRADUCCIÓN INICIAL
 ===================== */
-applyTranslations("es");
+const savedLang = localStorage.getItem("lang") || "es";
+setLanguage(savedLang);
 
 });
