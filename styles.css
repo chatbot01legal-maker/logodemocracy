@@ -402,17 +402,22 @@ footer p:first-child {
 
   /* HAMBURGUESA MÁS GRANDE */
   .menu-toggle {
-    font-size: 28px;
-    padding: 6px 10px;
-    cursor: pointer;
-  }
+  font-size: 34px;
+  line-height: 1;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
 
   /* SELECTOR DE IDIOMA MÁS PEQUEÑO Y LIMPIO */
   .lang-selector select {
-    font-size: 12px;
-    padding: 6px 8px;
-    max-width: 120px;
-  }
+  font-size: 11px;
+  padding: 5px 6px;
+  border-radius: 6px;
+  max-width: 95px;
+  opacity: 0.9;
+}
 
   /* OPCIONAL: evita que todo se amontone */
   .nav-left {
