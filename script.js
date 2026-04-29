@@ -208,16 +208,8 @@ function draw() {
 
 draw();
 
+});
 
 
-    total++;
 
-    if (contadorDOM) {
-      contadorDOM.textContent = total + " ciudadanos";
-    }
-
-    document.getElementById("nombre").value = "";
-    document.getElementById("mensaje").value = "";
-  });
-}
 
