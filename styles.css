@@ -376,3 +376,8 @@ footer p:first-child {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+@media (min-width: 900px) {
+  section:nth-of-type(3) .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
