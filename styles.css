@@ -391,3 +391,33 @@ footer p:first-child {
   font-size: 13px;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+
+  /* =====================
+     NAV MOBILE BALANCE
+  ===================== */
+
+  nav {
+    padding: 15px 20px;
+  }
+
+  /* HAMBURGUESA MÁS GRANDE */
+  .menu-toggle {
+    font-size: 28px;
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+
+  /* SELECTOR DE IDIOMA MÁS PEQUEÑO Y LIMPIO */
+  .lang-selector select {
+    font-size: 12px;
+    padding: 6px 8px;
+    max-width: 120px;
+  }
+
+  /* OPCIONAL: evita que todo se amontone */
+  .nav-left {
+    flex: 1;
+  }
+}
