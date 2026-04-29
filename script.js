@@ -213,4 +213,9 @@ ctx.strokeStyle = `rgba(34,197,94,${opacity * 0.6})`;
 
   draw();
 
+/* =====================
+   TRADUCCIÓN INICIAL
+===================== */
+applyTranslations("es");
+
 });
