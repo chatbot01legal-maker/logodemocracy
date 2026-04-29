@@ -376,11 +376,6 @@ footer p:first-child {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-@media (min-width: 900px) {
-  section:nth-of-type(3) .grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
 
 .lang-selector select {
   background: var(--bg-secondary);
@@ -402,6 +397,7 @@ footer p:first-child {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 15px 20x;
 }
 
   /* HAMBURGUESA MÁS GRANDE */
