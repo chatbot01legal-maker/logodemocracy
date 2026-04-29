@@ -143,22 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-// SCROLL ANIMATIONS (PRO)
-const elements = document.querySelectorAll(".fade-in");
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-
-    if (entry.isIntersecting) {
-      entry.target.classList.add("visible");
-    } else {
-      entry.target.classList.remove("visible"); // 🔥 efecto foco
-    }
-
-  });
-}, {
-  threshold: 0.2
-});
 
 // observar elementos
 elements.forEach(el => observer.observe(el));
@@ -223,32 +208,7 @@ function draw() {
 
 draw();
 
-// COMUNIDAD
 
-const boton = document.getElementById("publicar");
-const muro = document.getElementById("muro");
-const contadorDOM = document.getElementById("contador");
-
-let total = 0;
-
-if (boton) {
-  boton.addEventListener("click", () => {
-    const nombre = document.getElementById("nombre").value.trim();
-    const mensaje = document.getElementById("mensaje").value.trim();
-
-    if (!nombre || !mensaje) return;
-
-    const post = document.createElement("div");
-    post.classList.add("post");
-
-    post.innerHTML = `
-      <strong>${nombre}</strong>
-      <p>${mensaje}</p>
-    `;
-
-    if (muro) {
-      muro.prepend(post);
-    }
 
     total++;
 
