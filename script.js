@@ -76,16 +76,28 @@ function setLanguage(lang) {
 document.addEventListener("DOMContentLoaded", () => {
 
   /* =====================
-     MENÚ
-  ===================== */
-  const menuToggle = document.getElementById("menu-toggle");
-  const menu = document.getElementById("menu");
+  /* =====================
+   MENÚ
+===================== */
+const menuToggle = document.getElementById("menu-toggle");
+const menu = document.getElementById("menu");
 
-  if (menuToggle && menu) {
-    menuToggle.addEventListener("click", () => {
-      menu.classList.toggle("active");
-    });
-  }
+if (menuToggle && menu) {
+  menuToggle.addEventListener("click", () => {
+    menu.classList.toggle("active");
+  });
+}
+
+/* =====================
+   SELECTOR DE IDIOMA
+===================== */
+const langSelect = document.getElementById("lang-select");
+
+if (langSelect) {
+  langSelect.addEventListener("change", (e) => {
+    setLanguage(e.target.value);
+  });
+}
 
   /* =====================
      CONTADOR / COMUNIDAD
