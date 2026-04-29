@@ -64,6 +64,14 @@ function applyTranslations(lang) {
   });
 }
 
+function setLanguage(lang) {
+  localStorage.setItem("lang", lang);
+  applyTranslations(lang);
+
+  const select = document.getElementById("lang-select");
+  if (select) select.value = lang;
+}
+
 // MENU HAMBURGUESA
 document.addEventListener("DOMContentLoaded", () => {
 
