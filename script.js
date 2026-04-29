@@ -142,7 +142,3 @@ document.addEventListener("DOMContentLoaded", () => {
   draw();
 
 });
-
-
-
-});
