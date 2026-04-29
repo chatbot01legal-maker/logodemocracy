@@ -114,7 +114,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < 120) {
-          ctx.strokeStyle = "rgba(34,197,94,0.25)";
+          const opacity = 1 - (dist / 120);
+ctx.strokeStyle = `rgba(34,197,94,${opacity * 0.6})`;
+          ctx.lineWidth = 1.2;
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
           ctx.lineTo(nodes[j].x, nodes[j].y);
@@ -124,9 +126,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     nodes.forEach(n => {
-      ctx.fillStyle = "rgba(34,197,94,0.9)";
+
+  let connections = 0;
+
+  for (let j = 0; j < nodes.length; j++) {
+  if (n === nodes[j]) continue;
+    const dx = n.x - nodes[j].x;
+    const dy = n.y - nodes[j].y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < 120) connections++;
+  }
+
+  const alpha = Math.min(1, connections / 8);
+
+  ctx.fillStyle = `rgba(34,197,94,${alpha})`;
       ctx.beginPath();
-      ctx.arc(n.x, n.y, 2, 0, Math.PI * 2);
+      ctx.arc(n.x, n.y, 2.5, 0, Math.PI * 2);
       ctx.fill();
 
       n.x += n.vx;
