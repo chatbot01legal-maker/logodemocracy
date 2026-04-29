@@ -381,3 +381,13 @@ footer p:first-child {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+.lang-selector select {
+  background: var(--bg-secondary);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
