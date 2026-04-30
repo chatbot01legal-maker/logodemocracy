@@ -128,6 +128,16 @@ nav a:hover {
 }
 
 /* HERO */
+.hero {
+  text-align: center;
+  max-width: 900px;
+  margin: auto;
+  padding: 140px 20px 100px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 🔥 ESTO ES LO QUE TE FALTA */
+}
 
 .hero h1 {
   font-size: 48px;
@@ -140,11 +150,9 @@ nav a:hover {
   text-shadow: 0 10px 40px rgba(34,197,94,0.15);
 }
 
-.hero p {
-  font-size: 18px;
-  color: var(--text-secondary);
-  margin-bottom: 30px;
-  animation: fadeHero 1.2s ease forwards;
+.hero-extra {
+  text-align: center;
+  max-width: 500px;
 }
 
 @keyframes fadeHero {
