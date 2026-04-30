@@ -14,42 +14,51 @@ let total = 0;
 ===================== */
 
 const translations = {
-  es: {
-    "edu.title": "Educación Cívica",
-    "edu.intro1": "El problema de la democracia no se resuelve solo con instituciones o tecnología. Se resuelve con ciudadanos.",
-    "edu.intro2": "Un ciudadano que comprenda las limitaciones del sistema en el que vive, pero también sus posibilidades.",
+es: {
+  "edu.title": "Educación cívica del siglo XXI",
 
-    "edu.card1_title": "🧭 Conciencia del sistema",
-    "edu.card1_desc": "Entiende que la democracia no es perfecta, pero es el espacio donde se toman decisiones que afectan su vida y la de otros.",
+  "edu.intro1": "La democracia no falla solo por sus instituciones. También falla porque no hemos aprendido a pensar como ciudadanos en el mundo actual.",
 
-    "edu.card2_title": "🗳️ Responsabilidad del voto",
-    "edu.card2_desc": "Comprende que votar no es un acto pasivo, sino una forma de ejercer poder y responsabilidad sobre el futuro colectivo.",
+  "edu.intro2": "Hoy vivimos expuestos a sobreinformación, distracción constante y dinámicas digitales que afectan cómo percibimos la realidad. Pero estas no son limitaciones inevitables: son habilidades que pueden entrenarse.",
 
-    "edu.card3_title": "⚙️ Lectura de la tecnología",
-    "edu.card3_desc": "Reconoce que la tecnología no reemplaza la democracia, pero puede ampliar o distorsionar su capacidad de decisión.",
 
-    "edu.closing_label": "+1 principio:",
-    "edu.closing_main": "Una democracia no mejora solo con mejores sistemas. Mejora cuando sus ciudadanos aprenden a pensar."
-  },
+  "edu.card1_title": "🧠 Memoria y criterio",
+  "edu.card1_desc": "Aprender a recordar, comparar y evaluar información en el tiempo es una habilidad cívica clave. Una ciudadanía formada no olvida fácilmente ni decide solo por lo inmediato.",
+
+
+  "edu.card2_title": "📱 Conciencia del pensamiento",
+  "edu.card2_desc": "Comprender la complejidad de la realidad implica reconocer cómo nuestras emociones, sesgos y reacciones influyen en lo que pensamos. La educación cívica moderna debe enseñar a observar estos procesos, no solo a consumir información."
+ 
+   "edu.card3_title": "🧩 Pensamiento abierto",
+   "edu.card3_desc": "Aprender a salir de nuestras propias burbujas, considerar otras perspectivas y sostener desacuerdos es una habilidad entrenable. Sin esto, no hay deliberación real.",
+
+
+  "edu.closing_label": "+1 posibilidad:",
+  "edu.closing_main": "Una mejor democracia no depende solo de nuevas reglas, sino de ciudadanos que desarrollan nuevas formas de pensar."
+}
 
   en: {
-    "edu.title": "Civic Education",
-    "edu.intro1": "The problem of democracy is not solved only with institutions or technology. It is solved with citizens.",
-    "edu.intro2": "A citizen who understands both the limitations and the possibilities of the system they live in.",
+en: {
+  "edu.title": "Civic education for the 21st century",
 
-    "edu.card1_title": "🧭 System awareness",
-    "edu.card1_desc": "Understands that democracy is not perfect, but it is the space where decisions affecting lives are made.",
+  "edu.intro1": "Democracy does not fail only because of its institutions. It also fails because we have not learned how to think as citizens in today’s world.",
 
-    "edu.card2_title": "🗳️ Voting responsibility",
-    "edu.card2_desc": "Understands that voting is not passive, but an exercise of power and responsibility.",
+  "edu.intro2": "We live in an environment of information overload, constant distraction, and digital dynamics that shape how we see reality. But these are not fixed limitations—they are skills that can be trained.",
 
-    "edu.card3_title": "⚙️ Understanding technology",
-    "edu.card3_desc": "Recognizes that technology does not replace democracy, but can amplify or distort it.",
 
-    "edu.closing_label": "+1 principle:",
-    "edu.closing_main": "A democracy does not improve only with better systems. It improves when citizens learn to think."
-  }
-};
+  "edu.card1_title": "🧠 Memory and judgment",
+  "edu.card1_desc": "Learning to remember, compare, and evaluate information over time is a civic skill. A trained citizen does not forget easily or decide only based on the immediate.",
+
+
+  "edu.card2_title": "📱 Awareness of thinking",
+  "edu.card2_desc": "Understanding reality requires recognizing how emotions, biases, and reactions shape our thinking. Civic education should teach how to observe these processes, not just consume information."
+  "edu.card3_title": "🧩 Open thinking",
+  "edu.card3_desc": "Learning to step outside our bubbles, consider other perspectives, and sustain disagreement is a trainable skill. Without it, real deliberation is impossible.",
+
+
+  "edu.closing_label": "+1 possibility:",
+  "edu.closing_main": "A better democracy depends not only on better rules, but on citizens who develop new ways of thinking."
+}
 
 function applyTranslations(lang) {
   const elements = document.querySelectorAll("[data-i18n]");
