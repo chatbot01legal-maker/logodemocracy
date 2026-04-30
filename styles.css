@@ -387,6 +387,10 @@ footer p:first-child {
   gap: 16px;
 }
 }
+@media (min-width: 900px) {
+  .grid.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .lang-selector select {
