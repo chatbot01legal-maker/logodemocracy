@@ -252,7 +252,7 @@ section .intro p:last-child {
 }
 
 /* SOLO CAJAS GENERALES (NO intro NI grid) */
-section > div:not(.intro):not(.grid) {
+section > div:not(.intro):not(.grid):not(.closing) {
   margin-top: 30px;
   padding: 20px;
   border: 1px solid var(--border);
@@ -393,6 +393,13 @@ footer p:first-child {
 }
 
 @media (max-width: 768px) {
+  .closing {
+    margin-top: 50px;
+    padding: 0;
+    background: none;
+    border: none;
+  }
+}
 
   /* =====================
      NAV MOBILE BALANCE
