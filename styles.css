@@ -128,16 +128,6 @@ nav a:hover {
 }
 
 /* HERO */
-.hero {
-  text-align: center;
-  padding: 140px 20px 100px;
-  max-width: 900px;
-  margin: auto;
-  position: relative;
-  z-index: 1;
-  background: radial-gradient(circle at center, rgba(34,197,94,0.12), transparent 60%);
-  border-radius: 20px;
-}
 
 .hero h1 {
   font-size: 48px;
