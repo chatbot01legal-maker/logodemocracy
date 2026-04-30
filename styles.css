@@ -107,8 +107,13 @@ nav ul {
   }
 
   .menu-toggle {
-    display: block;
-  }
+  font-size: 34px;
+  line-height: 1;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
 }
 
 nav a {
@@ -420,7 +425,15 @@ footer p:first-child {
 }
 
   /* OPCIONAL: evita que todo se amontone */
-  .nav-left {
-    flex: 1;
-  }
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-toggle,
+.lang-selector {
+  display: flex;
+  align-items: center;
+}
 }
