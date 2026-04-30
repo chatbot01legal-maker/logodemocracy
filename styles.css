@@ -416,15 +416,25 @@ footer p:first-child {
   margin-bottom: 10px;
 }
 
-/* 🔥 CAMBIO QUIRÚRGICO FINAL */
-/* GRID 3 COLUMNAS CONSISTENTE */
 
-/* SOLO en desktop fuerza 3 columnas */
-@media (min-width: 900px) {
+/* 🔥 GRID CONTROLADO */
+.grid.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
   .grid.grid-3 {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
+
+@media (max-width: 600px) {
+  .grid.grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
 .lang-selector select {
   background: var(--bg-secondary);
   color: var(--text);
