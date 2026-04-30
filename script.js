@@ -14,7 +14,6 @@ let total = 0;
 ===================== */
 
 const translations = {
-const translations = {
   es: {
     "edu.title": "Educación cívica del siglo XXI",
 
