@@ -189,9 +189,17 @@ nav a:hover {
 
 .buttons a {
   text-decoration: none;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 14px 28px; /* 👈 más aire */
+  border-radius: 10px;
   font-size: 14px;
+
+  display: inline-flex;          /* 🔥 clave */
+  align-items: center;           /* 🔥 centra vertical */
+  justify-content: center;       /* 🔥 centra horizontal */
+
+  min-width: 160px;              /* 👈 ancho mínimo consistente */
+  height: 48px;                  /* 👈 altura fija elegante */
+
   transition: all 0.25s ease;
 }
 
