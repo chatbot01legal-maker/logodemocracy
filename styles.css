@@ -324,7 +324,10 @@ section > div:not(.intro):not(.grid):not(.closing) {
 }
 
 .card h3 {
-  margin-bottom: 0px;
+  margin-bottom: 0;
+  line-height: 1.3;
+
+  min-height: calc(1.3em * 2); /* 🔥 fuerza 2 líneas */
 }
 
 .card p {
