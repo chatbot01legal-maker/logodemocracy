@@ -459,3 +459,19 @@ footer p:first-child {
   }
 
 }
+@media (max-width: 768px) {
+
+  .buttons {
+    width: 100%;
+    max-width: 500px;       /* 👈 mismo orden que hero-extra */
+    margin: 0 auto;
+    flex-direction: column; /* 👈 se apilan (mejor UX mobile) */
+    align-items: center;
+  }
+
+  .buttons a {
+    width: 100%;            /* 👈 ocupan el contenedor, no la pantalla */
+    max-width: 300px;       /* 👈 evita que se vean gigantes */
+  }
+
+}
