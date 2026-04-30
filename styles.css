@@ -379,12 +379,7 @@ footer p:first-child {
 }
 
 /* 🔥 CAMBIO QUIRÚRGICO FINAL */
-/* GRID 3 COLUMNAS CONSISTENTE */
-.grid.grid-3 {
-  max-width: 900px;
-  margin: 40px auto 0;
-  gap: 16px;
-}
+/* GRID 3 COLUMNAS CONSISTENTE *
 
 /* SOLO en desktop fuerza 3 columnas */
 @media (min-width: 900px) {
