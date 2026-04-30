@@ -228,8 +228,16 @@ section {
 
   display: flex;
   flex-direction: column;
-  align-items: center; /* 👈 esto agregas */
+  align-items: center; 
+  
+  /* 👈 esto agregas */
+  .intro,
+.grid,
+.closing {
+  width: 100%;
 }
+}
+
 
 section > p,
 section > h2 {
@@ -243,6 +251,14 @@ section .intro {
   border-radius: 12px;
   border: 1px solid var(--border);
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  .intro {
+  text-align: center;
+  max-width: 700px;
+}
+
+.closing {
+  text-align: center;
+}
 }
 
 section .intro p {
