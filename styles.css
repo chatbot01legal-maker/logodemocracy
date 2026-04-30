@@ -379,14 +379,14 @@ footer p:first-child {
 }
 
 /* 🔥 CAMBIO QUIRÚRGICO FINAL */
-/* GRID 3 COLUMNAS CONSISTENTE *
+/* GRID 3 COLUMNAS CONSISTENTE */
 
 /* SOLO en desktop fuerza 3 columnas */
 @media (min-width: 900px) {
   .grid.grid-3 {
     grid-template-columns: repeat(3, 1fr);
   }
-
+}
 .lang-selector select {
   background: var(--bg-secondary);
   color: var(--text);
