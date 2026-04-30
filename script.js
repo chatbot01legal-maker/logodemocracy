@@ -27,7 +27,7 @@ es: {
 
 
   "edu.card2_title": "📱 Conciencia del pensamiento",
-  "edu.card2_desc": "Comprender la complejidad de la realidad implica reconocer cómo nuestras emociones, sesgos y reacciones influyen en lo que pensamos. La educación cívica moderna debe enseñar a observar estos procesos, no solo a consumir información."
+  "edu.card2_desc": "Comprender la complejidad de la realidad implica reconocer cómo nuestras emociones, sesgos y reacciones influyen en lo que pensamos. La educación cívica moderna debe enseñar a observar estos procesos, no solo a consumir información.",
  
    "edu.card3_title": "🧩 Pensamiento abierto",
    "edu.card3_desc": "Aprender a salir de nuestras propias burbujas, considerar otras perspectivas y sostener desacuerdos es una habilidad entrenable. Sin esto, no hay deliberación real.",
@@ -35,9 +35,8 @@ es: {
 
   "edu.closing_label": "+1 posibilidad:",
   "edu.closing_main": "Una mejor democracia no depende solo de nuevas reglas, sino de ciudadanos que desarrollan nuevas formas de pensar."
-}
+},
 
-  en: {
 en: {
   "edu.title": "Civic education for the 21st century",
 
@@ -51,7 +50,7 @@ en: {
 
 
   "edu.card2_title": "📱 Awareness of thinking",
-  "edu.card2_desc": "Understanding reality requires recognizing how emotions, biases, and reactions shape our thinking. Civic education should teach how to observe these processes, not just consume information."
+  "edu.card2_desc": "Understanding reality requires recognizing how emotions, biases, and reactions shape our thinking. Civic education should teach how to observe these processes, not just consume information.",
   "edu.card3_title": "🧩 Open thinking",
   "edu.card3_desc": "Learning to step outside our bubbles, consider other perspectives, and sustain disagreement is a trainable skill. Without it, real deliberation is impossible.",
 
