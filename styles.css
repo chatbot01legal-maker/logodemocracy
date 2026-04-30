@@ -402,7 +402,7 @@ footer p:first-child {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20x;
+  padding: 15px 20px;
 }
 
   /* HAMBURGUESA MÁS GRANDE */
@@ -417,19 +417,14 @@ footer p:first-child {
 
   /* SELECTOR DE IDIOMA MÁS PEQUEÑO Y LIMPIO */
   .lang-selector select {
-  font-size: 11px;
-  padding: 5px 6px;
+  font-size: 10px;
+  padding: 4px 6px;
   border-radius: 6px;
-  max-width: 95px;
+  max-width: 85px;
   opacity: 0.9;
 }
 
   /* OPCIONAL: evita que todo se amontone */
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
 .menu-toggle,
 .lang-selector {
