@@ -1,3 +1,7 @@
+/* =====================
+   BASE / RESET
+===================== */
+
 html {
   background: #0f172a;
 }
@@ -5,14 +9,17 @@ html {
 html, body {
   min-height: 100%;
 }
-/* RESET */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* VARIABLES */
+/* =====================
+   VARIABLES
+===================== */
+
 :root {
   --bg: #0f172a;
   --bg-secondary: #111827;
@@ -22,12 +29,17 @@ html, body {
 
   --text: #e5e7eb;
   --text-secondary: #9ca3af;
+
   --accent: #22c55e;
   --accent-hover: #16a34a;
+
   --border: #1f2933;
 }
 
-/* BASE */
+/* =====================
+   BODY
+===================== */
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: transparent;
@@ -37,7 +49,7 @@ body {
   z-index: 2;
 }
 
-/* CAPA OSCURA SOBRE EL CANVAS */
+/* overlay oscuro */
 body::before {
   content: "";
   position: fixed;
@@ -51,7 +63,10 @@ body::before {
   z-index: 3;
 }
 
-/* NAV */
+/* =====================
+   NAV
+===================== */
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -82,40 +97,6 @@ nav ul {
   list-style: none;
 }
 
-.menu-toggle {
-  display: none;
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-
-  nav ul {
-    display: none;
-  }
-
-  nav ul.active {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    background: var(--card-bg);
-    width: 200px;
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-  }
-
-  .menu-toggle {
-  font-size: 34px;
-  line-height: 1;
-  padding: 8px 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-}
-
 nav a {
   text-decoration: none;
   color: var(--text-secondary);
@@ -127,7 +108,28 @@ nav a:hover {
   color: var(--text);
 }
 
-/* HERO */
+.menu-toggle {
+  display: none;
+}
+
+/* =====================
+   LANG SELECTOR
+===================== */
+
+.lang-selector select {
+  background: var(--bg-secondary);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* =====================
+   HERO
+===================== */
+
 .hero {
   text-align: center;
   max-width: 900px;
@@ -136,23 +138,21 @@ nav a:hover {
 
   display: flex;
   flex-direction: column;
-  align-items: center; /* 🔥 ESTO ES LO QUE TE FALTA */
+  align-items: center;
 }
 
 .hero h1 {
   font-size: 48px;
   line-height: 1.1;
   margin-bottom: 20px;
+
   background: linear-gradient(90deg, #ffffff, #22c55e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: fadeHero 1s ease forwards;
-  text-shadow: 0 10px 40px rgba(34,197,94,0.15);
-}
 
-.hero-extra {
-  text-align: center;
-  max-width: 500px;
+  text-shadow: 0 10px 40px rgba(34,197,94,0.15);
+
+  animation: fadeHero 1s ease forwards;
 }
 
 @keyframes fadeHero {
@@ -166,21 +166,35 @@ nav a:hover {
   }
 }
 
+.hero p {
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+/* NUEVO BLOQUE HERO */
+
 .hero-extra {
-  margin-top: 40px;
-  font-size: 14px;
+  margin-top: 30px;
+  text-align: center;
+  max-width: 500px;
+}
+
+.hero-extra .closing-label {
+  font-size: 13px;
   color: var(--text-secondary);
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
-.hero-extra p {
-  background: linear-gradient(90deg, #ffffff, #22c55e);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.hero-extra .closing-main {
+  font-size: 16px;
   font-weight: 500;
+  line-height: 1.4;
 }
 
-/* BOTONES */
+/* =====================
+   BOTONES
+===================== */
+
 .buttons {
   display: flex;
   justify-content: center;
@@ -189,16 +203,16 @@ nav a:hover {
 
 .buttons a {
   text-decoration: none;
-  padding: 14px 28px; /* 👈 más aire */
+  padding: 14px 28px;
   border-radius: 10px;
   font-size: 14px;
 
-  display: inline-flex;          /* 🔥 clave */
-  align-items: center;           /* 🔥 centra vertical */
-  justify-content: center;       /* 🔥 centra horizontal */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  min-width: 160px;              /* 👈 ancho mínimo consistente */
-  height: 48px;                  /* 👈 altura fija elegante */
+  min-width: 160px;
+  height: 48px;
 
   transition: all 0.25s ease;
 }
@@ -211,7 +225,6 @@ nav a:hover {
 .buttons a:first-child:hover {
   background: var(--accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(34, 197, 94, 0.2);
 }
 
 .buttons a:last-child {
@@ -222,16 +235,16 @@ nav a:hover {
 
 .buttons a:last-child:hover {
   background: var(--bg-secondary);
-  transform: translateY(-2px);
 }
 
-/* SECCIONES */
+/* =====================
+   SECCIONES
+===================== */
+
 section {
   padding: 80px 20px;
   max-width: 900px;
   margin: auto;
-  position: relative;
-  z-index: 1;
 
   display: flex;
   flex-direction: column;
@@ -240,156 +253,13 @@ section {
 
 section:not(:last-of-type) {
   border-bottom: 1px solid var(--border);
-  margin-bottom: 40px;   /* 👈 aire visual */
-  padding-bottom: 60px;  /* 👈 separa contenido de la línea */
-}
-
-
-section > p,
-section > h2 {
-  position: relative;
-  z-index: 1;
-}
-
-section .intro {
-  background: linear-gradient(135deg, #1e293b, #111827);
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-}
-
-.intro {
-  text-align: center;
-  max-width: 700px;
-}
-
-.closing {
-  text-align: center;
-}
-
-section .intro p {
-  margin-bottom: 15px;
-}
-
-section .intro p:last-child {
-  margin-bottom: 0;
-}
-
-/* SOLO CAJAS GENERALES (NO intro NI grid) */
-section > div:not(.intro):not(.grid):not(.closing) {
-  margin-top: 30px;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--bg-secondary);
-}
-
-/* GRID Y CARDS */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 40px;
-
-  width: 100%;
-  justify-items: center; /* 🔥 esto te faltaba */
-}
-
-.card {
-  background: linear-gradient(135deg, #1e293b, #020617);
-  padding: 25px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  transition: all 0.25s ease;
-  position: relative;
-  overflow: hidden;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* 🔥 CAMBIO CLAVE */
-  gap: 10px; /* 👈 espacio limpio y consistente */
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--accent);
-  opacity: 0.7;
-}
-
-.card:hover {
-  transform: translateY(-6px) scale(1.01);
-  border-color: var(--accent);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.35), 0 0 20px rgba(34,197,94,0.15);
-}
-
-.card h3 {
-  margin-bottom: 0;
-  line-height: 1.3;
-
-  min-height: calc(1.3em * 2); /* 🔥 fuerza 2 líneas */
-}
-
-.card p {
-  color: var(--text-secondary);
-  font-size: 14px;
-}
-
-.closing {
-  margin-top: 40px;          /* 🔥 reduce espacio */
-  text-align: center;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-
-  position: relative;        /* 🔥 clave */
-  z-index: 5;                /* 🔥 sobre overlay */
-}
-
-  .closing p {
-  position: relative;
-  z-index: 5;
-
-  background: linear-gradient(90deg, #ffffff, #22c55e);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.closing-label {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 10px;
-  opacity: 0.8;
-}
-
-.closing-main {
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--text);
-  line-height: 1.4;
-}
-
-
-/* CANVAS */
-#bg-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  pointer-events: none;
+  margin-bottom: 40px;
+  padding-bottom: 60px;
 }
 
 section h2 {
   font-size: 30px;
   margin-bottom: 25px;
-  position: relative;
 }
 
 section h2::after {
@@ -402,7 +272,146 @@ section h2::after {
   border-radius: 2px;
 }
 
-/* FOOTER */
+/* =====================
+   INTRO
+===================== */
+
+.intro {
+  text-align: center;
+  max-width: 700px;
+
+  background: linear-gradient(135deg, #1e293b, #111827);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* =====================
+   GRID
+===================== */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+  width: 100%;
+}
+
+.grid.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* =====================
+   CARD
+===================== */
+
+.card {
+  background: linear-gradient(135deg, #1e293b, #020617);
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+
+  backdrop-filter: blur(6px);
+
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* =====================
+   CLOSING
+===================== */
+
+.closing {
+  margin-top: 40px;
+  text-align: center;
+  max-width: 600px;
+}
+
+.closing-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.closing-main {
+  font-size: 22px;
+  font-weight: 500;
+
+  background: linear-gradient(90deg, #ffffff, #22c55e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* =====================
+   COMUNIDAD
+===================== */
+
+.community-form {
+  width: 100%;
+  max-width: 600px;
+}
+
+.community-form input,
+.community-form textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text);
+}
+
+.community-form button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: black;
+  cursor: pointer;
+}
+
+/* POSTS */
+
+.post {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.post strong {
+  color: var(--accent);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.post p {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* =====================
+   FOOTER
+===================== */
+
 footer {
   text-align: center;
   padding: 60px 20px;
@@ -412,93 +421,23 @@ footer {
   margin-top: 40px;
 }
 
-footer p:first-child {
-  font-size: 16px;
-  color: var(--text);
-  margin-bottom: 10px;
+/* =====================
+   CANVAS
+===================== */
+
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
 }
 
+/* =====================
+   RESPONSIVE
+===================== */
 
-/* 🔥 GRID CONTROLADO */
-.grid.grid-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-/* Responsive */
 @media (max-width: 900px) {
-  .grid.grid-3 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .grid.grid-3 {
-    grid-template-columns: 1fr;
-  }
-}
-
-.lang-selector select {
-  background: var(--bg-secondary);
-  color: var(--text);
-  border: 1px solid var(--border);
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-@media (max-width: 768px) {
-
-  .closing {
-    margin-top: 50px;
-    padding: 0;
-    background: none;
-    border: none;
-  }
-
-  /* NAV MOBILE BALANCE */
-
-  nav {
-    padding: 15px 20px;
-  }
-
-  .menu-toggle {
-    font-size: 34px;
-    line-height: 1;
-    padding: 8px 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-
-  .lang-selector select {
-    font-size: 10px;
-    padding: 4px 6px;
-    border-radius: 6px;
-    max-width: 85px;
-    opacity: 0.9;
-  }
-
-  .menu-toggle,
-  .lang-selector {
-    display: flex;
-    align-items: center;
-  }
-
-}
-@media (max-width: 768px) {
-
-  .buttons {
-    width: 100%;
-    max-width: 500px;       /* 👈 mismo orden que hero-extra */
-    margin: 0 auto;
-    flex-direction: column; /* 👈 se apilan (mejor UX mobile) */
-    align-items: center;
-  }
-
-  .buttons a {
-    width: 100%;            /* 👈 ocupan el contenedor, no la pantalla */
-    max-width: 300px;       /* 👈 evita que se vean gigantes */
-  }
-
-}
+  .grid.grid-3
