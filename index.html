@@ -1,30 +1,25 @@
 <!DOCTYPE html>
-<html lang="es"> <!-- 🔥 ya estaba bien, se mantiene -->
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Logodemocracy.tech</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=6">
 </head>
 
 <body>
 
-<!-- CANVAS DE FONDO -->
 <canvas id="bg-canvas"></canvas>
 
-<!-- CONTENIDO (clave para separar del canvas) -->
 <div class="content">
 
 <!-- NAV -->
 <nav>
-
   <div class="nav-left">
     <h2 data-i18n="nav.title">Logodemocracy.tech</h2>
   </div>
 
-  <div class="menu-toggle" id="menu-toggle">
-    ☰
-  </div>
+  <div class="menu-toggle" id="menu-toggle">☰</div>
 
   <ul id="menu">
     <li><a href="#" data-i18n="nav.inicio">Inicio</a></li>
@@ -33,26 +28,13 @@
     <li><a href="pages/participa.html" data-i18n="nav.participa">Participa</a></li>
     <li><a href="pages/comunidad.html" data-i18n="nav.comunidad">Comunidad</a></li>
   </ul>
-<div class="lang-selector">
-  <select id="lang-select">
-    <option value="es">🇪🇸 Español</option>
-    <option value="en">🇺🇸 English</option>
-    <option value="zh">🇨🇳 中文</option>
-    <option value="hi">🇮🇳 हिन्दी</option>
-    <option value="ar">🇸🇦 العربية</option>
-    <option value="fr">🇫🇷 Français</option>
-    <option value="pt">🇧🇷 Português</option>
-    <option value="ru">🇷🇺 Русский</option>
-    <option value="ja">🇯🇵 日本語</option>
-    <option value="de">🇩🇪 Deutsch</option>
-    <option value="ko">🇰🇷 한국어</option>
-    <option value="it">🇮🇹 Italiano</option>
-    <option value="tr">🇹🇷 Türkçe</option>
-    <option value="sw">🇰🇪 Kiswahili</option>
-    <option value="ha">🇳🇬 Hausa</option>
-    <option value="am">🇪🇹 አማርኛ</option>
-  </select>
-</div>
+
+  <div class="lang-selector">
+    <select id="lang-select">
+      <option value="es">🇪🇸 Español</option>
+      <option value="en">🇺🇸 English</option>
+    </select>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -64,9 +46,9 @@
     No se trata solo de votar. Se trata de pensar juntos.
   </p>
 
-  <div class="highlight">
-    <p>+1 idea poderosa:</p>
-    <p>
+  <div class="hero-extra">
+    <p class="closing-label">+1 idea poderosa:</p>
+    <p class="closing-main">
       La inteligencia colectiva necesita una memoria.
       Estamos construyéndola.
     </p>
@@ -77,181 +59,176 @@
     <a href="#comunidad" data-i18n="hero.unirme">Unirme</a>
   </div>
 </section>
+
 <!-- QUE ES -->
-<section id="que-es" class="que-es">
-  
-  <h2 data-i18n="que_es.title">¿Qué es Logo Democracia?</h2>
+<section id="que-es">
+  <h2 data-i18n="que_es.title">¿Qué es Logodemocracia?</h2>
 
   <div class="intro">
-  <p data-i18n="que_es.intro1">
-    Es una forma de organizar la inteligencia colectiva.
-    No como una suma de opiniones, sino como un sistema que aprende, razona y decide mejor.
-  </p>
-
-  <p data-i18n="que_es.intro2">
-    <strong>“Logo” no se refiere a un símbolo.</strong><br>
-    Proviene del griego <em>logos</em>: razón, sentido, pensamiento.
-    Esta es una democracia basada en la capacidad de pensar juntos.
-  </p>
-</div>
+    <p>
+      Es una forma de organizar la inteligencia colectiva.
+      No como una suma de opiniones, sino como un sistema que aprende, razona y decide mejor.
+    </p>
+    <p>
+      Proviene del griego <em>logos</em>: razón, sentido, pensamiento.
+    </p>
+  </div>
 
   <div class="grid">
-
     <div class="card">
-      <h3 data-i18n="cards.pensar">🧠 Pensar mejor</h3>
-      <p data-i18n="cards.pensar_desc">
-        No todas las decisiones son iguales. Algunas requieren conocimiento, otras solo preferencias.
-        Logo Democracia separa ambos mundos para decidir con mayor responsabilidad.
-      </p>
+      <h3>🧠 Pensar mejor</h3>
+      <p>No todas las decisiones son iguales. Algunas requieren conocimiento, otras preferencias.</p>
     </div>
 
     <div class="card">
-      <h3 data-i18n="cards.participar">🤝 Participar de verdad</h3>
-      <p data-i18n="cards.participar_desc">
-        No se trata de votar cada cierto tiempo. Se trata de formar parte de comunidades que deliberan,
-        aprenden y construyen decisiones de manera continua.
-      </p>
+      <h3>🤝 Participar de verdad</h3>
+      <p>No se trata de votar. Se trata de deliberar y construir decisiones.</p>
     </div>
 
     <div class="card">
-      <h3 data-i18n="cards.tecnologia">⚙️ Usar tecnología con sentido</h3>
-      <p data-i18n="cards.tecnologia_desc">
-        La inteligencia artificial no reemplaza a las personas. Amplifica su capacidad de entender,
-        analizar y actuar colectivamente.
-      </p>
+      <h3>⚙️ Tecnología con sentido</h3>
+      <p>La inteligencia artificial amplifica la capacidad de pensar colectivamente.</p>
     </div>
-
   </div>
 
   <div class="closing">
-  <p class="closing-label">+1 principio:</p>
-
-  <p data-i18n="que_es.closing" class="closing-main">
-    La democracia no es solo votar.
-    Es coordinar cómo pensamos juntos.
-  </p>
-</div>
-
+    <p class="closing-label">+1 principio:</p>
+    <p class="closing-main">
+      La democracia no es solo votar. Es coordinar cómo pensamos juntos.
+    </p>
+  </div>
 </section>
-<!-- PROBLEMA --> 
+
+<!-- 🔥 NUEVA SECCIÓN: LAS 3 CAPAS -->
+<section>
+  <h2>Una nueva arquitectura democrática</h2>
+
+  <div class="grid grid-3">
+
+    <div class="card">
+      <h3>🧠 Pensamiento colectivo</h3>
+      <p>¿Cómo pensamos juntos?</p>
+    </div>
+
+    <div class="card">
+      <h3>📚 Educación cívica</h3>
+      <p>¿Cómo aprendemos a pensar juntos?</p>
+    </div>
+
+    <div class="card">
+      <h3>🏛️ Logodemocracia</h3>
+      <p>¿Qué pasa cuando aplicamos eso?</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROBLEMA -->
 <section>
   <h2>El problema</h2>
 
-  <!-- INTRO (NUEVO) -->
   <div class="intro">
     <p>
-      La democracia actual enfrenta una tensión profunda entre cómo fue diseñada y el mundo en el que vivimos hoy.
-    </p>
-    <p>
-      No es solo una crisis política, es una crisis de coordinación, de comprensión y de capacidad colectiva para decidir mejor.
+      No es solo una crisis política.
+      Es una crisis de pensamiento colectivo.
     </p>
   </div>
 
-  <!-- GRID (SE MANTIENE IGUAL) -->
   <div class="grid grid-3">
-
-  <div class="card">
-    <h3>🕰️ Diseño del pasado</h3>
-    <p>La democracia actual fue diseñada para un mundo que ya no existe.</p>
-  </div>
-
-  <div class="card">
-    <h3>🌍 Nuevo contexto</h3>
-    <p>Hoy podemos comunicarnos globalmente en segundos...</p>
-  </div>
-
-  <div class="card">
-    <h3>⚠️ Consecuencia</h3>
-    <p>Esto genera desconexión, desconfianza...</p>
-  </div>
-
-</div> <!-- 👈 CIERRE GRID -->
-
-<!-- 🔥 FUERA DEL GRID -->
-</div> <!-- cierre grid -->
-
-<div class="closing">
-  <p class="closing-label">+1 idea clave:</p>
-  <p class="closing-main">
-    El problema no es la democracia.
-    Es cómo estamos pensando juntos.
-  </p>
-</div>
-
-</section> <!-- 👈 CIERRE CORRECTO -->
-</<!-- EDUCACIÓN CÍVICA -->
-<section>
-
-  <h2 data-i18n="edu.title"></h2>
-
-  <!-- INTRO -->
-  <div class="intro">
-    <p data-i18n="edu.intro1"></p>
-    <p data-i18n="edu.intro2"></p>
-  </div>
-
-  <!-- GRID -->
-  <div class="grid grid-3">
-
     <div class="card">
-      <h3 data-i18n="edu.card1_title"></h3>
-      <p data-i18n="edu.card1_desc"></p>
+      <h3>🕰️ Diseño del pasado</h3>
+      <p>La democracia fue diseñada para otro mundo.</p>
     </div>
 
     <div class="card">
-      <h3 data-i18n="edu.card2_title"></h3>
-      <p data-i18n="edu.card2_desc"></p>
+      <h3>🌍 Nuevo contexto</h3>
+      <p>Vivimos en un entorno hiperconectado y complejo.</p>
     </div>
 
     <div class="card">
-      <h3 data-i18n="edu.card3_title"></h3>
-      <p data-i18n="edu.card3_desc"></p>
+      <h3>⚠️ Consecuencia</h3>
+      <p>Descoordinación, desconfianza y decisiones débiles.</p>
     </div>
-
   </div>
 
-  <!-- CLOSING -->
   <div class="closing">
-    <p class="closing-label" data-i18n="edu.closing_label"></p>
-    <p class="closing-main" data-i18n="edu.closing_main"></p>
+    <p class="closing-label">+1 provocación:</p>
+    <p class="closing-main">
+      ¿Y si el problema nunca fue la democracia, sino cómo pensamos juntos?
+    </p>
+  </div>
+</section>
+
+<!-- EDUCACIÓN CÍVICA -->
+<section>
+  <h2>Educación cívica del siglo XXI</h2>
+
+  <div class="intro">
+    <p>
+      Aprender a pensar juntos no es automático.
+      Es una habilidad que se entrena.
+    </p>
+    <p>
+      Una mejor democracia requiere ciudadanos capaces de comprender, evaluar y deliberar.
+    </p>
   </div>
 
+  <div class="grid grid-3">
+
+    <div class="card">
+      <h3>🧠 Memoria y criterio</h3>
+      <p>Recordar, comparar y evaluar información en el tiempo.</p>
+    </div>
+
+    <div class="card">
+      <h3>📱 Conciencia del pensamiento</h3>
+      <p>Reconocer sesgos, emociones y procesos mentales.</p>
+    </div>
+
+    <div class="card">
+      <h3>🧩 Pensamiento abierto</h3>
+      <p>Escuchar, contrastar ideas y sostener desacuerdos.</p>
+    </div>
+
+  </div>
+
+  <div class="closing">
+    <p class="closing-label">+1 posibilidad:</p>
+    <p class="closing-main">
+      Una mejor democracia depende de ciudadanos que aprenden a pensar mejor.
+    </p>
+  </div>
 </section>
-  
-  <!-- COMUNIDAD -->
+
+<!-- COMUNIDAD -->
 <section id="comunidad" class="community">
 
   <h2>Ciudadanos del mundo</h2>
 
-  <!-- CONTEXTO / SIGNIFICADO -->
   <div class="community-intro">
     <p>
       Este no es un foro.
-      Es un espacio donde la inteligencia colectiva empieza a existir en tiempo real.
+      Es el inicio de una inteligencia colectiva en acción.
     </p>
   </div>
 
-  <!-- ACCIÓN PRINCIPAL -->
   <div class="community-form">
-
     <p class="community-label">+1 voz:</p>
 
     <input type="text" id="nombre" placeholder="Tu nombre" />
     <textarea id="mensaje" placeholder="Escribe una idea para la democracia..."></textarea>
 
     <button id="publicar">Publicar idea</button>
-
   </div>
 
-  <!-- PRUEBA SOCIAL -->
   <div id="muro" class="muro"></div>
 
-  <!-- ESTADO COLECTIVO -->
   <div class="community-meta">
     <h3 id="contador">0 ciudadanos</h3>
-    <p>Personas empezando a construir una nueva forma de pensamiento colectivo</p>
+    <p>Personas construyendo pensamiento colectivo</p>
   </div>
 
+</section>
 
 <!-- FOOTER -->
 <footer>
@@ -259,7 +236,7 @@
   <p>contact@logodemocracy.tech</p>
 </footer>
 
-</div> <!-- cierre content -->
+</div>
 
 <script src="script.js"></script>
 
