@@ -352,6 +352,25 @@ section h2::after {
 .card-ui p {
   margin-top: 5px;
 }
+
+/* Alineación tipográfica en card-ui */
+
+.card-ui h3 {
+  text-align: center;
+}
+
+.card-ui p {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+@media (max-width: 600px) {
+  .card-ui p {
+    text-align: left;
+  }
+}
+
+
 /* =====================
    CLOSING
 ===================== */
