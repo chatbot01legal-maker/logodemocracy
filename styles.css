@@ -245,10 +245,7 @@ section {
   padding: 60px 20px;
   max-width: 900px;
   margin: auto;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
 }
 
 section:not(:last-of-type) {
@@ -256,6 +253,10 @@ section:not(:last-of-type) {
   margin-bottom: 20px;
   padding-bottom: 40px;
 }
+
+/* =====================
+   TÍTULO
+===================== */
 
 section h2 {
   font-size: 30px;
@@ -268,12 +269,62 @@ section h2::after {
   width: 40px;
   height: 3px;
   background: var(--accent);
-  margin-top: 10px;
+  margin: 10px auto 0;
   border-radius: 2px;
 }
 
+/* =====================
+   INTRO / CLOSING / ACTIONS
+===================== */
+
+section .intro,
+section .closing,
+section .section-actions {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* =====================
+   INTRO (bloque editorial)
+===================== */
+
+.intro {
+  background: linear-gradient(135deg, #1e293b, #111827);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* texto dentro de cards e grids debe leerse bien */
+.card p,
+.grid p {
+  text-align: left;
+}
+
+/* =====================
+   GRID
+===================== */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+  width: 100%;
+}
+
+.grid.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* =====================
+   BOTONES DE SECCIÓN
+===================== */
+
 .section-actions {
   display: flex;
+  justify-content: center;
   gap: 12px;
   margin-top: 25px;
   flex-wrap: wrap;
@@ -293,40 +344,7 @@ section h2::after {
 .action-btn:hover {
   border-color: var(--accent);
   transform: translateY(-2px);
-}
-/* =====================
-   INTRO
-===================== */
-
-.intro {
-  text-align: center;
-  max-width: 700px;
-.highlight-question {
-  font-weight: 600;
-  font-size: 18px;
-  margin-top: 10px;
-  opacity: 0.9;
-}
-  background: linear-gradient(135deg, #1e293b, #111827);
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-}
-
-/* =====================
-   GRID
-===================== */
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 40px;
-  width: 100%;
-}
-
-.grid.grid-3 {
-  grid-template-columns: repeat(3, 1fr);
+}grid-template-columns: repeat(3, 1fr);
 }
 
 /* =====================
