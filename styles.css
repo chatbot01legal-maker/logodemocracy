@@ -279,7 +279,12 @@ section h2::after {
 .intro {
   text-align: center;
   max-width: 700px;
-
+.highlight-question {
+  font-weight: 600;
+  font-size: 18px;
+  margin-top: 10px;
+  opacity: 0.9;
+}
   background: linear-gradient(135deg, #1e293b, #111827);
   padding: 20px;
   border-radius: 12px;
