@@ -706,3 +706,27 @@ html[data-bg="blue"] {
 html[data-bg="cyan"] {
   background: linear-gradient(180deg, #062c30, #0f172a);
 }
+
+/* =====================
+   MODOS COGNITIVOS (FILTRADO PERCEPTUAL)
+===================== */
+
+body {
+  transition: filter 0.8s ease;
+}
+
+html[data-bg="cyan"] body {
+  filter: contrast(1.1) saturate(1.25);
+}
+
+html[data-bg="green"] body {
+  filter: saturate(1.2) contrast(1.05);
+}
+
+html[data-bg="blue"] body {
+  filter: brightness(0.92) contrast(1.05);
+}
+
+html[data-bg="dark"] body {
+  filter: none;
+}
