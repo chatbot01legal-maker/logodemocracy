@@ -2,16 +2,21 @@
    BASE / RESET
 ===================== */
 
-html {
-  background: linear-gradient(
-    180deg,
-    #0f172a 0%,
-    #0f172a 20%,
-    #0a2e2a 40%,
-    #0a2540 60%,
-    #062c30 80%,
-    #0f172a 100%
-  );
+html[data-bg="dark"] {
+  background: linear-gradient(180deg, #0b1020, #000000);
+}
+
+html[data-bg="green"] {
+  background: linear-gradient(180deg, #0a2e2a, #050b08);
+}
+
+html[data-bg="blue"] {
+  background: linear-gradient(180deg, #0a2540, #050817);
+}
+
+html[data-bg="cyan"] {
+  background: linear-gradient(180deg, #062c30, #02070a);
+}
 
   background-attachment: fixed;
   transition: background 0.6s ease;
@@ -65,7 +70,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(15, 23, 42, 0.15);
   z-index: 0;
 }
 
