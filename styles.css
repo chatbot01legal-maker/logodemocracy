@@ -3,7 +3,18 @@
 ===================== */
 
 html {
-  background: #0f172a;
+  background: linear-gradient(
+    180deg,
+    #0f172a 0%,
+    #0f172a 20%,
+    #0a2e2a 40%,
+    #0a2540 60%,
+    #062c30 80%,
+    #0f172a 100%
+  );
+
+  background-attachment: fixed;
+  transition: background 0.6s ease;
 }
 
 html, body {
@@ -54,7 +65,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(15, 23, 42, 0.6);
   z-index: 0;
 }
 
