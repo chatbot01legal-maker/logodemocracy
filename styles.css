@@ -243,6 +243,11 @@ nav a:hover {
 
 section {
   padding: 60px 20px;
+}
+
+section:nth-of-type(even) {
+  padding: 100px 20px;
+}
   max-width: 900px;
   margin: auto;
   text-align: center;
@@ -252,6 +257,26 @@ section:not(:last-of-type) {
   border-bottom: 1px solid var(--border);
   margin-bottom: 20px;
   padding-bottom: 40px;
+}
+
+/* =====================
+   RITMO VISUAL
+===================== */
+
+/* Secciones importantes (hero conceptual) */
+section.hero,
+section#que-es {
+  padding: 120px 20px 100px;
+}
+
+/* Secciones normales */
+section {
+  padding: 80px 20px;
+}
+
+/* Secciones densas (más contenido) */
+section.grid-heavy {
+  padding: 60px 20px;
 }
 
 /* =====================
