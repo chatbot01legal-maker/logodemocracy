@@ -63,6 +63,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+const sections = document.querySelectorAll("section[data-bg]");
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const bg = entry.target.getAttribute("data-bg");
+      document.documentElement.setAttribute("data-bg", bg);
+    }
+  });
+}, {
+  threshold: 0.5
+});
+
+sections.forEach(section => observer.observe(section));
+   
   /* =====================
      CANVAS (NODOS)
   ===================== */
