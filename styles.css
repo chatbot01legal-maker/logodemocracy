@@ -707,26 +707,28 @@ html[data-bg="cyan"] {
   background: linear-gradient(180deg, #062c30, #0f172a);
 }
 
-/* =====================
-   MODOS COGNITIVOS (FILTRADO PERCEPTUAL)
-===================== */
-
-body {
-  transition: filter 0.8s ease;
+html {
+  transition: background 1s ease, filter 1s ease;
 }
 
-html[data-bg="cyan"] body {
-  filter: contrast(1.1) saturate(1.25);
+/* overlay de percepción por modo */
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.8s ease, background 0.8s ease;
 }
 
-html[data-bg="green"] body {
-  filter: saturate(1.2) contrast(1.05);
+html[data-bg="green"]::before {
+  background: radial-gradient(circle at top, rgba(34,197,94,0.12), transparent 60%);
 }
 
-html[data-bg="blue"] body {
-  filter: brightness(0.92) contrast(1.05);
+html[data-bg="blue"]::before {
+  background: radial-gradient(circle at top, rgba(59,130,246,0.12), transparent 60%);
 }
 
-html[data-bg="dark"] body {
-  filter: none;
+html[data-bg="cyan"]::before {
+  background: radial-gradient(circle at top, rgba(34,211,238,0.10), transparent 60%);
 }
