@@ -685,3 +685,19 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+html[data-bg="dark"] {
+  background: linear-gradient(180deg, #0f172a, #0f172a);
+}
+
+html[data-bg="green"] {
+  background: linear-gradient(180deg, #0a2e2a, #0f172a);
+}
+
+html[data-bg="blue"] {
+  background: linear-gradient(180deg, #0a2540, #0f172a);
+}
+
+html[data-bg="cyan"] {
+  background: linear-gradient(180deg, #062c30, #0f172a);
+}
