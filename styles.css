@@ -322,20 +322,11 @@ section h2::after {
   opacity: 0.9;
 }
 
-/* =====================
-   INTRO / CLOSING / ACTIONS
-===================== */
-
-
-
-/* =====================
-   INTRO (bloque editorial)
-===================== */
-
+/* INTRO */
 .intro {
-  margin-top: 25px;   /* 👈 ESTE es el espacio que te falta */
-}
   position: relative;
+
+  margin-top: 30px;
 
   background: linear-gradient(135deg, #1e293b, #020617);
   padding: 22px;
@@ -346,16 +337,16 @@ section h2::after {
   backdrop-filter: blur(6px);
 
   overflow: hidden;
+}
 
-   section .intro,
+/* centrado correcto del sistema */
+section .intro,
 section .closing,
 section .section-actions {
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
 }
-}
-
 /* Glow sutil consistente en TODAS */
 .intro::before {
   content: "";
@@ -613,6 +604,9 @@ section .section-actions {
   -webkit-text-fill-color: transparent;
 }
 
+section .closing {
+  text-align: center;
+}
 /* =====================
    COMUNIDAD
 ===================== */
