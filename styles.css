@@ -344,10 +344,9 @@ section .section-actions {
 .action-btn:hover {
   border-color: var(--accent);
   transform: translateY(-2px);
-}grid-template-columns: repeat(3, 1fr);
 }
 
-/* =====================
+
 /* =====================
    CARD
 ===================== */
@@ -524,4 +523,7 @@ footer {
 ===================== */
 
 @media (max-width: 900px) {
-  .grid.grid-3
+  .grid.grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
