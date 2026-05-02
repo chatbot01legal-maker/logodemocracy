@@ -304,38 +304,37 @@ section h2 {
   margin-left: auto;
   margin-right: auto;
 
-  font-size: 34px;
-  line-height: 1.2;
-  margin-bottom: 28px;
+  font-size: 40px;   /* antes 34px → más presencia cognitiva */
+  line-height: 1.15;
+
+  margin-bottom: 45px; /* 👈 ESTE es el espacio clave */
 }
 
 section h2::after {
   content: "";
   display: block;
-  width: 40px;
+  width: 50px;
   height: 3px;
   background: var(--accent);
-  margin: 6px auto 0; /* antes 10px */
+
+  margin: 12px auto 0;  /* 👈 antes 6px → ahora más separación visual */
   border-radius: 2px;
+  opacity: 0.9;
 }
 
 /* =====================
    INTRO / CLOSING / ACTIONS
 ===================== */
 
-section .intro,
-section .closing,
-section .section-actions {
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-}
+
 
 /* =====================
    INTRO (bloque editorial)
 ===================== */
 
 .intro {
+  margin-top: 25px;   /* 👈 ESTE es el espacio que te falta */
+}
   position: relative;
 
   background: linear-gradient(135deg, #1e293b, #020617);
@@ -347,6 +346,14 @@ section .section-actions {
   backdrop-filter: blur(6px);
 
   overflow: hidden;
+
+   section .intro,
+section .closing,
+section .section-actions {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
 }
 
 /* Glow sutil consistente en TODAS */
