@@ -290,16 +290,40 @@ section .section-actions {
 ===================== */
 
 .intro {
-  background: linear-gradient(135deg, #1e293b, #111827);
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
+  position: relative;
+
+  background: linear-gradient(135deg, #1e293b, #020617);
+  padding: 22px;
+  border-radius: 14px;
+
+  border: 1px solid rgba(255,255,255,0.06);
+
+  backdrop-filter: blur(6px);
+
+  overflow: hidden;
 }
 
-/* texto dentro de cards e grids debe leerse bien */
-.card p,
-.grid p {
-  text-align: left;
+/* Glow sutil consistente en TODAS */
+.intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(circle at top left, rgba(34,197,94,0.12), transparent 60%);
+  opacity: 0.6;
+}
+
+/* Línea superior elegante */
+.intro::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+
+  background: linear-gradient(90deg, transparent, #22c55e, transparent);
+  opacity: 0.6;
 }
 
 /* =====================
