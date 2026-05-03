@@ -16,15 +16,36 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =====================
-     SELECTOR IDIOMA (PREPARADO)
-  ===================== */
-  const langSelect = document.getElementById("lang-select");
+   SELECTOR IDIOMA (FUNCIONAL)
+===================== */
+const langSelect = document.getElementById("lang-select");
 
-  if (langSelect) {
-    langSelect.addEventListener("change", (e) => {
-      localStorage.setItem("lang", e.target.value);
-    });
+if (langSelect) {
+
+  // Setear idioma actual según URL
+  const path = window.location.pathname;
+
+  if (path.startsWith("/en")) {
+    langSelect.value = "en";
+  } else {
+    langSelect.value = "es";
   }
+
+  // Cambio de idioma con redirección
+  langSelect.addEventListener("change", (e) => {
+    const lang = e.target.value;
+
+    if (path.startsWith("/en")) {
+      if (lang === "es") {
+        window.location.href = "/";
+      }
+    } else {
+      if (lang === "en") {
+        window.location.href = "/en/";
+      }
+    }
+  });
+}
 
   /* =====================
      COMUNIDAD
