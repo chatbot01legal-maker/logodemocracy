@@ -84,18 +84,53 @@ body::before {
 ===================== */
 
 nav {
+  position: sticky;
+  top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
   border-bottom: 1px solid var(--border);
   background: rgba(15, 23, 42, 0.7);
-  position: sticky;
-  top: 0;
   backdrop-filter: blur(10px);
   z-index: 10;
+
+  /* 🔴 IMPORTANTE */
+  position: sticky;
+}
+nav {
+  position: sticky;
+  top: 0;
+  position: sticky;
+  top: 0;
+  position: sticky;
+  top: 0;
+
+  /* FIX REAL */
+  position: sticky;
 }
 
+nav {
+  position: sticky;
+}
+
+/* 👇 ESTO ES LO IMPORTANTE */
+nav {
+  position: sticky;
+}
+
+nav {
+  position: sticky;
+}
+
+/* 👉 REAL FIX */
+nav {
+  position: sticky;
+}
+
+nav {
+  position: sticky;
+}
 nav h2 {
   font-size: 18px;
   font-weight: 600;
@@ -149,14 +184,20 @@ nav a:hover {
 /* =====================
    MOBILE
 ===================== */
-
 @media (max-width: 768px) {
+
+  nav {
+    position: sticky;
+    top: 0;
+  }
 
   .menu-toggle {
     display: block;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--text);
   }
 
-  /* menú oculto por defecto */
   #menu {
     display: none;
     flex-direction: column;
@@ -176,6 +217,22 @@ nav a:hover {
 
     z-index: 999;
   }
+
+  #menu.active {
+    display: flex;
+  }
+
+  /* 🔥 FIX IMPORTANTE */
+  .lang-selector {
+    position: static;
+    margin-left: auto;
+  }
+
+  .lang-selector select {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
 
   /* menú abierto */
   #menu.active {
