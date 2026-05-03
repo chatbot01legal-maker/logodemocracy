@@ -36,73 +36,7 @@
     </select>
   </div>
 </nav>
-/* =====================
-   MOBILE NAV FIX
-===================== */
 
-.menu-toggle {
-  display: none;
-  font-size: 28px;
-  cursor: pointer;
-  color: var(--text);
-}
-
-/* desktop */
-#menu {
-  display: flex;
-  gap: 25px;
-  list-style: none;
-}
-
-/* =====================
-   MOBILE
-===================== */
-
-@media (max-width: 768px) {
-
-  .menu-toggle {
-    display: block;
-  }
-
-  /* menú oculto por defecto */
-  #menu {
-    display: none;
-    flex-direction: column;
-
-    position: absolute;
-    top: 70px;
-    right: 20px;
-
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(10px);
-
-    padding: 20px;
-    border-radius: 12px;
-
-    border: 1px solid var(--border);
-    width: 220px;
-
-    z-index: 999;
-  }
-
-  /* menú abierto */
-  #menu.active {
-    display: flex;
-  }
-
-  /* idioma dentro del menú */
-  .lang-selector {
-    position: absolute;
-    top: 18px;
-    right: 60px;
-  }
-
-  /* opcional: mejorar tamaño selector */
-  .lang-selector select {
-    font-size: 12px;
-    padding: 6px 10px;
-  }
-}
 <!-- HERO -->
 <section class="hero" data-bg="dark">
   <h1>Expandir quién puede pensar y construir</h1>
