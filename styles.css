@@ -228,10 +228,16 @@ nav a:hover {
     margin-left: auto;
   }
 
+  @media (max-width: 768px) {
+
   .lang-selector select {
-    font-size: 12px;
-    padding: 6px 10px;
+    font-size: 11px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    width: auto;
+    max-width: 90px;
   }
+
 }
 
   /* menú abierto */
