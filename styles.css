@@ -163,19 +163,6 @@ nav a:hover {
 
 .menu-toggle {
   display: none;
-}
-
-/* =====================
-   MOBILE NAV FIX
-===================== */
-
-.menu-toggle {
-/* =====================
-   MENU TOGGLE (HAMBURGUESA)
-===================== */
-
-.menu-toggle {
-  display: none;
   font-size: 28px;
   cursor: pointer;
   color: var(--text);
@@ -584,10 +571,15 @@ section .section-actions {
 }
 
 .card {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, #1e293b, #020617);
+  padding: 25px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.05);
+  backdrop-filter: blur(8px);
   transform-origin: center;
-}
-  border-color: var(--accent);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
 }
 
 .card h3 {
