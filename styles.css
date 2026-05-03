@@ -169,13 +169,21 @@ nav a:hover {
 ===================== */
 
 .menu-toggle {
+/* =====================
+   MENU TOGGLE (HAMBURGUESA)
+===================== */
+
+.menu-toggle {
   display: none;
   font-size: 28px;
   cursor: pointer;
   color: var(--text);
 }
 
-/* desktop */
+/* =====================
+   MENU DESKTOP
+===================== */
+
 #menu {
   display: flex;
   gap: 25px;
@@ -183,18 +191,31 @@ nav a:hover {
 }
 
 /* =====================
+   LANG SELECTOR (DESKTOP)
+===================== */
+
+.lang-selector select {
+  background: var(--bg-secondary);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* =====================
    MOBILE
 ===================== */
-@media (max-width: 768px) {
+
 @media (max-width: 768px) {
 
+  /* hamburguesa visible */
   .menu-toggle {
     display: block;
-    font-size: 28px;
-    cursor: pointer;
-    color: var(--text);
   }
 
+  /* menú desplegable */
   #menu {
     display: none;
     flex-direction: column;
@@ -219,69 +240,18 @@ nav a:hover {
     display: flex;
   }
 
-  /* 🔥 FIX REAL DEL SELECTOR */
+  /* FIX CLAVE: idioma no se superpone */
   .lang-selector {
     display: flex;
     align-items: center;
+    margin-left: auto;
   }
 
   .lang-selector select {
     font-size: 11px;
     padding: 4px 8px;
-    border-radius: 6px;
-    max-width: 80px;
-  }
-}
-
-  /* 🔥 FIX IMPORTANTE */
-  .lang-selector {
-    position: static;
-    margin-left: auto;
-  }
-
-  @media (max-width: 768px) {
-
-  .lang-selector select {
-    font-size: 11px;
-    padding: 4px 6px;
-    border-radius: 6px;
-    width: auto;
     max-width: 90px;
   }
-
-}
-
-  /* menú abierto */
-  #menu.active {
-    display: flex;
-  }
-
-  /* idioma dentro del menú */
-  .lang-selector {
-    position: absolute;
-    top: 18px;
-    right: 60px;
-  }
-
-  /* opcional: mejorar tamaño selector */
-  .lang-selector select {
-    font-size: 12px;
-    padding: 6px 10px;
-  }
-}
-
-/* =====================
-   LANG SELECTOR
-===================== */
-
-.lang-selector select {
-  background: var(--bg-secondary);
-  color: var(--text);
-  border: 1px solid var(--border);
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  cursor: pointer;
 }
 
 /* =====================
