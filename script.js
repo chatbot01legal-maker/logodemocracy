@@ -61,50 +61,54 @@ const cy = cytoscape({
 
   elements: [...nodesData, ...edgesData],
 
-  
-{
-  selector: ".focused",
-  style: {
-    "background-color": "#facc15",
-    "border-width": 3,
-    "border-color": "#ffffff",
-    "opacity": 1,
-    "z-index": 9999
-  }
-},
-{
-  selector: ".nearby",
-  style: {
-    "background-color": "#22c55e",
-    "opacity": 0.7
-  }
-}
-  {
-    selector: "node:selected",
-    style: {
-      "border-width": 3,
-      "border-color": "#ffffff"
+  style: [
+    {
+      selector: ".focused",
+      style: {
+        "background-color": "#facc15",
+        "border-width": 3,
+        "border-color": "#ffffff",
+        "opacity": 1,
+        "z-index": 9999
+      }
+    },
+    {
+      selector: ".nearby",
+      style: {
+        "background-color": "#22c55e",
+        "opacity": 0.7
+      }
+    },
+    {
+      selector: "node:selected",
+      style: {
+        "border-width": 3,
+        "border-color": "#ffffff"
+      }
+    },
+    {
+      selector: "edge",
+      style: {
+        width: 2,
+        "line-color": "#888"
+      }
+    },
+    {
+      selector: ".faded",
+      style: {
+        opacity: 0.1
+      }
     }
-  },
-  {
-    selector: "edge",
-    style: {
-      width: 2,
-      "line-color": "#888"
-    }
-  },
-  {
-    selector: ".faded",
-    style: {
-      opacity: 0.1
-    }
-  }
-],
+  ],
+
   layout: {
     name: "cose",
     animate: true
   }
 });
+
+  cy.nodes().first().addClass("focused");
+
 cy.ready(() => {
   cy.fit();
   cy.center();
