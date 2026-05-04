@@ -101,6 +101,10 @@ style: [
     animate: true
   }
 });
+cy.ready(() => {
+  cy.fit();
+  cy.center();
+});
 
 
 // 🧠 INTERACCIÓN COGNITIVA
