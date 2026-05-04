@@ -64,43 +64,50 @@ const cy = cytoscape({
   elements: [...nodesData, ...edgesData],
 
   style: [
-    {
-      selector: ".focused",
-      style: {
-        "background-color": "#facc15",
-        "border-width": 3,
-        "border-color": "#ffffff",
-        "opacity": 1
-      }
-    },
-    {
-      selector: ".nearby",
-      style: {
-        "background-color": "#22c55e",
-        "opacity": 0.7
-      }
-    },
-    {
-      selector: "node:selected",
-      style: {
-        "border-width": 3,
-        "border-color": "#ffffff"
-      }
-    },
-    {
-      selector: "edge",
-      style: {
-        width: 2,
-        "line-color": "#888"
-      }
-    },
-    {
-      selector: ".faded",
-      style: {
-        opacity: 0.1
-      }
+  {
+    selector: "node",
+    style: {
+      "background-color": "#22c55e",
+      "width": 40,
+      "height": 40,
+      "label": "data(label)",
+      "color": "#fff",
+      "text-valign": "center",
+      "text-halign": "center"
     }
-  ],
+  },
+  {
+    selector: ".focused",
+    style: {
+      "background-color": "#facc15",
+      "width": 70,
+      "height": 70,
+      "border-width": 3,
+      "border-color": "#ffffff",
+      "opacity": 1
+    }
+  },
+  {
+    selector: ".nearby",
+    style: {
+      "background-color": "#38bdf8",
+      "opacity": 0.9
+    }
+  },
+  {
+    selector: ".faded",
+    style: {
+      "opacity": 0.15
+    }
+  },
+  {
+    selector: "edge",
+    style: {
+      "width": 2,
+      "line-color": "#888"
+    }
+  }
+]
 
   layout: {
     name: "cose",
