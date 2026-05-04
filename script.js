@@ -130,20 +130,3 @@ cy.on("tap", "node", function(evt) {
   });
 });
 
-{
-  selector: "node",
-  style: {
-    "background-color": "#22c55e",
-    label: "data(label)",
-    color: "#fff",
-    "text-valign": "center",
-    "text-halign": "center",
-    "font-size": 11,
-    width: "mapData(level, 1, 5, 40, 80)",
-    height: "mapData(level, 1, 5, 40, 80)",
-    "text-wrap": "wrap",
-    "text-max-width": 80
-  }
-},
-
-
