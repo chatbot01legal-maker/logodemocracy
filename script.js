@@ -1,3 +1,9 @@
+let brainState = {
+  focusNode: null,
+  attentionRadius: 1,
+  mode: "explore" // explore | reflect | expand
+};
+
 const nodesData = [
   {
     data: {
