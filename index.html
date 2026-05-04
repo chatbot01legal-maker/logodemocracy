@@ -14,7 +14,11 @@
       background: #020617;
       color: white;
     }
+<div style="position:fixed; top:10px; left:10px; z-index:9999; color:red;">
+  TEST: HTML OK
+</div>
 
+    <div id="cy" style="position:fixed; top:0; left:0; width:100%; height:100vh; border:3px solid red;"></div>
     /* 🌌 CANVAS FONDO */
     #bg-canvas {
       position: fixed;
@@ -25,7 +29,16 @@
       z-index: 0;
       pointer-events: none; /* 🔥 clave */
     }
-
+<div style="
+  position: fixed;
+  top: 100px;
+  left: 100px;
+  width: 20px;
+  height: 20px;
+  background: lime;
+  border-radius: 50%;
+  z-index: 9999;
+"></div>
     /* 🧠 GRAFO */
     #cy {
       position: fixed;
