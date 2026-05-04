@@ -9,10 +9,20 @@ const cy = cytoscape({
   container: document.getElementById("cy"),
 
   elements: [
-    { data: { id: "a", label: "Nodo A" } },
-    { data: { id: "b", label: "Nodo B" } },
-    { data: { source: "a", target: "b" } }
-  ],
+  // NODOS PRINCIPALES
+  { data: { id: "home", label: "Logodemocracy", content: "Sistema de inteligencia colectiva" } },
+
+  { data: { id: "problema", label: "El problema", content: "La democracia no coordina bien el pensamiento colectivo" } },
+  { data: { id: "educacion", label: "Educación cívica", content: "Cómo aprendemos a pensar juntos" } },
+  { data: { id: "pensamiento", label: "Pensamiento colectivo", content: "Cómo se coordina la inteligencia social" } },
+  { data: { id: "modelo", label: "Modelo", content: "Cómo se organiza la toma de decisiones" } },
+
+  // CONEXIONES
+  { data: { source: "home", target: "problema" } },
+  { data: { source: "home", target: "educacion" } },
+  { data: { source: "home", target: "pensamiento" } },
+  { data: { source: "home", target: "modelo" } }
+]
 
   style: [
     {
