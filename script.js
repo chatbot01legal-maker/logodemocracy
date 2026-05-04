@@ -1,168 +1,122 @@
-/* =====================
-   MENÚ + INIT
-===================== */
-document.addEventListener("DOMContentLoaded", () => {
-
-  /* =====================
-     MENÚ MOBILE
-  ===================== */
-  const menuToggle = document.getElementById("menu-toggle");
-  const menu = document.getElementById("menu");
-
-  if (menuToggle && menu) {
-    menuToggle.addEventListener("click", () => {
-      menu.classList.toggle("active");
-    });
+const nodesData = [
+  {
+    data: {
+      id: "problema",
+      label: "No sabemos pensar juntos",
+      content: "La humanidad no ha diseñado sistemas para pensar colectivamente con calidad.",
+      level: 1
+    }
+  },
+  {
+    data: {
+      id: "coordinacion",
+      label: "Falta coordinación cognitiva",
+      content: "No fallamos por inteligencia individual, sino por cómo pensamos como sistema.",
+      level: 2
+    }
+  },
+  {
+    data: {
+      id: "memoria",
+      label: "Memoria colectiva",
+      content: "Una sociedad inteligente recuerda cómo pensó y qué aprendió.",
+      level: 3
+    }
+  },
+  {
+    data: {
+      id: "logodemocracia",
+      label: "Logodemocracia",
+      content: "Sistema para organizar el pensamiento colectivo y mejorar decisiones.",
+      level: 4
+    }
+  },
+  {
+    data: {
+      id: "votacion",
+      label: "Votación cuadrática",
+      content: "Permite expresar intensidad de preferencias.",
+      level: 5
+    }
   }
+];
 
-  /* =====================
-   SELECTOR IDIOMA (FUNCIONAL)
-===================== */
-const langSelect = document.getElementById("lang-select");
+const edgesData = [
+  { data: { source: "problema", target: "coordinacion" } },
+  { data: { source: "coordinacion", target: "memoria" } },
+  { data: { source: "memoria", target: "logodemocracia" } },
+  { data: { source: "logodemocracia", target: "votacion" } }
+];
 
-if (langSelect) {
+const cy = cytoscape({
+  container: document.getElementById("cy"),
 
-  // Setear idioma actual según URL
-  const path = window.location.pathname;
+  elements: [...nodesData, ...edgesData],
 
-  if (path.startsWith("/en")) {
-    langSelect.value = "en";
-  } else {
-    langSelect.value = "es";
-  }
-
-  // Cambio de idioma con redirección
-  langSelect.addEventListener("change", (e) => {
-    const lang = e.target.value;
-
-    if (path.startsWith("/en")) {
-      if (lang === "es") {
-        window.location.href = "/";
+  style: [
+    {
+      selector: "node",
+      style: {
+        "background-color": "#22c55e",
+        label: "data(label)",
+        color: "#fff",
+        "text-valign": "center",
+        "text-halign": "center",
+        "font-size": 10,
+        width: 50,
+        height: 50
       }
-    } else {
-      if (lang === "en") {
-        window.location.href = "/en/";
+    },
+    {
+      selector: "edge",
+      style: {
+        width: 2,
+        "line-color": "#888"
+      }
+    },
+    {
+      selector: ".faded",
+      style: {
+        opacity: 0.1
       }
     }
-  });
-}
+  ],
 
-  /* =====================
-     COMUNIDAD
-  ===================== */
-  const boton = document.getElementById("publicar");
-  const muro = document.getElementById("muro");
-  const contadorDOM = document.getElementById("contador");
-
-  let total = 0;
-
-  if (boton) {
-    boton.addEventListener("click", () => {
-      const nombre = document.getElementById("nombre").value.trim();
-      const mensaje = document.getElementById("mensaje").value.trim();
-
-      if (!nombre || !mensaje) return;
-
-      const post = document.createElement("div");
-      post.classList.add("post");
-
-      post.innerHTML = `
-        <strong>${nombre}</strong>
-        <p>${mensaje}</p>
-      `;
-
-      muro.prepend(post);
-
-      total++;
-
-      if (contadorDOM) {
-        contadorDOM.textContent = total + " ciudadanos";
-      }
-
-      document.getElementById("nombre").value = "";
-      document.getElementById("mensaje").value = "";
-    });
+  layout: {
+    name: "cose",
+    animate: true
   }
-
-const sections = document.querySelectorAll("section[data-bg]");
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const bg = entry.target.getAttribute("data-bg");
-      document.documentElement.setAttribute("data-bg", bg);
-    }
-  });
-}, {
-  threshold: 0.5
 });
 
-sections.forEach(section => observer.observe(section));
-   
-  /* =====================
-     CANVAS (NODOS)
-  ===================== */
-  const canvas = document.getElementById("bg-canvas");
-  if (!canvas) return;
 
-  const ctx = canvas.getContext("2d");
+// 🧠 INTERACCIÓN COGNITIVA
 
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
+cy.on("tap", "node", function(evt) {
+  const node = evt.target;
+  const level = node.data("level");
 
-  window.addEventListener("resize", resize);
-  resize();
+  // Panel
+  document.getElementById("title").innerText = node.data("label");
+  document.getElementById("content").innerText = node.data("content");
 
-  let nodes = [];
+  // Enfoque ZDP
+  cy.nodes().addClass("faded");
 
-  for (let i = 0; i < 60; i++) {
-    nodes.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5
-    });
-  }
+  node.removeClass("faded");
+  node.neighborhood().removeClass("faded");
 
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const dx = nodes[i].x - nodes[j].x;
-        const dy = nodes[i].y - nodes[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < 120) {
-          const opacity = 1 - (dist / 120);
-          ctx.strokeStyle = `rgba(34,197,94,${opacity * 0.85})`;
-          ctx.lineWidth = 1.4;
-          ctx.beginPath();
-          ctx.moveTo(nodes[i].x, nodes[i].y);
-          ctx.lineTo(nodes[j].x, nodes[j].y);
-          ctx.stroke();
-        }
-      }
+  // Mostrar solo nodos cercanos en nivel cognitivo
+  cy.nodes().forEach(n => {
+    if (Math.abs(n.data("level") - level) > 1) {
+      n.addClass("faded");
     }
+  });
 
-    nodes.forEach(n => {
-      ctx.fillStyle = "rgba(34,197,94,0.8)";
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, 3.2, 0, Math.PI * 2);
-      ctx.fill();
-
-      n.x += n.vx;
-      n.y += n.vy;
-
-      if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
-      if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
-    });
-
-    requestAnimationFrame(draw);
-  }
-
-  draw();
-
+  // Animar al centro
+  cy.animate({
+    center: { eles: node },
+    zoom: 1.2
+  }, {
+    duration: 500
+  });
 });
