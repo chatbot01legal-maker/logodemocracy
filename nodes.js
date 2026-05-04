@@ -1,3 +1,6 @@
+console.log("🔥 nodes.js cargado");
+alert("nodes.js OK");
+
 const nodesData = [
   {
     id: "pregunta",
