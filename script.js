@@ -109,7 +109,7 @@ cy.on("tap", "node", function(evt) {
   const node = evt.target;
   const level = node.data("level");
 
-  // 🧠 actualizar estado cognitivo
+  // 🧠 estado del sistema
   brainState.focusNode = node;
   brainState.visited.add(node.id());
 
@@ -117,24 +117,26 @@ cy.on("tap", "node", function(evt) {
   document.getElementById("title").innerText = node.data("label");
   document.getElementById("content").innerText = node.data("content");
 
-  // 🧹 limpiar todo
+  // 🧹 reset visual
   cy.elements().removeClass("faded focused nearby");
 
   node.addClass("focused");
 
   cy.nodes().forEach(n => {
-
     const distance = Math.abs(n.data("level") - level);
     const wasVisited = brainState.visited.has(n.id());
 
     if (n.id() === node.id()) return;
 
-    // 🧠 lógica unificada (nivel + memoria)
     if (distance === 0) {
       n.addClass("focused");
     }
 
-    else if (wasVisited || distance === 1) {
+    else if (wasVisited) {
+      n.addClass("nearby");
+    }
+
+    else if (distance === 1) {
       n.addClass("nearby");
     }
 
@@ -143,7 +145,7 @@ cy.on("tap", "node", function(evt) {
     }
   });
 
-  // 🎯 enfoque
+  // 🎯 cámara cognitiva
   cy.animate({
     center: { eles: node },
     zoom: 1.4
