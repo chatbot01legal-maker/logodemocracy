@@ -4,8 +4,38 @@ let brainState = {
   focusNode: null,
   visited: new Set()
 };
-const cy = cytoscape({
-  container: document.getElementById("cy"),
+cy.on("tap", "node", (evt) => {
+  const node = evt.target;
+
+  // 🧠 estado cognitivo
+  brainState.focusNode = node;
+  brainState.visited.add(node.id());
+
+  // limpiar estados visuales
+  cy.elements().removeClass("focused nearby faded");
+
+  // nodo activo
+  node.addClass("focused");
+
+  // propagación simple (vecinos = “pensamiento cercano”)
+  cy.nodes().forEach(n => {
+    if (n.id() === node.id()) return;
+
+    const isNeighbor = node.neighborhood().nodes().contains(n);
+
+    if (isNeighbor) {
+      n.addClass("nearby");
+    } else {
+      n.addClass("faded");
+    }
+  });
+
+  // “movimiento del foco mental”
+  cy.animate({
+    center: { eles: node },
+    zoom: 1.5
+  }, { duration: 400 });
+});
 
   elements: [
     { data: { id: "a", label: "Nodo A" } },
