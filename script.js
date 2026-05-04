@@ -1,5 +1,5 @@
-console.log("SCRIPT CARGADO ✔");
-console.log("NODOS:", nodesData.length);
+console.log("🔥 SCRIPT CARGADO Y EJECUTANDO");
+alert("SCRIPT OK");
 
 let brainState = {
   focusNode: null,
