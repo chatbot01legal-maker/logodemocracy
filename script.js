@@ -5,7 +5,7 @@ alert("SCRIPT OK");
 let brainState = {
   focusNode: null,
   visited: new Set(),
-  mode: "explore"
+  
 };
 
 const nodesData = [
