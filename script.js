@@ -117,22 +117,23 @@ const cy = cytoscape({
 
 /* ✅ FIX CRÍTICO: mover esto al ready */
 cy.ready(() => {
+  cy.resize();
   cy.fit();
   cy.center();
-
-  cy.nodes().first().addClass("focused"); // 👈 AQUÍ ESTABA EL ERROR DE “NO PASA NADA”
+  cy.nodes().first().addClass("focused");
 });
 
+window.addEventListener("load", () => {
+  cy.resize();
+  cy.fit();
+});
 
 // 🧠 INTERACCIÓN COGNITIVA
 cy.on("tap", "node", function(evt) {
   const node = evt.target;
   const level = node.data("level");
 
-  window.addEventListener("load", () => {
-  cy.resize();
-  cy.fit();
-});
+  
   
   brainState.focusNode = node;
   brainState.visited.add(node.id());
