@@ -40,8 +40,7 @@ const cy = cytoscape({
     {
       selector: ".nearby",
       style: {
-        "background-color": "#38bdf8",
-        "opacity": 0.9
+        "background-color": "#38bdf8"
       }
     },
     {
@@ -55,7 +54,7 @@ const cy = cytoscape({
   layout: { name: "grid" }
 });
 
-// 🧠 INTERACCIÓN COGNITIVA (UNA SOLA VEZ, NO DUPLICADA)
+// 🧠 SOLO UNA INTERACCIÓN
 cy.on("tap", "node", (evt) => {
   const node = evt.target;
 
