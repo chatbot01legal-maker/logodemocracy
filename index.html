@@ -11,7 +11,6 @@
       margin: 0;
       overflow: hidden;
       background: #020617;
-      color: white;
     }
 
     #cy {
@@ -20,55 +19,17 @@
       left: 0;
       width: 100%;
       height: 100vh;
-      z-index: 1;
-    }
-
-    #panel {
-      position: fixed;
-      right: 0;
-      top: 0;
-      width: 300px;
-      height: 100%;
-      background: rgba(17, 24, 39, 0.85);
-      padding: 20px;
-      z-index: 2;
-    }
-
-    #bg-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
     }
   </style>
 </head>
 
 <body>
 
-<canvas id="bg-canvas"></canvas>
-
 <div id="cy"></div>
 
-<div id="panel">
-  <h2 id="title">Selecciona un nodo</h2>
-  <p id="content"></p>
-</div>
-
 <script>
-<script>
-const cy = cytoscape({ ... });
-</script>
-
-<!-- 👇 AQUÍ -->
-<script>
-cy.on("tap", "node", (evt) => {
-  const node = evt.target;
-  alert("Click en: " + node.data("label"));
-});
-</script>
+const cy = cytoscape({
+  container: document.getElementById("cy"),
 
   elements: [
     { data: { id: "a", label: "Nodo prueba" } },
@@ -93,9 +54,17 @@ cy.on("tap", "node", (evt) => {
     }
   ],
 
-  layout: { name: "grid" }
+  layout: {
+    name: "grid"
+  }
+});
+
+// interaccion mínima
+cy.on("tap", "node", (evt) => {
+  const node = evt.target;
+  alert("Click en: " + node.data("label"));
 });
 </script>
 
 </body>
-</html>
+</html>lo
