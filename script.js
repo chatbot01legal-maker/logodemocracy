@@ -1,5 +1,9 @@
 console.log("🔥 SCRIPT CARGADO");
 
+let brainState = {
+  focusNode: null,
+  visited: new Set()
+};
 const cy = cytoscape({
   container: document.getElementById("cy"),
 
