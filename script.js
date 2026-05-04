@@ -62,22 +62,23 @@ const cy = cytoscape({
   elements: [...nodesData, ...edgesData],
 
   
-style: [
-  {
-    selector: "node",
-    style: {
-      "background-color": "#22c55e",
-      label: "data(label)",
-      color: "#fff",
-      "text-valign": "center",
-      "text-halign": "center",
-      "font-size": 11,
-      width: "mapData(level, 1, 5, 40, 80)",
-      height: "mapData(level, 1, 5, 40, 80)",
-      "text-wrap": "wrap",
-      "text-max-width": 80
-    }
-  },
+{
+  selector: ".focused",
+  style: {
+    "background-color": "#facc15",
+    "border-width": 3,
+    "border-color": "#ffffff",
+    "opacity": 1,
+    "z-index": 9999
+  }
+},
+{
+  selector: ".nearby",
+  style: {
+    "background-color": "#22c55e",
+    "opacity": 0.7
+  }
+}
   {
     selector: "node:selected",
     style: {
@@ -141,6 +142,12 @@ cy.on("tap", "node", function(evt) {
     }
   });
 
+  cy.layout({
+  name: "cose",
+  animate: true,
+  fit: false
+}).run();
+  
   cy.animate({
     center: { eles: node },
     zoom: 1.4
