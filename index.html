@@ -9,32 +9,74 @@
   <style>
     body {
       margin: 0;
+      overflow: hidden;
       font-family: Arial;
-      background: #0f172a;
+      background: #020617;
       color: white;
     }
 
-    #cy {
+    /* 🌌 CANVAS FONDO */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: 100vh;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none; /* 🔥 clave */
     }
 
+    /* 🧠 GRAFO */
+    #cy {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* 📄 PANEL */
     #panel {
-      position: absolute;
+      position: fixed;
       right: 0;
       top: 0;
       width: 300px;
       height: 100%;
-      background: #111827;
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(10px);
       padding: 20px;
       overflow-y: auto;
-      border-left: 1px solid #333;
+      border-left: 1px solid rgba(255,255,255,0.1);
+      z-index: 2;
     }
 
     h2 {
       margin-top: 0;
     }
   </style>
+</head>
+
+<body>
+
+<!-- 🌌 FONDO -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- 🧠 GRAFO -->
+<div id="cy"></div>
+
+<!-- 📄 PANEL -->
+<div id="panel">
+  <h2 id="title">Selecciona un nodo</h2>
+  <p id="content"></p>
+</div>
+
+<!-- JS -->
+<script src="app.js"></script>
+<script src="bg.js"></script> <!-- 👈 NUEVO -->
+
+</body>
+</html>  </style>
 </head>
 
 <body>
