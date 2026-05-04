@@ -145,10 +145,5 @@ cy.on("tap", "node", function(evt) {
     "text-max-width": 80
   }
 },
-{
-  selector: "node:selected",
-  style: {
-    "border-width": 3,
-    "border-color": "#ffffff"
-  }
-}
+
+
