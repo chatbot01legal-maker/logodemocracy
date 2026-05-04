@@ -35,5 +35,33 @@ const cy = cytoscape({
 
 cy.on("tap", "node", (evt) => {
   const node = evt.target;
-  alert("Click en: " + node.data("label"));
+
+  // guardar estado cognitivo
+  brainState.focusNode = node;
+  brainState.visited.add(node.id());
+
+  // limpiar estilos dinámicos
+  cy.elements().removeClass("faded focused nearby");
+
+  // nodo activo
+  node.addClass("focused");
+
+  // propagación cognitiva (vecinos)
+  cy.nodes().forEach(n => {
+    if (n.id() === node.id()) return;
+
+    const connected = node.neighborhood().nodes().contains(n);
+
+    if (connected) {
+      n.addClass("nearby");
+    } else {
+      n.addClass("faded");
+    }
+  });
+
+  // movimiento del “pensamiento”
+  cy.animate({
+    center: { eles: node },
+    zoom: 1.6
+  }, { duration: 400 });
 });
