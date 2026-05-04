@@ -1,9 +1,8 @@
 let brainState = {
   focusNode: null,
-  attentionRadius: 1,
-  mode: "explore" // explore | reflect | expand
+  visited: new Set(),
+  mode: "explore"
 };
-
 const nodesData = [
   {
     data: {
