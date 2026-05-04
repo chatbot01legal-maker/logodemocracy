@@ -1,3 +1,5 @@
+document.body.style.background = "red";
+
 console.log("🔥 nodes.js cargado");
 alert("nodes.js OK");
 
