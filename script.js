@@ -1,3 +1,4 @@
+document.body.style.background = "red";
 console.log("🔥 SCRIPT CARGADO Y EJECUTANDO");
 alert("SCRIPT OK");
 
