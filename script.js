@@ -109,35 +109,47 @@ cy.on("tap", "node", function(evt) {
   const node = evt.target;
   const level = node.data("level");
 
-  // Panel
+  // 🧠 actualizar estado cognitivo
+  brainState.focusNode = node;
+  brainState.visited.add(node.id());
+
+  // 📄 panel
   document.getElementById("title").innerText = node.data("label");
   document.getElementById("content").innerText = node.data("content");
 
-  // Enfoque ZDP
-  cy.nodes().addClass("faded");
+  // 🧹 limpiar todo
+  cy.elements().removeClass("faded focused nearby");
 
-  node.removeClass("faded");
-  node.neighborhood().removeClass("faded");
+  node.addClass("focused");
 
-  // Mostrar solo nodos cercanos en nivel cognitivo
   cy.nodes().forEach(n => {
-    if (Math.abs(n.data("level") - level) > 1) {
+
+    const distance = Math.abs(n.data("level") - level);
+    const wasVisited = brainState.visited.has(n.id());
+
+    if (n.id() === node.id()) return;
+
+    // 🧠 lógica unificada (nivel + memoria)
+    if (distance === 0) {
+      n.addClass("focused");
+    }
+
+    else if (wasVisited || distance === 1) {
+      n.addClass("nearby");
+    }
+
+    else {
       n.addClass("faded");
     }
   });
 
-  // Animar al centro
+  // 🎯 enfoque
   cy.animate({
     center: { eles: node },
-    zoom: 1.2
-  }, {
-    duration: 500
-  });
+    zoom: 1.4
+  }, { duration: 500 });
 });
 
-cy.on("tap", "node", function(evt) {
-  const node = evt.target;
-  const level = node.data("level");
 
   // 🧠 estado
   brainState.focusNode = node;
