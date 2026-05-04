@@ -53,35 +53,44 @@ const cy = cytoscape({
 
   elements: [...nodesData, ...edgesData],
 
-  style: [
-    {
-      selector: "node",
-      style: {
-        "background-color": "#22c55e",
-        label: "data(label)",
-        color: "#fff",
-        "text-valign": "center",
-        "text-halign": "center",
-        "font-size": 10,
-        width: 50,
-        height: 50
-      }
-    },
-    {
-      selector: "edge",
-      style: {
-        width: 2,
-        "line-color": "#888"
-      }
-    },
-    {
-      selector: ".faded",
-      style: {
-        opacity: 0.1
-      }
+  
+style: [
+  {
+    selector: "node",
+    style: {
+      "background-color": "#22c55e",
+      label: "data(label)",
+      color: "#fff",
+      "text-valign": "center",
+      "text-halign": "center",
+      "font-size": 11,
+      width: "mapData(level, 1, 5, 40, 80)",
+      height: "mapData(level, 1, 5, 40, 80)",
+      "text-wrap": "wrap",
+      "text-max-width": 80
     }
-  ],
-
+  },
+  {
+    selector: "node:selected",
+    style: {
+      "border-width": 3,
+      "border-color": "#ffffff"
+    }
+  },
+  {
+    selector: "edge",
+    style: {
+      width: 2,
+      "line-color": "#888"
+    }
+  },
+  {
+    selector: ".faded",
+    style: {
+      opacity: 0.1
+    }
+  }
+],
   layout: {
     name: "cose",
     animate: true
