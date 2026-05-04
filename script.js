@@ -1,3 +1,6 @@
+console.log("SCRIPT CARGADO ✔");
+console.log("NODOS:", nodesData.length);
+
 let brainState = {
   focusNode: null,
   visited: new Set(),
