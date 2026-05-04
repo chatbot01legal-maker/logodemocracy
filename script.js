@@ -109,15 +109,12 @@ cy.on("tap", "node", function(evt) {
   const node = evt.target;
   const level = node.data("level");
 
-  // 🧠 estado del sistema
   brainState.focusNode = node;
   brainState.visited.add(node.id());
 
-  // 📄 panel
   document.getElementById("title").innerText = node.data("label");
   document.getElementById("content").innerText = node.data("content");
 
-  // 🧹 reset visual
   cy.elements().removeClass("faded focused nearby");
 
   node.addClass("focused");
@@ -130,65 +127,9 @@ cy.on("tap", "node", function(evt) {
 
     if (distance === 0) {
       n.addClass("focused");
-    }
-
-    else if (wasVisited) {
+    } else if (wasVisited || distance === 1) {
       n.addClass("nearby");
-    }
-
-    else if (distance === 1) {
-      n.addClass("nearby");
-    }
-
-    else {
-      n.addClass("faded");
-    }
-  });
-
-  // 🎯 cámara cognitiva
-  cy.animate({
-    center: { eles: node },
-    zoom: 1.4
-  }, { duration: 500 });
-});
-
-
-  // 🧠 estado
-  brainState.focusNode = node;
-  brainState.visited.add(node.id());
-
-  // 📄 panel
-  document.getElementById("title").innerText = node.data("label");
-  document.getElementById("content").innerText = node.data("content");
-
-  // 🧹 reset
-  cy.elements().removeClass("faded focused nearby");
-
-  node.addClass("focused");
-
-  cy.nodes().forEach(n => {
-
-    const distance = Math.abs(n.data("level") - level);
-
-    // 🔥 NUEVO: memoria del sistema influye
-    const wasVisited = brainState.visited.has(n.id());
-
-    if (n.id() === node.id()) return;
-
-    if (distance === 0) {
-      n.addClass("focused");
-    }
-
-    else if (wasVisited) {
-      // 👀 nodos ya vistos se vuelven más relevantes
-      n.addClass("nearby");
-    }
-
-    else if (distance === 1) {
-      n.addClass("nearby");
-    }
-
-    else {
+    } else {
       n.addClass("faded");
     }
   });
