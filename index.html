@@ -58,8 +58,17 @@
 </div>
 
 <script>
-const cy = cytoscape({
-  container: document.getElementById("cy"),
+<script>
+const cy = cytoscape({ ... });
+</script>
+
+<!-- 👇 AQUÍ -->
+<script>
+cy.on("tap", "node", (evt) => {
+  const node = evt.target;
+  alert("Click en: " + node.data("label"));
+});
+</script>
 
   elements: [
     { data: { id: "a", label: "Nodo prueba" } },
