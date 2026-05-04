@@ -843,3 +843,36 @@ html[data-bg="blue"]::before {
 html[data-bg="cyan"]::before {
   background: radial-gradient(circle at top, rgba(34,211,238,0.10), transparent 60%);
 }
+/* capa de nodos encima del fondo */
+#nodes-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* importante */
+  z-index: 2;
+}
+
+/* nodos individuales */
+.node {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  pointer-events: auto; /* reactiva click */
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 20px;
+}
+
+.node:hover {
+  transform: scale(1.2);
+  background: rgba(255,255,255,0.2);
+}
