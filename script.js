@@ -129,6 +129,11 @@ cy.on("tap", "node", function(evt) {
   const node = evt.target;
   const level = node.data("level");
 
+  window.addEventListener("load", () => {
+  cy.resize();
+  cy.fit();
+});
+  
   brainState.focusNode = node;
   brainState.visited.add(node.id());
 
