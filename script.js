@@ -4,38 +4,9 @@ let brainState = {
   focusNode: null,
   visited: new Set()
 };
-cy.on("tap", "node", (evt) => {
-  const node = evt.target;
 
-  // 🧠 estado cognitivo
-  brainState.focusNode = node;
-  brainState.visited.add(node.id());
-
-  // limpiar estados visuales
-  cy.elements().removeClass("focused nearby faded");
-
-  // nodo activo
-  node.addClass("focused");
-
-  // propagación simple (vecinos = “pensamiento cercano”)
-  cy.nodes().forEach(n => {
-    if (n.id() === node.id()) return;
-
-    const isNeighbor = node.neighborhood().nodes().contains(n);
-
-    if (isNeighbor) {
-      n.addClass("nearby");
-    } else {
-      n.addClass("faded");
-    }
-  });
-
-  // “movimiento del foco mental”
-  cy.animate({
-    center: { eles: node },
-    zoom: 1.5
-  }, { duration: 400 });
-});
+const cy = cytoscape({
+  container: document.getElementById("cy"),
 
   elements: [
     { data: { id: "a", label: "Nodo A" } },
@@ -57,26 +28,44 @@ cy.on("tap", "node", (evt) => {
       style: {
         "line-color": "#888"
       }
+    },
+    {
+      selector: ".focused",
+      style: {
+        "background-color": "#facc15",
+        "width": 60,
+        "height": 60
+      }
+    },
+    {
+      selector: ".nearby",
+      style: {
+        "background-color": "#38bdf8",
+        "opacity": 0.9
+      }
+    },
+    {
+      selector: ".faded",
+      style: {
+        "opacity": 0.2
+      }
     }
   ],
 
   layout: { name: "grid" }
 });
 
+// 🧠 INTERACCIÓN COGNITIVA (UNA SOLA VEZ, NO DUPLICADA)
 cy.on("tap", "node", (evt) => {
   const node = evt.target;
 
-  // guardar estado cognitivo
   brainState.focusNode = node;
   brainState.visited.add(node.id());
 
-  // limpiar estilos dinámicos
-  cy.elements().removeClass("faded focused nearby");
+  cy.elements().removeClass("focused nearby faded");
 
-  // nodo activo
   node.addClass("focused");
 
-  // propagación cognitiva (vecinos)
   cy.nodes().forEach(n => {
     if (n.id() === node.id()) return;
 
@@ -89,7 +78,6 @@ cy.on("tap", "node", (evt) => {
     }
   });
 
-  // movimiento del “pensamiento”
   cy.animate({
     center: { eles: node },
     zoom: 1.6
