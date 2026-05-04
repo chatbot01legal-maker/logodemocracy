@@ -6,6 +6,7 @@ let brainState = {
   visited: new Set(),
   mode: "explore"
 };
+
 const nodesData = [
   {
     data: {
@@ -68,8 +69,7 @@ const cy = cytoscape({
         "background-color": "#facc15",
         "border-width": 3,
         "border-color": "#ffffff",
-        "opacity": 1,
-        "z-index": 9999
+        "opacity": 1
       }
     },
     {
@@ -107,16 +107,16 @@ const cy = cytoscape({
   }
 });
 
-  cy.nodes().first().addClass("focused");
-
+/* ✅ FIX CRÍTICO: mover esto al ready */
 cy.ready(() => {
   cy.fit();
   cy.center();
+
+  cy.nodes().first().addClass("focused"); // 👈 AQUÍ ESTABA EL ERROR DE “NO PASA NADA”
 });
 
 
 // 🧠 INTERACCIÓN COGNITIVA
-
 cy.on("tap", "node", function(evt) {
   const node = evt.target;
   const level = node.data("level");
@@ -139,19 +139,18 @@ cy.on("tap", "node", function(evt) {
 
     if (distance === 0) {
       n.addClass("focused");
-    } else if (wasVisited || distance === 1) {
+    } 
+    else if (wasVisited || distance === 1) {
       n.addClass("nearby");
-    } else {
+    } 
+    else {
       n.addClass("faded");
     }
   });
 
-  cy.layout({
-  name: "cose",
-  animate: true,
-  fit: false
-}).run();
-  
+  /* ❌ IMPORTANTE: esto estaba rompiendo consistencia visual */
+  // cy.layout({ name: "cose", animate: true, fit: false }).run();
+
   cy.animate({
     center: { eles: node },
     zoom: 1.4
