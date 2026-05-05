@@ -102,6 +102,8 @@ sections.forEach(section => observer.observe(section));
   /* =====================
      CANVAS (NODOS)
   ===================== */
+  document.addEventListener("DOMContentLoaded", () => {
+
   const canvas = document.getElementById("bg-canvas");
   if (!canvas) return;
 
@@ -129,16 +131,20 @@ sections.forEach(section => observer.observe(section));
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // líneas
     for (let i = 0; i < nodes.length; i++) {
       for (let j = i + 1; j < nodes.length; j++) {
+
         const dx = nodes[i].x - nodes[j].x;
         const dy = nodes[i].y - nodes[j].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < 120) {
           const opacity = 1 - (dist / 120);
-          ctx.strokeStyle = `rgba(34,197,94,${opacity * 0.85})`;
-          ctx.lineWidth = 1.4;
+
+          ctx.strokeStyle = `rgba(34,197,94,${opacity})`;
+          ctx.lineWidth = 1;
+
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
           ctx.lineTo(nodes[j].x, nodes[j].y);
@@ -147,10 +153,11 @@ sections.forEach(section => observer.observe(section));
       }
     }
 
+    // nodos
     nodes.forEach(n => {
       ctx.fillStyle = "rgba(34,197,94,0.8)";
       ctx.beginPath();
-      ctx.arc(n.x, n.y, 3.2, 0, Math.PI * 2);
+      ctx.arc(n.x, n.y, 3, 0, Math.PI * 2);
       ctx.fill();
 
       n.x += n.vx;
