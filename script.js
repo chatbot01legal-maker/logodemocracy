@@ -1,6 +1,3 @@
-/* =====================
-   MENÚ + INIT
-===================== */
 document.addEventListener("DOMContentLoaded", () => {
 
   /* =====================
@@ -16,36 +13,25 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =====================
-   SELECTOR IDIOMA (FUNCIONAL)
-===================== */
-const langSelect = document.getElementById("lang-select");
+     SELECTOR IDIOMA
+  ===================== */
+  const langSelect = document.getElementById("lang-select");
 
-if (langSelect) {
+  if (langSelect) {
+    const path = window.location.pathname;
 
-  // Setear idioma actual según URL
-  const path = window.location.pathname;
+    langSelect.value = path.startsWith("/en") ? "en" : "es";
 
-  if (path.startsWith("/en")) {
-    langSelect.value = "en";
-  } else {
-    langSelect.value = "es";
+    langSelect.addEventListener("change", (e) => {
+      const lang = e.target.value;
+
+      if (path.startsWith("/en")) {
+        if (lang === "es") window.location.href = "/";
+      } else {
+        if (lang === "en") window.location.href = "/en/";
+      }
+    });
   }
-
-  // Cambio de idioma con redirección
-  langSelect.addEventListener("change", (e) => {
-    const lang = e.target.value;
-
-    if (path.startsWith("/en")) {
-      if (lang === "es") {
-        window.location.href = "/";
-      }
-    } else {
-      if (lang === "en") {
-        window.location.href = "/en/";
-      }
-    }
-  });
-}
 
   /* =====================
      COMUNIDAD
@@ -66,43 +52,39 @@ if (langSelect) {
       const post = document.createElement("div");
       post.classList.add("post");
 
-      post.innerHTML = `
-        <strong>${nombre}</strong>
-        <p>${mensaje}</p>
-      `;
+      post.innerHTML = `<strong>${nombre}</strong><p>${mensaje}</p>`;
 
       muro.prepend(post);
 
       total++;
-
-      if (contadorDOM) {
-        contadorDOM.textContent = total + " ciudadanos";
-      }
+      if (contadorDOM) contadorDOM.textContent = total + " ciudadanos";
 
       document.getElementById("nombre").value = "";
       document.getElementById("mensaje").value = "";
     });
   }
 
-const sections = document.querySelectorAll("section[data-bg]");
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const bg = entry.target.getAttribute("data-bg");
-      document.documentElement.setAttribute("data-bg", bg);
-    }
-  });
-}, {
-  threshold: 0.5
-});
-
-sections.forEach(section => observer.observe(section));
-   
   /* =====================
-     CANVAS (NODOS)
+     OBSERVER BG SECTIONS
   ===================== */
-  document.addEventListener("DOMContentLoaded", () => {
+  const sections = document.querySelectorAll("section[data-bg]");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const bg = entry.target.getAttribute("data-bg");
+        document.documentElement.setAttribute("data-bg", bg);
+      }
+    });
+  }, {
+    threshold: 0.5
+  });
+
+  sections.forEach(section => observer.observe(section));
+
+  /* =====================
+     CANVAS FONDO
+  ===================== */
 
   const canvas = document.getElementById("bg-canvas");
   if (!canvas) return;
@@ -131,7 +113,6 @@ sections.forEach(section => observer.observe(section));
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // líneas
     for (let i = 0; i < nodes.length; i++) {
       for (let j = i + 1; j < nodes.length; j++) {
 
@@ -153,7 +134,6 @@ sections.forEach(section => observer.observe(section));
       }
     }
 
-    // nodos
     nodes.forEach(n => {
       ctx.fillStyle = "rgba(34,197,94,0.8)";
       ctx.beginPath();
