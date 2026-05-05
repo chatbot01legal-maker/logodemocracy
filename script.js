@@ -42,10 +42,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let total = 0;
 
-  if (boton) {
+  if (boton && muro) {
     boton.addEventListener("click", () => {
-      const nombre = document.getElementById("nombre").value.trim();
-      const mensaje = document.getElementById("mensaje").value.trim();
+      const nombreInput = document.getElementById("nombre");
+      const mensajeInput = document.getElementById("mensaje");
+
+      const nombre = nombreInput?.value.trim();
+      const mensaje = mensajeInput?.value.trim();
 
       if (!nombre || !mensaje) return;
 
@@ -57,36 +60,39 @@ document.addEventListener("DOMContentLoaded", () => {
       muro.prepend(post);
 
       total++;
-      if (contadorDOM) contadorDOM.textContent = total + " ciudadanos";
 
-      document.getElementById("nombre").value = "";
-      document.getElementById("mensaje").value = "";
+      if (contadorDOM) {
+        contadorDOM.textContent = total + " ciudadanos";
+      }
+
+      nombreInput.value = "";
+      mensajeInput.value = "";
     });
   }
 
   /* =====================
-     OBSERVER BG SECTIONS
+     BACKGROUND OBSERVER
   ===================== */
   const sections = document.querySelectorAll("section[data-bg]");
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const bg = entry.target.getAttribute("data-bg");
-        document.documentElement.setAttribute("data-bg", bg);
-      }
-    });
-  }, {
-    threshold: 0.5
-  });
+  if (sections.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const bg = entry.target.getAttribute("data-bg");
+          document.documentElement.setAttribute("data-bg", bg);
+        }
+      });
+    }, { threshold: 0.5 });
 
-  sections.forEach(section => observer.observe(section));
+    sections.forEach(section => observer.observe(section));
+  }
 
   /* =====================
-     CANVAS FONDO
+     CANVAS FONDO (NODOS)
   ===================== */
-
   const canvas = document.getElementById("bg-canvas");
+
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
@@ -99,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", resize);
   resize();
 
-  let nodes = [];
+  const nodes = [];
 
   for (let i = 0; i < 60; i++) {
     nodes.push({
@@ -113,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // líneas
     for (let i = 0; i < nodes.length; i++) {
       for (let j = i + 1; j < nodes.length; j++) {
 
@@ -134,6 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // nodos
     nodes.forEach(n => {
       ctx.fillStyle = "rgba(34,197,94,0.8)";
       ctx.beginPath();
@@ -152,4 +160,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   draw();
 
-});
+}); 
