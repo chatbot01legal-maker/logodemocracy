@@ -38,46 +38,72 @@ html, body {
 ===================== */
 
 :root {
-  --bg: #0f172a;
-  --bg-secondary: #111827;
 
-  --card-bg: #1e293b;
-  --card-bg-hover: #243447;
+  --bg: #020617;
+  --bg-secondary: #0f172a;
 
-  --text: #e5e7eb;
-  --text-secondary: #9ca3af;
+  --card-bg: rgba(15, 23, 42, 0.92);
+
+  --text: #e2e8f0;
+  --text-secondary: #94a3b8;
 
   --accent: #22c55e;
-  --accent-hover: #16a34a;
+  --accent-soft: rgba(34,197,94,0.18);
 
-  --border: #1f2933;
+  --accent-hover: #4ade80;
+
+  --border: rgba(34,197,94,0.12);
+
+  --terminal-glow: rgba(34,197,94,0.15);
+
 }
-
 /* =====================
    BODY
 ===================== */
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  font-family: "IBM Plex Mono", monospace;
+
   background: transparent;
+
   color: var(--text);
-  line-height: 1.6;
+
+  line-height: 1.7;
+
   position: relative;
+
   z-index: 2;
+
+  letter-spacing: 0.2px;
+
+  font-size: 15px;
 }
 
-/* overlay oscuro */
-body::before {
+body::after {
+
   content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.15);
-  z-index: 0;
-}
 
-.content {
-  position: relative;
-  z-index: 3;
+  position: fixed;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.02),
+      rgba(255,255,255,0.02) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+
+  opacity: 0.08;
+
+  mix-blend-mode: soft-light;
+
+  z-index: 1;
 }
 
 /* =====================
@@ -85,89 +111,42 @@ body::before {
 ===================== */
 
 nav {
+
   position: sticky;
   top: 0;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(10px);
-  z-index: 10;
-  gap: 10px;
 
-  /* 🔴 IMPORTANTE */
-  position: sticky;
-}
-nav {
-  position: sticky;
-  top: 0;
-  position: sticky;
-  top: 0;
-  position: sticky;
-  top: 0;
+  padding: 18px 40px;
 
-  /* FIX REAL */
-  position: sticky;
+  background: rgba(2, 6, 23, 0.82);
+
+  backdrop-filter: blur(8px);
+
+  border-bottom: 1px solid rgba(34,197,94,0.12);
+
+  box-shadow:
+    0 0 20px rgba(34,197,94,0.04);
+
+  z-index: 50;
+
+  letter-spacing: 1px;
 }
 
-nav {
-  position: sticky;
-}
-
-/* 👇 ESTO ES LO IMPORTANTE */
-nav {
-  position: sticky;
-}
-
-nav {
-  position: sticky;
-}
-
-/* 👉 REAL FIX */
-nav {
-  position: sticky;
-}
-
-nav {
-  position: sticky;
-}
 nav h2 {
-  font-size: 18px;
-  font-weight: 600;
-}
 
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+  font-family: "Cormorant Garamond", serif;
 
-nav ul {
-  display: flex;
-  gap: 25px;
-  list-style: none;
-}
-
-nav a {
-  text-decoration: none;
-  color: var(--text-secondary);
-  font-size: 14px;
-  transition: 0.3s;
-}
-
-nav a:hover {
-  color: var(--text);
-}
-
-.menu-toggle {
-  display: none;
   font-size: 28px;
-  cursor: pointer;
-  color: var(--text);
-}
 
+  font-weight: 600;
+
+  letter-spacing: 1px;
+
+  color: #f8fafc;
+}
 /* =====================
    MENU DESKTOP
 ===================== */
@@ -261,18 +240,32 @@ nav a:hover {
 
 /* 🔧 FIX: centrado real del título */
 .hero h1 {
+
   width: 100%;
-  text-align: center; /* <- ESTE es el fix clave */
 
-  font-size: 48px;
-  line-height: 1.1;
-  margin-bottom: 20px;
+  text-align: center;
 
-  background: linear-gradient(90deg, #ffffff, #22c55e);
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: 68px;
+
+  line-height: 1;
+
+  letter-spacing: 1px;
+
+  margin-bottom: 30px;
+
+  background: linear-gradient(
+    90deg,
+    #ffffff,
+    #22c55e
+  );
+
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  text-shadow: 0 10px 40px rgba(34,197,94,0.25);
+  text-shadow:
+    0 0 30px rgba(34,197,94,0.15);
 
   animation: fadeHero 1s ease forwards;
 }
@@ -295,8 +288,16 @@ nav a:hover {
 }
 
 .hero p {
-  max-width: 600px;
-  margin-bottom: 20px;
+
+  max-width: 650px;
+
+  margin-bottom: 22px;
+
+  color: #cbd5e1;
+
+  font-size: 15px;
+
+  line-height: 1.9;
 }
 
 /* NUEVO BLOQUE HERO */
@@ -330,19 +331,38 @@ nav a:hover {
 }
 
 .buttons a {
+
   text-decoration: none;
-  padding: 14px 28px;
-  border-radius: 10px;
-  font-size: 14px;
+
+  padding: 14px 24px;
+
+  border-radius: 4px;
+
+  font-size: 12px;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  border: 1px solid rgba(34,197,94,0.25);
+
+  background: rgba(0,0,0,0.2);
+
+  color: #d1fae5;
+
+  min-width: 170px;
+
+  height: 48px;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  min-width: 160px;
-  height: 48px;
-
   transition: all 0.25s ease;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.02),
+    0 0 12px rgba(34,197,94,0.05);
 }
 
 .buttons a:first-child {
@@ -365,6 +385,17 @@ nav a:hover {
   background: var(--bg-secondary);
 }
 
+.buttons a:hover {
+
+  transform: translateY(-2px);
+
+  border-color: rgba(34,197,94,0.5);
+
+  box-shadow:
+    0 0 20px rgba(34,197,94,0.12);
+
+  background: rgba(34,197,94,0.06);
+}
 /* =====================
    SECCIONES
 ===================== */
@@ -410,15 +441,18 @@ section.grid-heavy {
    TÍTULO
 ===================== */
 section h2 {
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: 52px;
+
+  line-height: 1.1;
+
+  letter-spacing: 1px;
+
+  margin-bottom: 50px;
+
   text-align: center;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-
-  font-size: 40px;   /* antes 34px → más presencia cognitiva */
-  line-height: 1.15;
-
-  margin-bottom: 45px; /* 👈 ESTE es el espacio clave */
 }
 
 section h2::after {
@@ -435,19 +469,28 @@ section h2::after {
 
 /* INTRO */
 .intro {
+
   position: relative;
 
   margin-top: 30px;
 
-  background: linear-gradient(135deg, #1e293b, #020617);
-  padding: 22px;
-  border-radius: 14px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15,23,42,0.75),
+      rgba(2,6,23,0.88)
+    );
 
-  border: 1px solid rgba(255,255,255,0.06);
+  padding: 28px;
 
-  backdrop-filter: blur(6px);
+  border-radius: 6px;
+
+  border: 1px solid rgba(34,197,94,0.10);
 
   overflow: hidden;
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.25);
 }
 
 /* centrado correcto del sistema */
@@ -581,15 +624,33 @@ section .section-actions {
 }
 
 .card {
+
   position: relative;
+
   overflow: hidden;
-  background: linear-gradient(145deg, #1e293b, #020617);
-  padding: 25px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.05);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15,23,42,0.92),
+      rgba(2,6,23,0.96)
+    );
+
+  padding: 28px;
+
+  border-radius: 6px;
+
+  border: 1px solid rgba(34,197,94,0.10);
+
   backdrop-filter: blur(8px);
-  transform-origin: center;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
+
+  transition:
+    transform 0.25s ease,
+    border 0.25s ease,
+    box-shadow 0.25s ease;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
 }
 
 .card h3 {
@@ -612,31 +673,30 @@ section .section-actions {
 }
 
 .card:hover {
-  transform: scale(1.06) translateY(-6px);
-  z-index: 5;
 
-  border-color: rgba(34,197,94,0.3);
+  transform: translateY(-6px);
+
+  border-color: rgba(34,197,94,0.35);
 
   box-shadow:
-    0 20px 60px rgba(0,0,0,0.5),
-    0 0 30px rgba(34,197,94,0.2);
-}
-
-.card:hover::before {
-  opacity: 1;
+    0 20px 60px rgba(0,0,0,0.45),
+    0 0 25px rgba(34,197,94,0.10);
 }
 
 .card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
 
-  background: linear-gradient(90deg, transparent, #22c55e, transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
+  content: "COGNITIVE MODULE";
+
+  position: absolute;
+
+  top: 10px;
+  right: 14px;
+
+  font-size: 10px;
+
+  letter-spacing: 1px;
+
+  color: rgba(34,197,94,0.45);
 }
 
 .card:hover::after {
@@ -852,4 +912,60 @@ html[data-bg="blue"]::before {
 
 html[data-bg="cyan"]::before {
   background: radial-gradient(circle at top, rgba(34,211,238,0.10), transparent 60%);
+}
+
+html::after {
+
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background-image:
+    radial-gradient(
+      rgba(255,255,255,0.03) 1px,
+      transparent 1px
+    );
+
+  background-size: 3px 3px;
+
+  opacity: 0.025;
+
+  z-index: 0;
+}
+
+/* =====================
+   REY FILÓSOFO
+===================== */
+
+.philosopher-module {
+  position: relative;
+}
+
+/* etiqueta superior retro */
+.philosopher-module::after {
+
+  content: "METACOGNITIVE SYSTEM";
+
+  position: absolute;
+  top: 12px;
+  right: 14px;
+
+  font-size: 10px;
+  letter-spacing: 2px;
+
+  color: rgba(34,197,94,0.7);
+
+  border: 1px solid rgba(34,197,94,0.25);
+
+  padding: 4px 8px;
+
+  border-radius: 4px;
+
+  background: rgba(0,0,0,0.25);
+
+  font-family: monospace;
 }
