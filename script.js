@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const opacity = 1 - (dist / 120);
 
           ctx.strokeStyle = `rgba(34,197,94,${opacity})`;
-          ctx.lineWidth = 1;
+          ctx.lineWidth = 0.7;
 
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -145,7 +145,14 @@ document.addEventListener("DOMContentLoaded", () => {
     nodes.forEach(n => {
       ctx.fillStyle = "rgba(34,197,94,0.8)";
       ctx.beginPath();
-      ctx.arc(n.x, n.y, 3, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(34,197,94,0.9)";
+
+ctx.strokeRect(
+  n.x - 2,
+  n.y - 2,
+  4,
+  4
+);
       ctx.fill();
 
       n.x += n.vx;
