@@ -83,6 +83,31 @@ body {
   font-size: 15px;
 }
 
+body::before {
+
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      rgba(255,255,255,0.03) 50%,
+      rgba(0,0,0,0.06) 50%
+    );
+
+  background-size: 100% 4px;
+
+  mix-blend-mode: overlay;
+
+  opacity: 0.08;
+
+  z-index: 999;
+}
+
 body::after {
 
   content: "";
