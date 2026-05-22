@@ -169,7 +169,7 @@ nav h2 {
   color: var(--text);
   border: 1px solid var(--border);
   padding: 8px 12px;
-  border-radius: 8px;
+  border-radius: 0px;
   font-size: 13px;
   cursor: pointer;
 }
@@ -198,7 +198,7 @@ nav h2 {
     backdrop-filter: blur(10px);
 
     padding: 20px;
-    border-radius: 12px;
+    border-radius: 0px;
 
     border: 1px solid var(--border);
     width: 220px;
@@ -339,7 +339,7 @@ nav h2 {
 
   padding: 14px 24px;
 
-  border-radius: 4px;
+  border-radius: 0px;
 
   font-size: 12px;
 
@@ -486,7 +486,7 @@ section h2::after {
 
   padding: 28px;
 
-  border-radius: 6px;
+  border-radius: 0px;
 
   border: 1px solid rgba(34,197,94,0.10);
 
@@ -681,7 +681,7 @@ section .section-actions {
 
   background: linear-gradient(145deg, #1e293b, #020617);
   padding: 25px;
-  border-radius: 14px;
+  border-radius: 0px;
 
   border: 1px solid rgba(255,255,255,0.05);
 
@@ -707,7 +707,7 @@ section .section-actions {
 
   padding: 28px;
 
-  border-radius: 6px;
+  border-radius: 0px;
 
   border: 1px solid rgba(34,197,94,0.10);
 
@@ -866,7 +866,7 @@ section .closing {
   width: 100%;
   margin-top: 10px;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 0px;
 
   border: 1px solid var(--border);
   background: var(--bg-secondary);
@@ -876,7 +876,7 @@ section .closing {
 .community-form button {
   margin-top: 10px;
   padding: 10px 15px;
-  border-radius: 8px;
+  border-radius: 0px;
   border: none;
   background: var(--accent);
   color: black;
@@ -889,7 +889,7 @@ section .closing {
   background: var(--card-bg);
   border: 1px solid var(--border);
   padding: 15px;
-  border-radius: 10px;
+  border-radius: 0px;
   margin-top: 10px;
 }
 
@@ -1032,7 +1032,7 @@ html::after {
 
   padding: 4px 8px;
 
-  border-radius: 4px;
+  border-radius: 0px;
 
   background: rgba(0,0,0,0.25);
 
