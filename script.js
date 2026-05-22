@@ -1,170 +1,232 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   /* =====================
-     MENÚ MOBILE
+     BOOT TYPEWRITER
   ===================== */
-  const menuToggle = document.getElementById("menu-toggle");
-  const menu = document.getElementById("menu");
+
+  const bootText = document.getElementById("boot-text");
+
+  const bootScreen = document.getElementById("boot-screen");
+
+  const introText = `
+Salimos perdiendo…
+Salimos ganando…
+
+Se llevaron el oro
+y nos dejaron el oro…
+
+Se lo llevaron todo
+y nos dejaron todo…
+
+Nos dejaron las palabras.
+`;
+
+  let i = 0;
+
+  function typeBoot() {
+
+    if (i < introText.length) {
+
+      bootText.innerHTML += introText.charAt(i);
+
+      i++;
+
+      setTimeout(typeBoot, 45);
+
+    } else {
+
+      setTimeout(() => {
+
+        bootScreen.classList.add("fade-out");
+
+      }, 2500);
+    }
+  }
+
+  setTimeout(typeBoot, 700);
+
+  /* =====================
+     MENU MOBILE
+  ===================== */
+
+  const menuToggle =
+    document.getElementById("menu-toggle");
+
+  const menu =
+    document.getElementById("menu");
 
   if (menuToggle && menu) {
+
     menuToggle.addEventListener("click", () => {
+
       menu.classList.toggle("active");
+
     });
   }
 
   /* =====================
-     SELECTOR IDIOMA
+     BACKGROUND ACTIVATION
   ===================== */
-  const langSelect = document.getElementById("lang-select");
 
-  if (langSelect) {
-    const path = window.location.pathname;
+  const interfaces =
+    document.getElementById("interfaces");
 
-    langSelect.value = path.startsWith("/en") ? "en" : "es";
+  const canvas =
+    document.getElementById("bg-canvas");
 
-    langSelect.addEventListener("change", (e) => {
-      const lang = e.target.value;
+  let backgroundStarted = false;
 
-      if (path.startsWith("/en")) {
-        if (lang === "es") window.location.href = "/";
-      } else {
-        if (lang === "en") window.location.href = "/en/";
+  function startBackground() {
+
+    if (backgroundStarted) return;
+
+    backgroundStarted = true;
+
+    canvas.style.opacity = "0.9";
+
+    initBackground();
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+
+    entries.forEach(entry => {
+
+      if (entry.isIntersecting) {
+
+        startBackground();
+
       }
     });
+
+  }, { threshold: 0.2 });
+
+  if (interfaces) {
+    observer.observe(interfaces);
   }
 
   /* =====================
-     COMUNIDAD
+     NODES BACKGROUND
   ===================== */
-  const boton = document.getElementById("publicar");
-  const muro = document.getElementById("muro");
-  const contadorDOM = document.getElementById("contador");
 
-  let total = 0;
+  function initBackground() {
 
-  if (boton && muro) {
-    boton.addEventListener("click", () => {
-      const nombreInput = document.getElementById("nombre");
-      const mensajeInput = document.getElementById("mensaje");
+    const ctx =
+      canvas.getContext("2d");
 
-      const nombre = nombreInput?.value.trim();
-      const mensaje = mensajeInput?.value.trim();
+    function resize() {
 
-      if (!nombre || !mensaje) return;
+      canvas.width =
+        window.innerWidth;
 
-      const post = document.createElement("div");
-      post.classList.add("post");
-
-      post.innerHTML = `<strong>${nombre}</strong><p>${mensaje}</p>`;
-
-      muro.prepend(post);
-
-      total++;
-
-      if (contadorDOM) {
-        contadorDOM.textContent = total + " ciudadanos";
-      }
-
-      nombreInput.value = "";
-      mensajeInput.value = "";
-    });
-  }
-
-  /* =====================
-     BACKGROUND OBSERVER
-  ===================== */
-  const sections = document.querySelectorAll("section[data-bg]");
-
-  if (sections.length > 0) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const bg = entry.target.getAttribute("data-bg");
-          document.documentElement.setAttribute("data-bg", bg);
-        }
-      });
-    }, { threshold: 0.5 });
-
-    sections.forEach(section => observer.observe(section));
-  }
-
-  /* =====================
-     CANVAS FONDO (NODOS)
-  ===================== */
-  const canvas = document.getElementById("bg-canvas");
-
-  if (!canvas) return;
-
-  const ctx = canvas.getContext("2d");
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
-  window.addEventListener("resize", resize);
-  resize();
-
-  const nodes = [];
-
-  for (let i = 0; i < 60; i++) {
-    nodes.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5
-    });
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // líneas
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-
-        const dx = nodes[i].x - nodes[j].x;
-        const dy = nodes[i].y - nodes[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < 120) {
-          const opacity = 1 - (dist / 120);
-
-          ctx.strokeStyle = `rgba(34,197,94,${opacity})`;
-          ctx.lineWidth = 0.7;
-
-          ctx.beginPath();
-          ctx.moveTo(nodes[i].x, nodes[i].y);
-          ctx.lineTo(nodes[j].x, nodes[j].y);
-          ctx.stroke();
-        }
-      }
+      canvas.height =
+        window.innerHeight;
     }
 
-    // nodos
-    nodes.forEach(n => {
-      ctx.fillStyle = "rgba(34,197,94,0.8)";
-      ctx.beginPath();
-      ctx.strokeStyle = "rgba(34,197,94,0.9)";
+    resize();
 
-ctx.strokeRect(
-  n.x - 2,
-  n.y - 2,
-  4,
-  4
-);
-      ctx.fill();
+    window.addEventListener(
+      "resize",
+      resize
+    );
 
-      n.x += n.vx;
-      n.y += n.vy;
+    const nodes = [];
 
-      if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
-      if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
-    });
+    for (let i = 0; i < 55; i++) {
 
-    requestAnimationFrame(draw);
+      nodes.push({
+
+        x:
+          Math.random() * canvas.width,
+
+        y:
+          Math.random() * canvas.height,
+
+        vx:
+          (Math.random() - 0.5) * 0.35,
+
+        vy:
+          (Math.random() - 0.5) * 0.35
+      });
+    }
+
+    function draw() {
+
+      ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+      for (let i = 0; i < nodes.length; i++) {
+
+        for (let j = i + 1; j < nodes.length; j++) {
+
+          const dx =
+            nodes[i].x - nodes[j].x;
+
+          const dy =
+            nodes[i].y - nodes[j].y;
+
+          const dist =
+            Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 140) {
+
+            ctx.strokeStyle =
+              `rgba(34,197,94,${
+                0.15 - dist / 1200
+              })`;
+
+            ctx.lineWidth = 1;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+              nodes[i].x,
+              nodes[i].y
+            );
+
+            ctx.lineTo(
+              nodes[j].x,
+              nodes[j].y
+            );
+
+            ctx.stroke();
+          }
+        }
+      }
+
+      nodes.forEach(n => {
+
+        ctx.strokeStyle =
+          "rgba(34,197,94,0.9)";
+
+        ctx.strokeRect(
+          n.x - 2,
+          n.y - 2,
+          4,
+          4
+        );
+
+        n.x += n.vx;
+        n.y += n.vy;
+
+        if (
+          n.x < 0 ||
+          n.x > canvas.width
+        ) n.vx *= -1;
+
+        if (
+          n.y < 0 ||
+          n.y > canvas.height
+        ) n.vy *= -1;
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
   }
 
-  draw();
-
-}); 
+});
