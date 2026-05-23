@@ -351,15 +351,18 @@ nav h2 {
 
   display: inline-block;
 
-  width: 12px;
-  height: 22px;
+  width: 0.62em;
+  height: 0.9em;
 
   background:
-    #22c55e;
+    #f8fafc;
 
-  margin-left: 8px;
+  margin-left: 2px;
 
-  vertical-align: middle;
+  vertical-align: baseline;
+
+  transform:
+    translateY(2px);
 
   animation:
     blink 1s steps(1) infinite;
