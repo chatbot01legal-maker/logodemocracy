@@ -19,6 +19,9 @@ Se lo llevaron todo
 y nos dejaron todo…
 
 Nos dejaron las palabras.
+
+Confieso que he vivido 
+           Pablo Nerda
 `;
 
   let i = 0;
