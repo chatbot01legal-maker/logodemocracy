@@ -20,7 +20,7 @@ y nos dejaron todo…
 
 Nos dejaron las palabras.
 
-Confieso que he vivido 
+"Confieso que he vivido" 
            Pablo Neruda
 `;
 
