@@ -101,14 +101,20 @@ body {
 
 .boot-cursor {
 
-  width: 18px;
-  height: 28px;
+  display: inline-block;
+
+  width: 0.62em;
+  height: 0.9em;
 
   background:
-    #22c55e;
+    #d1fae5;
 
-  margin:
-    0 auto 40px;
+  margin-left: 4px;
+
+  vertical-align: baseline;
+
+  transform:
+    translateY(2px);
 
   animation:
     blink 1s steps(1) infinite;
@@ -126,7 +132,9 @@ body {
 
   color:
     #d1fae5;
-}
+  
+  display: inline;
+  }
 
 @keyframes blink {
 
