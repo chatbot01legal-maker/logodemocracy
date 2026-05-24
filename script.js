@@ -24,6 +24,17 @@ Nos dejaron las palabras.
 
   let i = 0;
 
+let bootClosed = false;
+
+function closeBootScreen() {
+
+  if (bootClosed) return;
+
+  bootClosed = true;
+
+  bootScreen.classList.add("fade-out");
+}
+  
   function typeBoot() {
 
     if (i < introText.length) {
@@ -40,11 +51,15 @@ Nos dejaron las palabras.
 
         bootScreen.classList.add("fade-out");
 
-      }, 2500);
+      }, 4500);
     }
   }
 
   setTimeout(typeBoot, 700);
+
+  bootScreen.addEventListener("click", closeBootScreen);
+
+bootScreen.addEventListener("touchstart", closeBootScreen);
 
   /* =====================
      MENU MOBILE
