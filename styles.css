@@ -97,11 +97,16 @@ body {
   max-width: 900px;
 
   text-align: center;
-}
+
+  text-align: left;
+  }
+
 
 .boot-line {
 
-  display: inline;
+  display: inline-block;
+
+  text-align: left;
 
   font-family:
     "Cormorant Garamond",
@@ -137,6 +142,8 @@ body {
 }
 
 #boot-text {
+
+  display: inline;
 
   white-space: pre-wrap;
 
@@ -367,8 +374,8 @@ nav h2 {
 
   display: inline-block;
 
-  width: 0.62em;
-  height: 0.9em;
+  width: 0.28em;
+  height: 0.55em;
 
   background:
     #f8fafc;
