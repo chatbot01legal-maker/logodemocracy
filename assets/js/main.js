@@ -247,6 +247,7 @@ bootScreen.addEventListener("touchstart", closeBootScreen);
 
 });
 
+renderCognitiveMap("cognitive-map");
 
 /* =====================
    SUBMENU MOBILE
