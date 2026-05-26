@@ -247,8 +247,12 @@ bootScreen.addEventListener("touchstart", closeBootScreen);
 
 });
 
+/* =====================
+   INIT COGNITIVE MAP
+===================== */
+});
 renderCognitiveMap("cognitive-map");
-
+});
 /* =====================
    SUBMENU MOBILE
 ===================== */
