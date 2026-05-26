@@ -9,16 +9,13 @@
   list-style: none;
 }
 
-/* LABEL PRINCIPAL */
+/* =====================
+   MAIN LABEL
+===================== */
 
-.menu-group > span,
-.menu-group > a {
+.menu-group > span {
 
-  display: flex;
-
-  align-items: center;
-
-  height: 100%;
+  display: block;
 
   padding:
     8px 10px;
@@ -34,14 +31,11 @@
 
   cursor: pointer;
 
-  text-decoration: none;
-
   transition:
-    color 0.25s ease;
+    color 0.2s ease;
 }
 
-.menu-group > span:hover,
-.menu-group > a:hover {
+.menu-group > span:hover {
 
   color:
     #d1fae5;
@@ -55,59 +49,37 @@
 
   position: absolute;
 
-  top: calc(100% + 12px);
+  top: calc(100% + 10px);
 
   left: 0;
 
   min-width: 260px;
 
   padding:
-    14px 0;
+    10px 0;
 
   background:
-    rgba(5,10,18,0.98);
+    #000000;
 
   border:
-    1px solid rgba(34,197,94,0.16);
+    1px solid rgba(34,197,94,0.12);
 
-  backdrop-filter:
-    blur(10px);
-
-  display: flex;
+  display: none;
 
   flex-direction: column;
-
-  gap: 2px;
-
-  opacity: 0;
-
-  visibility: hidden;
-
-  transform:
-    translateY(8px);
-
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease,
-    visibility 0.25s ease;
 
   z-index: 999;
 }
 
-/* HOVER DESKTOP */
+/* DESKTOP */
 
 .menu-group:hover .submenu {
 
-  opacity: 1;
-
-  visibility: visible;
-
-  transform:
-    translateY(0);
+  display: flex;
 }
 
 /* =====================
-   LINKS SUBMENU
+   SUBMENU LINKS
 ===================== */
 
 .submenu li {
@@ -120,12 +92,12 @@
   display: block;
 
   padding:
-    10px 18px;
-
-  text-decoration: none;
+    8px 18px;
 
   color:
     #94a3b8;
+
+  text-decoration: none;
 
   font-size: 11px;
 
@@ -134,44 +106,26 @@
   text-transform: uppercase;
 
   transition:
-    background 0.25s ease,
-    color 0.25s ease;
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.submenu a::before {
+
+  content:
+    "> ";
+
+  color:
+    rgba(34,197,94,0.7);
 }
 
 .submenu a:hover {
 
-  background:
-    rgba(34,197,94,0.08);
-
   color:
     #d1fae5;
-}
 
-/* =====================
-   SYSTEM LINE
-===================== */
-
-.submenu::before {
-
-  content:
-    "COGNITIVE MAP";
-
-  display: block;
-
-  padding:
-    0 18px 12px;
-
-  margin-bottom: 10px;
-
-  border-bottom:
-    1px solid rgba(34,197,94,0.08);
-
-  font-size: 10px;
-
-  letter-spacing: 2px;
-
-  color:
-    rgba(34,197,94,0.55);
+  background:
+    rgba(34,197,94,0.04);
 }
 
 /* =====================
@@ -185,12 +139,9 @@
     width: 100%;
   }
 
-  .menu-group > span,
-  .menu-group > a {
+  .menu-group > span {
 
     width: 100%;
-
-    justify-content: space-between;
 
     padding:
       16px 0;
@@ -200,29 +151,17 @@
 
     position: static;
 
-    opacity: 1;
-
-    visibility: visible;
-
-    transform: none;
-
     display: none;
 
-    min-width: 100%;
+    width: 100%;
 
-    margin:
-      0 0 14px;
-
-    padding:
-      10px 0;
+    margin-bottom: 10px;
 
     border:
       1px solid rgba(34,197,94,0.08);
 
     background:
-      rgba(0,0,0,0.45);
-
-    backdrop-filter: none;
+      rgba(0,0,0,0.35);
   }
 
   .menu-group.active .submenu {
@@ -230,17 +169,9 @@
     display: flex;
   }
 
-  .submenu::before {
-
-    padding:
-      0 14px 10px;
-  }
-
   .submenu a {
 
     padding:
       12px 14px;
-
-    font-size: 11px;
   }
 }
