@@ -1,5 +1,5 @@
 /* =====================
-   NAVIGATION TREE
+   TERMINAL TREE MENU
 ===================== */
 
 .menu-group {
@@ -10,7 +10,7 @@
 }
 
 /* =====================
-   MAIN LABEL
+   ROOT
 ===================== */
 
 .menu-group > span {
@@ -30,9 +30,6 @@
   text-transform: uppercase;
 
   cursor: pointer;
-
-  transition:
-    color 0.2s ease;
 }
 
 .menu-group > span:hover {
@@ -42,90 +39,85 @@
 }
 
 /* =====================
-   SUBMENU
+   TREE
 ===================== */
 
 .submenu {
 
+  display: none;
+
   position: absolute;
 
-  top: calc(100% + 10px);
+  top: calc(100% + 4px);
 
   left: 0;
 
-  min-width: 260px;
+  padding-left: 12px;
 
-  padding:
-    10px 0;
+  white-space: nowrap;
 
-  background:
-    #000000;
-
-  border:
-    1px solid rgba(34,197,94,0.12);
-
-  display: none;
-
-  flex-direction: column;
-
-  z-index: 999;
+  background: transparent;
 }
 
 /* DESKTOP */
 
 .menu-group:hover .submenu {
 
-  display: flex;
+  display: block;
 }
 
 /* =====================
-   SUBMENU LINKS
+   ITEMS
 ===================== */
 
 .submenu li {
 
   list-style: none;
+
+  margin:
+    2px 0;
 }
 
 .submenu a {
 
   display: block;
 
-  padding:
-    8px 18px;
-
   color:
-    #94a3b8;
+    #64748b;
 
   text-decoration: none;
 
   font-size: 11px;
 
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
 
   text-transform: uppercase;
 
-  transition:
-    color 0.2s ease,
-    background 0.2s ease;
+  padding:
+    2px 0;
 }
+
+/* TREE ASCII */
 
 .submenu a::before {
 
   content:
-    "> ";
+    "├─ ";
 
   color:
-    rgba(34,197,94,0.7);
+    rgba(34,197,94,0.55);
+}
+
+.submenu li:last-child a::before {
+
+  content:
+    "└─ ";
 }
 
 .submenu a:hover {
 
   color:
     #d1fae5;
-
-  background:
-    rgba(34,197,94,0.04);
 }
 
 /* =====================
@@ -134,44 +126,19 @@
 
 @media (max-width: 768px) {
 
-  .menu-group {
-
-    width: 100%;
-  }
-
-  .menu-group > span {
-
-    width: 100%;
-
-    padding:
-      16px 0;
-  }
-
   .submenu {
 
     position: static;
 
-    display: none;
-
-    width: 100%;
+    padding:
+      6px 0 6px 18px;
 
     margin-bottom: 10px;
-
-    border:
-      1px solid rgba(34,197,94,0.08);
-
-    background:
-      rgba(0,0,0,0.35);
   }
 
   .menu-group.active .submenu {
 
-    display: flex;
+    display: block;
   }
 
-  .submenu a {
-
-    padding:
-      12px 14px;
-  }
 }
