@@ -246,3 +246,32 @@ bootScreen.addEventListener("touchstart", closeBootScreen);
   }
 
 });
+
+
+/* =====================
+   SUBMENU MOBILE
+===================== */
+
+const menuGroups =
+  document.querySelectorAll(".menu-group");
+
+menuGroups.forEach(group => {
+
+  const trigger =
+    group.querySelector("span");
+
+  if (trigger) {
+
+    trigger.addEventListener("click", () => {
+
+      if (window.innerWidth <= 768) {
+
+        group.classList.toggle("active");
+
+      }
+
+    });
+
+  }
+
+});
