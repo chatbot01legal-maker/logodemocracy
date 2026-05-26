@@ -1,34 +1,90 @@
 #cognitive-map {
   font-family: "IBM Plex Mono", monospace;
-  color: #d1fae5;
   font-size: 12px;
-  padding: 20px;
-  border-left: 1px solid rgba(34,197,94,0.2);
+  color: #94a3b8;
+  padding: 16px 18px;
+  border-left: 1px solid rgba(34,197,94,0.25);
+  line-height: 1.6;
+  white-space: pre;
 }
+
+/* =========================
+   STRUCTURE BLOCKS (ASCII)
+========================= */
 
 .map-group {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+  padding-left: 10px;
+  position: relative;
 }
 
-.map-group-title {
-  color: rgba(34,197,94,0.6);
-  margin-bottom: 8px;
-  letter-spacing: 2px;
+/* Línea vertical tipo "│" */
+.map-group::before {
+  content: "│";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: rgba(34,197,94,0.3);
 }
+
+/* Título estilo nodo raíz */
+.map-group-title {
+  color: #22c55e;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+/* =========================
+   NODOS (estilo terminal)
+========================= */
 
 .map-node {
-  padding: 4px 0;
+  position: relative;
+  padding-left: 14px;
   cursor: pointer;
-  color: #94a3b8;
+  color: #64748b;
 }
 
+/* Rama horizontal ─── */
+.map-node::before {
+  content: "──";
+  position: absolute;
+  left: 0;
+  color: rgba(34,197,94,0.25);
+}
+
+/* Hover = "activación del nodo" */
 .map-node:hover {
   color: #d1fae5;
 }
 
-.map-progress {
-  margin-top: 20px;
+.map-node:hover::before {
   color: #22c55e;
-  border-top: 1px dashed rgba(34,197,94,0.3);
+}
+
+/* =========================
+   CONECTORES VERTICALES
+========================= */
+
+.map-connector {
+  margin-left: 6px;
+  color: rgba(34,197,94,0.2);
+}
+
+/* =========================
+   PROGRESO (tipo sistema vivo)
+========================= */
+
+.map-progress {
+  margin-top: 16px;
   padding-top: 10px;
+  border-top: 1px dashed rgba(34,197,94,0.25);
+  color: #22c55e;
+}
+
+/* Barra ASCII de progreso */
+.map-progress::before {
+  content: "[██████░░░░] SYSTEM MAP ACTIVE";
+  display: block;
+  color: rgba(34,197,94,0.7);
 }
