@@ -153,3 +153,73 @@ Nos dejaron las palabras.
   }
 
 });
+
+function renderCognitiveMap(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  const structure = [
+    {
+      title: "[SYSTEM]",
+      nodes: [
+        "percepción",
+        "memoria",
+        "atención",
+        "decisión"
+      ]
+    },
+    {
+      title: "[COGNITION]",
+      nodes: [
+        "sesgos",
+        "emociones",
+        "lenguaje",
+        "modelos mentales"
+      ]
+    },
+    {
+      title: "[INTERFACES]",
+      nodes: [
+        "logos",
+        "rey filósofo",
+        "agentes IA"
+      ]
+    }
+  ];
+
+  function draw() {
+    let output = "";
+
+    structure.forEach((group, gi) => {
+      output += `${group.title}\n`;
+
+      group.nodes.forEach((node, ni) => {
+
+        const isLast = ni === group.nodes.length - 1;
+
+        const branch = isLast ? "└── " : "├── ";
+
+        output += `${branch}${node}\n`;
+      });
+
+      if (gi < structure.length - 1) {
+        output += "│\n";
+      }
+    });
+
+    el.textContent = output;
+  }
+
+  draw();
+
+  // animación leve tipo “sistema vivo”
+  setInterval(() => {
+    const flicker = Math.random();
+
+    if (flicker > 0.97) {
+      el.style.opacity = "0.7";
+    } else {
+      el.style.opacity = "1";
+    }
+  }, 120);
+}
