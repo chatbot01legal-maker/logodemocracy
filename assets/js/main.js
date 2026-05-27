@@ -124,7 +124,6 @@ bootScreen.addEventListener("touchstart", closeBootScreen);
 /* =====================
    SUBMENU MOBILE
 ===================== */
-
 const menuGroups =
   document.querySelectorAll(".menu-group");
 
@@ -138,23 +137,23 @@ menuGroups.forEach(group => {
     trigger.addEventListener("click", () => {
 
       if (window.innerWidth <= 768) {
-
         group.classList.toggle("active");
-
       }
 
     });
 
-  /* =====================
-     INIT COGNITIVE MAP
-  ===================== */
-
-  const mapEl = document.getElementById("cognitive-map");
-
-  if (mapEl && typeof renderCognitiveMap === "function") {
-    renderCognitiveMap("cognitive-map");
-  } else {
-    console.warn("Cognitive map not ready");
   }
 
 });
+
+/* =====================
+   INIT COGNITIVE MAP
+===================== */
+
+const mapEl = document.getElementById("cognitive-map");
+
+if (mapEl && typeof renderCognitiveMap === "function") {
+  renderCognitiveMap("cognitive-map");
+} else {
+  console.warn("Cognitive map not ready");
+}
