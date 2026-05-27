@@ -145,7 +145,7 @@ menuGroups.forEach(group => {
 
     });
 
-  }
+  
 
   /* =====================
      INIT COGNITIVE MAP
