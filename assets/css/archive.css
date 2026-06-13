@@ -23,7 +23,7 @@ body {
   height: calc(100vh - 50px);
 }
 
-/* SIDEBAR */
+/* SIDEBAR (CLAVE DEL FIX) */
 .sidebar {
   width: 260px;
   border-right: 1px solid #22c55e22;
@@ -31,45 +31,33 @@ body {
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between; /* 🔥 CLAVE */
+  height: 100%;
 }
 
 /* ÁRBOL */
 .tree {
-  flex: 1;
+  flex: 0 0 auto;
 }
 
-.folder {
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-.file {
-  margin-left: 10px;
-  opacity: 0.8;
-  cursor: pointer;
-}
-
-/* DOCUMENT */
-.document {
-  flex: 1;
-  padding: 20px;
-}
-
-.meta {
-  border: 1px solid #22c55e33;
+/* BLOQUE EPISTEMOLÓGICO */
+.epistemic {
+  flex: 0 0 auto;
+  margin: auto 0; /* 🔥 LO CENTRA ENTRE ARRIBA Y ABAJO */
   padding: 10px;
-  margin-bottom: 20px;
+  border: 1px solid #22c55e22;
+  font-size: 12px;
 }
 
 /* REY FILÓSOFO */
 .philosopher {
+  flex: 0 0 auto;
   border: 1px solid #22c55e33;
   padding: 10px;
   background: #050a12;
-
-  margin-top: auto; /* 🔥 CLAVE: lo empuja al fondo sin romper layout */
 }
 
+/* TEXTO */
 .philosopher-title {
   color: #22c55e;
   margin-bottom: 6px;
