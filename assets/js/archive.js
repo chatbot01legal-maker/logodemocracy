@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* =========================
-  SIDEBAR TOGGLE
+  SIDEBAR TOGGLE (SOPORTE TÁCTIL SEGURO)
   ========================= */
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.querySelector(".sidebar-toggle");
@@ -24,8 +24,15 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  toggle.addEventListener("click", () => {
+  function toggleSidebar(e) {
+    e.preventDefault(); // Evita doble ejecución en pantallas táctiles (click + touch)
+    e.stopPropagation(); // Detiene la propagación del evento hacia otros contenedores
+    
     const isCollapsed = sidebar.classList.toggle("collapsed");
     toggle.textContent = isCollapsed ? "▸" : "◂";
-  });
+  }
+
+  // Escucha tanto el toque físico de la tablet como el click convencional
+  toggle.addEventListener("touchstart", toggleSidebar, { passive: false });
+  toggle.addEventListener("click", toggleSidebar);
 });
