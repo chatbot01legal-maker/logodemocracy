@@ -1,70 +1,71 @@
 const BASE = "/logodemocracy";
 
-function render(app, html) {
-  app.innerHTML = html;
-}
-
-async function safeFetch(url) {
+async function safeText(url) {
   const res = await fetch(url);
   const text = await res.text();
 
-  // Intento detectar si GitHub devolvió HTML en vez de archivo real
-  const isHtml = text.trim().startsWith("<!DOCTYPE html>");
+  if (!res.ok) {
+    throw new Error("No existe: " + url);
+  }
 
-  return { ok: res.ok && !isHtml, status: res.status, data: text };
+  return text;
+}
+
+function tryJSON(text, fallback = {}) {
+  try {
+    if (!text || text.trim() === "") return fallback;
+    return JSON.parse(text);
+  } catch {
+    return fallback;
+  }
 }
 
 async function init() {
   const app = document.getElementById("app");
 
-  render(app, "<p style='color:#22c55e'>Cargando documento...</p>");
+  app.innerHTML = "<p style='color:#22c55e'>Cargando documento...</p>";
 
   try {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id") || "que-es";
+    const id = new URLSearchParams(location.search).get("id") || "que-es";
 
-    // 1. METADATA
-    const metaUrl = `${BASE}/metadata/${id}.json`;
-    const metaRes = await safeFetch(metaUrl);
+    // 1. META
+    const metaRaw = await safeText(`${BASE}/metadata/${id}.json`);
+    const meta = tryJSON(metaRaw, {
+      title: "Sin título",
+      section: "Sin sección",
+      markdown: null
+    });
 
-    if (!metaRes.ok) {
-      throw new Error("No se pudo cargar metadata: " + metaUrl);
+    // 2. MARKDOWN (opcional)
+    let markdown = "Contenido no disponible aún.";
+
+    if (meta.markdown) {
+      try {
+        const mdPath = meta.markdown.replace(/^\//, "");
+        markdown = await safeText(`${BASE}/${mdPath}`);
+      } catch {
+        markdown = "No se pudo cargar el contenido.";
+      }
     }
 
-    const meta = JSON.parse(metaRes.data);
-
-    // 2. MARKDOWN
-    const mdPath = meta.markdown.replace(/^\//, "");
-    const mdUrl = `${BASE}/${mdPath}`;
-
-    const mdRes = await safeFetch(mdUrl);
-
-    if (!mdRes.ok) {
-      throw new Error("No se pudo cargar markdown: " + mdUrl);
-    }
-
-    const markdown = mdRes.data;
-
-    // 3. RENDER FINAL
-    render(app, `
-      <div style="border:1px solid #22c55e33; padding:20px; margin-bottom:20px;">
-        <div style="font-size:12px; opacity:0.6;">${meta.section}</div>
-        <h1 style="margin:0;">${meta.title}</h1>
-        <div style="font-size:12px; opacity:0.5;">v${meta.version}</div>
+    // 3. RENDER SIEMPRE
+    app.innerHTML = `
+      <div style="border:1px solid #22c55e33; padding:16px;">
+        <h1>${meta.title}</h1>
+        <div style="opacity:0.6">${meta.section}</div>
       </div>
 
-      <pre style="white-space:pre-wrap; line-height:1.5;">
+      <pre style="white-space:pre-wrap; margin-top:20px;">
 ${markdown}
       </pre>
-    `);
-
+    `;
   } catch (err) {
-    render(app, `
-      <div style="color:#ff4d4d;">
-        <h3>Error cargando documento</h3>
-        <p>${err.message}</p>
+    app.innerHTML = `
+      <div style="color:red;">
+        ERROR CRÍTICO:<br>
+        ${err.message}
       </div>
-    `);
+    `;
   }
 }
 
