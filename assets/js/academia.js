@@ -1,11 +1,12 @@
-const BASE = "https://logodemocracy.tech";
-
 async function safeText(url) {
   const res = await fetch(url);
   const text = await res.text();
 
-  if (!res.ok) {
-    throw new Error("No existe: " + url);
+  // 🔥 detecta si GitHub devuelve HTML (error disfrazado)
+  const looksLikeHTML = text.trim().startsWith("<!DOCTYPE html") || text.trim().startsWith("<html");
+
+  if (!res.ok || looksLikeHTML) {
+    throw new Error("Respuesta inválida o archivo no encontrado: " + url);
   }
 
   return text;
