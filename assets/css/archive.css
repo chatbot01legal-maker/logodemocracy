@@ -37,7 +37,6 @@ body {
   box-sizing: border-box;
 
   transition: width 0.25s ease, padding 0.25s ease;
-  position: relative;
 }
 
 /* =========================
@@ -85,18 +84,6 @@ body {
   margin-bottom: 8px;
 }
 
-.epistemic-item {
-  display: flex;
-  gap: 6px;
-  margin: 4px 0;
-  opacity: 0.6;
-}
-
-.epistemic-item.active {
-  opacity: 1;
-  color: #22c55e;
-}
-
 /* =========================
    REY FILÓSOFO
    ========================= */
@@ -120,15 +107,16 @@ body {
 .philosopher-btn {
   margin-top: 8px;
   width: 100%;
+  display: block;
 }
 
 /* =========================
-   TOGGLE (CORRECTO TIPO VS CODE)
+   TOGGLE SIDEBAR
    ========================= */
 
 .sidebar-toggle {
   position: absolute;
-  top: 10px;
+  top: 12px;
   right: -10px;
 
   width: 18px;
@@ -142,16 +130,14 @@ body {
   background: #050a12;
   color: #22c55e;
 
+  font-size: 12px;
   cursor: pointer;
   user-select: none;
 
   z-index: 10;
 }
 
-/* =========================
-   SIDEBAR COLAPSADO
-   ========================= */
-
+/* cuando está colapsado */
 .sidebar.collapsed {
   width: 0;
   padding: 0;
