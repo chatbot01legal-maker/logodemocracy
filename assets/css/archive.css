@@ -37,7 +37,13 @@ body {
   box-sizing: border-box;
 
   transition: width 0.25s ease, padding 0.25s ease;
-  position: relative; /* 🔥 CLAVE: referencia del toggle */
+}
+
+.sidebar.collapsed {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+  border-right: none;
 }
 
 /* PANELES */
@@ -67,13 +73,13 @@ body {
 }
 
 /* EPISTEMIC */
-.epistemic {
-  font-size: 12px;
-}
-
 .epistemic-title {
   color: #22c55e;
   margin-bottom: 8px;
+}
+
+.epistemic-options div {
+  margin: 4px 0;
 }
 
 /* REY FILÓSOFO */
@@ -101,9 +107,9 @@ body {
 
 /* TOGGLE */
 .sidebar-toggle {
-  position: absolute;
-  top: 12px;
-  right: -10px;
+  position: fixed;
+  top: 60px;
+  left: 5px;
 
   width: 18px;
   height: 18px;
@@ -118,15 +124,5 @@ body {
 
   font-size: 12px;
   cursor: pointer;
-  user-select: none;
-
-  z-index: 10;
-}
-
-/* COLLAPSE */
-.sidebar.collapsed {
-  width: 0;
-  padding: 0;
-  overflow: hidden;
-  border-right: none;
+  z-index: 9999;
 }
