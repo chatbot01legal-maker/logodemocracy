@@ -1,8 +1,5 @@
 const content = document.getElementById("content");
 
-/* =========================
-   DOCUMENT LOADER
-   ========================= */
 function loadDocument(name) {
   content.innerHTML = "Cargando: " + name;
 }
@@ -15,24 +12,24 @@ document.querySelectorAll(".file").forEach(el => {
 });
 
 /* =========================
-   SIDEBAR TOGGLE (NUEVO)
+   SIDEBAR TOGGLE (FIX ROBUSTO)
    ========================= */
 
-const sidebar = document.querySelector(".sidebar");
-const toggle = document.querySelector(".toggle-sidebar");
-const layout = document.querySelector(".layout");
+document.addEventListener("DOMContentLoaded", () => {
+  const sidebar = document.querySelector(".sidebar");
+  const toggle = document.querySelector(".sidebar-toggle");
 
-toggle.addEventListener("click", () => {
-  sidebar.classList.toggle("collapsed");
-  layout.classList.toggle("sidebar-collapsed");
-});
+  if (!sidebar || !toggle) {
+    console.warn("Sidebar toggle no encontrado");
+    return;
+  }
 
-const sidebar = document.querySelector(".sidebar");
-const toggle = document.querySelector(".sidebar-toggle");
+  toggle.addEventListener("click", () => {
+    sidebar.classList.toggle("collapsed");
 
-toggle.addEventListener("click", () => {
-  sidebar.classList.toggle("collapsed");
-
-  // cambia el símbolo ▸ ↔ ▾
-  toggle.textContent = sidebar.classList.contains("collapsed") ? "▾" : "▸";
+    // cambia el triángulo visual
+    toggle.textContent = sidebar.classList.contains("collapsed")
+      ? "▾"
+      : "▸";
+  });
 });
