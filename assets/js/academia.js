@@ -1,4 +1,4 @@
-const BASE = "/logodemocracy";
+const BASE = "https://logodemocracy.tech";
 
 async function safeText(url) {
   const res = await fetch(url);
