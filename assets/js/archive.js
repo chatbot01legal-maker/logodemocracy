@@ -1,6 +1,5 @@
 const content = document.getElementById("content");
 
-/* documento */
 function loadDocument(name) {
   content.innerHTML = "Cargando: " + name;
 }
@@ -12,15 +11,12 @@ document.querySelectorAll(".file").forEach(el => {
   });
 });
 
-/* TOGGLE SIDEBAR */
+/* SIDEBAR TOGGLE (FUNCIONAL Y ESTABLE) */
 const sidebar = document.querySelector(".sidebar");
 const toggle = document.querySelector(".sidebar-toggle");
 
-if (sidebar && toggle) {
-  toggle.addEventListener("click", () => {
-    const collapsed = sidebar.classList.toggle("collapsed");
+toggle.addEventListener("click", () => {
+  const collapsed = sidebar.classList.toggle("collapsed");
 
-    // cambio visual del triángulo
-    toggle.textContent = collapsed ? "▸" : "◂";
-  });
-}
+  toggle.textContent = collapsed ? "▸" : "◂";
+});
