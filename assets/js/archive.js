@@ -12,18 +12,22 @@ document.querySelectorAll(".file").forEach(el => {
 });
 
 /* =========================
-   TOGGLE SIDEBAR (FIX LIMPIO)
+   SIDEBAR TOGGLE FIX REAL
    ========================= */
+
 document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.querySelector(".sidebar-toggle");
 
-  if (!sidebar || !toggle) return;
+  if (!sidebar || !toggle) {
+    console.error("Sidebar o toggle no encontrados");
+    return;
+  }
 
   toggle.addEventListener("click", () => {
-    const collapsed = sidebar.classList.toggle("collapsed");
+    const isCollapsed = sidebar.classList.toggle("collapsed");
 
-    // dirección del triángulo
-    toggle.textContent = collapsed ? "▸" : "◂";
+    // cambia dirección del triángulo
+    toggle.textContent = isCollapsed ? "▸" : "◂";
   });
 });
