@@ -1,9 +1,12 @@
+const BASE = "https://logodemocracy.tech";
+
 async function safeText(url) {
   const res = await fetch(url);
   const text = await res.text();
 
-  // 🔥 detecta si GitHub devuelve HTML (error disfrazado)
-  const looksLikeHTML = text.trim().startsWith("<!DOCTYPE html") || text.trim().startsWith("<html");
+  const looksLikeHTML =
+    text.trim().toLowerCase().startsWith("<!doctype html") ||
+    text.trim().toLowerCase().startsWith("<html");
 
   if (!res.ok || looksLikeHTML) {
     throw new Error("Respuesta inválida o archivo no encontrado: " + url);
@@ -24,12 +27,16 @@ function tryJSON(text, fallback = {}) {
 async function init() {
   const app = document.getElementById("app");
 
+  if (!app) {
+    throw new Error("No existe #app en el HTML");
+  }
+
   app.innerHTML = "<p style='color:#22c55e'>Cargando documento...</p>";
 
   try {
     const id = new URLSearchParams(location.search).get("id") || "que-es";
 
-    // 1. META
+    // 1. METADATA
     const metaRaw = await safeText(`${BASE}/metadata/${id}.json`);
     const meta = tryJSON(metaRaw, {
       title: "Sin título",
@@ -37,19 +44,18 @@ async function init() {
       markdown: null
     });
 
-    // 2. MARKDOWN (opcional)
+    // 2. MARKDOWN
     let markdown = "Contenido no disponible aún.";
 
     if (meta.markdown) {
-      try {
-        const mdPath = meta.markdown.replace(/^\//, "");
-        markdown = await safeText(`${BASE}/${mdPath}`);
-      } catch {
-        markdown = "No se pudo cargar el contenido.";
-      }
+      const mdPath = meta.markdown.startsWith("/")
+        ? meta.markdown.slice(1)
+        : meta.markdown;
+
+      markdown = await safeText(`${BASE}/${mdPath}`);
     }
 
-    // 3. RENDER SIEMPRE
+    // 3. RENDER FINAL
     app.innerHTML = `
       <div style="border:1px solid #22c55e33; padding:16px;">
         <h1>${meta.title}</h1>
@@ -60,6 +66,8 @@ async function init() {
 ${markdown}
       </pre>
     `;
+
+    console.log("RENDER OK");
   } catch (err) {
     app.innerHTML = `
       <div style="color:red;">
@@ -67,6 +75,8 @@ ${markdown}
         ${err.message}
       </div>
     `;
+
+    console.error(err);
   }
 }
 
