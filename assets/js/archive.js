@@ -4,7 +4,7 @@ function loadDocument(name) {
   content.innerHTML = "Cargando: " + name;
 }
 
-/* interacción básica del árbol */
+/* árbol */
 document.querySelectorAll(".file").forEach(el => {
   el.addEventListener("click", () => {
     loadDocument(el.textContent);
@@ -12,28 +12,18 @@ document.querySelectorAll(".file").forEach(el => {
 });
 
 /* =========================
-   SIDEBAR TOGGLE (FIX ROBUSTO)
+   TOGGLE SIDEBAR (FIX LIMPIO)
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.querySelector(".sidebar-toggle");
 
-  if (!sidebar || !toggle) {
-    console.error("Sidebar o toggle no encontrados");
-    return;
-  }
+  if (!sidebar || !toggle) return;
 
   toggle.addEventListener("click", () => {
-    const isCollapsed = sidebar.classList.toggle("collapsed");
+    const collapsed = sidebar.classList.toggle("collapsed");
 
-    // triángulo cambia dirección
-    toggle.textContent = isCollapsed ? "▸" : "◂";
-  });
-});
-
-    // cambia el triángulo visual
-    toggle.textContent = sidebar.classList.contains("collapsed")
-      ? "▾"
-      : "▸";
+    // dirección del triángulo
+    toggle.textContent = collapsed ? "▸" : "◂";
   });
 });
