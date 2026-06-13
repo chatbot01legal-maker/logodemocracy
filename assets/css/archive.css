@@ -28,8 +28,12 @@ body {
   width: 260px;
   border-right: 1px solid #22c55e22;
   padding: 12px;
+
+  display: flex;
+  flex-direction: column;
 }
 
+/* TREE */
 .folder {
   font-weight: bold;
   margin-top: 10px;
@@ -55,16 +59,22 @@ body {
 
 /* REY FILÓSOFO */
 .philosopher {
-  position: sticky;   /* en vez de fixed */
-  bottom: 16px;
-
-  width: 100%;        /* clave: que respete el ancho del sidebar */
-
-  margin-top: 20px;
+  margin-top: auto;   /* 👈 lo empuja al fondo */
 
   border: 1px solid #22c55e33;
   padding: 10px;
   background: #050a12;
 
-  box-sizing: border-box; /* evita overflow horizontal */
+  text-align: center;
+}
+
+.philosopher-title {
+  color: #22c55e;
+  margin-bottom: 6px;
+}
+
+.philosopher-btn {
+  display: block;
+  margin: 10px auto 0 auto;
+  width: 100%;
 }
