@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* =========================
-  SIDEBAR TOGGLE (FIX ROBUSTO)
+  SIDEBAR TOGGLE
   ========================= */
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.querySelector(".sidebar-toggle");
@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   toggle.addEventListener("click", () => {
     const isCollapsed = sidebar.classList.toggle("collapsed");
-    // El triángulo cambia de dirección según el estado de colapso
     toggle.textContent = isCollapsed ? "▸" : "◂";
   });
 });
