@@ -1,22 +1,31 @@
-const content = document.getElementById("content");
+document.addEventListener("DOMContentLoaded", () => {
 
-function loadDocument(name) {
-  content.innerHTML = "Cargando: " + name;
-}
+  const content = document.getElementById("content");
 
-/* árbol */
-document.querySelectorAll(".file").forEach(el => {
-  el.addEventListener("click", () => {
-    loadDocument(el.textContent);
+  function loadDocument(name) {
+    if (!content) return;
+    content.innerHTML = "Cargando: " + name;
+  }
+
+  /* árbol */
+  document.querySelectorAll(".file").forEach(el => {
+    el.addEventListener("click", () => {
+      loadDocument(el.textContent);
+    });
   });
-});
 
-/* SIDEBAR TOGGLE (FUNCIONAL Y ESTABLE) */
-const sidebar = document.querySelector(".sidebar");
-const toggle = document.querySelector(".sidebar-toggle");
+  /* SIDEBAR TOGGLE */
+  const sidebar = document.querySelector(".sidebar");
+  const toggle = document.querySelector(".sidebar-toggle");
 
-toggle.addEventListener("click", () => {
-  const collapsed = sidebar.classList.toggle("collapsed");
+  if (!sidebar || !toggle) {
+    console.error("Sidebar o toggle no encontrados");
+    return;
+  }
 
-  toggle.textContent = collapsed ? "▸" : "◂";
+  toggle.addEventListener("click", () => {
+    const collapsed = sidebar.classList.toggle("collapsed");
+    toggle.textContent = collapsed ? "▸" : "◂";
+  });
+
 });
