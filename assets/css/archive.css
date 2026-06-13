@@ -1,10 +1,29 @@
-html, body {
+body {
   margin: 0;
-  padding: 0;
+  font-family: monospace;
   background: #050a12;
   color: #e5e7eb;
 }
 
+/* TOPBAR */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #22c55e33;
+}
+
+.brand {
+  color: #22c55e;
+}
+
+/* LAYOUT */
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* SIDEBAR */
 .sidebar {
   width: 260px;
   border-right: 1px solid #22c55e22;
@@ -18,27 +37,99 @@ html, body {
   box-sizing: border-box;
 
   transition: width 0.25s ease, padding 0.25s ease;
-  overflow: hidden;
+  position: relative;
 }
 
-/* 🔥 NUEVO: modo colapsado tipo "rail" */
-.sidebar.collapsed {
-  width: 24px;       /* SOLO para el botón */
-  padding: 8px 4px;
+/* =========================
+PANELES
+========================= */
+
+.tree,
+.epistemic,
+.philosopher {
+  border: 1px solid #22c55e22;
+  padding: 10px;
+  background: #050a12;
 }
 
-/* ocultar contenido interno cuando está colapsado */
-.sidebar.collapsed .tree,
-.sidebar.collapsed .epistemic,
-.sidebar.collapsed .philosopher {
-  display: none;
+/* =========================
+ÁRBOL
+========================= */
+
+.tree {
+  flex: 1;
+  overflow: auto;
 }
 
-/* botón SIEMPRE visible y centrado */
+.folder {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.file {
+  margin-left: 10px;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+/* =========================
+EPISTEMIC
+========================= */
+
+.epistemic {
+  font-size: 12px;
+}
+
+.epistemic-title {
+  color: #22c55e;
+  margin-bottom: 8px;
+}
+
+.epistemic-item {
+  display: flex;
+  gap: 6px;
+  margin: 4px 0;
+  opacity: 0.6;
+}
+
+.epistemic-item.active {
+  opacity: 1;
+  color: #22c55e;
+}
+
+/* =========================
+REY FILÓSOFO
+========================= */
+
+.philosopher {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 120px;
+}
+
+.philosopher-title {
+  color: #22c55e;
+  margin-bottom: 6px;
+}
+
+.philosopher-text {
+  text-align: center;
+}
+
+.philosopher-btn {
+  margin-top: 8px;
+  width: 100%;
+}
+
+/* =========================
+TOGGLE (CORRECTO TIPO VS CODE)
+========================= */
+
 .sidebar-toggle {
-  position: fixed;
-  top: 60px;
-  left: 6px;
+  position: absolute;
+  top: 10px;
+  right: -10px;
 
   width: 18px;
   height: 18px;
@@ -51,7 +142,19 @@ html, body {
   background: #050a12;
   color: #22c55e;
 
-  font-size: 12px;
   cursor: pointer;
-  z-index: 9999;
+  user-select: none;
+
+  z-index: 10;
+}
+
+/* =========================
+SIDEBAR COLAPSADO
+========================= */
+
+.sidebar.collapsed {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+  border-right: none;
 }

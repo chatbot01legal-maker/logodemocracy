@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   const content = document.getElementById("content");
 
   function loadDocument(name) {
@@ -7,14 +6,16 @@ document.addEventListener("DOMContentLoaded", () => {
     content.innerHTML = "Cargando: " + name;
   }
 
-  /* árbol */
+  /* Interacción básica del árbol */
   document.querySelectorAll(".file").forEach(el => {
     el.addEventListener("click", () => {
       loadDocument(el.textContent);
     });
   });
 
-  /* SIDEBAR TOGGLE */
+  /* =========================
+  SIDEBAR TOGGLE (FIX ROBUSTO)
+  ========================= */
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.querySelector(".sidebar-toggle");
 
@@ -24,8 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   toggle.addEventListener("click", () => {
-    const collapsed = sidebar.classList.toggle("collapsed");
-    toggle.textContent = collapsed ? "▸" : "◂";
+    const isCollapsed = sidebar.classList.toggle("collapsed");
+    // El triángulo cambia de dirección según el estado de colapso
+    toggle.textContent = isCollapsed ? "▸" : "◂";
   });
-
 });
