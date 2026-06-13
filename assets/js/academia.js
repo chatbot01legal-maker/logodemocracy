@@ -19,7 +19,8 @@ function tryJSON(text, fallback = {}) {
   try {
     if (!text || text.trim() === "") return fallback;
     return JSON.parse(text);
-  } catch {
+  } catch (e) {
+    console.error("JSON error:", e);
     return fallback;
   }
 }
@@ -27,8 +28,10 @@ function tryJSON(text, fallback = {}) {
 async function init() {
   const app = document.getElementById("app");
 
+  // 🔥 BLOQUE CRÍTICO DE DEBUG
   if (!app) {
-    throw new Error("No existe #app en el HTML");
+    console.error("NO EXISTE #app EN EL DOM");
+    return;
   }
 
   app.innerHTML = "<p style='color:#22c55e'>Cargando documento...</p>";
@@ -36,7 +39,7 @@ async function init() {
   try {
     const id = new URLSearchParams(location.search).get("id") || "que-es";
 
-    // 1. METADATA
+    // META
     const metaRaw = await safeText(`${BASE}/metadata/${id}.json`);
     const meta = tryJSON(metaRaw, {
       title: "Sin título",
@@ -44,7 +47,7 @@ async function init() {
       markdown: null
     });
 
-    // 2. MARKDOWN
+    // MARKDOWN
     let markdown = "Contenido no disponible aún.";
 
     if (meta.markdown) {
@@ -55,7 +58,9 @@ async function init() {
       markdown = await safeText(`${BASE}/${mdPath}`);
     }
 
-    // 3. RENDER FINAL
+    // RENDER FINAL
+    console.log("RENDER EJECUTADO");
+
     app.innerHTML = `
       <div style="border:1px solid #22c55e33; padding:16px;">
         <h1>${meta.title}</h1>
@@ -67,16 +72,15 @@ ${markdown}
       </pre>
     `;
 
-    console.log("RENDER OK");
   } catch (err) {
+    console.error(err);
+
     app.innerHTML = `
       <div style="color:red;">
         ERROR CRÍTICO:<br>
         ${err.message}
       </div>
     `;
-
-    console.error(err);
   }
 }
 
