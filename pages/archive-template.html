@@ -1,0 +1,59 @@
+cat > pages/archive-template.html <<'EOF'
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Academia | Logodemocracy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="/assets/css/archive.css">
+</head>
+
+<body>
+
+  <!-- NAV SUPERIOR -->
+  <header class="topbar">
+    <div class="brand">LOGODEMOCRACY / ACADEMIA</div>
+    <div class="lang">ES | EN</div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <div class="layout">
+
+    <!-- EXPLORADOR -->
+    <aside class="sidebar">
+      <div class="tree">
+        <div class="folder">📁 Fundamentos</div>
+        <div class="file">📄 que_es.md</div>
+        <div class="file">📄 contexto.md</div>
+      </div>
+    </aside>
+
+    <!-- DOCUMENTO -->
+    <main class="document">
+      <div class="meta">
+        <h1>Documento</h1>
+        <p>Selecciona un archivo</p>
+      </div>
+
+      <div class="content" id="content">
+        Cargando sistema...
+      </div>
+    </main>
+
+  </div>
+
+  <!-- REY FILÓSOFO -->
+  <div class="philosopher">
+    <div class="philosopher-title">🏛 Rey Filósofo</div>
+    <div class="philosopher-text">
+      ¿Quieres profundizar en esta idea?
+    </div>
+    <button class="philosopher-btn">Profundizar</button>
+  </div>
+
+  <script src="/assets/js/archive.js"></script>
+
+</body>
+</html>
+EOF
