@@ -162,3 +162,19 @@ body {
 .layout.sidebar-collapsed .document {
   flex: 1;
 }
+
+.sidebar-toggle {
+  position: fixed;
+  top: 60px;
+  left: 10px;
+  z-index: 9999;
+  cursor: pointer;
+  color: #22c55e;
+  font-size: 18px;
+  user-select: none;
+}
+
+/* cuando sidebar está oculto */
+.sidebar.collapsed {
+  display: none;
+}
