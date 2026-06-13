@@ -21,11 +21,13 @@ body {
 .layout {
   display: flex;
   height: 100vh;
+  overflow: hidden;
 }
 
 /* SIDEBAR */
 .sidebar {
   width: 260px;
+  min-width: 260px;
   border-right: 1px solid #22c55e22;
   padding: 12px;
 
@@ -36,7 +38,7 @@ body {
   height: 100vh;
   box-sizing: border-box;
 
-  transition: width 0.25s ease, padding 0.25s ease;
+  transition: width 0.25s ease, min-width 0.25s ease, padding 0.25s ease;
   position: relative;
 }
 
@@ -50,15 +52,17 @@ PANELES
   border: 1px solid #22c55e22;
   padding: 10px;
   background: #050a12;
+  box-sizing: border-box;
 }
 
 /* =========================
-ÁRBOL
+ÁRBOL (CORREGIDO: CONTROL DE ALTURA)
 ========================= */
 
 .tree {
-  flex: 1;
-  overflow: auto;
+  flex: 1 1 auto;      /* Permite que crezca y encoja de forma dinámica */
+  max-height: 40vh;    /* No permite que tome más del 40% de la pantalla vertical */
+  overflow-y: auto;    /* Activa scroll interno si el árbol es muy largo */
 }
 
 .folder {
@@ -78,6 +82,7 @@ EPISTEMIC
 
 .epistemic {
   font-size: 12px;
+  flex-shrink: 0;      /* Impide que este bloque se aplaste */
 }
 
 .epistemic-title {
@@ -98,7 +103,7 @@ EPISTEMIC
 }
 
 /* =========================
-REY FILÓSOFO
+REY FILÓSOFO (CORREGIDO: SIEMPRE VISIBLE)
 ========================= */
 
 .philosopher {
@@ -106,6 +111,7 @@ REY FILÓSOFO
   flex-direction: column;
   align-items: center;
   min-height: 120px;
+  flex-shrink: 0;      /* Garantiza su espacio en pantalla */
 }
 
 .philosopher-title {
@@ -123,12 +129,12 @@ REY FILÓSOFO
 }
 
 /* =========================
-TOGGLE (FIJO E INMÓVIL EN LA ESQUINA)
+TOGGLE (BOTÓN FIJO EN EL RIEL)
 ========================= */
 
 .sidebar-toggle {
   position: fixed;
-  top: 60px; /* Ajusta esto según el alto de tu topbar si es necesario */
+  top: 60px;
   left: 3px;
 
   width: 18px;
@@ -145,23 +151,25 @@ TOGGLE (FIJO E INMÓVIL EN LA ESQUINA)
   cursor: pointer;
   user-select: none;
 
-  z-index: 9999; /* Por encima de todo */
+  z-index: 9999;
 }
 
 /* =========================
-SIDEBAR COLAPSADO (RIEL DE 24PX)
+SIDEBAR COLAPSADO (FORZADO DETERMINISTA)
 ========================= */
 
 .sidebar.collapsed {
   width: 24px;
+  min-width: 24px;
+  max-width: 24px;
   padding: 12px 0;
   overflow: hidden;
   border-right: none;
 }
 
-/* Ocultar los paneles internos */
+/* Ocultar contenido interno al colapsar */
 .sidebar.collapsed .tree,
 .sidebar.collapsed .epistemic,
 .sidebar.collapsed .philosopher {
-  display: none;
+  display: none !important;
 }
