@@ -4,64 +4,61 @@
   <meta charset="UTF-8" />
   <title>Academia | Logodemocracy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <link rel="stylesheet" href="/assets/css/archive.css">
 </head>
 
 <body>
 
-  <header class="topbar">
-    <div class="brand">LOGODEMOCRACY / ACADEMIA</div>
-    <div class="lang">ES | EN</div>
-  </header>
+<header class="topbar">
+  <div class="brand">LOGODEMOCRACY / ACADEMIA</div>
+  <div class="lang">ES | EN</div>
+</header>
 
-  <div class="layout">
+<div class="layout">
 
-    <aside class="sidebar">
+  <!-- BOTÓN FUERA DEL SIDEBAR (CRÍTICO) -->
+  <div class="sidebar-toggle">◂</div>
 
-      <!-- toggle -->
-      <div class="sidebar-toggle">◂</div>
+  <aside class="sidebar">
 
-      <div class="tree">
-        <div class="folder">📁 Fundamentos</div>
-        <div class="file">📄 que_es.md</div>
-        <div class="file">📄 contexto.md</div>
+    <div class="tree">
+      <div class="folder">📁 Fundamentos</div>
+      <div class="file">📄 que_es.md</div>
+      <div class="file">📄 contexto.md</div>
+    </div>
+
+    <div class="epistemic">
+      <div class="epistemic-title">¿Cómo sabemos esto?</div>
+      <div class="epistemic-options">
+        <div>□ Es una idea que estamos explorando.</div>
+        <div>□ Se basa en argumentos y observaciones.</div>
+        <div>□ Existen experimentos que la respaldan.</div>
+        <div>□ Muchos estudios independientes apuntan en la misma dirección.</div>
       </div>
+    </div>
 
-      <div class="epistemic">
-        <div class="epistemic-title">¿Cómo sabemos esto?</div>
-        <div class="epistemic-options">
-          <div>□ Es una idea que estamos explorando.</div>
-          <div>□ Se basa en argumentos y observaciones.</div>
-          <div>□ Existen experimentos que la respaldan.</div>
-          <div>□ Muchos estudios independientes apuntan en la misma dirección.</div>
-        </div>
-      </div>
+    <div class="philosopher">
+      <div class="philosopher-title">🏛 Rey Filósofo</div>
+      <div class="philosopher-text">¿Quieres profundizar en esta idea?</div>
+      <button class="philosopher-btn">Profundizar</button>
+    </div>
 
-      <div class="philosopher">
-        <div class="philosopher-title">🏛 Rey Filósofo</div>
-        <div class="philosopher-text">
-          ¿Quieres profundizar en esta idea?
-        </div>
-        <button class="philosopher-btn">Profundizar</button>
-      </div>
+  </aside>
 
-    </aside>
+  <main class="document">
+    <div class="meta">
+      <h1>Documento</h1>
+      <p>Selecciona un archivo</p>
+    </div>
 
-    <main class="document">
-      <div class="meta">
-        <h1>Documento</h1>
-        <p>Selecciona un archivo</p>
-      </div>
+    <div class="content" id="content">
+      Cargando sistema...
+    </div>
+  </main>
 
-      <div class="content" id="content">
-        Cargando sistema...
-      </div>
-    </main>
+</div>
 
-  </div>
-
-  <script src="/assets/js/archive.js"></script>
+<script src="/assets/js/archive.js"></script>
 
 </body>
 </html>
