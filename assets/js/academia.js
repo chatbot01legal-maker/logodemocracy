@@ -1,54 +1,70 @@
+const BASE = "/logodemocracy";
+
+function render(app, html) {
+  app.innerHTML = html;
+}
+
+async function safeFetch(url) {
+  const res = await fetch(url);
+  const text = await res.text();
+
+  // Intento detectar si GitHub devolvió HTML en vez de archivo real
+  const isHtml = text.trim().startsWith("<!DOCTYPE html>");
+
+  return { ok: res.ok && !isHtml, status: res.status, data: text };
+}
+
 async function init() {
   const app = document.getElementById("app");
+
+  render(app, "<p style='color:#22c55e'>Cargando documento...</p>");
 
   try {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id") || "que-es";
 
-    // 🔥 base del repo (CRÍTICO en GitHub Pages)
-    const BASE = "/logodemocracy";
-
+    // 1. METADATA
     const metaUrl = `${BASE}/metadata/${id}.json`;
+    const metaRes = await safeFetch(metaUrl);
 
-    const metaRes = await fetch(metaUrl);
-    if (!metaRes.ok) throw new Error("JSON no encontrado: " + metaUrl);
+    if (!metaRes.ok) {
+      throw new Error("No se pudo cargar metadata: " + metaUrl);
+    }
 
-    const meta = await metaRes.json();
+    const meta = JSON.parse(metaRes.data);
 
-    // 🔥 quitar slash inicial del markdown (CRÍTICO)
-    const mdPath = meta.markdown.startsWith("/")
-      ? meta.markdown.slice(1)
-      : meta.markdown;
-
+    // 2. MARKDOWN
+    const mdPath = meta.markdown.replace(/^\//, "");
     const mdUrl = `${BASE}/${mdPath}`;
 
-    const mdRes = await fetch(mdUrl);
-    if (!mdRes.ok) throw new Error("MD no encontrado: " + mdUrl);
+    const mdRes = await safeFetch(mdUrl);
 
-    const markdown = await mdRes.text();
+    if (!mdRes.ok) {
+      throw new Error("No se pudo cargar markdown: " + mdUrl);
+    }
 
-    app.innerHTML = `
-      <div style="border:1px solid #22c55e33; padding:20px;">
-        <h2>${meta.title}</h2>
-        <div style="opacity:0.6; font-size:12px;">
-          ${meta.section} · v${meta.version}
-        </div>
+    const markdown = mdRes.data;
+
+    // 3. RENDER FINAL
+    render(app, `
+      <div style="border:1px solid #22c55e33; padding:20px; margin-bottom:20px;">
+        <div style="font-size:12px; opacity:0.6;">${meta.section}</div>
+        <h1 style="margin:0;">${meta.title}</h1>
+        <div style="font-size:12px; opacity:0.5;">v${meta.version}</div>
       </div>
 
-      <pre style="white-space:pre-wrap; margin-top:20px;">
+      <pre style="white-space:pre-wrap; line-height:1.5;">
 ${markdown}
       </pre>
-    `;
+    `);
 
   } catch (err) {
-    console.error(err);
-
-    app.innerHTML = `
-      <div style="color:red;">
-        ERROR:<br><br>
-        ${err.message}
+    render(app, `
+      <div style="color:#ff4d4d;">
+        <h3>Error cargando documento</h3>
+        <p>${err.message}</p>
       </div>
-    `;
+    `);
   }
 }
 
