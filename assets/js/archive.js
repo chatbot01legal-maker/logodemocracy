@@ -26,3 +26,13 @@ toggle.addEventListener("click", () => {
   sidebar.classList.toggle("collapsed");
   layout.classList.toggle("sidebar-collapsed");
 });
+
+const sidebar = document.querySelector(".sidebar");
+const toggle = document.querySelector(".sidebar-toggle");
+
+toggle.addEventListener("click", () => {
+  sidebar.classList.toggle("collapsed");
+
+  // cambia el símbolo ▸ ↔ ▾
+  toggle.textContent = sidebar.classList.contains("collapsed") ? "▾" : "▸";
+});
