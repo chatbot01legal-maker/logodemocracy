@@ -1,5 +1,6 @@
 const content = document.getElementById("content");
 
+/* documento */
 function loadDocument(name) {
   content.innerHTML = "Cargando: " + name;
 }
@@ -11,23 +12,15 @@ document.querySelectorAll(".file").forEach(el => {
   });
 });
 
-/* =========================
-   SIDEBAR TOGGLE FIX REAL
-   ========================= */
+/* TOGGLE SIDEBAR */
+const sidebar = document.querySelector(".sidebar");
+const toggle = document.querySelector(".sidebar-toggle");
 
-document.addEventListener("DOMContentLoaded", () => {
-  const sidebar = document.querySelector(".sidebar");
-  const toggle = document.querySelector(".sidebar-toggle");
-
-  if (!sidebar || !toggle) {
-    console.error("Sidebar o toggle no encontrados");
-    return;
-  }
-
+if (sidebar && toggle) {
   toggle.addEventListener("click", () => {
-    const isCollapsed = sidebar.classList.toggle("collapsed");
+    const collapsed = sidebar.classList.toggle("collapsed");
 
-    // cambia dirección del triángulo
-    toggle.textContent = isCollapsed ? "▸" : "◂";
+    // cambio visual del triángulo
+    toggle.textContent = collapsed ? "▸" : "◂";
   });
-});
+}
