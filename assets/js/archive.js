@@ -19,13 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.querySelector(".sidebar-toggle");
 
-  if (!sidebar || !toggle) {
-    console.warn("Sidebar toggle no encontrado");
-    return;
-  }
-
   toggle.addEventListener("click", () => {
-    sidebar.classList.toggle("collapsed");
+    const isCollapsed = sidebar.classList.toggle("collapsed");
+
+    toggle.textContent = isCollapsed ? "☰" : "▸";
+  });
+});
 
     // cambia el triángulo visual
     toggle.textContent = sidebar.classList.contains("collapsed")
