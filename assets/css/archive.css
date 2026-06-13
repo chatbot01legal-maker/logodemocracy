@@ -132,3 +132,33 @@ body {
   width: 100%;
   display: block;
 }
+
+
+/* =========================
+   SIDEBAR TOGGLE (GOOGLE STYLE)
+   ========================= */
+
+.toggle-sidebar {
+  cursor: pointer;
+  color: #22c55e;
+  font-size: 18px;
+  user-select: none;
+}
+
+/* estado colapsado */
+.sidebar.collapsed {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+  border-right: none;
+}
+
+/* transición suave */
+.sidebar {
+  transition: width 0.25s ease, padding 0.25s ease;
+}
+
+/* cuando sidebar está oculto, el documento ocupa todo */
+.layout.sidebar-collapsed .document {
+  flex: 1;
+}
