@@ -1,3 +1,10 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #050a12;
+  color: #e5e7eb;
+}
+
 .sidebar {
   width: 260px;
   border-right: 1px solid #22c55e22;
