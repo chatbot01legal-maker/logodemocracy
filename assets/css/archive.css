@@ -123,12 +123,12 @@ REY FILÓSOFO
 }
 
 /* =========================
-TOGGLE (BOTÓN PEQUEÑO FIJO EN EL RIEL)
+TOGGLE (FIJO E INMÓVIL EN LA ESQUINA)
 ========================= */
 
 .sidebar-toggle {
-  position: absolute;
-  top: 12px;
+  position: fixed;
+  top: 60px; /* Ajusta esto según el alto de tu topbar si es necesario */
   left: 3px;
 
   width: 18px;
@@ -145,11 +145,11 @@ TOGGLE (BOTÓN PEQUEÑO FIJO EN EL RIEL)
   cursor: pointer;
   user-select: none;
 
-  z-index: 10;
+  z-index: 9999; /* Por encima de todo */
 }
 
 /* =========================
-SIDEBAR COLAPSADO (90-95% - MODO RIEL)
+SIDEBAR COLAPSADO (RIEL DE 24PX)
 ========================= */
 
 .sidebar.collapsed {
@@ -159,7 +159,7 @@ SIDEBAR COLAPSADO (90-95% - MODO RIEL)
   border-right: none;
 }
 
-/* Ocultar los paneles internos para evitar desbordes */
+/* Ocultar los paneles internos */
 .sidebar.collapsed .tree,
 .sidebar.collapsed .epistemic,
 .sidebar.collapsed .philosopher {
