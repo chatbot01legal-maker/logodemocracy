@@ -55,21 +55,16 @@ body {
 
 /* REY FILÓSOFO */
 .philosopher {
-  position: fixed;
+  position: sticky;   /* en vez de fixed */
   bottom: 16px;
-  left: 16px;
-  width: 260px;
+
+  width: 100%;        /* clave: que respete el ancho del sidebar */
+
+  margin-top: 20px;
+
   border: 1px solid #22c55e33;
   padding: 10px;
   background: #050a12;
-}
 
-.philosopher-title {
-  color: #22c55e;
-  margin-bottom: 6px;
-}
-
-.philosopher-btn {
-  margin-top: 8px;
-  width: 100%;
+  box-sizing: border-box; /* evita overflow horizontal */
 }
