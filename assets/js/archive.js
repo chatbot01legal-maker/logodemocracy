@@ -14,15 +14,20 @@ document.querySelectorAll(".file").forEach(el => {
 /* =========================
    SIDEBAR TOGGLE (FIX ROBUSTO)
    ========================= */
-
 document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.querySelector(".sidebar-toggle");
 
+  if (!sidebar || !toggle) {
+    console.error("Sidebar o toggle no encontrados");
+    return;
+  }
+
   toggle.addEventListener("click", () => {
     const isCollapsed = sidebar.classList.toggle("collapsed");
 
-    toggle.textContent = isCollapsed ? "☰" : "▸";
+    // triángulo cambia dirección
+    toggle.textContent = isCollapsed ? "▸" : "◂";
   });
 });
 
