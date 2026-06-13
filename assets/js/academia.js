@@ -1,76 +1,64 @@
-/* Constantes de configuracion */
 const BASE = "https://logodemocracy.tech";
 
-/* Funciones de telemetria */
-function logScreen(msg, isError = false) {
-  const app = document.getElementById("app");
-  if (!app) return;
-  const color = isError ? "#ff4444" : "#444";
-  const weight = isError ? "bold" : "normal";
-  app.innerHTML += `<div style="color:${color}; font-weight:${weight}; font-family:monospace; font-size:13px; padding:4px; border-bottom:1px solid #eee;">[Log] ${msg}</div>`;
-}
-
-/* Captura de errores globales - Movido al inicio */
-window.onerror = (msg, url, line) => logScreen(`Error Global: ${msg} (Línea: ${line})`, true);
-window.addEventListener("unhandledrejection", (e) => logScreen(`Promesa Rechazada: ${e.reason}`, true));
-
 async function safeText(url) {
-  logScreen(`Iniciando fetch: ${url}`);
-  /* Uso estricto de cache: 'no-store' */
   const res = await fetch(url, { cache: "no-store" });
-  logScreen(`Status HTTP: ${res.status}`);
   const text = await res.text();
   const looksLikeHTML = text.trim().toLowerCase().startsWith("<!doctype html") || text.trim().toLowerCase().startsWith("<html");
   if (!res.ok || looksLikeHTML) {
-    throw new Error(`Respuesta inválida (${res.status}): El endpoint devolvió HTML o falló.`);
+    throw new Error(`Error al obtener contenido válido desde: ${url}`);
   }
-  logScreen(`Fetch exitoso. Tamaño: ${text.length} bytes`);
   return text;
 }
 
 function tryJSON(text, fallback = {}) {
   try {
-    const parsed = JSON.parse(text);
-    logScreen(`JSON parseado correctamente`);
-    return parsed;
+    return JSON.parse(text);
   } catch (e) {
-    logScreen(`Fallo al parsear JSON: ${e.message}`, true);
     return fallback;
   }
 }
 
 async function init() {
   const app = document.getElementById("app");
-  if (!app) {
-    alert("Error Crítico: Contenedor #app no existe en el DOM.");
-    return;
-  }
-  app.innerHTML = `<h3 style="color:#333; font-family:sans-serif;">Modo Diagnóstico Activo</h3>`;
-  logScreen("DOM cargado. Ejecutando init()...");
+  if (!app) return;
+
   try {
     const id = new URLSearchParams(location.search).get("id") || "que-es";
-    logScreen(`Parámetro ID detectado: ${id}`);
+    
+    /* Nota: Asumimos que los metadatos se alojan en /metadata/id.json en la raiz */
     const metaUrl = `${BASE}/metadata/${id}.json`;
     const metaRaw = await safeText(metaUrl);
     const meta = tryJSON(metaRaw);
+
+    /* Mapeo dinámico para leer el archivo markdown proveído */
     let markdown = "Contenido no disponible aún.";
-    if (meta.markdown) {
-      logScreen(`Ruta markdown detectada: ${meta.markdown}`);
-      const mdPath = meta.markdown.replace(/^\//, "");
+    const mdPath = `content/es/fundamentos/${id}.md`;
+    
+    try {
       markdown = await safeText(`${BASE}/${mdPath}`);
-    } else {
-      logScreen("Advertencia: El JSON no contiene la propiedad 'markdown'", true);
+    } catch (err) {
+      if (meta.markdown) {
+        const fallbackPath = meta.markdown.replace(/^\//, "");
+        markdown = await safeText(`${BASE}/${fallbackPath}`);
+      } else {
+        throw err;
+      }
     }
-    logScreen("Renderizando vista final...");
-    setTimeout(() => {
-      app.innerHTML = `<h1>${meta.title || 'Sin Título'}</h1><div>${meta.section || 'Sin Sección'}</div><pre style="white-space: pre-wrap; font-family:sans-serif;">${markdown}</pre>`;
-    }, 2000);
+
+    app.innerHTML = `
+      <h1 style="color:#22c55e; margin-bottom:10px;">${meta.title || 'Qué es Logodemocracy'}</h1>
+      <div style="color:#64748b; margin-bottom:20px; font-size:14px;">${meta.section || 'Fundamentos'}</div>
+      <div style="white-space: pre-wrap; line-height:1.6; color:#e2e8f0;">${markdown}</div>
+    `;
+
   } catch (err) {
-    logScreen(`Excepción capturada en init(): ${err.message}`, true);
+    app.innerHTML = `
+      <p style="color:#ff4444;">Error al cargar el documento.</p>
+      <small style="color:#64748b;">Detalle: ${err.message}</small>
+    `;
   }
 }
 
-/* Delegacion segura de la ejecucion */
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {
