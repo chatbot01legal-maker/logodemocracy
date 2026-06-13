@@ -13,26 +13,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* =========================
-  SIDEBAR TOGGLE (SOPORTE TÁCTIL SEGURO)
-  ========================= */
+  /* ========================================================
+     SIDEBAR TOGGLE (OPTIMIZADO CON POINTERDOWN PARA TABLETS)
+     ======================================================== */
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.querySelector(".sidebar-toggle");
 
   if (!sidebar || !toggle) {
-    console.error("Sidebar o toggle no encontrados");
-    return;
-  }
+    console.warn("Sidebar o toggle no encontrados en el DOM actual.");
+  } else {
+    function toggleSidebar(e) {
+      e.stopPropagation(); // Evita la propagación hacia otros contenedores
+      
+      const isCollapsed = sidebar.classList.toggle("collapsed");
+      toggle.textContent = isCollapsed ? "▸" : "◂";
+    }
 
-  function toggleSidebar(e) {
-    e.preventDefault(); // Evita doble ejecución en pantallas táctiles (click + touch)
-    e.stopPropagation(); // Detiene la propagación del evento hacia otros contenedores
-    
-    const isCollapsed = sidebar.classList.toggle("collapsed");
-    toggle.textContent = isCollapsed ? "▸" : "◂";
+    // pointerdown captura tanto el toque físico de la tablet como el click del mouse sin duplicar eventos
+    toggle.addEventListener("pointerdown", toggleSidebar);
   }
-
-  // Escucha tanto el toque físico de la tablet como el click convencional
-  toggle.addEventListener("touchstart", toggleSidebar, { passive: false });
-  toggle.addEventListener("click", toggleSidebar);
 });

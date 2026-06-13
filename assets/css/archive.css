@@ -25,7 +25,7 @@ body {
   width: 100vw;
 }
 
-/* SIDEBAR (CORREGIDO: Sin !important para permitir la animación) */
+/* SIDEBAR */
 .sidebar {
   width: 260px;
   min-width: 260px;
@@ -158,7 +158,7 @@ TOGGLE
 }
 
 /* =========================
-FORZADO ABSOLUTO CUANDO SE COLAPSA (Sobreescribe con éxito)
+FORZADO ABSOLUTO CUANDO SE COLAPSA
 ========================= */
 
 .sidebar.collapsed {
