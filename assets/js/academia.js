@@ -1,4 +1,3 @@
-cat > assets/js/academia.js << 'EOF'
 const BASE = "https://logodemocracy.tech";
 
 // 1. Inyector de telemetría en pantalla
@@ -95,4 +94,4 @@ if (document.readyState === 'loading') {
 } else {
   init();
 }
-EOF
+
