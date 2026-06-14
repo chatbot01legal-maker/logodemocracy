@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const bootText = document.getElementById("boot-text");
   const bootScreen = document.getElementById("boot-screen");
+  
   const introText = `
 Hasta que los filósofos reinen en las ciudades…
 
@@ -15,8 +16,6 @@ no cesarán los males para las ciudades.
 
 — Platón
 `;
-  
-  
 
   let i = 0;
   let bootClosed = false;
@@ -26,9 +25,10 @@ no cesarán los males para las ciudades.
     bootClosed = true;
     bootScreen.classList.add("fade-out");
 
+    // Espera exacta de 1.5s para que el desvanecimiento termine de forma suave
     setTimeout(() => {
       window.location.href = "/pages/archive-template.html";
-    }, 1500); // 1.5s que coincide con la transición del CSS original
+    }, 1500); 
   }
 
   function typeBoot() {
