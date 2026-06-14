@@ -21,11 +21,16 @@ body {
 .layout {
   display: flex;
   height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
 /* SIDEBAR */
 .sidebar {
   width: 260px;
+  min-width: 260px;
+  max-width: 260px;
+
   border-right: 1px solid #22c55e22;
   padding: 12px;
 
@@ -36,15 +41,27 @@ body {
   height: 100vh;
   box-sizing: border-box;
 
-  transition: width 0.25s ease, padding 0.25s ease;
+  transition:
+    width 0.25s ease,
+    min-width 0.25s ease,
+    max-width 0.25s ease,
+    padding 0.25s ease;
+
   overflow: hidden;
-  position: relative; /* Permite posicionar elementos respecto a la barra */
+  position: relative;
+
+  flex-shrink: 0;
 }
 
 /* LÓGICA DE OCULTAMIENTO TIPO RAIL */
 .sidebar.collapsed {
-  width: 24px;       /* Ajuste estricto para mantener el riel del botón */
-  padding: 8px 2px;
+  width: 24px !important;
+  min-width: 24px !important;
+  max-width: 24px !important;
+
+  padding: 8px 2px !important;
+
+  overflow: hidden;
 }
 
 /* Ocultar contenido interno cuando está colapsado */
@@ -64,16 +81,17 @@ PANELES
   border: 1px solid #22c55e22;
   padding: 10px;
   background: #050a12;
+  box-sizing: border-box;
 }
 
 /* =========================
-ÁRBOL (CORREGIDO: Máxima altura para no pisar al Rey Filósofo)
+ÁRBOL
 ========================= */
 
 .tree {
   flex: 1;
-  max-height: 40vh;  /* Limita el crecimiento desmedido en tablets */
-  overflow-y: auto;  /* Scroll interno si los archivos crecen */
+  max-height: 40vh;
+  overflow-y: auto;
 }
 
 .folder {
@@ -93,6 +111,7 @@ EPISTEMIC
 
 .epistemic {
   font-size: 12px;
+  flex-shrink: 0;
 }
 
 .epistemic-title {
@@ -113,6 +132,7 @@ REY FILÓSOFO
   flex-direction: column;
   align-items: center;
   min-height: 120px;
+  flex-shrink: 0;
 }
 
 .philosopher-title {
@@ -130,8 +150,8 @@ REY FILÓSOFO
 }
 
 /* ========================================================
-   TOGGLE (REPARADO: Mantiene consistencia visual y de eventos)
-   ======================================================== */
+   TOGGLE
+======================================================== */
 
 .sidebar-toggle {
   position: fixed;
@@ -153,13 +173,19 @@ REY FILÓSOFO
   cursor: pointer;
   user-select: none;
 
-  z-index: 99999 !important;
-  pointer-events: auto !important;
-  
-  transition: background 0.1s ease, color 0.1s ease;
+  z-index: 99999;
+  pointer-events: auto;
+
+  transition:
+    background 0.1s ease,
+    color 0.1s ease;
+}
+
+.sidebar-toggle:hover {
+  background: #0b1524;
 }
 
 .sidebar-toggle:active {
-  background: #22c55e !important;
-  color: #050a12 !important;
+  background: #22c55e;
+  color: #050a12;
 }
