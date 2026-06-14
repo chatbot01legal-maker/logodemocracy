@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: #e5e5e5;
+  font-family: "IBM Plex Mono", monospace;
+  overflow: hidden;
+}
+
+/* pantalla completa tipo “portal” */
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+/* texto máquina de escribir */
+#text {
+  max-width: 900px;
+  font-size: 22px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* cursor parpadeante */
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 24px;
+  background: #e5e5e5;
+  margin-left: 6px;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
