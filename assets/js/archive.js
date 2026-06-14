@@ -66,7 +66,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const treeContainer = document.getElementById("tree");
 
     if (!treeContainer) return;
-
+    
+console.log("TREE RAW DATA:", tree);
+console.log("TREE CONTAINER:", treeContainer);
+    
     treeContainer.innerHTML = Object.entries(tree)
       .map(([folder, files]) => `
         <div class="folder">📁 ${folder}</div>
