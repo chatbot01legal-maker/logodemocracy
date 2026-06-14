@@ -2,28 +2,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const content = document.getElementById("content");
 
-  function loadDocument(name) {
+  /* =========================
+     LOAD MARKDOWN DOCUMENT
+  ========================= */
+
+  async function loadDocument(name) {
     if (!content) return;
-    content.innerHTML = "Cargando: " + name;
+
+    try {
+      content.innerHTML = "Cargando...";
+
+      // 1. construir ruta (AJUSTA AQUÍ SI CAMBIA TU ESTRUCTURA)
+      const filePath = `/academy/content/${name}`;
+
+      // 2. fetch markdown
+      const res = await fetch(filePath);
+
+      if (!res.ok) {
+        throw new Error("No se pudo cargar: " + filePath);
+      }
+
+      const md = await res.text();
+
+      // 3. render markdown
+      content.innerHTML = marked.parse(md);
+
+    } catch (err) {
+      console.error(err);
+      content.innerHTML = "Error cargando documento.";
+    }
   }
 
-  /* Árbol */
+  /* =========================
+     FILE CLICK HANDLER
+  ========================= */
 
   document.querySelectorAll(".file").forEach(el => {
     el.addEventListener("click", () => {
-      loadDocument(el.textContent);
+
+      // limpiar nombre tipo "📄 que_es.md"
+      const raw = el.textContent.trim();
+      const fileName = raw.replace("📄", "").trim();
+
+      loadDocument(fileName);
     });
   });
 
-  /* Sidebar */
+  /* =========================
+     SIDEBAR TOGGLE
+  ========================= */
 
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.querySelector(".sidebar-toggle");
 
-  if (!sidebar || !toggle) {
-    console.error("Sidebar o toggle no encontrados");
-    return;
-  }
+  if (!sidebar || !toggle) return;
 
   toggle.addEventListener("click", (event) => {
 
@@ -32,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const collapsed = sidebar.classList.toggle("collapsed");
 
     toggle.textContent = collapsed ? "▸" : "◂";
-
   });
 
 });
+
