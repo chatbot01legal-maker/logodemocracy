@@ -59,9 +59,9 @@ body {
 /* SIDEBAR COLAPSADO */
 
 .sidebar.collapsed {
-  width: 40px;
-  min-width: 40px;
-  max-width: 40px;
+  width: 34px;
+  min-width: 34px;
+  max-width: 34px;
 
   padding: 8px 4px;
 
