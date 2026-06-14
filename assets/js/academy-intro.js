@@ -2,16 +2,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const bootText = document.getElementById("boot-text");
   const bootScreen = document.getElementById("boot-screen");
-
   const introText = `
-Hasta que los filósofos reinen en las ciudades,
-o los que ahora son llamados reyes y gobernantes
-filosofen de manera genuina y suficiente,
+Hasta que los filósofos reinen en las ciudades…
+
+o los que ahora son llamados reyes y gobernantes…
+
+filosofen de manera genuina y suficiente…
+
 no cesarán los males para las ciudades.
 
 "La República, Libro V"
+
 — Platón
 `;
+  
+  
 
   let i = 0;
   let bootClosed = false;
