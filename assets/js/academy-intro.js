@@ -23,7 +23,7 @@ no cesarán los males para las ciudades.
 
     setTimeout(() => {
       window.location.href = "/pages/archive-template.html";
-    }, 1500);
+    }, 1500); // 1.5s que coincide con la transición del CSS original
   }
 
   function typeBoot() {
@@ -34,7 +34,7 @@ no cesarán los males para las ciudades.
       i++;
       setTimeout(typeBoot, 45);
     } else {
-      setTimeout(closeBootScreen, 4500);
+      setTimeout(closeBootScreen, 4500); // 4.5s idéntico al comportamiento original
     }
   }
 
