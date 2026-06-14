@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
       content.innerHTML = "Cargando...";
 
       // 1. construir ruta (AJUSTA AQUÍ SI CAMBIA TU ESTRUCTURA)
-      const filePath = `/academy/content/${name}`;
-
+      
+const filePath = `/pages/academy/content/${name}`;
       // 2. fetch markdown
       const res = await fetch(filePath);
 
