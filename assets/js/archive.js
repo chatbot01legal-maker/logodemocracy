@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* SIDEBAR TOGGLE LOGICA FUNCIONAL */
+  /* SIDEBAR TOGGLE LOGICA FUNCIONAL CORREGIDA */
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.querySelector(".sidebar-toggle");
 

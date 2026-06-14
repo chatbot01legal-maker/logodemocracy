@@ -38,19 +38,20 @@ body {
 
   transition: width 0.25s ease, padding 0.25s ease;
   overflow: hidden;
+  position: relative; /* Permite posicionar elementos respecto a la barra */
 }
 
-/* LOGICA DE OCULTAMIENTO COPIADA DE LA VERSION FUNCIONAL */
+/* LÓGICA DE OCULTAMIENTO TIPO RAIL */
 .sidebar.collapsed {
-  width: 24px;       /* SOLO para el botón */
-  padding: 8px 4px;
+  width: 24px;       /* Ajuste estricto para mantener el riel del botón */
+  padding: 8px 2px;
 }
 
-/* ocultar contenido interno cuando está colapsado */
+/* Ocultar contenido interno cuando está colapsado */
 .sidebar.collapsed .tree,
 .sidebar.collapsed .epistemic,
 .sidebar.collapsed .philosopher {
-  display: none;
+  display: none !important;
 }
 
 /* =========================
@@ -66,12 +67,13 @@ PANELES
 }
 
 /* =========================
-ÁRBOL
+ÁRBOL (CORREGIDO: Máxima altura para no pisar al Rey Filósofo)
 ========================= */
 
 .tree {
   flex: 1;
-  overflow: auto;
+  max-height: 40vh;  /* Limita el crecimiento desmedido en tablets */
+  overflow-y: auto;  /* Scroll interno si los archivos crecen */
 }
 
 .folder {
@@ -98,16 +100,8 @@ EPISTEMIC
   margin-bottom: 8px;
 }
 
-.epistemic-item {
-  display: flex;
-  gap: 6px;
-  margin: 4px 0;
-  opacity: 0.6;
-}
-
-.epistemic-item.active {
-  opacity: 1;
-  color: #22c55e;
+.epistemic-options {
+  opacity: 0.8;
 }
 
 /* =========================
@@ -136,13 +130,13 @@ REY FILÓSOFO
 }
 
 /* ========================================================
-   TOGGLE (REPARADO: CAPA SUPERIOR ABSOLUTA CON RESPUESTA VISUAL)
+   TOGGLE (REPARADO: Mantiene consistencia visual y de eventos)
    ======================================================== */
 
 .sidebar-toggle {
   position: fixed;
   top: 60px;
-  left: 6px;
+  left: 4px;
 
   width: 18px;
   height: 18px;
@@ -159,14 +153,12 @@ REY FILÓSOFO
   cursor: pointer;
   user-select: none;
 
-  /* Forzar que esté por encima de cualquier capa invisible */
   z-index: 99999 !important;
   pointer-events: auto !important;
   
   transition: background 0.1s ease, color 0.1s ease;
 }
 
-/* Feedback táctil inmediato al presionar en tablets */
 .sidebar-toggle:active {
   background: #22c55e !important;
   color: #050a12 !important;
