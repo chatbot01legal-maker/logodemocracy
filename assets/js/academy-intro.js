@@ -19,12 +19,11 @@ no cesarán los males para las ciudades.
   function closeBootScreen() {
     if (bootClosed) return;
     bootClosed = true;
-
     bootScreen.classList.add("fade-out");
 
     setTimeout(() => {
       window.location.href = "/pages/archive-template.html";
-    }, 800);
+    }, 1500); // Sincronizado exactamente con los 1.5s de la transición CSS
   }
 
   function typeBoot() {
@@ -35,7 +34,7 @@ no cesarán los males para las ciudades.
       i++;
       setTimeout(typeBoot, 45);
     } else {
-      setTimeout(closeBootScreen, 10000); // 10s auto skip
+      setTimeout(closeBootScreen, 4500); // 4.5s idéntico al comportamiento original
     }
   }
 
@@ -43,6 +42,5 @@ no cesarán los males para las ciudades.
 
   bootScreen?.addEventListener("click", closeBootScreen);
   bootScreen?.addEventListener("touchstart", closeBootScreen);
-  window.addEventListener("keydown", closeBootScreen);
 
 });
