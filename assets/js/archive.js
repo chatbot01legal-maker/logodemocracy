@@ -7,14 +7,16 @@ document.addEventListener("DOMContentLoaded", () => {
     content.innerHTML = "Cargando: " + name;
   }
 
-  /* árbol */
+  /* Árbol */
+
   document.querySelectorAll(".file").forEach(el => {
     el.addEventListener("click", () => {
       loadDocument(el.textContent);
     });
   });
 
-  /* SIDEBAR TOGGLE LOGICA FUNCIONAL CORREGIDA */
+  /* Sidebar */
+
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.querySelector(".sidebar-toggle");
 
@@ -23,9 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  toggle.addEventListener("click", () => {
+  toggle.addEventListener("click", (event) => {
+
+    event.stopPropagation();
+
     const collapsed = sidebar.classList.toggle("collapsed");
+
     toggle.textContent = collapsed ? "▸" : "◂";
+
   });
 
 });
