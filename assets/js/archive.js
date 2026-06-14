@@ -33,19 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* =========================
-     FILE CLICK HANDLER (HTML inicial)
-  ========================= */
 
-  document.querySelectorAll(".file").forEach(el => {
-    el.addEventListener("click", () => {
-
-      const raw = el.textContent.trim();
-      const fileName = raw.replace("📄", "").trim();
-
-      loadDocument(fileName);
-    });
-  });
 
   /* =========================
      SIDEBAR TOGGLE
