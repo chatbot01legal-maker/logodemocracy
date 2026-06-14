@@ -318,3 +318,19 @@ blockquote {
   margin: 40px auto;
   max-width: 720px;
 }
+
+/* =========================
+   CITAS EN NEGRITA (Markdown **text**)
+   Las convertimos visualmente en citas centradas
+========================= */
+
+.content strong {
+  display: block;
+  text-align: center;
+  font-style: italic;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25em;
+  line-height: 1.6;
+  margin: 40px auto;
+  max-width: 720px;
+}
