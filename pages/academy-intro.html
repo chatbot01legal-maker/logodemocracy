@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
-  <title>Academia Intro | Logodemocracy</title>
+  <title>Academia Intro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- IMPORTANTE: reutilizamos el mismo CSS del boot -->
+  <!-- IMPORTANTE: mismo CSS del boot -->
   <link rel="stylesheet" href="/assets/css/boot.css">
 </head>
 
@@ -23,17 +24,58 @@
 
     </div>
 
-    <!-- AUTOR DEBE IR EN BLOQUE SEPARADO (como Neruda) -->
-    <div class="academy-meta" style="margin-top:20px; text-align:left;">
-      <div class="academy-book" id="academy-book"></div>
-      <div class="academy-author" id="academy-author"></div>
-    </div>
-
   </div>
 
 </div>
 
-<script src="/assets/js/academy-intro.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const bootText = document.getElementById("academy-text");
+  const bootScreen = document.getElementById("academy-intro");
+
+  const introText = `Hasta que los filósofos reinen en las ciudades,
+o los que ahora son llamados reyes y gobernantes
+filosofen de manera genuina y suficiente,
+no cesarán los males para las ciudades.
+
+"La República, Libro V"
+— Platón`;
+
+  let i = 0;
+  let skipped = false;
+
+  function goNext() {
+    if (skipped) return;
+    skipped = true;
+
+    bootScreen.classList.add("fade-out");
+
+    setTimeout(() => {
+      window.location.href = "/pages/archive-template.html";
+    }, 800);
+  }
+
+  function type() {
+    if (!bootText) return;
+
+    if (i < introText.length) {
+      bootText.innerHTML += introText.charAt(i);
+      i++;
+      setTimeout(type, 35);
+    } else {
+      setTimeout(goNext, 5000);
+    }
+  }
+
+  setTimeout(type, 600);
+
+  bootScreen.addEventListener("click", goNext);
+  bootScreen.addEventListener("touchstart", goNext);
+  window.addEventListener("keydown", goNext);
+
+});
+</script>
 
 </body>
 </html>
