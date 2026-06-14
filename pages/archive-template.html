@@ -10,83 +10,87 @@
 
 <body>
 
-<header class="topbar">
-  <div class="brand">LOGODEMOCRACY / ACADEMIA</div>
-  <div class="lang">ES | EN</div>
-</header>
+<div class="page">
 
-<div class="layout">
+  <header class="topbar">
+    <div class="brand">LOGODEMOCRACY / ACADEMIA</div>
+    <div class="lang">ES | EN</div>
+  </header>
 
-  <aside class="sidebar">
+  <div class="layout">
 
-    <!-- Contenido del sidebar -->
-    <div class="sidebar-content">
+    <aside class="sidebar">
 
-      <div class="tree">
-        <div class="folder">📁 Fundamentos</div>
-        <div class="file">📄 que_es.md</div>
-        <div class="file">📄 contexto.md</div>
-      </div>
+      <!-- Contenido del sidebar -->
+      <div class="sidebar-content">
 
-      <div class="epistemic">
-        <div class="epistemic-title">¿Cómo sabemos esto?</div>
-        <div class="epistemic-options">
-          <div>□ Es una idea que estamos explorando.</div>
-          <div>□ Se basa en argumentos y observaciones.</div>
-          <div>□ Existen experimentos que la respaldan.</div>
-          <div>□ Muchos estudios independientes apuntan en la misma dirección.</div>
+        <div class="tree">
+          <div class="folder">📁 Fundamentos</div>
+          <div class="file">📄 que_es.md</div>
+          <div class="file">📄 contexto.md</div>
         </div>
-      </div>
 
-      <div class="philosopher">
-        <div class="philosopher-title">🏛 Rey Filósofo</div>
-        <div class="philosopher-text">
-          ¿Quieres profundizar en esta idea?
+        <div class="epistemic">
+          <div class="epistemic-title">¿Cómo sabemos esto?</div>
+          <div class="epistemic-options">
+            <div>□ Es una idea que estamos explorando.</div>
+            <div>□ Se basa en argumentos y observaciones.</div>
+            <div>□ Existen experimentos que la respaldan.</div>
+            <div>□ Muchos estudios independientes apuntan en la misma dirección.</div>
+          </div>
         </div>
-        <button class="philosopher-btn">
-          Profundizar
-        </button>
+
+        <div class="philosopher">
+          <div class="philosopher-title">🏛 Rey Filósofo</div>
+          <div class="philosopher-text">
+            ¿Quieres profundizar en esta idea?
+          </div>
+          <button class="philosopher-btn">
+            Profundizar
+          </button>
+        </div>
+
       </div>
 
-    </div>
+      <!-- Columna exclusiva para el botón -->
+      <div class="sidebar-rail">
 
-    <!-- Columna exclusiva para el botón -->
-    <div class="sidebar-rail">
+        <div class="sidebar-toggle">
+          ◂
+        </div>
 
-      <div class="sidebar-toggle">
-        ◂
       </div>
 
-    </div>
+    </aside>
 
-  </aside>
+    <main class="document">
 
-  <main class="document">
+      <div class="document-header">
+        Todos estamos llamados a convertirnos en Rey Filósofo.
+      </div>
 
-  <div class="document-header">
-    Todos estamos llamados a convertirnos en Rey Filósofo.
+      <div class="document-content">
+
+        <div class="meta">
+          <h1>Documento</h1>
+          <p>Selecciona un archivo</p>
+        </div>
+
+        <div class="content" id="content">
+          Cargando sistema...
+        </div>
+
+      </div>
+
+    </main>
+
   </div>
 
-  <div class="document-content">
-
-    <div class="meta">
-      <h1>Documento</h1>
-      <p>Selecciona un archivo</p>
-    </div>
-
-    <div class="content" id="content">
-      Cargando sistema...
-    </div>
-
-  </div>
-
-</main>
+  <footer class="footer">
+    LogoDemocracy · Academia
+  </footer>
 
 </div>
-
-<footer class="footer">
-  LogoDemocracy · Academia
-</footer>
 
 <script src="/assets/js/archive.js?v=3"></script>
 
