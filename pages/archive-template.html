@@ -19,33 +19,46 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-toggle">◂</div>
+    <!-- Contenido del sidebar -->
+    <div class="sidebar-content">
 
-    <div class="tree">
-      <div class="folder">📁 Fundamentos</div>
-      <div class="file">📄 que_es.md</div>
-      <div class="file">📄 contexto.md</div>
-    </div>
-
-    <div class="epistemic">
-      <div class="epistemic-title">¿Cómo sabemos esto?</div>
-      <div class="epistemic-options">
-        <div>□ Es una idea que estamos explorando.</div>
-        <div>□ Se basa en argumentos y observaciones.</div>
-        <div>□ Existen experimentos que la respaldan.</div>
-        <div>□ Muchos estudios independientes apuntan en la misma dirección.</div>
+      <div class="tree">
+        <div class="folder">📁 Fundamentos</div>
+        <div class="file">📄 que_es.md</div>
+        <div class="file">📄 contexto.md</div>
       </div>
+
+      <div class="epistemic">
+        <div class="epistemic-title">¿Cómo sabemos esto?</div>
+        <div class="epistemic-options">
+          <div>□ Es una idea que estamos explorando.</div>
+          <div>□ Se basa en argumentos y observaciones.</div>
+          <div>□ Existen experimentos que la respaldan.</div>
+          <div>□ Muchos estudios independientes apuntan en la misma dirección.</div>
+        </div>
+      </div>
+
+      <div class="philosopher">
+        <div class="philosopher-title">🏛 Rey Filósofo</div>
+        <div class="philosopher-text">
+          ¿Quieres profundizar en esta idea?
+        </div>
+        <button class="philosopher-btn">
+          Profundizar
+        </button>
+      </div>
+
     </div>
 
-    <div class="philosopher">
-      <div class="philosopher-title">🏛 Rey Filósofo</div>
-      <div class="philosopher-text">¿Quieres profundizar en esta idea?</div>
-      <button class="philosopher-btn">Profundizar</button>
+    <!-- Columna permanente del botón -->
+    <div class="sidebar-toggle">
+      ◂
     </div>
 
   </aside>
 
   <main class="document">
+
     <div class="meta">
       <h1>Documento</h1>
       <p>Selecciona un archivo</p>
@@ -54,6 +67,7 @@
     <div class="content" id="content">
       Cargando sistema...
     </div>
+
   </main>
 
 </div>
