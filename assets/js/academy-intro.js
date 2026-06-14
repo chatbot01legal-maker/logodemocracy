@@ -1,44 +1,43 @@
-const phrase = `Hasta que los filósofos reinen en las ciudades,
+document.addEventListener("DOMContentLoaded", () => {
+
+  const textEl = document.getElementById("academy-text");
+  const screen = document.getElementById("academy-intro");
+
+  const introText = `Hasta que los filósofos reinen en las ciudades,
 o los que ahora son llamados reyes y gobernantes
 filosofen de manera genuina y suficiente,
-no cesarán los males para las ciudades.
+no cesarán los males para las ciudades.`;
 
-— Platón`;
+  let i = 0;
+  let skipped = false;
 
-const el = document.getElementById("text");
+  function goToAcademy() {
+    if (skipped) return;
+    skipped = true;
 
-let i = 0;
-let skipped = false;
-
-// efecto máquina de escribir
-function typeWriter() {
-  if (skipped) return;
-
-  if (i < phrase.length) {
-    el.innerHTML += phrase[i];
-    i++;
-    setTimeout(typeWriter, 25);
+    window.location.href = "/pages/archive-template.html";
   }
-}
 
-// salto inmediato
-function skip() {
-  if (skipped) return;
-  skipped = true;
-  goToAcademy();
-}
+  function typeWriter() {
+    if (!textEl) return;
 
-// redirección final
-function goToAcademy() {
-  window.location.href = "/pages/archive-template.html";
-}
+    if (i < introText.length) {
+      textEl.innerHTML += introText.charAt(i);
+      i++;
+      setTimeout(typeWriter, 45);
+    } else {
+      setTimeout(goToAcademy, 3500);
+    }
+  }
 
-// eventos de skip
-document.addEventListener("click", skip);
-document.addEventListener("keydown", skip);
+  // SKIP universal
+  screen?.addEventListener("click", goToAcademy);
+  screen?.addEventListener("touchstart", goToAcademy);
+  document.addEventListener("keydown", goToAcademy);
 
-// inicio
-typeWriter();
+  // AUTO SKIP
+  setTimeout(goToAcademy, 10000);
 
-// auto skip después de 10s
-setTimeout(goToAcademy, 10000);
+  setTimeout(typeWriter, 600);
+
+});
