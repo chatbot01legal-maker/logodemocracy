@@ -302,3 +302,19 @@ body {
 
   box-sizing: border-box;
 }
+
+/* =========================
+   CITAS / BLOCKQUOTES
+   Estilo para citas tipo Kant, Platón o frases destacadas
+   en la Academia (Markdown > blockquote)
+========================= */
+
+blockquote {
+  text-align: center;
+  font-style: italic;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25em;
+  line-height: 1.6;
+  margin: 40px auto;
+  max-width: 720px;
+}
