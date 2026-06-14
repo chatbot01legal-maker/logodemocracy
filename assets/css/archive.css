@@ -40,13 +40,13 @@ body {
   overflow: hidden;
 }
 
-/* 🔥 LOGICA DE OCULTAMIENTO COPIADA DE LA VERSION FUNCIONAL */
+/* LOGICA DE OCULTAMIENTO COPIADA DE LA VERSION FUNCIONAL */
 .sidebar.collapsed {
   width: 24px;       /* SOLO para el botón */
   padding: 8px 4px;
 }
 
-/* Ocultar contenido interno cuando está colapsado */
+/* ocultar contenido interno cuando está colapsado */
 .sidebar.collapsed .tree,
 .sidebar.collapsed .epistemic,
 .sidebar.collapsed .philosopher {
@@ -135,9 +135,9 @@ REY FILÓSOFO
   width: 100%;
 }
 
-/* =========================
-TOGGLE COPIADO DE LA VERSION FUNCIONAL
-========================= */
+/* ========================================================
+   TOGGLE (REPARADO: CAPA SUPERIOR ABSOLUTA CON RESPUESTA VISUAL)
+   ======================================================== */
 
 .sidebar-toggle {
   position: fixed;
@@ -157,5 +157,17 @@ TOGGLE COPIADO DE LA VERSION FUNCIONAL
 
   font-size: 12px;
   cursor: pointer;
-  z-index: 9999;
+  user-select: none;
+
+  /* Forzar que esté por encima de cualquier capa invisible */
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  
+  transition: background 0.1s ease, color 0.1s ease;
+}
+
+/* Feedback táctil inmediato al presionar en tablets */
+.sidebar-toggle:active {
+  background: #22c55e !important;
+  color: #050a12 !important;
 }
