@@ -3,7 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const bootText = document.getElementById("academy-text");
   const bootScreen = document.getElementById("academy-intro");
 
-  const introText = `"La República"`;
+  const introText = `Hasta que los filósofos reinen en las ciudades,
+o los que ahora son llamados reyes y gobernantes
+filosofen de manera genuina y suficiente,
+no cesarán los males para las ciudades.
+
+"La República, Libro V"
+— Platón`;
 
   let i = 0;
   let bootClosed = false;
@@ -12,9 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (bootClosed) return;
     bootClosed = true;
 
-    if (bootScreen) {
-      bootScreen.classList.add("fade-out");
-    }
+    bootScreen?.classList.add("fade-out");
 
     setTimeout(() => {
       window.location.href = "/pages/archive-template.html";
@@ -25,13 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!bootText) return;
 
     if (i < introText.length) {
-      bootText.innerHTML += introText.charAt(i);
+      bootText.textContent += introText.charAt(i);
       i++;
       setTimeout(typeBoot, 45);
     } else {
-      setTimeout(() => {
-        closeBootScreen();
-      }, 5000);
+      setTimeout(closeBootScreen, 5000);
     }
   }
 
