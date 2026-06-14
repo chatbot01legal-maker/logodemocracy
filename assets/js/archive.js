@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
       content.innerHTML = "Cargando...";
 
       // 1. construir ruta (AJUSTA AQUÍ SI CAMBIA TU ESTRUCTURA)
-      
-const filePath = `/pages/academy/content/${name}`;
+      const filePath = `/pages/academy/content/${name}`;
+
       // 2. fetch markdown
       const res = await fetch(filePath);
 
@@ -55,16 +55,24 @@ const filePath = `/pages/academy/content/${name}`;
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.querySelector(".sidebar-toggle");
 
-  if (!sidebar || !toggle) return;
+  // ❗ NO cortar el script completo si algo no existe
+  if (sidebar && toggle) {
 
-  toggle.addEventListener("click", (event) => {
+    toggle.addEventListener("click", (event) => {
 
-    event.stopPropagation();
+      event.stopPropagation();
 
-    const collapsed = sidebar.classList.toggle("collapsed");
+      const collapsed = sidebar.classList.toggle("collapsed");
 
-    toggle.textContent = collapsed ? "▸" : "◂";
-  });
+      toggle.textContent = collapsed ? "▸" : "◂";
+    });
+
+  }
+
+  /* =========================
+     AUTO LOAD INICIAL
+  ========================= */
+
+  loadDocument("intro.md");
 
 });
-
