@@ -1,44 +1,30 @@
-document.addEventListener("DOMContentLoaded", () => {
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Academia Intro</title>
 
-  const bootText = document.getElementById("academy-text");
-  const bootScreen = document.getElementById("academy-intro");
+  <link rel="stylesheet" href="/assets/css/boot.css">
+</head>
 
-  const introText = `"La República"`;
+<body>
 
-  let i = 0;
-  let bootClosed = false;
+<div id="academy-intro" class="boot-screen">
+  <div class="boot-container">
 
-  function closeBootScreen() {
-    if (bootClosed) return;
-    bootClosed = true;
+    <div class="boot-line">
+      <span id="academy-text"></span>
+      <span class="boot-cursor"></span>
+    </div>
 
-    if (bootScreen) {
-      bootScreen.classList.add("fade-out");
-    }
+    <div class="boot-author">
+      — Platón, La República
+    </div>
 
-    setTimeout(() => {
-      window.location.href = "/pages/archive-template.html";
-    }, 800);
-  }
+  </div>
+</div>
 
-  function typeBoot() {
-    if (!bootText) return;
+<script src="/assets/js/academy-intro.js"></script>
 
-    if (i < introText.length) {
-      bootText.innerHTML += introText.charAt(i);
-      i++;
-      setTimeout(typeBoot, 45);
-    } else {
-      setTimeout(() => {
-        closeBootScreen();
-      }, 5000);
-    }
-  }
-
-  setTimeout(typeBoot, 700);
-
-  bootScreen?.addEventListener("click", closeBootScreen);
-  bootScreen?.addEventListener("touchstart", closeBootScreen);
-  window.addEventListener("keydown", closeBootScreen);
-
-});
+</body>
+</html>
