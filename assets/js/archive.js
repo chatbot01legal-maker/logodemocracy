@@ -69,6 +69,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+
+  async function loadTree() {
+  const res = await fetch("/pages/academy/data/tree.json");
+  const tree = await res.json();
+
+  const treeContainer = document.getElementById("tree");
+
+  if (!treeContainer) return;
+
+  treeContainer.innerHTML = Object.entries(tree)
+    .map(([folder, files]) => `
+      <div class="folder">📁 ${folder}</div>
+      ${Object.keys(files).map(file => `
+        <div class="file">📄 ${file}</div>
+      `).join("")}
+    `)
+    .join("");
+
+  
+  }
   /* =========================
      AUTO LOAD INICIAL
   ========================= */
