@@ -34,13 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =========================
-     FILE CLICK HANDLER
+     FILE CLICK HANDLER (HTML inicial)
   ========================= */
 
   document.querySelectorAll(".file").forEach(el => {
     el.addEventListener("click", () => {
 
-      // limpiar nombre tipo "📄 que_es.md"
       const raw = el.textContent.trim();
       const fileName = raw.replace("📄", "").trim();
 
@@ -55,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.querySelector(".sidebar");
   const toggle = document.querySelector(".sidebar-toggle");
 
-  // ❗ NO cortar el script completo si algo no existe
   if (sidebar && toggle) {
 
     toggle.addEventListener("click", (event) => {
@@ -69,30 +67,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+  /* =========================
+     LOAD TREE (DINÁMICO)
+  ========================= */
 
   async function loadTree() {
-  const res = await fetch("/pages/academy/data/tree.json");
-  const tree = await res.json();
+    const res = await fetch("/pages/academy/data/tree.json");
+    const tree = await res.json();
 
-  const treeContainer = document.getElementById("tree");
+    const treeContainer = document.getElementById("tree");
 
-  if (!treeContainer) return;
+    if (!treeContainer) return;
 
-  treeContainer.innerHTML = Object.entries(tree)
-    .map(([folder, files]) => `
-      <div class="folder">📁 ${folder}</div>
-      ${Object.keys(files).map(file => `
-        <div class="file">📄 ${file}</div>
-      `).join("")}
-    `)
-    .join("");
+    treeContainer.innerHTML = Object.entries(tree)
+      .map(([folder, files]) => `
+        <div class="folder">📁 ${folder}</div>
+        ${Object.keys(files).map(file => `
+          <div class="file">📄 ${file}</div>
+        `).join("")}
+      `)
+      .join("");
 
-  
+    /* =========================
+       CLICK HANDLERS (DINÁMICO)
+    ========================= */
+
+    document.querySelectorAll(".file").forEach(el => {
+      el.addEventListener("click", () => {
+
+        const raw = el.textContent.trim();
+        const fileName = raw.replace("📄", "").trim();
+
+        loadDocument(fileName);
+      });
+    });
   }
+
   /* =========================
      AUTO LOAD INICIAL
   ========================= */
 
+  loadTree();
   loadDocument("intro.md");
 
 });
