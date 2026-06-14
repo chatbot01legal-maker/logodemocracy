@@ -1,81 +1,19 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-  <meta charset="UTF-8" />
-  <title>Academia Intro</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- IMPORTANTE: mismo CSS del boot -->
-  <link rel="stylesheet" href="/assets/css/boot.css">
-</head>
-
-<body>
-
-<!-- MISMO SISTEMA QUE NERUDA -->
-<div id="academy-intro" class="boot-screen">
+<div id="boot-screen" class="academy-screen">
 
   <div class="boot-container">
 
     <div class="boot-line">
 
-      <span id="academy-text"></span>
+      <span id="boot-text"></span>
+
       <span class="boot-cursor"></span>
 
+    </div>
+
+    <div class="boot-author">
+      — Platón, La República, Libro V
     </div>
 
   </div>
 
 </div>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const bootText = document.getElementById("academy-text");
-  const bootScreen = document.getElementById("academy-intro");
-
-  const introText = `Hasta que los filósofos reinen en las ciudades,
-o los que ahora son llamados reyes y gobernantes
-filosofen de manera genuina y suficiente,
-no cesarán los males para las ciudades.
-
-"La República, Libro V"
-— Platón`;
-
-  let i = 0;
-  let skipped = false;
-
-  function goNext() {
-    if (skipped) return;
-    skipped = true;
-
-    bootScreen.classList.add("fade-out");
-
-    setTimeout(() => {
-      window.location.href = "/pages/archive-template.html";
-    }, 800);
-  }
-
-  function type() {
-    if (!bootText) return;
-
-    if (i < introText.length) {
-      bootText.innerHTML += introText.charAt(i);
-      i++;
-      setTimeout(type, 35);
-    } else {
-      setTimeout(goNext, 5000);
-    }
-  }
-
-  setTimeout(type, 600);
-
-  bootScreen.addEventListener("click", goNext);
-  bootScreen.addEventListener("touchstart", goNext);
-  window.addEventListener("keydown", goNext);
-
-});
-</script>
-
-</body>
-</html>
