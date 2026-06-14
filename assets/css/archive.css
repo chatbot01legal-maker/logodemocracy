@@ -37,7 +37,20 @@ body {
   box-sizing: border-box;
 
   transition: width 0.25s ease, padding 0.25s ease;
-  position: relative; /* Esencial para que el botón absolute se posicione respecto al sidebar */
+  overflow: hidden;
+}
+
+/* 🔥 LOGICA DE OCULTAMIENTO COPIADA DE LA VERSION FUNCIONAL */
+.sidebar.collapsed {
+  width: 24px;       /* SOLO para el botón */
+  padding: 8px 4px;
+}
+
+/* Ocultar contenido interno cuando está colapsado */
+.sidebar.collapsed .tree,
+.sidebar.collapsed .epistemic,
+.sidebar.collapsed .philosopher {
+  display: none;
 }
 
 /* =========================
@@ -58,7 +71,6 @@ PANELES
 
 .tree {
   flex: 1;
-  max-height: 40vh; /* Controla la altura máxima en el diseño */
   overflow: auto;
 }
 
@@ -124,13 +136,13 @@ REY FILÓSOFO
 }
 
 /* =========================
-TOGGLE (RESTAURADO EXACTO A TU VERSIÓN FUNCIONAL)
+TOGGLE COPIADO DE LA VERSION FUNCIONAL
 ========================= */
 
 .sidebar-toggle {
-  position: absolute;
-  top: 10px;
-  right: -10px;
+  position: fixed;
+  top: 60px;
+  left: 6px;
 
   width: 18px;
   height: 18px;
@@ -143,19 +155,7 @@ TOGGLE (RESTAURADO EXACTO A TU VERSIÓN FUNCIONAL)
   background: #050a12;
   color: #22c55e;
 
+  font-size: 12px;
   cursor: pointer;
-  user-select: none;
-
-  z-index: 10;
-}
-
-/* =========================
-SIDEBAR COLAPSADO (RESTAURADO EXACTO A TU VERSIÓN FUNCIONAL)
-========================= */
-
-.sidebar.collapsed {
-  width: 0;
-  padding: 0;
-  overflow: hidden;
-  border-right: none;
+  z-index: 9999;
 }
