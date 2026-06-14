@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  const bootText = document.getElementById("academy-text");
-  const bootScreen = document.getElementById("academy-intro");
+  const bootText = document.getElementById("boot-text");
+  const bootScreen = document.getElementById("boot-screen");
 
   const introText = `
 Hasta que los filósofos reinen en las ciudades,
@@ -23,7 +23,7 @@ no cesarán los males para las ciudades.
 
     setTimeout(() => {
       window.location.href = "/pages/archive-template.html";
-    }, 1500); // Sincronizado exactamente con los 1.5s de la transición CSS
+    }, 1500);
   }
 
   function typeBoot() {
@@ -34,7 +34,7 @@ no cesarán los males para las ciudades.
       i++;
       setTimeout(typeBoot, 45);
     } else {
-      setTimeout(closeBootScreen, 4500); // 4.5s idéntico al comportamiento original
+      setTimeout(closeBootScreen, 4500);
     }
   }
 
