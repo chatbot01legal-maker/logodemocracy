@@ -1,16 +1,44 @@
-<div id="academy-intro" class="academy-intro">
+document.addEventListener("DOMContentLoaded", () => {
 
-  <div class="academy-line">
-    <span id="academy-text"></span>
-    <span class="academy-cursor"></span>
-  </div>
+  const bootText = document.getElementById("academy-text");
+  const bootScreen = document.getElementById("academy-intro");
 
-  <div class="academy-source">
-    "La República"
-  </div>
+  const introText = `"La República"`;
 
-  <div class="academy-author">
-    — Platón
-  </div>
+  let i = 0;
+  let bootClosed = false;
 
-</div>
+  function closeBootScreen() {
+    if (bootClosed) return;
+    bootClosed = true;
+
+    if (bootScreen) {
+      bootScreen.classList.add("fade-out");
+    }
+
+    setTimeout(() => {
+      window.location.href = "/pages/archive-template.html";
+    }, 800);
+  }
+
+  function typeBoot() {
+    if (!bootText) return;
+
+    if (i < introText.length) {
+      bootText.innerHTML += introText.charAt(i);
+      i++;
+      setTimeout(typeBoot, 45);
+    } else {
+      setTimeout(() => {
+        closeBootScreen();
+      }, 5000);
+    }
+  }
+
+  setTimeout(typeBoot, 700);
+
+  bootScreen?.addEventListener("click", closeBootScreen);
+  bootScreen?.addEventListener("touchstart", closeBootScreen);
+  window.addEventListener("keydown", closeBootScreen);
+
+});
