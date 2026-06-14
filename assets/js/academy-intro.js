@@ -1,19 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  const bootText = document.getElementById("boot-text");
-  const bootScreen = document.getElementById("boot-screen");
+  const bootText = document.getElementById("academy-text");
+  const bootScreen = document.getElementById("academy-intro");
 
-  const introText = `Hasta que los filósofos reinen en las ciudades,
+  const introText = `
+Hasta que los filósofos reinen en las ciudades,
 o los que ahora son llamados reyes y gobernantes
 filosofen de manera genuina y suficiente,
 no cesarán los males para las ciudades.
 
-"La República, Libro V"`;
+"La República, Libro V"
+— Platón
+`;
 
   let i = 0;
   let bootClosed = false;
 
-  function goToAcademy() {
+  function closeBootScreen() {
     if (bootClosed) return;
     bootClosed = true;
 
@@ -32,14 +35,14 @@ no cesarán los males para las ciudades.
       i++;
       setTimeout(typeBoot, 45);
     } else {
-      setTimeout(goToAcademy, 5000);
+      setTimeout(closeBootScreen, 10000); // 10s auto skip
     }
   }
 
   setTimeout(typeBoot, 700);
 
-  bootScreen?.addEventListener("click", goToAcademy);
-  bootScreen?.addEventListener("touchstart", goToAcademy);
-  window.addEventListener("keydown", goToAcademy);
+  bootScreen?.addEventListener("click", closeBootScreen);
+  bootScreen?.addEventListener("touchstart", closeBootScreen);
+  window.addEventListener("keydown", closeBootScreen);
 
 });
