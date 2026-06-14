@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Academia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: #e2e8f0;
+      font-family: "Cormorant Garamond", serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    #text {
+      max-width: 900px;
+      font-size: clamp(20px, 3vw, 40px);
+      line-height: 1.4;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 28px;
+      background: white;
+      margin-left: 6px;
+      animation: blink 1s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="text"></div><span class="cursor"></span>
+
+<script>
+const phrase = `Hasta que los filósofos reinen en las ciudades,
+o los que ahora son llamados reyes y gobernantes
+filosofen de manera genuina y suficiente,
+no cesarán los males para las ciudades.
+
+— Platón`;
+
+const el = document.getElementById("text");
+
+let i = 0;
+
+function type() {
+  if (i < phrase.length) {
+    el.innerHTML += phrase[i];
+    i++;
+    setTimeout(type, 25);
+  }
+}
+
+type();
+
+// REDIRECT
+function go() {
+  window.location.href = "/pages/archive-template.html";
+}
+
+// skip interactivo
+document.body.addEventListener("click", go);
+document.addEventListener("keydown", go);
+
+// skip automático
+setTimeout(go, 10000);
+</script>
+
+</body>
+</html>
