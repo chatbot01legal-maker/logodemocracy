@@ -319,9 +319,10 @@ blockquote {
   max-width: 720px;
 }
 
+
 /* =========================
    CITAS EN NEGRITA (Markdown **text**)
-   Las convertimos visualmente en citas centradas
+   Estilo centrado tipo Academia (ligero, no invasivo)
 ========================= */
 
 .content strong {
@@ -329,8 +330,28 @@ blockquote {
   text-align: center;
   font-style: italic;
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.25em;
+  font-size: 1.05em;
   line-height: 1.6;
-  margin: 40px auto;
+  margin: 28px auto;
   max-width: 720px;
+  font-weight: 500;
+}
+
+/* Texto normal del documento */
+.content p {
+  text-align: left;
+}
+
+/* =========================
+   AUTOR DE CITAS (SOLUCIÓN SEGURA ACTUAL)
+   ⚠️ Esto aplica SOLO al último párrafo del documento
+   (hack temporal mientras no usamos bloques semánticos)
+========================= */
+
+.content p:last-of-type {
+  text-align: right;
+  font-size: 0.95em;
+  opacity: 0.75;
+  max-width: 720px;
+  margin: 0 auto 20px auto;
 }
