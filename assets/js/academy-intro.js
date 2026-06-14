@@ -1,43 +1,27 @@
-document.addEventListener("DOMContentLoaded", () => {
+function typeAcademyIntro() {
 
-  const textEl = document.getElementById("academy-text");
-  const screen = document.getElementById("academy-intro");
+  const text = document.getElementById("academy-text");
 
-  const introText = `Hasta que los filósofos reinen en las ciudades,
+  const intro = `
+Hasta que los filósofos reinen en las ciudades,
 o los que ahora son llamados reyes y gobernantes
 filosofen de manera genuina y suficiente,
-no cesarán los males para las ciudades.`;
+no cesarán los males para las ciudades.
+`;
 
   let i = 0;
-  let skipped = false;
 
-  function goToAcademy() {
-    if (skipped) return;
-    skipped = true;
+  function type() {
+    if (!text) return;
 
-    window.location.href = "/pages/archive-template.html";
-  }
-
-  function typeWriter() {
-    if (!textEl) return;
-
-    if (i < introText.length) {
-      textEl.innerHTML += introText.charAt(i);
+    if (i < intro.length) {
+      text.innerHTML += intro.charAt(i);
       i++;
-      setTimeout(typeWriter, 45);
-    } else {
-      setTimeout(goToAcademy, 3500);
+      setTimeout(type, 45);
     }
   }
 
-  // SKIP universal
-  screen?.addEventListener("click", goToAcademy);
-  screen?.addEventListener("touchstart", goToAcademy);
-  document.addEventListener("keydown", goToAcademy);
+  type();
+}
 
-  // AUTO SKIP
-  setTimeout(goToAcademy, 10000);
-
-  setTimeout(typeWriter, 600);
-
-});
+document.addEventListener("DOMContentLoaded", typeAcademyIntro);
