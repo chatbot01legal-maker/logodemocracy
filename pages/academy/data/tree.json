@@ -1,6 +1,41 @@
 {
-  "Fundamentos": {
-    "que_es.md": "que_es.md",
-    "contexto.md": "contexto.md"
+  "Introducción": {
+    "bienvenida.md": "bienvenida.md",
+    "manifiesto.md": "manifiesto.md"
+  },
+  "Nuevo paradigma": {
+    "ahora_o_nunca.md": "ahora_o_nunca.md",
+    "tecnologia_y_democracia.md": "tecnologia_y_democracia.md",
+    "crisis_del_mundo_moderno.md": "crisis_del_mundo_moderno.md"
+  },
+  "Educación cívica": {
+    "introduccion.md": "introduccion.md",
+    "el_mapa_no_es_el_territorio.md": "el_mapa_no_es_el_territorio.md",
+    "nuevo_paradigma_educativo.md": "nuevo_paradigma_educativo.md",
+    "ciudadano_epistemico.md": "ciudadano_epistemico.md"
+  },
+  "Logodemocracia": {
+    "que_es_logodemocracia.md": "que_es_logodemocracia.md",
+    "representantes_mandatados.md": "representantes_mandatados.md",
+    "congreso_virtual.md": "congreso_virtual.md",
+    "panel_de_expertos.md": "panel_de_expertos.md",
+    "votacion_cuadratica.md": "votacion_cuadratica.md"
+  },
+  "Implementación": {
+    "ley_click.md": "ley_click.md",
+    "proyecto_de_ley.md": "proyecto_de_ley.md",
+    "comunidades_virtuales.md": "comunidades_virtuales.md"
+  },
+  "Contexto histórico": {
+    "grecia.md": "grecia.md",
+    "imprenta.md": "imprenta.md",
+    "internet.md": "internet.md",
+    "democracia_como_tecnologia.md": "democracia_como_tecnologia.md"
+  },
+  "Desafíos globales": {
+    "cambio_climatico.md": "cambio_climatico.md",
+    "ia_y_trabajo.md": "ia_y_trabajo.md",
+    "guerras.md": "guerras.md",
+    "crisis_migratoria.md": "crisis_migratoria.md"
   }
 }
