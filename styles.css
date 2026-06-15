@@ -619,6 +619,61 @@ section h2 {
     #f8fafc;
 }
 
+.hero-model-preview {
+
+  margin: 60px auto 40px;
+
+  max-width: 760px;
+
+  padding: 28px;
+
+  border: 1px solid rgba(34,197,94,0.18);
+
+  background: rgba(5,10,18,0.96);
+
+}
+
+.formula-label {
+
+  margin-bottom: 18px;
+
+  color: rgba(34,197,94,0.8);
+
+  font-size: 12px;
+
+  letter-spacing: 2px;
+
+}
+
+.formula-block {
+
+  font-family: "IBM Plex Mono", monospace;
+
+  font-size: 18px;
+
+  color: #d1fae5;
+
+  line-height: 1.6;
+
+  text-align: center;
+
+  white-space: pre;
+
+  margin-bottom: 22px;
+
+}
+
+.formula-description {
+
+  color: #cbd5e1;
+
+  line-height: 1.8;
+
+  max-width: 620px;
+
+  margin: 0 auto;
+
+}
 
 /* =====================
    MOBILE
