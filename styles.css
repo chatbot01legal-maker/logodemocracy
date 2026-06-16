@@ -793,6 +793,27 @@ section h2 {
     line-height: 1.7;
   }
 
+.hero-idea {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  margin-top: 20px;
+}
+
+.hero-principle {
+  text-align: center;
+  font-size: 18px;
+  color: #e2e8f0;
+}
+
+.hero-label {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #94a3b8;
+  margin-top: 18px;
+}
+  
   .closing-main {
 
     font-size: 18px;
