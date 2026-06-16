@@ -1,8 +1,4 @@
 {
-  "Introducción": {
-    "bienvenida.md": "bienvenida.md",
-    "manifiesto.md": "manifiesto.md"
-  },
   "Nuevo paradigma": {
     "ahora_o_nunca.md": "ahora_o_nunca.md",
     "tecnologia_y_democracia.md": "tecnologia_y_democracia.md",
@@ -18,7 +14,9 @@
     "representantes_mandatados.md": "representantes_mandatados.md",
     "congreso_virtual.md": "congreso_virtual.md",
     "panel_de_expertos.md": "panel_de_expertos.md",
-    "votacion_cuadratica.md": "votacion_cuadratica.md"
+    "votacion_cuadratica.md": "votacion_cuadratica.md",
+        "capital_deliberativo.md": "capital_deliberativo.md",
+    "filtro_epistemológico.md"; "filtro_epistemológico.md"
   },
   "Implementación": {
     "ley_click.md": "ley_click.md",
@@ -39,11 +37,13 @@
   },
 
   "Fundamentos del sistema": {
+    "bienvenida.md": "bienvenida.md",
+    "manifiesto.md": "manifiesto.md"
     "introduccion.md": "introduccion.md",
     "logodemocracy_arquitectura.md": "logodemocracy_arquitectura.md",
     "rey_filosofo_definicion.md": "rey_filosofo_definicion.md",
     "sophia_definicion.md": "sophia_definicion.md",
-    "logos_definicion.md": "logos_definicion.md",
-    "capital_deliberativo.md": "capital_deliberativo.md",
+    "logos_definicion.md": "logos_definicion.md"
+
   }
 }
