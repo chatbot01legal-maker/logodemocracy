@@ -9,7 +9,6 @@
     "crisis_del_mundo_moderno.md": "crisis_del_mundo_moderno.md"
   },
   "Educación cívica": {
-    "introduccion.md": "introduccion.md",
     "el_mapa_no_es_el_territorio.md": "el_mapa_no_es_el_territorio.md",
     "nuevo_paradigma_educativo.md": "nuevo_paradigma_educativo.md",
     "ciudadano_epistemico.md": "ciudadano_epistemico.md"
@@ -40,6 +39,7 @@
   },
 
   "Fundamentos del sistema": {
+    "introduccion.md": "introduccion.md",
     "logodemocracy_arquitectura.md": "logodemocracy_arquitectura.md",
     "rey_filosofo_definicion.md": "rey_filosofo_definicion.md",
     "sophia_definicion.md": "sophia_definicion.md",
