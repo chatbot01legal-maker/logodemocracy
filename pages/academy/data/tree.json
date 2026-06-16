@@ -37,5 +37,13 @@
     "ia_y_trabajo.md": "ia_y_trabajo.md",
     "guerras.md": "guerras.md",
     "crisis_migratoria.md": "crisis_migratoria.md"
+  },
+
+  "Fundamentos del sistema": {
+    "logodemocracy_arquitectura.md": "logodemocracy_arquitectura.md",
+    "rey_filosofo_definicion.md": "rey_filosofo_definicion.md",
+    "sophia_definicion.md": "sophia_definicion.md",
+    "logos_definicion.md": "logos_definicion.md",
+    "capital_deliberativo.md": "capital_deliberativo.md",
   }
 }
