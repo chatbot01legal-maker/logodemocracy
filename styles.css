@@ -989,5 +989,106 @@ section h2 {
   }
 }
 
+/* ============================= */
+/* GRID DOCUMENTOS               */
+/* ============================= */
 
-: absolute;
+.documents-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* TABLET */
+@media (max-width: 1024px) {
+  .documents-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* MOBILE */
+@media (max-width: 640px) {
+  .documents-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+/* ============================= */
+/* DOC CARD = HOJA IMPRESA      */
+/* ============================= */
+
+.doc-card {
+  background: #ffffff;
+  color: #111827;
+
+  border: 1px solid rgba(0, 0, 0, 0.12);
+
+  padding: 18px 16px;
+  min-height: 170px;
+
+  text-decoration: none;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  font-family: 'IBM Plex Mono', monospace;
+
+  /* efecto papel físico */
+  box-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.08),
+    6px 6px 0 rgba(0, 0, 0, 0.04);
+
+  transition: all 0.2s ease;
+
+  position: relative;
+}
+
+/* hover tipo hoja levantada */
+.doc-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(34, 197, 94, 0.45);
+  box-shadow:
+    4px 4px 0 rgba(0, 0, 0, 0.10),
+    10px 10px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* ============================= */
+/* TÍTULO DEL DOCUMENTO         */
+/* ============================= */
+
+.doc-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+/* ============================= */
+/* DESCRIPCIÓN                  */
+/* ============================= */
+
+.doc-desc {
+  font-size: 11px;
+  line-height: 1.4;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+/* ============================= */
+/* DETALLE "PAPEL IMPRESO"      */
+/* ============================= */
+
+/* pequeña línea tipo margen de hoja */
+.doc-card::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.05);
+}
