@@ -901,3 +901,67 @@ section h2 {
   }
 
 }
+
+.archive-section {
+  padding: 100px 20px;
+}
+
+.archive-title {
+  font-family: 'Cormorant Garamond', serif;
+  text-align: center;
+  font-size: 42px;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.archive-subtitle {
+  text-align: center;
+  color: #94a3b8;
+  margin-bottom: 50px;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.archive-list {
+  max-width: 900px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* estilo tipo “terminal / índice académico” */
+.archive-item {
+  display: flex;
+  gap: 20px;
+  padding: 16px 18px;
+  border: 1px solid rgba(34,197,94,0.15);
+  background: rgba(5,10,18,0.96);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.archive-item:hover {
+  border-color: rgba(34,197,94,0.5);
+  transform: translateX(4px);
+}
+
+.archive-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: rgba(34,197,94,0.6);
+  min-width: 70px;
+}
+
+.archive-content h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #f8fafc;
+}
+
+.archive-content p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #94a3b8;
+}
