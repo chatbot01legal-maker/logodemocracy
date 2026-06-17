@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sophia | Logodemocracy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <link rel="stylesheet" href="sophia.css">
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- =======================
+       TOP INPUT BAR
+  ======================== -->
+  <header class="topbar">
+
+    <textarea id="textInput" placeholder="Pega aquí tu texto para evaluar con Sophia..."></textarea>
+
+    <div class="upload-zone">
+      <input type="file" id="fileInput" accept=".md,.txt,.docx,.pdf"/>
+      <button id="runEvalBtn">Evaluar con Sophia</button>
+    </div>
+
+  </header>
+
+  <!-- =======================
+       MAIN LAYOUT
+  ======================== -->
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="sidebar-content">
+
+        <h3>📂 Open Source Cognitivo</h3>
+
+        <div id="osc">
+          <!-- se renderiza dinámico -->
+        </div>
+
+        <hr/>
+
+        <div class="philosopher">
+
+          <h4>🏛 Rey Filósofo</h4>
+
+          <p id="philosopherText">
+            Aquí se explica cómo Sophia evalúa tu texto.
+          </p>
+
+          <button id="askPhilosopher">
+            Preguntar
+          </button>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+    <!-- DOCUMENT VIEW -->
+    <main class="document">
+
+      <div class="document-header">
+        Documento Evaluado
+      </div>
+
+      <div class="document-content" id="documentContent">
+        Esperando evaluación...
+      </div>
+
+    </main>
+
+    <!-- EPYSTEMIC PANEL -->
+    <aside class="epistemic-panel">
+
+      <h3>📊 Evaluación Sophia</h3>
+
+      <div id="scores">
+
+        <div class="score">
+          Transparencia Epistemológica: <span id="scoreEpist">-</span>
+        </div>
+
+        <div class="score">
+          Consistencia Lógica: <span id="scoreLogic">-</span>
+        </div>
+
+        <div class="score">
+          Claridad Conceptual: <span id="scoreClarity">-</span>
+        </div>
+
+        <div class="score">
+          Calidad Pedagógica: <span id="scorePedagogy">-</span>
+        </div>
+
+        <div class="score">
+          Honestidad Dialógica: <span id="scoreDialogue">-</span>
+        </div>
+
+        <hr/>
+
+        <div class="final-score">
+          Puntaje Final: <span id="finalScore">-</span>
+        </div>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+</div>
+
+<script src="sophia.js"></script>
+
+</body>
+  </html>
