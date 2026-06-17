@@ -1,13 +1,407 @@
-.doc-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 10px;
-  line-height: 1.3;
+/* ===================================================== */
+/* DOCUMENTOS.CSS                                        */
+/* ===================================================== */
+/* Archivo visual para la portada de documentos          */
+/* Estética: Terminal + Biblioteca + Documento físico    */
+/* ===================================================== */
+
+.documents-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+  gap: 28px;
+
+  max-width: 1280px;
+
+  margin: 70px auto;
+
+  padding: 0 24px;
+
 }
 
+
+/* ===================================================== */
+/* TARJETA                                               */
+/* ===================================================== */
+
+.doc-card {
+
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-start;
+
+  overflow: hidden;
+
+  min-height: 250px;
+
+  padding: 26px;
+
+  background: #fafaf7;
+
+  color: #111827;
+
+  text-decoration: none;
+
+  border: 1px solid rgba(0,0,0,.18);
+
+  font-family: "IBM Plex Mono", monospace;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    border-color .18s ease;
+
+  box-shadow:
+    3px 3px 0 rgba(0,0,0,.08),
+    8px 8px 0 rgba(0,0,0,.04);
+
+}
+
+
+/* ===================================================== */
+/* HOVER                                                 */
+/* ===================================================== */
+
+.doc-card:hover {
+
+  transform:
+    translateY(-5px)
+    rotate(-0.4deg);
+
+  border-color: rgba(34,197,94,.35);
+
+  box-shadow:
+
+    6px 6px 0 rgba(0,0,0,.10),
+
+    14px 14px 0 rgba(0,0,0,.05);
+
+}
+
+
+/* ===================================================== */
+/* MARGEN IZQUIERDO TIPO DOCUMENTO                       */
+/* ===================================================== */
+
+.doc-card::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 14px;
+
+  top: 14px;
+
+  bottom: 14px;
+
+  width: 2px;
+
+  background:
+
+    linear-gradient(
+
+      to bottom,
+
+      rgba(34,197,94,.45),
+
+      rgba(34,197,94,.08)
+
+    );
+
+}
+
+
+/* ===================================================== */
+/* ESQUINA DOBLADA                                       */
+/* ===================================================== */
+
+.doc-card::after {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  right: 0;
+
+  width: 0;
+
+  height: 0;
+
+  border-left: 28px solid transparent;
+
+  border-top: 28px solid rgba(0,0,0,.08);
+
+}
+
+
+/* ===================================================== */
+/* CABECERA                                              */
+/* ===================================================== */
+
+.doc-card .doc-header {
+
+  margin-bottom: 18px;
+
+}
+
+
+/* ===================================================== */
+/* ETIQUETA SUPERIOR                                     */
+/* ===================================================== */
+
+.doc-label {
+
+  display: inline-block;
+
+  margin-bottom: 14px;
+
+  padding: 4px 8px;
+
+  font-size: 10px;
+
+  letter-spacing: 2px;
+
+  color: #16a34a;
+
+  border: 1px solid rgba(34,197,94,.35);
+
+  text-transform: uppercase;
+
+}
+
+
+/* ===================================================== */
+/* TÍTULO                                                */
+/* ===================================================== */
+
+.doc-title {
+
+  display: block;
+
+  font-size: 17px;
+
+  font-weight: 700;
+
+  line-height: 1.35;
+
+  color: #0f172a;
+
+  margin-bottom: 16px;
+
+}
+
+
+/* ===================================================== */
+/* DESCRIPCIÓN                                           */
+/* ===================================================== */
+
 .doc-desc {
-  font-size: 11px;
-  line-height: 1.4;
-  color: rgba(0,0,0,0.65);
+
+  font-size: 12px;
+
+  line-height: 1.65;
+
+  color: rgba(0,0,0,.65);
+
+}
+
+
+/* ===================================================== */
+/* FOOTER                                                */
+/* ===================================================== */
+
+.doc-footer {
+
+  margin-top: auto;
+
+  padding-top: 22px;
+
+}
+
+
+/* ===================================================== */
+/* CÓDIGO                                                */
+/* ===================================================== */
+
+.doc-code {
+
+  font-size: 10px;
+
+  letter-spacing: 2px;
+
+  color: rgba(0,0,0,.45);
+
+}
+
+
+/* ===================================================== */
+/* EFECTO PAPEL                                          */
+/* ===================================================== */
+
+.doc-paper {
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: .05;
+
+  background:
+
+    repeating-linear-gradient(
+
+      to bottom,
+
+      rgba(0,0,0,.2),
+
+      rgba(0,0,0,.2) 1px,
+
+      transparent 1px,
+
+      transparent 4px
+
+    );
+
+}
+
+
+/* ===================================================== */
+/* VARIANTE VERDE                                        */
+/* ===================================================== */
+
+.doc-card.green {
+
+  border-left: 5px solid #22c55e;
+
+}
+
+
+/* ===================================================== */
+/* VARIANTE ÁMBAR                                        */
+/* ===================================================== */
+
+.doc-card.gold {
+
+  border-left: 5px solid #eab308;
+
+}
+
+
+/* ===================================================== */
+/* VARIANTE AZUL                                         */
+/* ===================================================== */
+
+.doc-card.blue {
+
+  border-left: 5px solid #3b82f6;
+
+}
+
+
+/* ===================================================== */
+/* VARIANTE ROJA                                         */
+/* ===================================================== */
+
+.doc-card.red {
+
+  border-left: 5px solid #ef4444;
+
+}
+
+
+/* ===================================================== */
+/* RESPONSIVE                                            */
+/* ===================================================== */
+
+@media (max-width: 1100px){
+
+  .documents-grid{
+
+    grid-template-columns:
+
+      repeat(3,1fr);
+
+  }
+
+}
+
+
+@media (max-width: 768px){
+
+  .documents-grid{
+
+    grid-template-columns:
+
+      repeat(2,1fr);
+
+  }
+
+}
+
+
+@media (max-width: 520px){
+
+  .documents-grid{
+
+    grid-template-columns:
+
+      1fr;
+
+    gap:20px;
+
+  }
+
+  .doc-card{
+
+    min-height:210px;
+
+    padding:22px;
+
+  }
+
+  .doc-title{
+
+    font-size:15px;
+
+  }
+
+}
+
+
+/* ===================================================== */
+/* FOCUS ACCESIBILIDAD                                   */
+/* ===================================================== */
+
+.doc-card:focus-visible{
+
+  outline:none;
+
+  box-shadow:
+
+    0 0 0 3px rgba(34,197,94,.35),
+
+    6px 6px 0 rgba(0,0,0,.10);
+
+}
+
+
+/* ===================================================== */
+/* ACTIVO                                                */
+/* ===================================================== */
+
+.doc-card:active{
+
+  transform:translateY(-2px);
+
 }
