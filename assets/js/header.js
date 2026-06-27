@@ -13,7 +13,7 @@ LOGODEMOCRACY
 
 <nav class="module-nav">
 
-<a href="/pages/academy.html"
+<a href="/pages/archive-template.html"
 class="module-link ${activeModule==="academia"?"active":""}">
 Academia
 </a>
