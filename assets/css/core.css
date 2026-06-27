@@ -98,3 +98,16 @@ body::before {
 
   z-index: 5;
 }
+
+
+.topbar .brand{
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+    color:var(--accent);
+
+    text-decoration:none;
+
+}
