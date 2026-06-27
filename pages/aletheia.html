@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Aletheia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/assets/css/base-layout.css">
+  <link rel="stylesheet" href="/assets/css/core.css">
+  <link rel="stylesheet" href="/assets/css/boot.css">
+
+  <!-- SKIN DEL MÓDULO -->
+  <link rel="stylesheet" href="/assets/css/modules/aletheia.css">
+</head>
+
+<body>
+
+<div class="page">
+
+  <div id="boot-screen"></div>
+
+  <div id="global-header"></div>
+
+  <script src="/assets/js/header.js"></script>
+  <script>
+    document.getElementById("global-header").innerHTML =
+      renderGlobalHeader("aletheia");
+  </script>
+
+  <main class="document">
+
+    <div class="document-header">
+      Aletheia · Verdad como proceso
+    </div>
+
+    <div class="document-content">
+
+      <p>Exploración epistemológica del concepto de verdad.</p>
+
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    Aletheia Module
+  </footer>
+
+</div>
+
+</body>
+</html>
