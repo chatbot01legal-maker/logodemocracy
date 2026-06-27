@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Rey Filósofo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/assets/css/base-layout.css">
+  <link rel="stylesheet" href="/assets/css/core.css">
+  <link rel="stylesheet" href="/assets/css/boot.css">
+
+  <!-- SKIN -->
+  <link rel="stylesheet" href="/assets/css/modules/rey-filosofo.css">
+</head>
+
+<body>
+
+<div class="page">
+
+  <div id="boot-screen"></div>
+
+  <div id="global-header"></div>
+
+  <script src="/assets/js/header.js"></script>
+  <script>
+    document.getElementById("global-header").innerHTML =
+      renderGlobalHeader("rey");
+  </script>
+
+  <main class="document">
+
+    <div class="document-header">
+      Rey Filósofo · Tutor cognitivo
+    </div>
+
+    <div class="document-content">
+      <p>Sistema de guía metacognitiva del aprendizaje.</p>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    Rey Filósofo Module
+  </footer>
+
+</div>
+
+</body>
+</html>
