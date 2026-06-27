@@ -100,14 +100,4 @@ body::before {
 }
 
 
-.topbar .brand{
 
-    font-weight:600;
-
-    letter-spacing:1px;
-
-    color:var(--accent);
-
-    text-decoration:none;
-
-}
