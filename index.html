@@ -3,11 +3,43 @@
 
 <head>
 
-  <meta charset="UTF-8" />
+<meta charset="UTF-8">
 
-  <title>Logodemocracy.tech</title>
+<title>Logodemocracy.tech</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="/assets/css/base-layout.css">
+
+<link rel="stylesheet"
+href="/assets/css/core.css">
+
+<link rel="stylesheet"
+href="/assets/css/boot.css">
+
+<link rel="stylesheet"
+href="/assets/css/landing.css">
+
+<link rel="stylesheet"
+href="/assets/css/modules.css">
+
+<link rel="stylesheet"
+href="/assets/css/documentos.css">
+
+<link rel="stylesheet"
+href="/assets/css/responsive.css">
 
   
 </head>
@@ -25,43 +57,17 @@
 </div>
 
 <!-- NAV -->
-<nav>
+<div id="global-header"></div>
 
-  <div class="nav-left">
+<script src="/assets/js/header.js"></script>
 
-    <a href="../index.html" class="logo-link">
-      <h2>Logodemocracy.tech</h2>
-    </a>
+<script>
 
-    <div class="system-label">
-      COGNITIVE OPERATING SYSTEM v0.1
-    </div>
+document.getElementById("global-header")
+.innerHTML =
+renderGlobalHeader("home");
 
-  </div>
-
-  <div class="menu-toggle" id="menu-toggle">
-    ☰
-  </div>
-
-  <ul id="menu">
-
-    <a href="/pages/academy-intro.html">ACADEMIA</a>
-
-    <li class="menu-group">
-      <a href="/pages/interfaces/logos.html">LOGOS</a>
-    </li>
-
-    <li class="menu-group">
-      <a href="/pages/interfaces/rey-filosofo.html">REY FILÓSOFO</a>
-    </li>
-
-    <li class="menu-group">
-      <a href="/pages/sophia.html">SOPHIA</a>
-    </li>
-
-  </ul>
-
-</nav>
+</script>
 
 <!-- HERO -->
 <section class="hero" data-bg="dark">
