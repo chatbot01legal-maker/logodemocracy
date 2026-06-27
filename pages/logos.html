@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Logos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/assets/css/base-layout.css">
+  <link rel="stylesheet" href="/assets/css/core.css">
+  <link rel="stylesheet" href="/assets/css/boot.css">
+
+  <!-- SKIN -->
+  <link rel="stylesheet" href="/assets/css/modules/logos.css">
+</head>
+
+<body>
+
+<div class="page">
+
+  <div id="boot-screen"></div>
+
+  <div id="global-header"></div>
+
+  <script src="/assets/js/header.js"></script>
+  <script>
+    document.getElementById("global-header").innerHTML =
+      renderGlobalHeader("logos");
+  </script>
+
+  <main class="document">
+
+    <div class="document-header">
+      Logos · Deliberación colectiva
+    </div>
+
+    <div class="document-content">
+      <p>Facilitación de diálogo y convergencia de discursos.</p>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    Logos Module
+  </footer>
+
+</div>
+
+</body>
+</html>
