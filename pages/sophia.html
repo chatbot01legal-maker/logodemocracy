@@ -1,197 +1,141 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sophia</title>
 
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1">
-
-<title>Sophia</title>
-
-<link rel="stylesheet"
-href="/assets/css/base-layout.css">
-
-<link rel="stylesheet"
-href="/assets/css/sophia.css">
-
+  <link rel="stylesheet" href="/assets/css/base-layout.css">
+  <link rel="stylesheet" href="/assets/css/sophia.css">
 </head>
 
 <body>
 
 <div class="page">
 
-<Header class="topbar">
-
-<div class="brand">
-
-LOGODEMOCRACY
-
-</div>
-
-<div class="module-nav">
-
-<a href="/academy.html"
-class="module-link">
-
+  <!-- =========================
+       HEADER LIMPIO (CORRECTO)
+  ========================== -->
   <header class="topbar">
 
-  <!-- LOGO PRINCIPAL -->
-  <a href="https://logodemocracy.tech" class="brand">
-    LOGODEMOCRACY
-  </a>
-
-  <!-- NAVEGACIÓN DE MÓDULOS -->
-  <nav class="module-nav">
-
-    <a href="/academy.html" class="module-link">
-      Academia
+    <!-- LOGO -->
+    <a href="https://logodemocracy.tech" class="brand">
+      LOGODEMOCRACY
     </a>
 
-    <a href="/pages/aletheia.html" class="module-link">
-      Aletheia
-    </a>
+    <!-- NAVEGACIÓN MÓDULOS -->
+    <nav class="module-nav">
 
-    <a href="/pages/logos.html" class="module-link">
-      Logos
-    </a>
+      <a href="/academy.html" class="module-link">
+        Academia
+      </a>
 
-    <a href="/pages/rey-filosofo.html" class="module-link">
-      Rey Filósofo
-    </a>
+      <a href="/pages/aletheia.html" class="module-link">
+        Aletheia
+      </a>
 
-    <a href="/pages/sophia.html" class="module-link active">
-      Sophia
-    </a>
+      <a href="/pages/logos.html" class="module-link">
+        Logos
+      </a>
 
-  </nav>
+      <a href="/pages/rey-filosofo.html" class="module-link">
+        Rey Filósofo
+      </a>
 
-  <!-- LADO DERECHO -->
-  <div class="topbar-right">
+      <a href="/pages/sophia.html" class="module-link active">
+        Sophia
+      </a>
 
-    <!-- USER / LOGIN -->
-    <a href="#" class="user-menu">
-      ⌂ Invitado
-    </a>
+    </nav>
 
-    <!-- IDIOMA -->
-    <div class="lang">
-      ES | EN
+    <!-- LADO DERECHO -->
+    <div class="topbar-right">
+
+      <a href="#" class="user-menu">
+        ⌂ Invitado
+      </a>
+
+      <div class="lang">
+        ES | EN
+      </div>
+
     </div>
-
-  </div>
 
   </header>
 
-<div class="layout">
+  <!-- =========================
+       LAYOUT (NO TOCADO)
+  ========================== -->
+  <div class="layout">
 
-<aside class="sidebar">
+    <aside class="sidebar">
 
-<div class="sidebar-content">
+      <div class="sidebar-content">
 
-<div class="tree">
+        <div class="tree">
+          Open Source Cognitivo
+        </div>
 
-Open Source Cognitivo
+        <div class="epistemic">
 
-</div>
+          <div class="epistemic-title">
+            Indicadores
+          </div>
 
-<div class="epistemic">
+          <div>Verificabilidad</div>
+          <div>Falacias</div>
+          <div>Sesgos</div>
+          <div>Claridad</div>
 
-<div class="epistemic-title">
+        </div>
 
-Indicadores
+        <div class="philosopher">
 
-</div>
+          <div>🏛 Rey Filósofo</div>
+          <div>¿Quieres comprender este resultado?</div>
 
-<div>Verificabilidad</div>
+        </div>
 
-<div>Falacias</div>
+      </div>
 
-<div>Sesgos</div>
+      <div class="sidebar-rail">
+        <div class="sidebar-toggle">◂</div>
+      </div>
 
-<div>Claridad</div>
+    </aside>
 
-</div>
+    <main class="document">
 
-<div class="philosopher">
+      <div class="document-header">
+        Sophia evalúa conocimiento.
+      </div>
 
-<div>
+      <div class="document-content">
 
-🏛 Rey Filósofo
+        <textarea class="sophia-input" placeholder="Pega aquí un texto"></textarea>
 
-</div>
+        <button class="evaluate-btn">
+          Evaluar
+        </button>
 
-<div>
+        <div class="result" id="result"></div>
 
-¿Quieres comprender este resultado?
+      </div>
 
-</div>
+    </main>
 
-</div>
+  </div>
 
-</div>
-
-<div class="sidebar-rail">
-
-<div class="sidebar-toggle">
-
-◂
-
-</div>
-
-</div>
-
-</aside>
-
-<main class="document">
-
-<div class="document-header">
-
-Sophia evalúa conocimiento.
-
-</div>
-
-<div class="document-content">
-
-<textarea
-class="sophia-input"
-placeholder="Pega aquí un texto">
-
-</textarea>
-
-<button
-class="evaluate-btn">
-
-Evaluar
-
-</button>
-
-<div
-class="result"
-id="result">
-
-</div>
-
-</div>
-
-</main>
-
-</div>
-
-<footer class="footer">
-
-LogoDemocracy · Sophia
-
-</footer>
+  <!-- FOOTER -->
+  <footer class="footer">
+    LogoDemocracy · Sophia
+  </footer>
 
 </div>
 
 <script src="/assets/js/layout.js"></script>
-
 <script src="/assets/js/sophia.js"></script>
 
 </body>
-
 </html>
