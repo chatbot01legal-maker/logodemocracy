@@ -287,3 +287,81 @@ opacity:.7;
 opacity:1;
 
 }
+
+
+/* =========================
+   TOPBAR LAYOUT (PLATAFORMA)
+========================= */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--accent);
+  background: #050a12;
+}
+
+/* LOGO */
+.brand {
+  text-decoration: none;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* NAV CENTRAL */
+.module-nav {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+/* BOTONES DE MÓDULOS */
+.module-link {
+  text-decoration: none;
+  color: #e5e7eb;
+  opacity: 0.7;
+  font-size: 13px;
+  transition: 0.2s;
+  padding: 4px 6px;
+  border-bottom: 1px solid transparent;
+}
+
+.module-link:hover {
+  opacity: 1;
+  border-bottom: 1px solid var(--accent);
+}
+
+.module-link.active {
+  opacity: 1;
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+}
+
+/* LADO DERECHO */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* USER MENU */
+.user-menu {
+  text-decoration: none;
+  color: #e5e7eb;
+  opacity: 0.8;
+  font-size: 13px;
+}
+
+.user-menu:hover {
+  opacity: 1;
+  color: var(--accent);
+}
+
+/* IDIOMA */
+.lang {
+  font-size: 13px;
+  opacity: 0.8;
+}
