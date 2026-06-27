@@ -1,55 +1,80 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  // =========================
+  // AUTH DEMO
+  // =========================
+
   let isLoggedIn = false;
 
   const userLabel = document.getElementById("userLabel");
   const authButton = document.getElementById("authButton");
 
-  // estado inicial
   function renderAuth() {
+
     if (!userLabel || !authButton) return;
 
     if (isLoggedIn) {
-      userLabel.textContent = "⌂ Rodrigo"; // luego viene de DB
+
+      userLabel.textContent = "⌂ Rodrigo";
       authButton.textContent = "Log out";
-    } else {
+
+    }
+
+    else {
+
       userLabel.textContent = "⌂ Invitado";
       authButton.textContent = "Log in";
+
     }
+
   }
 
-  // click login/logout
   if (authButton) {
-    authButton.addEventListener("click", (e) => {
+
+    authButton.addEventListener("click",(e)=>{
+
       e.preventDefault();
 
       isLoggedIn = !isLoggedIn;
+
       renderAuth();
+
     });
+
   }
 
   renderAuth();
-});
 
 
-// =========================
-// SIDEBAR TOGGLE (FIX)
-// =========================
+  // =========================
+  // SIDEBAR
+  // =========================
 
-document.addEventListener("DOMContentLoaded", () => {
+  const sidebar =
+    document.querySelector(".sidebar");
 
-  const sidebar = document.querySelector(".sidebar");
-  const toggle = document.querySelector(".sidebar-toggle");
+  const toggle =
+    document.querySelector(".sidebar-toggle");
 
-  if (!sidebar || !toggle) return;
+  if (sidebar && toggle) {
 
-  toggle.addEventListener("click", (e) => {
-    e.stopPropagation();
+    toggle.addEventListener("click",()=>{
 
-    sidebar.classList.toggle("collapsed");
+      sidebar.classList.toggle(
+        "collapsed"
+      );
 
-    // opcional: cambiar icono
-    toggle.textContent = sidebar.classList.contains("collapsed") ? "▸" : "◂";
-  });
+      toggle.textContent =
+        sidebar.classList.contains(
+          "collapsed"
+        )
+
+        ? "▸"
+
+        : "◂";
+
+    });
+
+  }
 
 });
