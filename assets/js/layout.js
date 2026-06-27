@@ -30,3 +30,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderAuth();
 });
+
+
+// =========================
+// SIDEBAR TOGGLE (FIX)
+// =========================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const sidebar = document.querySelector(".sidebar");
+  const toggle = document.querySelector(".sidebar-toggle");
+
+  if (!sidebar || !toggle) return;
+
+  toggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    sidebar.classList.toggle("collapsed");
+
+    // opcional: cambiar icono
+    toggle.textContent = sidebar.classList.contains("collapsed") ? "▸" : "◂";
+  });
+
+});
