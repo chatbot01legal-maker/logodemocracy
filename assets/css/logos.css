@@ -1,0 +1,19 @@
+:root{
+  --accent:#f59e0b;
+}
+
+.topbar .brand{
+  color: var(--accent);
+}
+
+.document-header{
+  color: var(--accent);
+}
+
+.footer{
+  color: var(--accent);
+}
+
+.sidebar-toggle{
+  color: var(--accent);
+}
