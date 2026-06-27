@@ -371,3 +371,11 @@ opacity:1;
   color: var(--accent);
   border-bottom: 1px solid var(--accent);
 }
+
+.module-link,
+.user-menu,
+.login-link,
+.auth-btn,
+.brand {
+  text-decoration: none;
+}
