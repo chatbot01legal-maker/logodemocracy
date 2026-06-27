@@ -17,60 +17,22 @@
   <!-- =========================
        HEADER LIMPIO (CORRECTO)
   ========================== -->
-  <header class="topbar">
+  
+<div id="global-header"></div>
 
-    <!-- LOGO -->
-    <a href="https://logodemocracy.tech" class="brand">
-      LOGODEMOCRACY
-    </a>
+  <script src="/assets/js/header.js"></script>
 
-    <!-- NAVEGACIÓN MÓDULOS -->
-    <nav class="module-nav">
+<script>
 
-      <a href="/academy.html" class="module-link">
-        Academia
-      </a>
+document.getElementById("global-header")
+.innerHTML =
+renderGlobalHeader("sophia");
 
-      <a href="/pages/aletheia.html" class="module-link">
-        Aletheia
-      </a>
+</script>
 
-      <a href="/pages/logos.html" class="module-link">
-        Logos
-      </a>
+<script src="/assets/js/layout.js"></script>
 
-      <a href="/pages/rey-filosofo.html" class="module-link">
-        Rey Filósofo
-      </a>
-
-      <a href="/pages/sophia.html" class="module-link active">
-        Sophia
-      </a>
-
-    </nav>
-
-    <!-- LADO DERECHO -->
-    <div class="topbar-right">
-
-  <!-- USUARIO -->
-  <a href="#" class="user-menu" id="userLabel">
-    ⌂ Invitado
-  </a>
-
-  <!-- LOGIN / LOGOUT -->
-  <a href="#" class="auth-btn" id="authButton">
-    Log in
-  </a>
-
-  <!-- IDIOMA -->
-  <div class="lang">
-    ES | EN
-  </div>
-
-    </div>
-
-  </header>
-
+<script src="/assets/js/sophia.js"></script>
   <!-- =========================
        LAYOUT (NO TOCADO)
   ========================== -->
