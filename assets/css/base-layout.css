@@ -23,14 +23,6 @@ overflow:hidden;
 }
 
 
-.brand{
-
-color:var(--accent);
-
-font-weight:bold;
-
-}
-
 .layout{
 
 display:flex;
