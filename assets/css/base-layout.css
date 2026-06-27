@@ -203,3 +203,87 @@ border-top:1px solid rgba(255,255,255,.08);
 color:var(--accent);
 
 }
+
+/* ====================================
+
+TOPBAR MODULES
+
+==================================== */
+
+.module-nav{
+
+display:flex;
+
+gap:10px;
+
+align-items:center;
+
+}
+
+
+.module-link{
+
+padding:4px 10px;
+
+border:1px solid transparent;
+
+text-decoration:none;
+
+font-size:13px;
+
+color:inherit;
+
+opacity:.7;
+
+transition:.2s;
+
+}
+
+
+.module-link:hover{
+
+opacity:1;
+
+}
+
+
+.module-link.active{
+
+border:1px solid var(--accent);
+
+color:var(--accent);
+
+opacity:1;
+
+}
+
+
+.topbar-right{
+
+display:flex;
+
+gap:24px;
+
+align-items:center;
+
+}
+
+
+.login-link{
+
+text-decoration:none;
+
+font-size:13px;
+
+color:inherit;
+
+opacity:.7;
+
+}
+
+
+.login-link:hover{
+
+opacity:1;
+
+}
