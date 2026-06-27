@@ -2,22 +2,42 @@
 
 <div class="page">
 
+  <!-- BOOT SCREEN -->
+  <div id="boot-screen">
+    <div class="boot-container">
+      <div class="boot-line">
+        <span id="boot-text"></span>
+        <span class="boot-cursor"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER (IDÉNTICO A SOPHIA/ACADEMIA) -->
   <div id="global-header"></div>
 
-  <div class="layout">
+  <script src="/assets/js/header.js"></script>
+  <script>
+    document.getElementById("global-header").innerHTML =
+      renderGlobalHeader("home");
+  </script>
 
+  <!-- CONTENIDO DEL INDEX (TU HERO) -->
+  <div class="layout">
+    
     <main class="document">
-      <!-- AQUÍ TU HERO ACTUAL -->
+
+      <section class="hero" data-bg="dark">
+
+        <!-- TODO TU CONTENIDO EXACTO -->
+
+      </section>
+
     </main>
 
   </div>
 
 </div>
 
-<script src="/assets/js/header.js"></script>
-<script>
-document.getElementById("global-header")
-.innerHTML = renderGlobalHeader("home");
-</script>
+<script src="/assets/js/main.js"></script>
 
 </body>
