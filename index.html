@@ -1,43 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sophia</title>
+
+  <link rel="stylesheet" href="/assets/css/base-layout.css">
+  <link rel="stylesheet" href="/assets/css/sophia.css">
+</head>
+
 <body>
 
 <div class="page">
 
-  <!-- BOOT SCREEN -->
-  <div id="boot-screen">
-    <div class="boot-container">
-      <div class="boot-line">
-        <span id="boot-text"></span>
-        <span class="boot-cursor"></span>
-      </div>
-    </div>
-  </div>
+  <!-- =========================
+       HEADER LIMPIO (CORRECTO)
+  ========================== -->
+  <header class="topbar">
 
-  <!-- HEADER (IDÉNTICO A SOPHIA/ACADEMIA) -->
-  <div id="global-header"></div>
+<a href="https://logodemocracy.tech"
+class="brand">
 
-  <script src="/assets/js/header.js"></script>
-  <script>
-    document.getElementById("global-header").innerHTML =
-      renderGlobalHeader("home");
-  </script>
+LOGODEMOCRACY
 
-  <!-- CONTENIDO DEL INDEX (TU HERO) -->
+</a>
+
+<nav class="module-nav">
+
+<a href="/pages/archive-template.html"
+class="module-link">
+
+Academia
+
+</a>
+
+<a href="/pages/aletheia.html"
+class="module-link">
+
+Aletheia
+
+</a>
+
+<a href="/pages/logos.html"
+class="module-link">
+
+Logos
+
+</a>
+
+<a href="/pages/rey-filosofo.html"
+class="module-link">
+
+Rey Filósofo
+
+</a>
+
+<a href="/pages/sophia.html"
+class="module-link active">
+
+Sophia
+
+</a>
+
+</nav>
+
+<div class="topbar-right">
+
+<a href="#"
+class="user-menu"
+id="userLabel">
+
+⌂ Invitado
+
+</a>
+
+<a href="#"
+class="auth-btn"
+id="authButton">
+
+Log in
+
+</a>
+
+<div class="lang">
+
+ES | EN
+
+</div>
+
+</div>
+
+  </header>
+
+  <!-- =========================
+       LAYOUT (NO TOCADO)
+  ========================== -->
   <div class="layout">
-    
+
+    <aside class="sidebar">
+
+      <div class="sidebar-content">
+
+        <div class="tree">
+          Open Source Cognitivo
+        </div>
+
+        <div class="epistemic">
+
+          <div class="epistemic-title">
+            Indicadores
+          </div>
+
+          <div>Verificabilidad</div>
+          <div>Falacias</div>
+          <div>Sesgos</div>
+          <div>Claridad</div>
+
+        </div>
+
+        <div class="philosopher">
+
+          <div>🏛 Rey Filósofo</div>
+          <div>¿Quieres comprender este resultado?</div>
+
+        </div>
+
+      </div>
+
+      <div class="sidebar-rail">
+        <div class="sidebar-toggle">◂</div>
+      </div>
+
+    </aside>
+
     <main class="document">
 
-      <section class="hero" data-bg="dark">
+      <div class="document-header">
+        Sophia evalúa conocimiento.
+      </div>
 
-        <!-- TODO TU CONTENIDO EXACTO -->
+      <div class="document-content">
 
-      </section>
+        <textarea class="sophia-input" placeholder="Pega aquí un texto"></textarea>
+
+        <button class="evaluate-btn">
+          Evaluar
+        </button>
+
+        <div class="result" id="result"></div>
+
+      </div>
 
     </main>
 
   </div>
 
+  <!-- FOOTER -->
+  <footer class="footer">
+    LogoDemocracy · 
+  </footer>
+
 </div>
 
-<script src="/assets/js/main.js"></script>
+<script src="/assets/js/layout.js"></script>
+<script src="/assets/js/sophia.js"></script>
 
 </body>
+</html>
