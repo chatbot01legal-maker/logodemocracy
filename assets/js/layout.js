@@ -1,35 +1,32 @@
-document.addEventListener("DOMContentLoaded",()=>{
+document.addEventListener("DOMContentLoaded", () => {
 
-const sidebar=document.querySelector(".sidebar");
+  let isLoggedIn = false;
 
-const toggle=document.querySelector(".sidebar-toggle");
+  const userLabel = document.getElementById("userLabel");
+  const authButton = document.getElementById("authButton");
 
-if(sidebar&&toggle){
+  // estado inicial
+  function renderAuth() {
+    if (!userLabel || !authButton) return;
 
-toggle.addEventListener("click",()=>{
+    if (isLoggedIn) {
+      userLabel.textContent = "⌂ Rodrigo"; // luego viene de DB
+      authButton.textContent = "Log out";
+    } else {
+      userLabel.textContent = "⌂ Invitado";
+      authButton.textContent = "Log in";
+    }
+  }
 
-const collapsed=
+  // click login/logout
+  if (authButton) {
+    authButton.addEventListener("click", (e) => {
+      e.preventDefault();
 
-sidebar.classList.toggle(
+      isLoggedIn = !isLoggedIn;
+      renderAuth();
+    });
+  }
 
-"collapsed"
-
-);
-
-toggle.textContent=
-
-collapsed
-
-?
-
-"▸"
-
-:
-
-"◂";
-
-});
-
-}
-
+  renderAuth();
 });
