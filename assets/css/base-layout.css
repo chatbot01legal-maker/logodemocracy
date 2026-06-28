@@ -12,6 +12,9 @@ body {
 
 :root {
   --accent: #22c55e;
+
+  --header-color: #e5e7eb;
+  --header-border: rgba(229,231,235,.12);
 }
 
 /* ─── PAGE SHELL ─────────────────────────────────────── */
@@ -130,14 +133,14 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
-  border-bottom: 1px solid var(--accent);
+  border-bottom: 1px solid rgba(255,255,255,.15);
   background: #050a12;
 }
 
 /* LOGO */
 .brand {
   text-decoration: none;
-  color: var(--accent);
+  color: var(--header-color);
   font-weight: 600;
   font-family: "IBM Plex Mono", monospace;
   letter-spacing: 1px;
@@ -219,7 +222,7 @@ body {
   display: none;
   background: none;
   border: none;
-  color: var(--accent);
+  color: var(--header-color);
   padding: 4px;
   cursor: pointer;
 }
