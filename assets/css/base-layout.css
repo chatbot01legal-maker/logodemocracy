@@ -1,284 +1,134 @@
-body{
-margin:0;
-font-family:monospace;
-background:#050a12;
-color:#e5e7eb;
+/* ═══════════════════════════════════════════════════════
+   LOGODEMOCRACY — base-layout.css
+   Estilos compartidos por todos los módulos y la landing.
+   ═══════════════════════════════════════════════════════ */
+
+body {
+  margin: 0;
+  font-family: monospace;
+  background: #050a12;
+  color: #e5e7eb;
 }
 
-:root{
-
---accent:#22c55e;
-
+:root {
+  --accent: #22c55e;
 }
 
-.page{
-
-display:flex;
-flex-direction:column;
-
-height:100vh;
-
-overflow:hidden;
-
+/* ─── PAGE SHELL ─────────────────────────────────────── */
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
 }
 
-
-.layout{
-
-display:flex;
-
-flex:1;
-
-overflow:hidden;
-
+.layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
 }
 
-.sidebar{
-
-width:260px;
-
-min-width:260px;
-
-max-width:260px;
-
-display:flex;
-
-border-right:1px solid rgba(255,255,255,.08);
-
-transition:.25s;
-
+/* ─── SIDEBAR ────────────────────────────────────────── */
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  max-width: 260px;
+  display: flex;
+  border-right: 1px solid rgba(255,255,255,.08);
+  transition: .25s;
 }
 
-.sidebar-content{
-
-flex:1;
-
-padding:12px;
-
-display:flex;
-
-flex-direction:column;
-
-gap:12px;
-
-overflow:hidden;
-
+.sidebar-content {
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
 }
 
-.sidebar-rail{
-
-width:22px;
-
-display:flex;
-
-justify-content:center;
-
-padding-top:8px;
-
+.sidebar-rail {
+  width: 22px;
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
 }
 
-.sidebar-toggle{
-
-width:18px;
-
-height:18px;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-cursor:pointer;
-
-border:1px solid rgba(255,255,255,.1);
-
-color:var(--accent);
-
+.sidebar-toggle {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,.1);
+  color: var(--accent);
 }
 
-.sidebar.collapsed{
-
-width:22px;
-
-min-width:22px;
-
-max-width:22px;
-
+.sidebar.collapsed {
+  width: 22px;
+  min-width: 22px;
+  max-width: 22px;
 }
 
-.sidebar.collapsed .sidebar-content{
-
-display:none;
-
+.sidebar.collapsed .sidebar-content {
+  display: none;
 }
 
 .tree,
 .epistemic,
-.philosopher{
-
-padding:12px;
-
-border:1px solid rgba(255,255,255,.08);
-
-background:#050a12;
-
+.philosopher {
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: #050a12;
 }
 
-.tree{
-
-flex:1;
-
-overflow:auto;
-
+.tree {
+  flex: 1;
+  overflow: auto;
 }
 
-.epistemic-title{
-
-color:var(--accent);
-
-margin-bottom:8px;
-
+.epistemic-title {
+  color: var(--accent);
+  margin-bottom: 8px;
 }
 
-.document{
-
-flex:1;
-
-display:flex;
-
-flex-direction:column;
-
-overflow:hidden;
-
+/* ─── DOCUMENT AREA ──────────────────────────────────── */
+.document {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.document-header{
-
-padding:20px;
-
-border-bottom:1px solid rgba(255,255,255,.08);
-
-color:var(--accent);
-
+.document-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  color: var(--accent);
 }
 
-.document-content{
-
-flex:1;
-
-overflow:auto;
-
-padding:24px;
-
+.document-content {
+  flex: 1;
+  overflow: auto;
+  padding: 24px;
 }
 
-.footer{
-
-padding:12px;
-
-text-align:center;
-
-border-top:1px solid rgba(255,255,255,.08);
-
-color:var(--accent);
-
+/* ─── FOOTER ─────────────────────────────────────────── */
+.footer {
+  padding: 12px;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,.08);
+  color: var(--accent);
 }
 
-/* ====================================
-
-TOPBAR MODULES
-
-==================================== */
-
-.module-nav{
-
-display:flex;
-
-gap:10px;
-
-align-items:center;
-
-}
-
-
-.module-link{
-
-padding:4px 10px;
-
-border:1px solid transparent;
-
-text-decoration:none;
-
-font-size:13px;
-
-color:inherit;
-
-opacity:.7;
-
-transition:.2s;
-
-}
-
-
-.module-link:hover{
-
-opacity:1;
-
-}
-
-
-.module-link.active{
-
-border:1px solid var(--accent);
-
-color:var(--accent);
-
-opacity:1;
-
-}
-
-
-.topbar-right{
-
-display:flex;
-
-gap:24px;
-
-align-items:center;
-
-}
-
-
-.login-link{
-
-text-decoration:none;
-
-font-size:13px;
-
-color:inherit;
-
-opacity:.7;
-
-}
-
-
-.login-link:hover{
-
-opacity:1;
-
-}
-
-
-/* =========================
-   TOPBAR LAYOUT (PLATAFORMA)
-========================= */
+/* ═══════════════════════════════════════════════════════
+   TOPBAR — compartido entre landing y todos los módulos
+   ═══════════════════════════════════════════════════════ */
 
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding: 10px 16px;
   border-bottom: 1px solid var(--accent);
   background: #050a12;
@@ -289,7 +139,7 @@ opacity:1;
   text-decoration: none;
   color: var(--accent);
   font-weight: 600;
-  font-family: "IBM Plex Mono", monospace; /* 🔥 FIX ESTABILIDAD */
+  font-family: "IBM Plex Mono", monospace;
   letter-spacing: 1px;
 }
 
@@ -300,7 +150,7 @@ opacity:1;
   align-items: center;
 }
 
-/* BOTONES DE MÓDULOS */
+/* LINKS DE MÓDULOS */
 .module-link {
   text-decoration: none;
   color: #e5e7eb;
@@ -329,7 +179,6 @@ opacity:1;
   gap: 12px;
 }
 
-/* USER MENU */
 .user-menu {
   text-decoration: none;
   color: #e5e7eb;
@@ -342,7 +191,6 @@ opacity:1;
   color: var(--accent);
 }
 
-/* IDIOMA */
 .lang {
   font-size: 13px;
   opacity: 0.8;
@@ -357,6 +205,7 @@ opacity:1;
   border: 1px solid transparent;
   transition: 0.2s;
   cursor: pointer;
+  background: none;
 }
 
 .auth-btn:hover {
@@ -365,94 +214,53 @@ opacity:1;
   border-bottom: 1px solid var(--accent);
 }
 
-.module-link,
-.user-menu,
-.login-link,
-.auth-btn,
-.brand {
-  text-decoration: none;
+/* BOTÓN HAMBURGUESA */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--accent);
+  padding: 4px;
+  cursor: pointer;
 }
 
-/* ==========================
-   MOBILE MENU
-========================== */
-
-.mobile-menu-btn{
-
-display:none;
-
-background:none;
-
-border:none;
-
-color:var(--accent);
-
-padding:4px;
-
-cursor:pointer;
-
+.mobile-menu-btn svg {
+  display: block;
 }
 
-.mobile-menu-btn svg{
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-display:block;
+  .topbar {
+    flex-wrap: wrap;
+  }
 
-}
+  .module-nav {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding-top: 12px;
+  }
 
-@media (max-width:900px){
+  .module-nav.open {
+    display: flex;
+  }
 
-.mobile-menu-btn{
+  .topbar-right {
+    display: none;
+    width: 100%;
+    padding-top: 12px;
+  }
 
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-}
-
-.topbar{
-
-flex-wrap:wrap;
-
-}
-
-.module-nav{
-
-display:none;
-
-width:100%;
-
-flex-direction:column;
-
-gap:8px;
-
-padding-top:12px;
-
-}
-
-.module-nav.open{
-
-display:flex;
-
-}
-
-.topbar-right{
-
-display:none;
-
-width:100%;
-
-padding-top:12px;
-
-}
-
-.topbar-right.open{
-
-display:flex;
-
-gap:12px;
-
-}
-
+  .topbar-right.open {
+    display: flex;
+    gap: 12px;
+  }
 }
