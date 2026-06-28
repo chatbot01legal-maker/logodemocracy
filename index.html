@@ -76,20 +76,6 @@ body {
   padding: 0 var(--space-md);
 }
 
-/* ─── DOT GRID TEXTURE ───────────────────────────────── */
-.dot-grid {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ─── TOPBAR (idéntico a base-layout.css) ────────────── */
-/* Los estilos base vienen de base-layout.css.
-   Aquí solo ajustamos el padding-top del hero para compensar
-   que el topbar no es fixed en la landing. */
 
 /* ─── DIVISOR ANIMADO ────────────────────────────────── */
 .divider-line {
@@ -1114,7 +1100,6 @@ body {
        S1 — HERO
   ══════════════════════════════════════════════════════════ -->
   <section class="hero" id="inicio">
-    <div class="dot-grid" aria-hidden="true"></div>
     <div class="hero-inner">
       <span class="badge reveal-line" style="--delay:0ms">Democracia Aumentada</span>
       <h1 class="hero-title">
