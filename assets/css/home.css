@@ -143,3 +143,33 @@ border-color:#22c55e;
 border-color:#d97706;
 
 }
+
+.page{
+
+height:auto;
+
+min-height:100vh;
+
+overflow:visible;
+
+}
+
+body{
+
+overflow-y:auto;
+
+}
+
+.home{
+
+flex:1;
+
+padding:80px 40px;
+
+}
+
+main.home{
+
+overflow:visible;
+
+}
