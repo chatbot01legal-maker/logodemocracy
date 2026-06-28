@@ -58,23 +58,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (sidebar && toggle) {
 
-    toggle.addEventListener("click",()=>{
+  // Colapsar automáticamente en tablet y móvil
 
-      sidebar.classList.toggle(
-        "collapsed"
-      );
+  if (window.innerWidth <= 1024) {
 
-      toggle.textContent =
-        sidebar.classList.contains(
-          "collapsed"
-        )
+    sidebar.classList.add("collapsed");
 
-        ? "▸"
-
-        : "◂";
-
-    });
+    toggle.textContent = "▸";
 
   }
 
-});
+  toggle.addEventListener("click",()=>{
+
+    sidebar.classList.toggle(
+      "collapsed"
+    );
+
+    toggle.textContent =
+
+      sidebar.classList.contains(
+        "collapsed"
+      )
+
+      ? "▸"
+
+      : "◂";
+
+  });
+
+  }
