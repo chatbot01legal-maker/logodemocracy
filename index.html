@@ -1,412 +1,1748 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LogoDemocracy — Democracia Aumentada</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+/* ═══════════════════════════════════════════════════════
+   LOGODEMOCRACY — home.css
+   Filosofía visual: sistema cognitivo, no landing comercial
+   ═══════════════════════════════════════════════════════ */
 
-<meta charset="UTF-8">
+/* ─── RESET & BASE ──────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1">
+:root {
+  /* Paleta */
+  --c-bg:       #050a12;
+  --c-text:     #e5e7eb;
+  --c-muted:    rgba(229,231,235,0.5);
+  --c-faint:    rgba(229,231,235,0.25);
+  --c-border:   rgba(255,255,255,0.08);
+  --c-glass:    rgba(255,255,255,0.03);
+  --c-glass-h:  rgba(255,255,255,0.055);
 
-<title>LogoDemocracy</title>
+  --c-aletheia: #8b5cf6;
+  --c-logos:    #06b6d4;
+  --c-rey:      #d97706;
+  --c-sophia:   #3b82f6;
+  --c-academia: #22c55e;
 
-<link rel="stylesheet"
-href="/assets/css/base-layout.css">
+  /* Tipografía */
+  --f-mono: 'IBM Plex Mono', monospace;
+  --f-sans: 'IBM Plex Sans', sans-serif;
 
-<link rel="stylesheet"
-href="/assets/css/home.css">
+  /* Espaciado base */
+  --space-xs:  0.5rem;
+  --space-sm:  1rem;
+  --space-md:  2rem;
+  --space-lg:  4rem;
+  --space-xl:  7rem;
+  --space-2xl: 10rem;
 
+  /* Contenedor */
+  --container: 1120px;
+}
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--f-sans);
+  font-size: 1rem;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ─── CONTENEDOR ─────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+/* ─── DOT GRID TEXTURE ───────────────────────────────── */
+.dot-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── NAVEGACIÓN ─────────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--c-border);
+  background: rgba(5,10,18,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+  height: 56px;
+}
+
+.nav-logo {
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--c-text);
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.nav-link {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--c-muted);
+  text-decoration: none;
+  transition: color 200ms ease;
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  transition: width 200ms ease;
+}
+
+.nav-link--aletheia::after { background: var(--c-aletheia); }
+.nav-link--logos::after    { background: var(--c-logos); }
+.nav-link--rey::after      { background: var(--c-rey); }
+.nav-link--sophia::after   { background: var(--c-sophia); }
+.nav-link--academia::after { background: var(--c-academia); }
+
+.nav-link--aletheia:hover { color: var(--c-aletheia); }
+.nav-link--logos:hover    { color: var(--c-logos); }
+.nav-link--rey:hover      { color: var(--c-rey); }
+.nav-link--sophia:hover   { color: var(--c-sophia); }
+.nav-link--academia:hover { color: var(--c-academia); }
+
+.nav-link:hover::after { width: 100%; }
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.nav-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: 1px solid var(--c-border);
+  border-radius: 6px;
+  color: var(--c-muted);
+  cursor: pointer;
+  transition: border-color 200ms, color 200ms;
+}
+
+.nav-icon-btn:hover {
+  border-color: rgba(255,255,255,0.2);
+  color: var(--c-text);
+}
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: 1px solid var(--c-border);
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 0 8px;
+}
+
+.nav-hamburger span {
+  display: block;
+  height: 1px;
+  background: var(--c-muted);
+  transition: opacity 200ms;
+}
+
+/* ─── DIVISOR ANIMADO ────────────────────────────────── */
+.divider-line {
+  position: relative;
+  height: 1px;
+  background: var(--c-border);
+  overflow: visible;
+}
+
+.divider-dot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-aletheia);
+  box-shadow: 0 0 8px var(--c-aletheia), 0 0 16px rgba(139,92,246,0.4);
+  animation: dotTravel 8s ease-in-out infinite;
+}
+
+@keyframes dotTravel {
+  0%   { left: 0%;   background: var(--c-aletheia); box-shadow: 0 0 8px var(--c-aletheia); }
+  33%  { background: var(--c-logos);    box-shadow: 0 0 8px var(--c-logos); }
+  66%  { background: var(--c-sophia);   box-shadow: 0 0 8px var(--c-sophia); }
+  100% { left: 100%; background: var(--c-academia);  box-shadow: 0 0 8px var(--c-academia); }
+}
+
+/* ─── HERO ───────────────────────────────────────────── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px var(--space-md) var(--space-xl);
+  overflow: hidden;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+/* Reveal animation */
+.reveal-line {
+  opacity: 0;
+  animation: revealFade 800ms ease forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes revealFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-aletheia);
+  border: 1px solid rgba(139,92,246,0.3);
+  border-radius: 40px;
+  padding: 0.35em 1em;
+  background: rgba(139,92,246,0.06);
+}
+
+.hero-title {
+  font-family: var(--f-mono);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 6.5vw, 6.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--c-text);
+  display: flex;
+  flex-direction: column;
+  gap: 0.08em;
+}
+
+.hero-title .reveal-line {
+  display: block;
+}
+
+.hero-sub {
+  font-family: var(--f-sans);
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-weight: 300;
+  color: var(--c-muted);
+  line-height: 1.7;
+  max-width: 560px;
+}
+
+.hero-cta {
+  font-family: var(--f-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--c-muted);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(229,231,235,0.2);
+  transition: color 200ms, border-color 200ms;
+  margin-top: var(--space-sm);
+}
+
+.hero-cta:hover {
+  color: var(--c-text);
+  border-color: var(--c-aletheia);
+}
+
+.cta-arrow {
+  display: inline-block;
+  transition: transform 300ms ease;
+}
+
+.hero-cta:hover .cta-arrow {
+  transform: translateY(3px);
+}
+
+.br-desk { display: inline; }
+
+/* ─── SECCIONES BASE ─────────────────────────────────── */
+.section {
+  padding: var(--space-xl) 0;
+}
+
+.section-header {
+  margin-bottom: var(--space-lg);
+}
+
+.section-label {
+  display: inline-block;
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--label-color, var(--c-aletheia));
+  margin-bottom: var(--space-sm);
+}
+
+.section-title {
+  font-family: var(--f-mono);
+  font-weight: 300;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--c-text);
+  margin-bottom: var(--space-sm);
+}
+
+.section-sub {
+  font-family: var(--f-sans);
+  font-size: 1rem;
+  color: var(--c-muted);
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+/* ─── S2 CONCEPTO ────────────────────────────────────── */
+.concepto-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.concepto-text {
+  font-size: 1rem;
+  color: var(--c-muted);
+  line-height: 1.8;
+}
+
+.concepto-text p + p {
+  margin-top: var(--space-sm);
+}
+
+.formula-concepto {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.formula-block {
+  flex: 1;
+  min-width: 180px;
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  padding: var(--space-md);
+  background: var(--c-glass);
+  transition: border-color 250ms, background 250ms, transform 250ms;
+  cursor: default;
+}
+
+.formula-block[data-color="sophia"]   { --hover-col: var(--c-sophia); }
+.formula-block[data-color="academia"] { --hover-col: var(--c-academia); }
+.formula-block[data-color="aletheia"] { --hover-col: var(--c-aletheia); }
+
+.formula-block:hover {
+  border-color: var(--hover-col);
+  background: var(--c-glass-h);
+  transform: translateY(-3px);
+}
+
+.formula-block-name {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--c-text);
+  margin-bottom: 0.4em;
+}
+
+.formula-block-desc {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--c-muted);
+  line-height: 1.5;
+}
+
+.formula-op,
+.formula-eq {
+  font-family: var(--f-mono);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  color: rgba(229,231,235,0.15);
+  display: flex;
+  align-items: center;
+  padding: 0 0.25em;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+.formula-result {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(139,92,246,0.3);
+  border-radius: 8px;
+  padding: var(--space-md);
+  background: rgba(139,92,246,0.06);
+}
+
+.formula-result-name {
+  font-family: var(--f-mono);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--c-aletheia);
+}
+
+/* ─── S3 AGENTES ─────────────────────────────────────── */
+.agentes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+.agent-card {
+  position: relative;
+  border: 1px solid var(--c-border);
+  border-left-width: 2px;
+  border-radius: 8px;
+  padding: var(--space-md) var(--space-md) var(--space-md) calc(var(--space-md) + 2px);
+  background: var(--c-glass);
+  transition: background 250ms, transform 250ms, border-color 250ms, box-shadow 250ms;
+}
+
+.agent-card[data-agent="aletheia"] { border-left-color: var(--c-aletheia); }
+.agent-card[data-agent="logos"]    { border-left-color: var(--c-logos); }
+.agent-card[data-agent="rey"]      { border-left-color: var(--c-rey); }
+.agent-card[data-agent="sophia"]   { border-left-color: var(--c-sophia); }
+
+.agent-card[data-agent="aletheia"]:hover { box-shadow: 0 0 24px rgba(139,92,246,0.12); }
+.agent-card[data-agent="logos"]:hover    { box-shadow: 0 0 24px rgba(6,182,212,0.12); }
+.agent-card[data-agent="rey"]:hover      { box-shadow: 0 0 24px rgba(217,119,6,0.12); }
+.agent-card[data-agent="sophia"]:hover   { box-shadow: 0 0 24px rgba(59,130,246,0.12); }
+
+.agent-card:hover {
+  background: var(--c-glass-h);
+  transform: translateY(-4px);
+}
+
+.agent-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.agent-id {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: var(--c-faint);
+  letter-spacing: 0.1em;
+}
+
+.agent-tag {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  border: 1px solid var(--c-border);
+  border-radius: 4px;
+  padding: 0.15em 0.6em;
+}
+
+.agent-name {
+  font-family: var(--f-mono);
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--c-text);
+  margin-bottom: 0.75em;
+}
+
+.agent-desc {
+  font-size: 0.9rem;
+  color: var(--c-muted);
+  line-height: 1.7;
+  margin-bottom: var(--space-sm);
+}
+
+.agent-capabilities {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  margin-bottom: var(--space-md);
+}
+
+.agent-capabilities li {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  color: var(--c-faint);
+  letter-spacing: 0.04em;
+  padding-left: 1em;
+  position: relative;
+}
+
+.agent-capabilities li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--c-border);
+}
+
+.agent-link {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--c-muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--c-border);
+  padding-bottom: 1px;
+  transition: color 200ms, border-color 200ms;
+}
+
+.agent-card[data-agent="aletheia"] .agent-link:hover { color: var(--c-aletheia); border-color: var(--c-aletheia); }
+.agent-card[data-agent="logos"]    .agent-link:hover { color: var(--c-logos);    border-color: var(--c-logos); }
+.agent-card[data-agent="rey"]      .agent-link:hover { color: var(--c-rey);      border-color: var(--c-rey); }
+.agent-card[data-agent="sophia"]   .agent-link:hover { color: var(--c-sophia);   border-color: var(--c-sophia); }
+
+/* ─── S4 ACADEMIA ────────────────────────────────────── */
+.academia-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.academia-content p {
+  color: var(--c-muted);
+  margin-bottom: var(--space-sm);
+  line-height: 1.8;
+}
+
+.academia-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+  margin-top: var(--space-md);
+}
+
+.academia-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.75em;
+  font-family: var(--f-mono);
+  font-size: 0.8rem;
+  color: var(--c-muted);
+  letter-spacing: 0.04em;
+}
+
+.feature-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* Panel técnico */
+.academia-panel {
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.018);
+  overflow: hidden;
+  font-family: var(--f-mono);
+}
+
+.panel-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.6em 1em;
+  border-bottom: 1px solid var(--c-border);
+  background: rgba(255,255,255,0.025);
+}
+
+.panel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-border);
+}
+
+.panel-title {
+  font-size: 0.65rem;
+  color: var(--c-faint);
+  letter-spacing: 0.06em;
+  margin-left: auto;
+}
+
+.panel-body {
+  padding: 1.25em 1.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45em;
+}
+
+.panel-line {
+  font-size: 0.78rem;
+  color: var(--c-muted);
+  line-height: 1.5;
+}
+
+.panel-line--comment { color: rgba(229,231,235,0.25); }
+.panel-line--gap     { margin-top: 0.5em; }
+
+.panel-line--cursor {
+  margin-top: 0.3em;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.p-green  { color: var(--c-academia); }
+.p-cyan   { color: var(--c-logos); }
+.p-amber  { color: var(--c-rey); }
+.p-violet { color: var(--c-aletheia); }
+
+/* ─── S5 TIMELINE ────────────────────────────────────── */
+.flujo { text-align: center; }
+.flujo .section-header { text-align: center; }
+.flujo .section-sub { margin: 0 auto; }
+
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-md) 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  background: rgba(255,255,255,0.1);
+  z-index: 0;
+}
+
+.timeline-node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 100px;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 500ms ease, transform 500ms ease;
+}
+
+.timeline-node.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tl-connector {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 100%;
+  background: rgba(255,255,255,0.07);
+}
+
+.tl-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px var(--c-bg), 0 0 0 4px rgba(255,255,255,0.1);
+  z-index: 2;
+}
+
+.tl-content {
+  width: 44%;
+  padding: var(--space-sm);
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  background: var(--c-glass);
+  text-align: left;
+}
+
+.tl-content--right { margin-left: 56%; }
+.tl-content--left  { margin-right: 56%; }
+
+.tl-title {
+  font-family: var(--f-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--c-text);
+  margin-bottom: 0.4em;
+}
+
+.tl-desc {
+  font-size: 0.8rem;
+  color: var(--c-muted);
+  line-height: 1.6;
+}
+
+.timeline-node--last .tl-connector { display: none; }
+
+/* ─── S6 VOTACIÓN CUADRÁTICA ─────────────────────────── */
+.cuadratica-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.cuadratica-content p {
+  color: var(--c-muted);
+  margin-bottom: var(--space-sm);
+  line-height: 1.8;
+}
+
+.cuadratica-content em {
+  color: var(--c-text);
+  font-style: normal;
+  font-weight: 500;
+}
+
+.cuadratica-props {
+  list-style: none;
+  margin-top: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+}
+
+.cuadratica-props li {
+  font-family: var(--f-mono);
+  font-size: 0.78rem;
+  color: var(--c-muted);
+  padding-left: 1.25em;
+  position: relative;
+}
+
+.cuadratica-props li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--c-aletheia);
+}
+
+.cuadratica-chart {
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  padding: var(--space-md);
+  background: var(--c-glass);
+}
+
+.chart-title {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-faint);
+  margin-bottom: var(--space-md);
+}
+
+.chart-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.chart-row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr 5rem;
+  align-items: center;
+  gap: 0.75em;
+}
+
+.chart-label {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  color: var(--c-muted);
+  text-align: right;
+}
+
+.chart-bar-wrap {
+  height: 8px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.chart-bar {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--c-aletheia), var(--c-logos));
+}
+
+.chart-cost {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  color: var(--c-faint);
+}
+
+.chart-note {
+  margin-top: var(--space-md);
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  color: var(--c-faint);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ─── S7 MODELO ──────────────────────────────────────── */
+.formula-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-lg) 0;
+}
+
+.formula-display {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  background: var(--c-glass);
+}
+
+.formula-lhs {
+  font-family: var(--f-mono);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  color: var(--c-text);
+  letter-spacing: -0.02em;
+}
+
+.formula-eq-sign {
+  font-family: var(--f-mono);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 300;
+  color: var(--c-faint);
+}
+
+.formula-rhs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1em;
+}
+
+.formula-numerator,
+.formula-denominator {
+  font-family: var(--f-mono);
+  font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+  font-weight: 400;
+  color: var(--c-text);
+  text-align: center;
+  padding: 0.2em 0;
+}
+
+.formula-denominator { color: var(--c-muted); }
+
+.formula-bar {
+  width: 100%;
+  height: 1px;
+  background: rgba(229,231,235,0.3);
+  margin: 0.15em 0;
+}
+
+.formula-numerator sub,
+.formula-denominator sub {
+  font-size: 0.7em;
+  color: var(--c-aletheia);
+}
+
+.modelo-variables {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.var-block {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-start;
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--c-glass);
+}
+
+.var-block[data-var="P"] { border-top-color: var(--c-sophia); }
+.var-block[data-var="E"] { border-top-color: var(--c-rey); }
+.var-block[data-var="V"] { border-top-color: var(--c-academia); }
+
+.var-letter {
+  font-family: var(--f-mono);
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--c-faint);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.var-name {
+  font-family: var(--f-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--c-text);
+  margin-bottom: 0.4em;
+}
+
+.var-desc {
+  font-size: 0.8rem;
+  color: var(--c-muted);
+  line-height: 1.6;
+}
+
+.modelo-nota {
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--c-faint);
+  text-align: center;
+  line-height: 1.7;
+  max-width: 540px;
+  margin: 0 auto;
+  border-top: 1px solid var(--c-border);
+  padding-top: var(--space-md);
+}
+
+/* ─── S8 CIERRE ──────────────────────────────────────── */
+.cierre {
+  padding: var(--space-2xl) 0;
+  text-align: center;
+}
+
+.cierre-quote {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+.cierre-line {
+  font-family: var(--f-mono);
+  font-weight: 300;
+  font-size: clamp(1.4rem, 3.5vw, 2.6rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.cierre-line--light  { color: var(--c-text); }
+.cierre-line--accent { color: rgba(139,92,246,0.8); }
+
+/* ─── FOOTER ─────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid var(--c-border);
+  padding: var(--space-md) 0;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.footer-logo {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--c-faint);
+}
+
+.footer-nav {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.footer-nav a {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  color: var(--c-faint);
+  text-decoration: none;
+  transition: color 200ms;
+}
+
+.footer-nav a:hover { color: var(--c-muted); }
+
+.footer-copy {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  color: var(--c-faint);
+  letter-spacing: 0.08em;
+}
+
+/* ─── SCROLL REVEAL ──────────────────────────────────── */
+.js-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+.js-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── REDUCED MOTION ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-line,
+  .js-reveal,
+  .timeline-node {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .divider-dot { animation: none; }
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — TABLET
+══════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  :root {
+    --space-xl:  4.5rem;
+    --space-2xl: 6rem;
+  }
+
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+
+  .concepto-grid       { grid-template-columns: 1fr; }
+  .agentes-grid        { grid-template-columns: 1fr; }
+  .academia-layout     { grid-template-columns: 1fr; }
+  .cuadratica-layout   { grid-template-columns: 1fr; }
+  .modelo-variables    { grid-template-columns: 1fr; }
+
+  .formula-concepto { flex-direction: column; }
+  .formula-op, .formula-eq { align-self: center; transform: rotate(90deg); }
+
+  .tl-content--right { margin-left: 56%; }
+  .tl-content--left  { margin-right: 56%; }
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — MOBILE
+══════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  :root {
+    --space-xl:  3.5rem;
+    --space-2xl: 4.5rem;
+    --space-lg:  2.5rem;
+  }
+
+  .br-desk { display: none; }
+
+  .hero-title {
+    font-size: clamp(2rem, 10vw, 3.2rem);
+  }
+
+  .formula-display {
+    flex-direction: column;
+    padding: var(--space-md);
+    text-align: center;
+  }
+
+  .formula-eq-sign { transform: rotate(90deg); }
+
+  .timeline {
+    max-width: 100%;
+  }
+
+  .timeline::before { left: 20px; }
+
+  .timeline-node {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 44px;
+    min-height: auto;
+    padding-bottom: var(--space-md);
+  }
+
+  .tl-dot {
+    left: 20px;
+    top: 0;
+    transform: translate(-50%, 4px);
+  }
+
+  .tl-connector { left: 20px; top: 14px; height: calc(100% - 14px); }
+
+  .tl-content,
+  .tl-content--right,
+  .tl-content--left {
+    width: 100%;
+    margin: 0;
+  }
+
+  .cuadratica-chart { padding: var(--space-sm); }
+
+  .chart-row { grid-template-columns: 3.5rem 1fr 4.5rem; }
+
+  .formula-concepto { gap: var(--space-xs); }
+  .formula-op, .formula-eq { transform: none; font-size: 1.5rem; }
+
+  .footer-inner { flex-direction: column; text-align: center; }
+  .footer-nav { flex-wrap: wrap; justify-content: center; gap: var(--space-sm); }
+
+  .divider-dot { display: none; } /* GPU cost on mobile */
+}
+
+</style>
 </head>
-
-
 <body>
 
-<div class="page">
-
-<header class="topbar">
-
-<a href="https://logodemocracy.tech"
-class="brand">
-
-LOGODEMOCRACY
-
-</a>
-
-<nav class="module-nav">
-
-<a href="/pages/archive-template.html"
-class="module-link">
-
-Academia
-
-</a>
-
-<a href="/pages/aletheia.html"
-class="module-link">
-
-Aletheia
-
-</a>
-
-<a href="/pages/logos.html"
-class="module-link">
-
-Logos
-
-</a>
-
-<a href="/pages/rey-filosofo.html"
-class="module-link">
-
-Rey Filósofo
-
-</a>
-
-<a href="/pages/sophia.html"
-class="module-link">
-
-Sophia
-
-</a>
-
-</nav>
-
-<button
-class="mobile-menu-btn"
-id="mobileMenuBtn">
-
-<svg
-width="22"
-height="22"
-viewBox="0 0 24 24"
-fill="none"
-stroke="currentColor"
-stroke-width="2"
-stroke-linecap="round">
-
-<path d="M4 6H20"/>
-<path d="M4 12H20"/>
-<path d="M4 18H20"/>
-
-</svg>
-
-</button>
-  
-<div class="topbar-right">
-
-<a href="#"
-class="user-menu">
-
-⌂ Invitado
-
-</a>
-
-<a href="#"
-class="auth-btn">
-
-Log in
-
-</a>
-
-<div class="lang">
-
-ES | EN
-
-</div>
-
-</div>
-
-</header>
-
-<main class="home">
-
-<section class="hero">
-
-<div class="hero-inner">
-
-<div class="hero-badge">
-
-Democracia aumentada mediante inteligencia artificial
-
-</div>
-
-<h1>
-
-La democracia es un proceso de aprendizaje colectivo.
-
-</h1>
-
-<p>
-
-Educación, inteligencia artificial y nuevas formas de participación
-ciudadana para construir sociedades más inteligentes, transparentes
-y humanas.
-
-</p>
-
-<div class="hero-actions">
-
-<a href="/pages/archive-template.html"
-class="hero-btn">
-
-Explorar Academia
-
-</a>
-
-<a href="#modelo"
-class="hero-btn secondary">
-
-Conocer el modelo
-
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-
-<section class="section democracy">
-
-<div class="section-content">
-
-<h2>
-
-¿Qué significa democracia aumentada?
-
-</h2>
-
-<p>
-
-La inteligencia artificial no reemplaza a las personas.
-
-Amplía sus capacidades cognitivas.
-
-Una democracia saludable no necesita ciudadanos perfectos.
-
-Necesita ciudadanos que nunca dejen de aprender.
-
-</p>
-
-<blockquote>
-
-La democracia no necesita ciudadanos perfectos.
-
-Necesita ciudadanos que nunca dejen de aprender.
-
-</blockquote>
-
-</div>
-
-</section>
-
-
-<section class="section modules">
-
-<h2>
-
-Agentes Cognitivos
-
-</h2>
-
-<div class="modules-grid">
-
-<div class="card aletheia">
-
-<h3>Aletheia</h3>
-
-<p>
-
-Analiza discursos públicos y fortalece la alfabetización cívica.
-
-</p>
-
-</div>
-
-
-<div class="card logos">
-
-<h3>Logos</h3>
-
-<p>
-
-Facilitador deliberativo para comprender desacuerdos
-y mejorar la calidad del diálogo democrático.
-
-</p>
-
-</div>
-
-
-<div class="card philosopher">
-
-<h3>Rey Filósofo</h3>
-
-<p>
-
-Tutor cognitivo personalizado inspirado en Vygotsky.
-
-</p>
-
-</div>
-
-
-<div class="card sophia">
-
-<h3>Sophia</h3>
-
-<p>
-
-Filtro epistémico diseñado para elevar la calidad
-del conocimiento público.
-
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<section class="section academy">
-
-<div class="section-content">
-
-<h2>
-
-La Academia
-
-</h2>
-
-<p>
-
-Infraestructura abierta para la producción colaborativa
-de conocimiento cívico.
-
-</p>
-
-<p>
-
-Los documentos podrán ser propuestos por ciudadanos,
-evaluados mediante Sophia y priorizados mediante
-votación cuadrática.
-
-</p>
-
-</div>
-
-</section>
-
-
-
-<section class="section quadratic">
-
-<div class="section-content">
-
-<h2>
-
-Votación Cuadrática
-
-</h2>
-
-<div class="formula">
-
-Costo = votos²
-
-</div>
-
-<p>
-
-Permite expresar intensidad de preferencias y ayuda
-a distribuir mejor la atención colectiva.
-
-</p>
-
-</div>
-
-</section>
-
-
-
-<section
-class="section model"
-id="modelo">
-
-<div class="section-content">
-
-<h2>
-
-El modelo LogoDemocracy
-
-</h2>
-
-<div class="equation">
-
-Congreso
-
-+
-
-Expertos
-
-+
-
-Ciudadanos Deliberativos
-
-↓
-
-Ley
-
-</div>
-
-<p>
-
-Una propuesta experimental para combinar democracia
-representativa, conocimiento especializado y ciudadanía
-capacitada.
-
-</p>
-
-</div>
-
-</section>
-
-
-<section class="section closing">
-
-<div class="section-content">
-
-<h2>
-
-Aprender y participar políticamente son el mismo proceso.
-
-</h2>
-
-<p>
-
-LogoDemocracy explora cómo la educación,
-la inteligencia artificial y la deliberación
-pueden fortalecer la democracia.
-
-</p>
-
-</div>
-
-</section>
-
-</main>
-
-<footer class="footer">
-
-LogoDemocracy · Democracia aumentada con inteligencia artificial
-
-</footer>
-
-</div>
-  
-<script src="/assets/js/mobile-menu.js"></script>
-  
+  <!-- ═══════════════════════════════════════════════════════
+       NAVEGACIÓN SUPERIOR
+  ══════════════════════════════════════════════════════════ -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">LOGODEMOCRACY</a>
+      <nav class="nav-links">
+        <a href="#" class="nav-link nav-link--academia">Academia</a>
+        <a href="#" class="nav-link nav-link--aletheia">Aletheia</a>
+        <a href="#" class="nav-link nav-link--logos">Logos</a>
+        <a href="#" class="nav-link nav-link--rey">Rey Filósofo</a>
+        <a href="#" class="nav-link nav-link--sophia">Sophia</a>
+      </nav>
+      <div class="nav-controls">
+        <button class="nav-icon-btn" aria-label="Usuario">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </button>
+        <button class="nav-icon-btn" aria-label="Idioma">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 3a15 15 0 0 1 0 18M3 12h18"/></svg>
+        </button>
+        <button class="nav-hamburger" aria-label="Menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════
+       S1 — HERO
+  ══════════════════════════════════════════════════════════ -->
+  <section class="hero" id="inicio">
+    <div class="dot-grid" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <span class="badge reveal-line" style="--delay:0ms">Democracia Aumentada</span>
+      <h1 class="hero-title">
+        <span class="reveal-line" style="--delay:150ms">La democracia es un proceso</span>
+        <span class="reveal-line" style="--delay:300ms">de aprendizaje colectivo.</span>
+      </h1>
+      <p class="hero-sub reveal-line" style="--delay:500ms">
+        Inteligencia artificial al servicio de la deliberación,<br class="br-desk" />
+        la educación y la ciudadanía.
+      </p>
+      <a href="#concepto" class="hero-cta reveal-line" style="--delay:700ms">
+        Explorar el ecosistema <span class="cta-arrow">↓</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Divisor animado -->
+  <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       S2 — DEMOCRACIA AUMENTADA
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section concepto" id="concepto">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Fundamento</span>
+        <h2 class="section-title">¿Qué significa<br />Democracia Aumentada?</h2>
+      </div>
+      <div class="concepto-grid">
+        <div class="concepto-text">
+          <p>La democracia es, en su esencia, un proceso de comunicación colectiva. Las tecnologías que median esa comunicación determinan las formas en que los ciudadanos deliberan, aprenden y deciden.</p>
+          <p>La inteligencia artificial no reemplaza al ciudadano. Aumenta sus capacidades cognitivas: ayuda a comprender argumentos complejos, detecta manipulación, facilita el diálogo y estructura el conocimiento compartido.</p>
+          <p>Una democracia que aprende es una democracia que mejora.</p>
+        </div>
+        <div class="concepto-text concepto-text--right">
+          <p>LogoDemocracy propone una infraestructura filosófica y tecnológica para que las instituciones, los ciudadanos y los procesos de toma de decisión evolucionen juntos.</p>
+          <p>No es una herramienta de eficiencia. Es un sistema de pensamiento colectivo asistido, diseñado para profundizar —no simplificar— la experiencia democrática.</p>
+        </div>
+      </div>
+
+      <div class="formula-concepto" aria-label="Fórmula conceptual: Democracia más Educación más IA igual LogoDemocracy">
+        <div class="formula-block" data-color="sophia">
+          <span class="formula-block-name">Democracia</span>
+          <span class="formula-block-desc">Participación, representación, deliberación colectiva</span>
+        </div>
+        <span class="formula-op">+</span>
+        <div class="formula-block" data-color="academia">
+          <span class="formula-block-name">Educación</span>
+          <span class="formula-block-desc">Formación continua, metacognición, ciudadanía crítica</span>
+        </div>
+        <span class="formula-op">+</span>
+        <div class="formula-block" data-color="aletheia">
+          <span class="formula-block-name">I.A.</span>
+          <span class="formula-block-desc">Prótesis cognitiva, análisis del discurso, síntesis</span>
+        </div>
+        <span class="formula-eq">=</span>
+        <div class="formula-result">
+          <span class="formula-result-name">LogoDemocracy</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       S3 — AGENTES COGNITIVOS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section agentes" id="agentes">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Sistema</span>
+        <h2 class="section-title">Agentes Cognitivos</h2>
+        <p class="section-sub">Cuatro inteligencias especializadas que forman el núcleo del ecosistema.</p>
+      </div>
+
+      <div class="agentes-grid">
+
+        <article class="agent-card" data-agent="aletheia">
+          <div class="agent-header">
+            <span class="agent-id">A-01</span>
+            <span class="agent-tag">Epistemología</span>
+          </div>
+          <h3 class="agent-name">Aletheia</h3>
+          <p class="agent-desc">Analiza discursos políticos y mediáticos. Evalúa el costo epistemológico de los argumentos, detecta patrones de manipulación y fortalece la alfabetización cívica mediante análisis crítico del lenguaje público.</p>
+          <ul class="agent-capabilities">
+            <li>Análisis del discurso</li>
+            <li>Detección de falacias</li>
+            <li>Evaluación epistémica</li>
+            <li>Alfabetización cívica</li>
+          </ul>
+          <a href="#" class="agent-link">Explorar Aletheia →</a>
+        </article>
+
+        <article class="agent-card" data-agent="logos">
+          <div class="agent-header">
+            <span class="agent-id">A-02</span>
+            <span class="agent-tag">Deliberación</span>
+          </div>
+          <h3 class="agent-name">Logos</h3>
+          <p class="agent-desc">Facilitador deliberativo. Ayuda a comprender desacuerdos profundos, detecta el origen de los conflictos argumentativos, sintetiza posiciones divergentes y orienta hacia zonas de posible consenso.</p>
+          <ul class="agent-capabilities">
+            <li>Facilitación del diálogo</li>
+            <li>Síntesis de posiciones</li>
+            <li>Mapeo de desacuerdos</li>
+            <li>Construcción de consensos</li>
+          </ul>
+          <a href="#" class="agent-link">Explorar Logos →</a>
+        </article>
+
+        <article class="agent-card" data-agent="rey">
+          <div class="agent-header">
+            <span class="agent-id">A-03</span>
+            <span class="agent-tag">Aprendizaje</span>
+          </div>
+          <h3 class="agent-name">Rey Filósofo</h3>
+          <p class="agent-desc">Tutor cognitivo inspirado en la pedagogía de Vygotsky. Acompaña el proceso de aprendizaje individual, desarrolla la metacognición ciudadana y adapta los contenidos al nivel y contexto de cada usuario.</p>
+          <ul class="agent-capabilities">
+            <li>Tutoría adaptativa</li>
+            <li>Metacognición</li>
+            <li>Zona de desarrollo próximo</li>
+            <li>Aprendizaje profundo</li>
+          </ul>
+          <a href="#" class="agent-link">Explorar Rey Filósofo →</a>
+        </article>
+
+        <article class="agent-card" data-agent="sophia">
+          <div class="agent-header">
+            <span class="agent-id">A-04</span>
+            <span class="agent-tag">Filtro epistémico</span>
+          </div>
+          <h3 class="agent-name">Sophia</h3>
+          <p class="agent-desc">Filtro epistémico de calidad argumentativa. Evalúa la coherencia, claridad, evidencia y honestidad intelectual de los documentos ciudadanos antes de su incorporación al conocimiento colectivo de la Academia.</p>
+          <ul class="agent-capabilities">
+            <li>Calidad argumentativa</li>
+            <li>Coherencia lógica</li>
+            <li>Verificación de evidencia</li>
+            <li>Honestidad intelectual</li>
+          </ul>
+          <a href="#" class="agent-link">Explorar Sophia →</a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       S4 — ACADEMIA
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section academia" id="academia">
+    <div class="container">
+      <div class="academia-layout">
+        <div class="academia-content">
+          <span class="section-label" style="--label-color: var(--c-academia)">Academia</span>
+          <h2 class="section-title">Repositorio vivo<br />de conocimiento</h2>
+          <p>La Academia es la base epistemológica del ecosistema. No es una biblioteca estática: es un repositorio que crece con cada aportación ciudadana que supera el filtro Sophia.</p>
+          <p>Escrita en Markdown, diseñada para la colaboración, acompañada por el Rey Filósofo durante la lectura. La Academia es la memoria colectiva de la democracia que aprende.</p>
+          <ul class="academia-features">
+            <li><span class="feature-dot" style="background: var(--c-academia)"></span>Producción colaborativa en Markdown</li>
+            <li><span class="feature-dot" style="background: var(--c-rey)"></span>Rey Filósofo acompañando la lectura</li>
+            <li><span class="feature-dot" style="background: var(--c-sophia)"></span>Filtro Sophia en cada contribución</li>
+            <li><span class="feature-dot" style="background: var(--c-aletheia)"></span>IA integrada en el proceso editorial</li>
+            <li><span class="feature-dot" style="background: var(--c-logos)"></span>Crecimiento orgánico por comunidad</li>
+          </ul>
+        </div>
+        <div class="academia-panel">
+          <div class="panel-bar">
+            <span class="panel-dot"></span>
+            <span class="panel-dot"></span>
+            <span class="panel-dot"></span>
+            <span class="panel-title">academia / repositorio</span>
+          </div>
+          <div class="panel-body">
+            <div class="panel-line"><span class="p-green">$</span> contribución.nueva</div>
+            <div class="panel-line panel-line--comment"># Validando con filtro Sophia...</div>
+            <div class="panel-line"><span class="p-cyan">✓</span> coherencia: <span class="p-green">aprobada</span></div>
+            <div class="panel-line"><span class="p-cyan">✓</span> evidencia: <span class="p-green">verificada</span></div>
+            <div class="panel-line"><span class="p-cyan">✓</span> argumentación: <span class="p-green">válida</span></div>
+            <div class="panel-line panel-line--gap"><span class="p-amber">→</span> integrando a Academia...</div>
+            <div class="panel-line"><span class="p-green">✓</span> documento publicado</div>
+            <div class="panel-line panel-line--comment"># Rey Filósofo activado para lectura</div>
+            <div class="panel-line panel-line--cursor"><span class="p-violet">_</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       S5 — FLUJO DE PRODUCCIÓN
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section flujo" id="flujo">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Proceso</span>
+        <h2 class="section-title">Producción comunitaria<br />de conocimiento</h2>
+        <p class="section-sub">El recorrido de un documento ciudadano desde su creación hasta su integración al conocimiento colectivo.</p>
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-node js-reveal-node">
+          <div class="tl-connector"></div>
+          <div class="tl-dot" style="background: var(--c-logos)"></div>
+          <div class="tl-content tl-content--right">
+            <h4 class="tl-title">Documento ciudadano</h4>
+            <p class="tl-desc">Un ciudadano redacta una propuesta, análisis o aportación sobre un tema de interés colectivo.</p>
+          </div>
+        </div>
+
+        <div class="timeline-node js-reveal-node">
+          <div class="tl-connector"></div>
+          <div class="tl-dot" style="background: var(--c-sophia)"></div>
+          <div class="tl-content tl-content--left">
+            <h4 class="tl-title">Filtro Sophia</h4>
+            <p class="tl-desc">Sophia evalúa la calidad epistémica: coherencia, evidencia, claridad y honestidad intelectual.</p>
+          </div>
+        </div>
+
+        <div class="timeline-node js-reveal-node">
+          <div class="tl-connector"></div>
+          <div class="tl-dot" style="background: var(--c-logos)"></div>
+          <div class="tl-content tl-content--right">
+            <h4 class="tl-title">Discusión pública</h4>
+            <p class="tl-desc">Logos facilita el debate, sintetiza posiciones y ayuda a identificar puntos de acuerdo y desacuerdo.</p>
+          </div>
+        </div>
+
+        <div class="timeline-node js-reveal-node">
+          <div class="tl-connector"></div>
+          <div class="tl-dot" style="background: var(--c-aletheia)"></div>
+          <div class="tl-content tl-content--left">
+            <h4 class="tl-title">Votación cuadrática</h4>
+            <p class="tl-desc">La comunidad prioriza mediante votación cuadrática, expresando la intensidad de sus preferencias.</p>
+          </div>
+        </div>
+
+        <div class="timeline-node js-reveal-node">
+          <div class="tl-connector"></div>
+          <div class="tl-dot" style="background: var(--c-academia)"></div>
+          <div class="tl-content tl-content--right">
+            <h4 class="tl-title">Academia</h4>
+            <p class="tl-desc">El documento aprobado se integra al repositorio de conocimiento colectivo, disponible para todos.</p>
+          </div>
+        </div>
+
+        <div class="timeline-node js-reveal-node timeline-node--last">
+          <div class="tl-dot" style="background: var(--c-rey)"></div>
+          <div class="tl-content tl-content--left">
+            <h4 class="tl-title">Conocimiento compartido</h4>
+            <p class="tl-desc">La democracia aprende. El ciclo comienza de nuevo con ciudadanos más informados.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       S6 — VOTACIÓN CUADRÁTICA
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section cuadratica" id="cuadratica">
+    <div class="container">
+      <div class="cuadratica-layout">
+        <div class="cuadratica-content">
+          <span class="section-label">Mecanismo</span>
+          <h2 class="section-title">Votación Cuadrática</h2>
+          <p>La votación cuadrática permite expresar la <em>intensidad</em> de las preferencias, no solo su dirección. Cuantos más votos concentras en un tema, mayor es el costo exponencial.</p>
+          <p>Este mecanismo garantiza que la agenda colectiva refleje genuinamente las prioridades de la ciudadanía, desincentivando la polarización y promoviendo la ponderación responsable.</p>
+          <ul class="cuadratica-props">
+            <li>Priorización colectiva honesta</li>
+            <li>Resistencia a la polarización</li>
+            <li>Aprendizaje democrático por iteración</li>
+            <li>Definición de agenda legislativa</li>
+          </ul>
+        </div>
+        <div class="cuadratica-chart">
+          <div class="chart-title">Costo de votos cuadráticos</div>
+          <div class="chart-rows">
+            <div class="chart-row">
+              <span class="chart-label">1 voto</span>
+              <div class="chart-bar-wrap">
+                <div class="chart-bar" style="width: 12.5%"></div>
+              </div>
+              <span class="chart-cost">1 crédito</span>
+            </div>
+            <div class="chart-row">
+              <span class="chart-label">2 votos</span>
+              <div class="chart-bar-wrap">
+                <div class="chart-bar" style="width: 25%"></div>
+              </div>
+              <span class="chart-cost">4 créditos</span>
+            </div>
+            <div class="chart-row">
+              <span class="chart-label">3 votos</span>
+              <div class="chart-bar-wrap">
+                <div class="chart-bar" style="width: 56.25%"></div>
+              </div>
+              <span class="chart-cost">9 créditos</span>
+            </div>
+            <div class="chart-row">
+              <span class="chart-label">4 votos</span>
+              <div class="chart-bar-wrap">
+                <div class="chart-bar" style="width: 100%"></div>
+              </div>
+              <span class="chart-cost">16 créditos</span>
+            </div>
+          </div>
+          <p class="chart-note">Costo = n² votos. La intensidad tiene precio.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       S7 — MODELO LOGODEMOCRACY
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section modelo" id="modelo">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Hipótesis institucional</span>
+        <h2 class="section-title">El Modelo LogoDemocracy</h2>
+        <p class="section-sub">Una propuesta para integrar representación tradicional, conocimiento experto y participación ciudadana capacitada en una sola función de decisión.</p>
+      </div>
+
+      <div class="formula-wrapper">
+        <div class="formula-display">
+          <div class="formula-lhs">R</div>
+          <div class="formula-eq-sign">=</div>
+          <div class="formula-rhs">
+            <div class="formula-numerator">P · n<sub>P</sub> + E · n<sub>E</sub> + V · n<sub>V</sub></div>
+            <div class="formula-bar"></div>
+            <div class="formula-denominator">n<sub>P</sub> + n<sub>E</sub> + n<sub>V</sub></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modelo-variables">
+        <div class="var-block" data-var="P">
+          <div class="var-letter">P</div>
+          <div class="var-info">
+            <h4 class="var-name">Congreso Tradicional</h4>
+            <p class="var-desc">Representantes electos. Legitimidad democrática directa. Ponderación nP definida institucionalmente.</p>
+          </div>
+        </div>
+        <div class="var-block" data-var="E">
+          <div class="var-letter">E</div>
+          <div class="var-info">
+            <h4 class="var-name">Panel de Expertos</h4>
+            <p class="var-desc">Conocimiento técnico y científico independiente. Ponderación nE proporcional a la complejidad del tema.</p>
+          </div>
+        </div>
+        <div class="var-block" data-var="V">
+          <div class="var-letter">V</div>
+          <div class="var-info">
+            <h4 class="var-name">Congreso Virtual</h4>
+            <p class="var-desc">Ciudadanos formados en la Academia. Participación capacitada y deliberativa. Ponderación nV creciente.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="modelo-nota">Esta es una hipótesis institucional, no una propuesta cerrada. El modelo invita a la experimentación, la crítica y la mejora colectiva.</p>
+    </div>
+  </section>
+
+  <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       S8 — CIERRE FILOSÓFICO
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section cierre" id="cierre">
+    <div class="container">
+      <blockquote class="cierre-quote js-reveal-node">
+        <p class="cierre-line cierre-line--light">La democracia no necesita ciudadanos perfectos.</p>
+        <p class="cierre-line cierre-line--accent">Necesita ciudadanos que nunca dejen de aprender.</p>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="footer-logo">LOGODEMOCRACY</span>
+      <nav class="footer-nav">
+        <a href="#">Academia</a>
+        <a href="#">Aletheia</a>
+        <a href="#">Logos</a>
+        <a href="#">Rey Filósofo</a>
+        <a href="#">Sophia</a>
+      </nav>
+      <span class="footer-copy">Democracia Aumentada · 2025</span>
+    </div>
+  </footer>
+
+  <script>
+/* ═══════════════════════════════════════════════════════
+   LOGODEMOCRACY — home.js
+   Scroll reveals, timeline, interactions
+   ═══════════════════════════════════════════════════════ */
+
+(function () {
+  'use strict';
+
+  /* ─── INTERSECTION OBSERVER — GENERIC REVEALS ──────── */
+  const revealEls = document.querySelectorAll('.section-header, .concepto-grid, .formula-concepto, .agent-card, .academia-layout, .cuadratica-layout, .formula-wrapper, .modelo-variables, .cierre-quote');
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  revealEls.forEach((el) => {
+    el.classList.add('js-reveal');
+    revealObserver.observe(el);
+  });
+
+  /* ─── TIMELINE NODES — SEQUENTIAL REVEAL ───────────── */
+  const timelineNodes = document.querySelectorAll('.timeline-node');
+
+  const timelineObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const nodes = Array.from(timelineNodes);
+        const idx = nodes.indexOf(entry.target);
+        // Stagger each node
+        setTimeout(() => {
+          entry.target.classList.add('is-visible');
+        }, idx * 120);
+        timelineObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+
+  timelineNodes.forEach((node) => {
+    timelineObserver.observe(node);
+  });
+
+  /* ─── AGENT CARDS — STAGGERED REVEAL ───────────────── */
+  const agentCards = document.querySelectorAll('.agent-card');
+  const agentObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const cards = Array.from(agentCards);
+        const idx = cards.indexOf(entry.target);
+        setTimeout(() => {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }, idx * 80);
+        agentObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  agentCards.forEach((card) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(16px)';
+    card.style.transition = 'opacity 500ms ease, transform 500ms ease, background 250ms, box-shadow 250ms';
+    agentObserver.observe(card);
+  });
+
+  /* ─── SMOOTH SCROLL FOR HERO CTA ───────────────────── */
+  document.querySelector('.hero-cta')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector('#concepto');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+  /* ─── NAV: ACTIVE STATE ON SCROLL ──────────────────── */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        navLinks.forEach((l) => l.style.opacity = '0.5');
+        // just dim all — active state is subtle
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach((s) => navObserver.observe(s));
+
+  /* ─── NAV BACKGROUND ON SCROLL ─────────────────────── */
+  const nav = document.querySelector('.nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) {
+      nav.style.borderBottomColor = 'rgba(255,255,255,0.1)';
+    } else {
+      nav.style.borderBottomColor = 'rgba(255,255,255,0.08)';
+    }
+  }, { passive: true });
+
+  /* ─── MOBILE HAMBURGER (stub) ───────────────────────── */
+  const hamburger = document.querySelector('.nav-hamburger');
+  hamburger?.addEventListener('click', () => {
+    // mobile menu can be expanded in future
+    console.log('menu');
+  });
+
+})();
+
+</script>
 </body>
+</html>
