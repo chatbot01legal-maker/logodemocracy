@@ -51,40 +51,46 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
 
   const sidebar =
-    document.querySelector(".sidebar");
+document.querySelector(".sidebar");
 
-  const toggle =
-    document.querySelector(".sidebar-toggle");
+const toggle =
+document.querySelector(".sidebar-toggle");
 
-  if (sidebar && toggle) {
+if(sidebar && toggle){
 
-  // Colapsar automáticamente en tablet y móvil
+    if(window.innerWidth <= 1024){
 
-  if (window.innerWidth <= 1024) {
+        sidebar.classList.add(
+            "collapsed"
+        );
 
-    sidebar.classList.add("collapsed");
+        toggle.textContent = "▸";
 
-    toggle.textContent = "▸";
+    }
 
-  }
+    toggle.addEventListener(
 
-  toggle.addEventListener("click",()=>{
+        "click",
 
-    sidebar.classList.toggle(
-      "collapsed"
+        ()=>{
+
+            const collapsed =
+
+            sidebar.classList.toggle(
+                "collapsed"
+            );
+
+            toggle.textContent =
+
+            collapsed
+
+            ? "▸"
+
+            : "◂";
+
+        }
+
     );
 
-    toggle.textContent =
-
-      sidebar.classList.contains(
-        "collapsed"
-      )
-
-      ? "▸"
-
-      : "◂";
-
-  });
-
-  }
-});
+}
+  
