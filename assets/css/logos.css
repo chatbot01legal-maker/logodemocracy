@@ -17,3 +17,16 @@
 .sidebar-toggle{
   color: var(--accent);
 }
+
+/* INPUT estilo equivalente a Sophia */
+.logos-input{
+  width:100%;
+  height:260px;
+  background:#091120;
+  border:1px solid rgba(255,255,255,.1);
+  padding:16px;
+  color:white;
+  resize:none;
+  box-sizing:border-box;
+  margin-bottom:20px;
+}
