@@ -17,7 +17,7 @@ body {
   --header-color: #e5e7eb;
 
   /* borde neutro */
-  --header-border: rgba(229,231,235,.15);
+  --header-border: rgba(229,231,235,.12);
 }
 
 /* ─── PAGE SHELL ─────────────────────────────────────── */
