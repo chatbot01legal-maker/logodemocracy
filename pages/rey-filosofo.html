@@ -3,46 +3,201 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rey Filósofo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="/assets/css/base-layout.css">
+  <link rel="stylesheet" href="/assets/css/rey-filosofo.css">
 
-  <!-- SKIN -->
-  <link rel="stylesheet" href="/assets/css/modules/rey-filosofo.css">
 </head>
 
 <body>
 
 <div class="page">
 
-  <div id="boot-screen"></div>
+<header class="topbar">
 
-  <div id="global-header"></div>
+<a href="https://logodemocracy.tech"
+class="brand">
 
-  <script src="/assets/js/header.js"></script>
-  <script>
-    document.getElementById("global-header").innerHTML =
-      renderGlobalHeader("rey");
-  </script>
+LOGODEMOCRACY
 
-  <main class="document">
+</a>
 
-    <div class="document-header">
-      Rey Filósofo · Tutor cognitivo
-    </div>
+<nav class="module-nav">
 
-    <div class="document-content">
-      <p>Sistema de guía metacognitiva del aprendizaje.</p>
-    </div>
+<a href="/pages/archive-template.html"
+class="module-link">
 
-  </main>
+Academia
 
-  <footer class="footer">
-    Rey Filósofo Module
-  </footer>
+</a>
+
+<a href="/pages/aletheia.html"
+class="module-link">
+
+Aletheia
+
+</a>
+
+<a href="/pages/logos.html"
+class="module-link">
+
+Logos
+
+</a>
+
+<a href="/pages/rey-filosofo.html"
+class="module-link active">
+
+Rey Filósofo
+
+</a>
+
+<a href="/pages/sophia.html"
+class="module-link">
+
+Sophia
+
+</a>
+
+</nav>
+
+<div class="topbar-right">
+
+<a href="#"
+class="user-menu"
+id="userLabel">
+
+⌂ Invitado
+
+</a>
+
+<a href="#"
+class="auth-btn"
+id="authButton">
+
+Log in
+
+</a>
+
+<div class="lang">
+
+ES | EN
 
 </div>
+
+</div>
+
+</header>
+
+
+<div class="layout">
+
+<aside class="sidebar">
+
+<div class="sidebar-content">
+
+<div class="tree">
+
+Mapa Cognitivo
+
+</div>
+
+<div class="epistemic">
+
+<div class="epistemic-title">
+
+Tutoría
+
+</div>
+
+<div>Conceptos clave</div>
+
+<div>Preguntas</div>
+
+<div>Conexiones</div>
+
+<div>Aprendizaje</div>
+
+</div>
+
+<div class="philosopher">
+
+<div>
+
+🏛 Rey Filósofo
+
+</div>
+
+<div>
+
+¿Deseas profundizar este concepto?
+
+</div>
+
+</div>
+
+</div>
+
+<div class="sidebar-rail">
+
+<div class="sidebar-toggle">
+
+◂
+
+</div>
+
+</div>
+
+</aside>
+
+
+<main class="document">
+
+<div class="document-header">
+
+Rey Filósofo acompaña el aprendizaje.
+
+</div>
+
+<div class="document-content">
+
+<textarea
+class="sophia-input"
+placeholder="¿Qué deseas comprender hoy?">
+
+</textarea>
+
+<button class="evaluate-btn">
+
+Guiar
+
+</button>
+
+<div
+class="result"
+id="result">
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+
+<footer class="footer">
+
+LogoDemocracy · Rey Filósofo
+
+</footer>
+
+</div>
+
+<script src="/assets/js/layout.js"></script>
+<script src="/assets/js/rey-filosofo.js"></script>
 
 </body>
 </html>
