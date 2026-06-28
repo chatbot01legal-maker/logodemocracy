@@ -2,49 +2,209 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Aletheia</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="/assets/css/base-layout.css">
-  
-  <!-- SKIN DEL MÓDULO -->
-  <link rel="stylesheet" href="/assets/css/modules/aletheia.css">
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1">
+
+<title>Aletheia</title>
+
+<link rel="stylesheet"
+href="/assets/css/base-layout.css">
+
+<link rel="stylesheet"
+href="/assets/css/aletheia.css">
+
 </head>
 
 <body>
 
 <div class="page">
 
-  <div id="boot-screen"></div>
+<header class="topbar">
 
-  <div id="global-header"></div>
+<a href="https://logodemocracy.tech"
+class="brand">
 
-  <script src="/assets/js/header.js"></script>
-  <script>
-    document.getElementById("global-header").innerHTML =
-      renderGlobalHeader("aletheia");
-  </script>
+LOGODEMOCRACY
 
-  <main class="document">
+</a>
 
-    <div class="document-header">
-      Aletheia · Verdad como proceso
-    </div>
+<nav class="module-nav">
 
-    <div class="document-content">
+<a href="/pages/archive-template.html"
+class="module-link">
 
-      <p>Exploración epistemológica del concepto de verdad.</p>
+Academia
 
-    </div>
+</a>
 
-  </main>
+<a href="/pages/aletheia.html"
+class="module-link active">
 
-  <footer class="footer">
-    Aletheia Module
-  </footer>
+Aletheia
+
+</a>
+
+<a href="/pages/logos.html"
+class="module-link">
+
+Logos
+
+</a>
+
+<a href="/pages/rey-filosofo.html"
+class="module-link">
+
+Rey Filósofo
+
+</a>
+
+<a href="/pages/sophia.html"
+class="module-link">
+
+Sophia
+
+</a>
+
+</nav>
+
+<div class="topbar-right">
+
+<a href="#"
+class="user-menu"
+id="userLabel">
+
+⌂ Invitado
+
+</a>
+
+<a href="#"
+class="auth-btn"
+id="authButton">
+
+Log in
+
+</a>
+
+<div class="lang">
+
+ES | EN
 
 </div>
+
+</div>
+
+</header>
+
+
+<div class="layout">
+
+<aside class="sidebar">
+
+<div class="sidebar-content">
+
+<div class="tree">
+
+Teorías de la Verdad
+
+</div>
+
+<div class="epistemic">
+
+<div class="epistemic-title">
+
+Perspectivas
+
+</div>
+
+<div>Correspondencia</div>
+
+<div>Coherencia</div>
+
+<div>Pragmatismo</div>
+
+<div>Constructivismo</div>
+
+</div>
+
+<div class="philosopher">
+
+<div>
+
+🔍 Aletheia
+
+</div>
+
+<div>
+
+¿Quieres explorar otras teorías?
+
+</div>
+
+</div>
+
+</div>
+
+<div class="sidebar-rail">
+
+<div class="sidebar-toggle">
+
+◂
+
+</div>
+
+</div>
+
+</aside>
+
+
+<main class="document">
+
+<div class="document-header">
+
+Aletheia explora la verdad.
+
+</div>
+
+<div class="document-content">
+
+<textarea
+class="sophia-input"
+placeholder="Introduce una afirmación">
+
+</textarea>
+
+<button class="evaluate-btn">
+
+Analizar
+
+</button>
+
+<div
+class="result"
+id="result">
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+
+<footer class="footer">
+
+LogoDemocracy · Aletheia
+
+</footer>
+
+</div>
+
+<script src="/assets/js/layout.js"></script>
+<script src="/assets/js/aletheia.js"></script>
 
 </body>
 </html>
