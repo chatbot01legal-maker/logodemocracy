@@ -3,46 +3,140 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Logos</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="/assets/css/base-layout.css">
-
-  <!-- SKIN -->
-  <link rel="stylesheet" href="/assets/css/modules/logos.css">
+  <link rel="stylesheet" href="/assets/css/logos.css">
 </head>
 
 <body>
 
 <div class="page">
 
-  <div id="boot-screen"></div>
+  <!-- =========================
+       HEADER (MISMO PATRÓN SOPHIA)
+  ========================== -->
+  <header class="topbar">
 
-  <div id="global-header"></div>
+    <a href="https://logodemocracy.tech" class="brand">
+      LOGODEMOCRACY
+    </a>
 
-  <script src="/assets/js/header.js"></script>
-  <script>
-    document.getElementById("global-header").innerHTML =
-      renderGlobalHeader("logos");
-  </script>
+    <nav class="module-nav">
 
-  <main class="document">
+      <a href="/pages/archive-template.html" class="module-link">
+        Academia
+      </a>
 
-    <div class="document-header">
-      Logos · Deliberación colectiva
+      <a href="/pages/aletheia.html" class="module-link">
+        Aletheia
+      </a>
+
+      <a href="/pages/logos.html" class="module-link active">
+        Logos
+      </a>
+
+      <a href="/pages/rey-filosofo.html" class="module-link">
+        Rey Filósofo
+      </a>
+
+      <a href="/pages/sophia.html" class="module-link">
+        Sophia
+      </a>
+
+    </nav>
+
+    <div class="topbar-right">
+
+      <a href="#" class="user-menu" id="userLabel">
+        ⌂ Invitado
+      </a>
+
+      <a href="#" class="auth-btn" id="authButton">
+        Log in
+      </a>
+
+      <div class="lang">
+        ES | EN
+      </div>
+
     </div>
 
-    <div class="document-content">
-      <p>Facilitación de diálogo y convergencia de discursos.</p>
-    </div>
+  </header>
 
-  </main>
+  <!-- =========================
+       LAYOUT (IDÉNTICO SOPHIA)
+  ========================== -->
+  <div class="layout">
 
+    <aside class="sidebar">
+
+      <div class="sidebar-content">
+
+        <div class="tree">
+          Open Source Cognitivo
+        </div>
+
+        <div class="epistemic">
+
+          <div class="epistemic-title">
+            Indicadores
+          </div>
+
+          <div>Coherencia</div>
+          <div>Consenso</div>
+          <div>Polarización</div>
+          <div>Argumentos</div>
+
+        </div>
+
+        <div class="philosopher">
+
+          <div>🏛 Logos</div>
+          <div>Facilitación de deliberación colectiva</div>
+
+        </div>
+
+      </div>
+
+      <div class="sidebar-rail">
+        <div class="sidebar-toggle">◂</div>
+      </div>
+
+    </aside>
+
+    <main class="document">
+
+      <div class="document-header">
+        Logos facilita deliberación colectiva.
+      </div>
+
+      <div class="document-content">
+
+        <textarea class="logos-input" placeholder="Pega aquí un discurso o argumento"></textarea>
+
+        <button class="evaluate-btn">
+          Analizar
+        </button>
+
+        <div class="result" id="result"></div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- FOOTER -->
   <footer class="footer">
-    Logos Module
+    LogoDemocracy · Logos
   </footer>
 
 </div>
+
+<script src="/assets/js/layout.js"></script>
+<script src="/assets/js/logos.js"></script>
 
 </body>
 </html>
