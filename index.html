@@ -84,125 +84,10 @@ body {
   z-index: 0;
 }
 
-/* ─── NAVEGACIÓN ─────────────────────────────────────── */
-.nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  border-bottom: 1px solid var(--c-border);
-  background: rgba(5,10,18,0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-
-.nav-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: var(--container);
-  margin: 0 auto;
-  padding: 0 var(--space-md);
-  height: 56px;
-}
-
-.nav-logo {
-  font-family: var(--f-mono);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  color: var(--c-text);
-  text-decoration: none;
-  opacity: 0.9;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-}
-
-.nav-link {
-  font-family: var(--f-mono);
-  font-size: 0.72rem;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  color: var(--c-muted);
-  text-decoration: none;
-  transition: color 200ms ease;
-  position: relative;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  transition: width 200ms ease;
-}
-
-.nav-link--aletheia::after { background: var(--c-aletheia); }
-.nav-link--logos::after    { background: var(--c-logos); }
-.nav-link--rey::after      { background: var(--c-rey); }
-.nav-link--sophia::after   { background: var(--c-sophia); }
-.nav-link--academia::after { background: var(--c-academia); }
-
-.nav-link--aletheia:hover { color: var(--c-aletheia); }
-.nav-link--logos:hover    { color: var(--c-logos); }
-.nav-link--rey:hover      { color: var(--c-rey); }
-.nav-link--sophia:hover   { color: var(--c-sophia); }
-.nav-link--academia:hover { color: var(--c-academia); }
-
-.nav-link:hover::after { width: 100%; }
-
-.nav-controls {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-.nav-icon-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: none;
-  border: 1px solid var(--c-border);
-  border-radius: 6px;
-  color: var(--c-muted);
-  cursor: pointer;
-  transition: border-color 200ms, color 200ms;
-}
-
-.nav-icon-btn:hover {
-  border-color: rgba(255,255,255,0.2);
-  color: var(--c-text);
-}
-
-.nav-hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  width: 32px;
-  height: 32px;
-  background: none;
-  border: 1px solid var(--c-border);
-  border-radius: 6px;
-  cursor: pointer;
-  padding: 0 8px;
-}
-
-.nav-hamburger span {
-  display: block;
-  height: 1px;
-  background: var(--c-muted);
-  transition: opacity 200ms;
-}
+/* ─── TOPBAR (idéntico a base-layout.css) ────────────── */
+/* Los estilos base vienen de base-layout.css.
+   Aquí solo ajustamos el padding-top del hero para compensar
+   que el topbar no es fixed en la landing. */
 
 /* ─── DIVISOR ANIMADO ────────────────────────────────── */
 .divider-line {
@@ -240,7 +125,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 120px var(--space-md) var(--space-xl);
+  padding: var(--space-xl) var(--space-md) var(--space-xl);
   overflow: hidden;
 }
 
@@ -1046,7 +931,7 @@ body {
 
 .footer-logo {
   font-family: var(--f-mono);
-  font-size: 0.65rem;
+ font-size: 0.65rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   color: var(--c-faint);
@@ -1197,29 +1082,31 @@ body {
   <!-- ═══════════════════════════════════════════════════════
        NAVEGACIÓN SUPERIOR
   ══════════════════════════════════════════════════════════ -->
-  <header class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-logo">LOGODEMOCRACY</a>
-      <nav class="nav-links">
-        <a href="#" class="nav-link nav-link--academia">Academia</a>
-        <a href="#" class="nav-link nav-link--aletheia">Aletheia</a>
-        <a href="#" class="nav-link nav-link--logos">Logos</a>
-        <a href="#" class="nav-link nav-link--rey">Rey Filósofo</a>
-        <a href="#" class="nav-link nav-link--sophia">Sophia</a>
-      </nav>
-      <div class="nav-controls">
-        <button class="nav-icon-btn" aria-label="Usuario">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        </button>
-        <button class="nav-icon-btn" aria-label="Idioma">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 3a15 15 0 0 1 0 18M3 12h18"/></svg>
-        </button>
-        <button class="nav-hamburger" aria-label="Menú">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </header>
+  <header class="topbar">
+
+  <a href="/" class="brand">LOGODEMOCRACY</a>
+
+  <nav class="module-nav">
+    <a href="/pages/archive-template.html" class="module-link">Academia</a>
+    <a href="/pages/aletheia.html"         class="module-link">Aletheia</a>
+    <a href="/pages/logos.html"            class="module-link">Logos</a>
+    <a href="/pages/rey-filosofo.html"     class="module-link">Rey Filósofo</a>
+    <a href="/pages/sophia.html"           class="module-link">Sophia</a>
+  </nav>
+
+  <button class="mobile-menu-btn" id="mobileMenuBtn">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M4 6H20"/><path d="M4 12H20"/><path d="M4 18H20"/>
+    </svg>
+  </button>
+
+  <div class="topbar-right">
+    <a href="#" class="user-menu" id="userLabel">⌂ Invitado</a>
+    <a href="#" class="auth-btn"  id="authButton">Log in</a>
+    <div class="lang">ES | EN</div>
+  </div>
+
+</header>
 
   <!-- ═══════════════════════════════════════════════════════
        S1 — HERO
@@ -1519,20 +1406,6 @@ body {
               <span class="chart-cost">1 crédito</span>
             </div>
             <div class="chart-row">
-              <span class="chart-label">2 votos</span>
-              <div class="chart-bar-wrap">
-                <div class="chart-bar" style="width: 25%"></div>
-              </div>
-              <span class="chart-cost">4 créditos</span>
-            </div>
-            <div class="chart-row">
-              <span class="chart-label">3 votos</span>
-              <div class="chart-bar-wrap">
-                <div class="chart-bar" style="width: 56.25%"></div>
-              </div>
-              <span class="chart-cost">9 créditos</span>
-            </div>
-            <div class="chart-row">
               <span class="chart-label">4 votos</span>
               <div class="chart-bar-wrap">
                 <div class="chart-bar" style="width: 100%"></div>
@@ -1724,22 +1597,36 @@ body {
 
   sections.forEach((s) => navObserver.observe(s));
 
-  /* ─── NAV BACKGROUND ON SCROLL ─────────────────────── */
-  const nav = document.querySelector('.nav');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 60) {
-      nav.style.borderBottomColor = 'rgba(255,255,255,0.1)';
-    } else {
-      nav.style.borderBottomColor = 'rgba(255,255,255,0.08)';
-    }
-  }, { passive: true });
+  /* ─── MOBILE MENU (base-layout compatible) ─────────── */
+  const mobileBtn = document.getElementById('mobileMenuBtn');
+  const moduleNav = document.querySelector('.module-nav');
+  const topbarRight = document.querySelector('.topbar-right');
+  if (mobileBtn) {
+    mobileBtn.addEventListener('click', () => {
+      moduleNav.classList.toggle('open');
+      topbarRight.classList.toggle('open');
+    });
+  }
 
-  /* ─── MOBILE HAMBURGER (stub) ───────────────────────── */
-  const hamburger = document.querySelector('.nav-hamburger');
-  hamburger?.addEventListener('click', () => {
-    // mobile menu can be expanded in future
-    console.log('menu');
-  });
+  /* ─── AUTH DEMO ──────────────────────────────────────── */
+  let isLoggedIn = false;
+  const userLabel = document.getElementById('userLabel');
+  const authButton = document.getElementById('authButton');
+  function renderAuth() {
+    if (!userLabel || !authButton) return;
+    userLabel.textContent = isLoggedIn ? '⌂ Usuario' : '⌂ Invitado';
+    authButton.textContent = isLoggedIn ? 'Log out' : 'Log in';
+  }
+  if (authButton) {
+    authButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      isLoggedIn = !isLoggedIn;
+      renderAuth();
+    });
+  }
+  renderAuth();
+
+
 
 })();
 
