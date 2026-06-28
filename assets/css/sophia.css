@@ -1,7 +1,9 @@
 :root{
+  --accent:#3b82f6;
 
---accent:#3b82f6;
+  --header-color:#3b82f6;
 
+  --header-border:rgba(59,130,246,.25);
 }
 
 .sophia-input{
