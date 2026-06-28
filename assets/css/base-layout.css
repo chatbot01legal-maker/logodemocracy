@@ -12,9 +12,6 @@ body {
 
 :root {
   --accent: #22c55e;
-
-  --header-color: #ffffff;
-  --header-border: rgba(229,231,235,.15);
 }
 
 /* ─── PAGE SHELL ─────────────────────────────────────── */
@@ -133,14 +130,14 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
-  border-bottom: 1px solid var(--header-border);
+  border-bottom: 1px solid var(--accent);
   background: #050a12;
 }
 
 /* LOGO */
 .brand {
   text-decoration: none;
-  color: var(--header-border);
+  color: var(--accent);
   font-weight: 600;
   font-family: "IBM Plex Mono", monospace;
   letter-spacing: 1px;
@@ -166,13 +163,13 @@ body {
 
 .module-link:hover {
   opacity: 1;
-  border-bottom: 1px solid var(--header-border);
+  border-bottom: 1px solid var(--accent);
 }
 
 .module-link.active {
   opacity: 1;
   color: var(--accent);
-  border-bottom: 1px solid var(--header-border);
+  border-bottom: 1px solid var(--accent);
 }
 
 /* LADO DERECHO */
@@ -191,7 +188,7 @@ body {
 
 .user-menu:hover {
   opacity: 1;
-  color: var(--header-border);
+  color: var(--accent);
 }
 
 .lang {
@@ -213,8 +210,8 @@ body {
 
 .auth-btn:hover {
   opacity: 1;
-  color: var(--header-border);
-  border-bottom: 1px solid var(--header-border);
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
 }
 
 /* BOTÓN HAMBURGUESA */
@@ -222,7 +219,7 @@ body {
   display: none;
   background: none;
   border: none;
-  color: var(--header-border);
+  color: var(--accent);
   padding: 4px;
   cursor: pointer;
 }
