@@ -1,26 +1,56 @@
 .home{
 
-max-width:1200px;
+width:100%;
+
+overflow:visible;
+
+}
+
+.section{
+
+min-height:100vh;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:100px 40px;
+
+box-sizing:border-box;
+
+}
+
+.section-content{
+
+max-width:1100px;
 
 margin:auto;
 
-padding:80px 40px;
+width:100%;
 
 }
 
 .hero{
 
+min-height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
 text-align:center;
 
-padding:120px 0;
+padding:80px 40px;
 
 }
 
 .hero h1{
 
-font-size:56px;
-
-font-weight:700;
+font-size:64px;
 
 line-height:1.1;
 
@@ -68,15 +98,19 @@ margin:auto;
 
 blockquote{
 
-border-left:3px solid white;
+max-width:760px;
+
+margin:60px auto;
 
 padding-left:24px;
 
-font-size:28px;
+border-left:3px solid white;
 
-margin-top:40px;
+font-size:34px;
 
-opacity:.9;
+line-height:1.5;
+
+opacity:.92;
 
 }
 
@@ -86,13 +120,14 @@ display:grid;
 
 grid-template-columns:
 
-repeat(auto-fit,minmax(300px,1fr));
+repeat(auto-fit,minmax(340px,1fr));
 
-gap:24px;
+gap:28px;
 
-margin-top:48px;
+margin-top:60px;
 
 }
+
 
 .card{
 
@@ -105,6 +140,18 @@ background:rgba(255,255,255,.03);
 border:1px solid rgba(255,255,255,.08);
 
 backdrop-filter:blur(12px);
+ 
+transition:.25s;
+
+cursor:pointer;
+
+}
+
+.card:hover{
+
+transform:translateY(-4px);
+
+background:rgba(255,255,255,.05);
 
 }
 
@@ -116,31 +163,31 @@ margin-bottom:16px;
 
 .academy{
 
-border-color:#3b82f6;
+border-color:#22c55e;
 
 }
 
 .sophia{
 
-border-color:#ffffff;
+border-color:#3b82f6;
 
 }
 
 .logos{
 
-border-color:#8b5cf6;
+border-color:#06b6d4;
 
 }
 
 .philosopher{
 
-border-color:#22c55e;
+border-color:#d97706;
 
 }
 
 .aletheia{
 
-border-color:#d97706;
+border-color:#8b5cf6;
 
 }
 
@@ -171,5 +218,33 @@ padding:80px 40px;
 main.home{
 
 overflow:visible;
+
+}
+
+@media(max-width:900px){
+
+.hero h1{
+
+font-size:42px;
+
+}
+
+.hero p{
+
+font-size:18px;
+
+}
+
+.section{
+
+padding:80px 24px;
+
+}
+
+blockquote{
+
+font-size:26px;
+
+}
 
 }
