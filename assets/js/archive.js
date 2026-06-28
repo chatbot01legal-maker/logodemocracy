@@ -34,27 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-
-  /* =========================
-     SIDEBAR TOGGLE
-  ========================= */
-
-  const sidebar = document.querySelector(".sidebar");
-  const toggle = document.querySelector(".sidebar-toggle");
-
-  if (sidebar && toggle) {
-
-    toggle.addEventListener("click", (event) => {
-
-      event.stopPropagation();
-
-      const collapsed = sidebar.classList.toggle("collapsed");
-
-      toggle.textContent = collapsed ? "▸" : "◂";
-    });
-
-  }
-
   /* =========================
      LOAD TREE (DINÁMICO)
   ========================= */
