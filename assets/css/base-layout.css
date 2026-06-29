@@ -130,18 +130,20 @@ body {
 /* ═══════════════════════════════════════════════════════
    TOPBAR — compartido entre landing y todos los módulos
    ═══════════════════════════════════════════════════════ */
-
 .topbar{
   display:flex;
   align-items:center;
   justify-content:space-between;
 
-  height: 64px;
-  padding: 0 16px;
+  padding: 10px 16px;
 
-  border-bottom:1px solid var(--header-border);
-  background:#050a12;
+  height: 56px; /* 🔴 CLAVE: fija la altura visual */
   box-sizing: border-box;
+
+  border-bottom: 1px solid var(--header-border);
+  background: #050a12;
+
+  font-family: var(--f-mono);
 }
 
 /* LOGO */
@@ -170,24 +172,30 @@ body {
 
 /* LINKS DE MÓDULOS */
 .module-link {
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--c-muted);
   text-decoration: none;
-  color: #e5e7eb;
-  opacity: 0.7;
-  font-size: 13px;
-  transition: 0.2s;
-  padding: 4px 6px;
-  border-bottom: 1px solid transparent;
+
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+
+  transition: all 200ms ease;
+  display: inline-flex;
+  align-items: center;
 }
 
 .module-link:hover {
-  opacity: 1;
-  border-bottom: 1px solid var(--accent);
+  border-color: var(--c-border);
+  color: var(--c-text);
 }
 
 .module-link.active {
-  opacity: 1;
-  color: var(--accent);
-  border-bottom: 1px solid var(--accent);
+  border: 1px solid var(--c-border);
+  background: rgba(255,255,255,0.03);
+  color: var(--c-text);
 }
 
 /* LADO DERECHO */
