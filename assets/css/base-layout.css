@@ -312,15 +312,18 @@ body {
     width:100%;
     padding-top:12px;
 }
+   
 
 .topbar-right.open {
 
     display:flex;
 
-    flex-direction:column;
+    flex-direction:row;
 
-    gap:10px;
-
+    gap:16px;
+   
+    align-items:center;
+   
     position:absolute;
 
     top:56px;
@@ -328,6 +331,8 @@ body {
     left:0;
     right:0;
 
+    justify-content:flex-start;
+   
     padding:16px;
 
     background:#050a12;
