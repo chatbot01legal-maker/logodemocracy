@@ -283,32 +283,31 @@ body {
   }
 
   .module-nav.open {
-    display: flex;
-  }
+    display:flex;
+}
 
-  .topbar-right {
-    display: none;
-    width: 100%;
-    padding-top: 12px;
-  }
+.topbar-right {
+    display:none;
+    width:100%;
+    padding-top:12px;
+}
 
-  .topbar-right.open {
-    display: flex;
-    gap: 12px;
-  }
+.topbar-right.open {
+    display:flex;
+    gap:12px;
+}
 
-  /* 🔥 ADD ON: SUPERPOSICIÓN CORRECTA */
-  .module-nav.open,
-  .topbar-right.open {
-    position: absolute;
-    top: 56px;
-    left: 0;
-    right: 0;
+/* 🔥 ADD ON: SUPERPOSICIÓN CORRECTA */
+.module-nav.open,
+.topbar-right.open {
+    position:absolute;
+    top:56px;
+    left:0;
+    right:0;
 
-    background: #050a12;
-    z-index: 999;
+    background:#050a12;
+    z-index:999;
 
-    padding: 12px 16px;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-  }
+    padding:12px 16px;
+    border-bottom:1px solid rgba(255,255,255,.08);
 }
