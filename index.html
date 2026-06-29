@@ -85,24 +85,50 @@ body {
   overflow: visible;
 }
 
-.divider-dot {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--c-aletheia);
-  box-shadow: 0 0 8px var(--c-aletheia), 0 0 16px rgba(139,92,246,0.4);
-  animation: dotTravel 8s ease-in-out infinite;
+.divider-line {
+  position: relative;
+  height: 1px;
+  background: var(--c-border);
+  overflow: hidden;
 }
 
-@keyframes dotTravel {
-  0%   { left: 0%;   background: var(--c-aletheia); box-shadow: 0 0 8px var(--c-aletheia); }
-  33%  { background: var(--c-logos);    box-shadow: 0 0 8px var(--c-logos); }
-  66%  { background: var(--c-sophia);   box-shadow: 0 0 8px var(--c-sophia); }
-  100% { left: 100%; background: var(--c-academia);  box-shadow: 0 0 8px var(--c-academia); }
+/* “pulso ECG” */
+.divider-line::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -30%;
+  width: 30%;
+  height: 2px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg,
+    transparent,
+    var(--c-sophia),
+    var(--c-aletheia),
+    var(--c-logos),
+    transparent
+  );
+  filter: blur(0.2px);
+  animation: ecgPulse 2.2s linear infinite;
+  opacity: 0.9;
+}
+
+/* micro “latido” de la línea base */
+.divider-line {
+  animation: lineHeartbeat 2.2s ease-in-out infinite;
+}
+
+@keyframes ecgPulse {
+  0%   { left: -30%; opacity: 0; }
+  10%  { opacity: 1; }
+  50%  { opacity: 1; }
+  100% { left: 110%; opacity: 0; }
+}
+
+/* leve vibración orgánica (sensación de vida) */
+@keyframes lineHeartbeat {
+  0%, 100% { transform: scaleY(1); opacity: 0.9; }
+  50%      { transform: scaleY(1.6); opacity: 1; }
 }
 
 /* ─── HERO ───────────────────────────────────────────── */
