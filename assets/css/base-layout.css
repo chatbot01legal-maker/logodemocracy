@@ -151,7 +151,9 @@ body {
 
 /* LOGO */
 .brand{
-    text-decoration:none;
+
+  text-decoration: none !important;
+  color: var(--header-color) !important;
 
     font-family:"IBM Plex Mono", monospace;
 
@@ -160,8 +162,6 @@ body {
     font-weight:600;
 
     letter-spacing:1px;
-
-    color:var(--header-color);
 
     transition:.2s;
 }
