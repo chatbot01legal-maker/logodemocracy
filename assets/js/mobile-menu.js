@@ -7,8 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!btn || !nav || !right) return;
 
   btn.addEventListener('click', () => {
-    nav.classList.toggle('open');
-    right.classList.toggle('open');
+
+    const isOpen = nav.classList.toggle('open');
+
+    right.classList.toggle('open', isOpen);
+
   });
 
 });
