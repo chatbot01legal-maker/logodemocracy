@@ -144,12 +144,20 @@ body {
 }
 
 /* LOGO */
-.brand {
-  text-decoration: none;
-  color: var(--header-color);
-  font-weight: 600;
-  font-family: "IBM Plex Mono", monospace;
-  letter-spacing: 1px;
+.brand{
+    text-decoration:none;
+
+    font-family:"IBM Plex Mono", monospace;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+    color:var(--header-color);
+
+    transition:.2s;
 }
 
 /* NAV CENTRAL */
