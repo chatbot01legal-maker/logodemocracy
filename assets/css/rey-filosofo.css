@@ -1,73 +1,301 @@
-:root{
-  --accent:#d97706;
+/* ═══════════════════════════════════════════════════════
+   REY-FILOSOFO.CSS — Módulo Tutor Cognitivo y Currículum
+   Acento: #d97706 (Rey Filósofo Amber)
+   ═══════════════════════════════════════════════════════ */
 
-  --header-color:#d97706;
+:root {
+  --accent:        #d97706;
+  --header-color:  #d97706;
+  --header-border: rgba(217, 119, 6, 0.22);
 
-  --header-border:rgba(217,119,6,.25);
+  /* Semántica de progreso cognitivo */
+  --zpd-mastered:  #22c55e;
+  --zpd-active:    #d97706;
+  --zpd-locked:    #4b5563;
+  
+  --p-surface: #0a0e17;
+  --p-panel:   #111622;
+  --p-border:  rgba(217, 119, 6, 0.15);
 }
 
-.sophia-input{
+body { font-family: 'IBM Plex Mono', monospace; }
 
-width:100%;
-
-height:260px;
-
-background:#091120;
-
-border:1px solid rgba(255,255,255,.1);
-
-padding:16px;
-
-color:white;
-
-resize:none;
-
-box-sizing:border-box;
-
-margin-bottom:20px;
-
+/* ─── SIDEBAR REY FILÓSOFO ──────────────────────────── */
+.phil-module-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 4px;
+  border-bottom: 1px solid rgba(217, 119, 6, 0.15);
+  margin-bottom: 4px;
 }
 
-.evaluate-btn{
-
-background:var(--accent);
-
-border:none;
-
-padding:12px 24px;
-
-cursor:pointer;
-
-color:white;
-
-font-weight:bold;
-
+.clickable-trigger {
+  cursor: pointer;
+  transition: background 200ms, border-color 200ms;
+}
+.clickable-trigger:hover {
+  background: rgba(217, 119, 6, 0.08) !important;
+  border-color: var(--accent) !important;
 }
 
-.result{
-
-margin-top:24px;
-
-padding:18px;
-
-background:#091120;
-
-border:1px solid rgba(255,255,255,.1);
-
+/* Nav Tree */
+.phil-nav.tree {
+  padding: 6px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
-.metric{
+.pnav-section { display: contents; }
 
-margin-bottom:8px;
-
+.pnav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: rgba(229,231,235,.55);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  text-align: left;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 150ms;
+  border-left: 2px solid transparent;
 }
 
-.metric strong{
-
-color:var(--accent);
-
+.pnav-item:hover {
+  color: #e5e7eb;
+  background: rgba(217, 119, 6, 0.06);
 }
 
-.topbar {
-  --header-color: var(--accent);
+.pnav-item.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: rgba(217, 119, 6, 0.08);
+}
+
+.pnav-icon {
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 4px var(--accent);
+}
+
+/* ─── SPA VIEWS LAYOUT ───────────────────────────────── */
+.view { animation: viewIn 200ms ease; }
+@keyframes viewIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.view-title {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.view-eyebrow {
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(217, 119, 6, 0.5);
+  margin-bottom: 12px;
+}
+
+.view-body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.88rem;
+  color: rgba(229,231,235,.7);
+  line-height: 1.7;
+  max-width: 660px;
+}
+.view-body p { margin-bottom: 12px; }
+
+/* ─── CURRICULUM GRID ────────────────────────────────── */
+.curriculum-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.curr-card {
+  background: var(--p-panel);
+  border: 1px solid var(--p-border);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.curr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.curr-topic {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #e5e7eb;
+}
+
+.curr-badge {
+  font-size: 0.58rem;
+  padding: 1px 6px;
+  border: 1px solid;
+}
+.curr-badge--active { color: var(--zpd-active); border-color: rgba(217,119,6,0.3); }
+.curr-badge--mastered { color: var(--zpd-mastered); border-color: rgba(34,197,94,0.3); }
+
+.curr-desc {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.78rem;
+  color: rgba(229,231,235,.55);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+/* Progress bar interna de la card */
+.curr-progress-container {
+  height: 3px;
+  background: rgba(255,255,255,0.05);
+  width: 100%;
+}
+.curr-progress-bar {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.5s ease-in-out;
+}
+
+/* ─── CHAT POP-UP WIDGET (FIXED / TABLET SAFE) ───────── */
+.chat-popup-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 360px;
+  max-width: calc(100vw - 48px);
+  height: 480px;
+  max-height: calc(100vh - 120px);
+  background: #050a12;
+  border: 1px solid var(--accent);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.7);
+  display: flex;
+  flex-direction: column;
+  z-index: 2000;
+  transform: translateY(120%) scale(0.95);
+  opacity: 0;
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), opacity 250ms;
+  pointer-events: none;
+}
+
+.chat-popup-container.open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.chat-popup-header {
+  background: var(--p-panel);
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--p-border);
+}
+
+.chat-popup-title {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.chat-popup-close {
+  background: none;
+  border: none;
+  color: rgba(225,225,225,0.5);
+  font-size: 1.2rem;
+  cursor: pointer;
+  line-height: 1;
+}
+.chat-popup-close:hover { color: var(--accent); }
+
+.chat-popup-messages {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(5, 10, 18, 0.95);
+}
+
+.chat-msg {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  padding: 8px 10px;
+  border-radius: 2px;
+  max-width: 90%;
+}
+.chat-msg.system {
+  background: rgba(217, 119, 6, 0.04);
+  border-left: 2px solid var(--accent);
+  color: rgba(229,231,235,0.8);
+}
+.chat-msg.user {
+  background: rgba(255,255,255,0.03);
+  border-right: 2px solid rgba(255,255,255,0.2);
+  color: #e5e7eb;
+  align-self: flex-end;
+}
+
+.chat-popup-input-area {
+  padding: 8px;
+  display: flex;
+  gap: 8px;
+  border-top: 1px solid var(--p-border);
+  background: var(--p-panel);
+}
+
+.chat-popup-input-area input {
+  flex: 1;
+  background: #050a12;
+  border: 1px solid var(--p-border);
+  padding: 8px;
+  color: #e5e7eb;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+}
+.chat-popup-input-area input:focus { outline: none; border-color: var(--accent); }
+
+.chat-popup-input-area button {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  padding: 0 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+/* Responsive hooks */
+@media(max-width: 1024px) {
+  .chat-popup-container {
+    bottom: 12px;
+    right: 12px;
+    width: calc(100vw - 24px);
+    height: 400px;
+  }
 }
