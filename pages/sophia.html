@@ -1,192 +1,168 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sophia</title>
-
+  <title>Sophia — LogoDemocracy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/base-layout.css">
   <link rel="stylesheet" href="/assets/css/sophia.css">
 </head>
-
 <body>
-
 <div class="page">
 
-  <!-- =========================
-       HEADER LIMPIO (CORRECTO)
-  ========================== -->
+  <!-- TOPBAR -->
   <header class="topbar">
-
-<a href="https://logodemocracy.tech"
-class="brand">
-
-LOGODEMOCRACY
-
-</a>
-
-<nav class="module-nav">
-
-<a href="/pages/archive-template.html"
-class="module-link">
-
-Academia
-
-</a>
-
-<a href="/pages/aletheia.html"
-class="module-link">
-
-Aletheia
-
-</a>
-
-<a href="/pages/logos.html"
-class="module-link">
-
-Logos
-
-</a>
-
-<a href="/pages/rey-filosofo.html"
-class="module-link">
-
-Rey Filósofo
-
-</a>
-
-<a href="/pages/sophia.html"
-class="module-link active">
-
-Sophia
-
-</a>
-
-</nav>
-
-<button
-class="mobile-menu-btn"
-id="mobileMenuBtn">
-
-<svg
-width="22"
-height="22"
-viewBox="0 0 24 24"
-fill="none"
-stroke="currentColor"
-stroke-width="2"
-stroke-linecap="round">
-
-<path d="M4 6H20"/>
-<path d="M4 12H20"/>
-<path d="M4 18H20"/>
-
-</svg>
-
-</button>
-    
-<div class="topbar-right">
-
-<a href="#"
-class="user-menu"
-id="userLabel">
-
-⌂ Invitado
-
-</a>
-
-<a href="#"
-class="auth-btn"
-id="authButton">
-
-Log in
-
-</a>
-
-<div class="lang">
-
-ES | EN
-
-</div>
-
-</div>
-
+    <a href="/" class="brand">LOGODEMOCRACY</a>
+    <nav class="module-nav">
+      <a href="/pages/archive-template.html" class="module-link">Academia</a>
+      <a href="/pages/aletheia.html"         class="module-link">Aletheia</a>
+      <a href="/pages/logos.html"            class="module-link">Logos</a>
+      <a href="/pages/rey-filosofo.html"     class="module-link">Rey Filósofo</a>
+      <a href="/pages/sophia.html"           class="module-link active">Sophia</a>
+    </nav>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M4 6H20"/><path d="M4 12H20"/><path d="M4 18H20"/>
+      </svg>
+    </button>
+    <div class="topbar-right">
+      <a href="#" class="user-menu" id="userLabel">⌂ Invitado</a>
+      <a href="#" class="auth-btn"  id="authButton">Log in</a>
+      <div class="lang">ES | EN</div>
+    </div>
   </header>
 
-  <!-- =========================
-       LAYOUT (NO TOCADO)
-  ========================== -->
+  <!-- LAYOUT -->
   <div class="layout">
 
+    <!-- ═══════════════════════════════════
+         SIDEBAR
+    ════════════════════════════════════ -->
     <aside class="sidebar">
-
       <div class="sidebar-content">
 
-        <div class="tree">
-          Open Source Cognitivo
+        <!-- Módulo label -->
+        <div class="sophia-module-label">
+          <span class="module-badge">S</span>
+          <span class="module-name">SOPHIA</span>
+          <span class="module-version">v2.1</span>
         </div>
 
-        <div class="epistemic">
+        <!-- Nav tree -->
+        <nav class="sophia-nav tree">
 
-          <div class="epistemic-title">
-            Indicadores
+          <div class="snav-section">
+            <button class="snav-item active" data-view="inicio">
+              <span class="snav-icon">◈</span> Inicio Sophia
+            </button>
           </div>
 
-          <div>Verificabilidad</div>
-          <div>Falacias</div>
-          <div>Sesgos</div>
-          <div>Claridad</div>
+          <div class="snav-section">
+            <button class="snav-item" data-view="opensource">
+              <span class="snav-icon">◇</span> Open Source Cognitivo
+            </button>
+          </div>
 
+          <div class="snav-section">
+            <button class="snav-item" data-view="atomos">
+              <span class="snav-icon">◈</span> Átomos Cognitivos
+            </button>
+          </div>
+
+          <div class="snav-section snav-section--group">
+            <div class="snav-group-label">Dimensiones de Evaluación</div>
+            <button class="snav-item snav-item--sub" data-view="dim-rigor">
+              Rigor epistémico
+            </button>
+            <button class="snav-item snav-item--sub" data-view="dim-claridad">
+              Claridad conceptual
+            </button>
+            <button class="snav-item snav-item--sub" data-view="dim-arquitectura">
+              Arquitectura cognitiva
+            </button>
+            <button class="snav-item snav-item--sub" data-view="dim-carga">
+              Carga cognitiva
+            </button>
+            <button class="snav-item snav-item--sub" data-view="dim-deliberativa">
+              Calidad deliberativa
+            </button>
+          </div>
+
+          <div class="snav-section">
+            <button class="snav-item" data-view="informe">
+              <span class="snav-icon">◉</span> Informe de Evaluación
+            </button>
+          </div>
+
+          <div class="snav-section">
+            <button class="snav-item" data-view="academia">
+              <span class="snav-icon">◇</span> Academia y Votación
+            </button>
+          </div>
+
+          <div class="snav-section">
+            <button class="snav-item" data-view="relaciones">
+              <span class="snav-icon">◈</span> Relaciones sistémicas
+            </button>
+          </div>
+
+        </nav>
+
+        <!-- Estado epistémico del sistema -->
+        <div class="epistemic sidebar-status">
+          <div class="epistemic-title">Estado del sistema</div>
+          <div class="status-row">
+            <span class="status-dot status-dot--on"></span>
+            <span>Filtro activo</span>
+          </div>
+          <div class="status-row">
+            <span class="status-dot status-dot--on"></span>
+            <span>Base: 1,204 átomos</span>
+          </div>
+          <div class="status-row">
+            <span class="status-dot status-dot--warn"></span>
+            <span>4 docs en cola</span>
+          </div>
         </div>
 
-        <div class="philosopher">
-
-          <div>🏛 Rey Filósofo</div>
-          <div>¿Quieres comprender este resultado?</div>
-
+        <!-- Rey Filósofo -->
+        <div class="philosopher sidebar-philosopher">
+          <div class="phil-icon">🏛</div>
+          <div>
+            <div class="phil-name">Rey Filósofo</div>
+            <div class="phil-msg">¿Quieres comprender alguna métrica?</div>
+          </div>
         </div>
 
       </div>
-
       <div class="sidebar-rail">
         <div class="sidebar-toggle">◂</div>
       </div>
-
     </aside>
 
+    <!-- ═══════════════════════════════════
+         CONTENT AREA
+    ════════════════════════════════════ -->
     <main class="document">
-
-      <div class="document-header">
-        Sophia evalúa conocimiento.
+      <div class="document-header" id="viewTitle">
+        Sophia — Sistema Abierto de Evaluación Epistémica
       </div>
 
-      <div class="document-content">
-
-        <textarea class="sophia-input" placeholder="Pega aquí un texto"></textarea>
-
-        <button class="evaluate-btn">
-          Evaluar
-        </button>
-
-        <div class="result" id="result"></div>
-
+      <div class="document-content" id="viewContent">
+        <!-- Views rendered here by JS -->
       </div>
-
     </main>
 
-  </div>
+  </div><!-- /layout -->
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    LogoDemocracy · Sophia
-  </footer>
-
-</div>
+  <footer class="footer">LogoDemocracy · Sophia · Sistema Abierto de Evaluación Epistémica y Cognitiva</footer>
+</div><!-- /page -->
 
 <script src="/assets/js/layout.js"></script>
-<script src="/assets/js/sophia.js"></script>
 <script src="/assets/js/mobile-menu.js"></script>
-  
+<script src="/assets/js/sophia.js"></script>
 </body>
 </html>
