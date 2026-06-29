@@ -130,23 +130,24 @@ body {
 /* ═══════════════════════════════════════════════════════
    TOPBAR — compartido entre landing y todos los módulos
    ═══════════════════════════════════════════════════════ */
-.topbar{
-  position: relative;
-  z-index: 1000;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
   padding: 10px 16px;
+  height: 56px;
 
-  height: 56px; /* 🔴 CLAVE: fija la altura visual */
   box-sizing: border-box;
-
   border-bottom: 1px solid var(--header-border);
+
   background: #050a12;
-  
-}
   font-family: var(--f-mono);
+
+  position: relative;
+  z-index: 1000;
+
+  flex-wrap: nowrap; /* 🔥 CLAVE */
 }
 
 /* LOGO */
