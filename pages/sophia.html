@@ -1,20 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sophia</title>
 
-  <title>Sophia — LogoDemocracy</title>
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
-  <!-- GLOBAL CSS -->
   <link rel="stylesheet" href="/assets/css/base-layout.css">
-
-  <!-- MODULE CSS -->
   <link rel="stylesheet" href="/assets/css/sophia.css">
 </head>
 
@@ -22,47 +14,137 @@
 
 <div class="page">
 
-  <!-- TOPBAR (global) -->
+  <!-- =========================
+       HEADER LIMPIO (CORRECTO)
+  ========================== -->
   <header class="topbar">
-    <a href="/" class="brand">LOGODEMOCRACY</a>
 
-    <nav class="module-nav">
-      <a href="/pages/archive-template.html" class="module-link">Academia</a>
-      <a href="/pages/aletheia.html" class="module-link">Aletheia</a>
-      <a href="/pages/logos.html" class="module-link">Logos</a>
-      <a href="/pages/rey-filosofo.html" class="module-link">Rey Filósofo</a>
-      <a href="/pages/sophia.html" class="module-link active">Sophia</a>
-    </nav>
+<a href="https://logodemocracy.tech"
+class="brand">
 
-    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+LOGODEMOCRACY
 
-    <div class="topbar-right">
-      <a href="#" id="userLabel">⌂ Invitado</a>
-      <a href="#" id="authButton">Log in</a>
-      <div>ES | EN</div>
-    </div>
+</a>
+
+<nav class="module-nav">
+
+<a href="/pages/archive-template.html"
+class="module-link">
+
+Academia
+
+</a>
+
+<a href="/pages/aletheia.html"
+class="module-link">
+
+Aletheia
+
+</a>
+
+<a href="/pages/logos.html"
+class="module-link">
+
+Logos
+
+</a>
+
+<a href="/pages/rey-filosofo.html"
+class="module-link">
+
+Rey Filósofo
+
+</a>
+
+<a href="/pages/sophia.html"
+class="module-link active">
+
+Sophia
+
+</a>
+
+</nav>
+
+<button
+class="mobile-menu-btn"
+id="mobileMenuBtn">
+
+<svg
+width="22"
+height="22"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+stroke-linecap="round">
+
+<path d="M4 6H20"/>
+<path d="M4 12H20"/>
+<path d="M4 18H20"/>
+
+</svg>
+
+</button>
+    
+<div class="topbar-right">
+
+<a href="#"
+class="user-menu"
+id="userLabel">
+
+⌂ Invitado
+
+</a>
+
+<a href="#"
+class="auth-btn"
+id="authButton">
+
+Log in
+
+</a>
+
+<div class="lang">
+
+ES | EN
+
+</div>
+
+</div>
+
   </header>
 
-  <!-- LAYOUT -->
+  <!-- =========================
+       LAYOUT (NO TOCADO)
+  ========================== -->
   <div class="layout">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
+
       <div class="sidebar-content">
 
-        <div class="sophia-module-label">
-          <span class="module-badge">S</span>
-          <span class="module-name">SOPHIA</span>
+        <div class="tree">
+          Open Source Cognitivo
         </div>
 
-        <nav class="sophia-nav tree" id="sophiaNav">
-          <!-- JS inyecta o conecta aquí -->
-        </nav>
+        <div class="epistemic">
 
-        <div class="epistemic sidebar-status">
-          <div class="epistemic-title">Estado del sistema</div>
-          <div>✔ Filtro activo</div>
-          <div>✔ 1,204 átomos</div>
+          <div class="epistemic-title">
+            Indicadores
+          </div>
+
+          <div>Verificabilidad</div>
+          <div>Falacias</div>
+          <div>Sesgos</div>
+          <div>Claridad</div>
+
+        </div>
+
+        <div class="philosopher">
+
+          <div>🏛 Rey Filósofo</div>
+          <div>¿Quieres comprender este resultado?</div>
+
         </div>
 
       </div>
@@ -70,27 +152,41 @@
       <div class="sidebar-rail">
         <div class="sidebar-toggle">◂</div>
       </div>
+
     </aside>
 
-    <!-- CONTENT -->
     <main class="document">
-      <div class="document-header" id="viewTitle">
-        Sophia
+
+      <div class="document-header">
+        Sophia evalúa conocimiento.
       </div>
 
-      <div class="document-content" id="viewContent"></div>
+      <div class="document-content">
+
+        <textarea class="sophia-input" placeholder="Pega aquí un texto"></textarea>
+
+        <button class="evaluate-btn">
+          Evaluar
+        </button>
+
+        <div class="result" id="result"></div>
+
+      </div>
+
     </main>
 
   </div>
 
+  <!-- FOOTER -->
+  <footer class="footer">
+    LogoDemocracy · Sophia
+  </footer>
+
 </div>
 
-<!-- JS GLOBAL -->
 <script src="/assets/js/layout.js"></script>
-<script src="/assets/js/mobile-menu.js"></script>
-
-<!-- MODULE JS -->
 <script src="/assets/js/sophia.js"></script>
-
+<script src="/assets/js/mobile-menu.js"></script>
+  
 </body>
 </html>
