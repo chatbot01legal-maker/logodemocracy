@@ -67,3 +67,7 @@ margin-bottom:8px;
 color:var(--accent);
 
 }
+
+.topbar {
+  --header-color: var(--accent);
+}
