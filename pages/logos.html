@@ -1,165 +1,115 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Logos</title>
-
+  <title>Logos — LogoDemocracy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/base-layout.css">
   <link rel="stylesheet" href="/assets/css/logos.css">
 </head>
-
 <body>
-
 <div class="page">
 
-  <!-- =========================
-       HEADER (MISMO PATRÓN SOPHIA)
-  ========================== -->
+  <!-- TOPBAR -->
   <header class="topbar">
-
-    <a href="https://logodemocracy.tech" class="brand">
-      LOGODEMOCRACY
-    </a>
-
+    <a href="/" class="brand">LOGODEMOCRACY</a>
     <nav class="module-nav">
-
-      <a href="/pages/archive-template.html" class="module-link">
-        Academia
-      </a>
-
-      <a href="/pages/aletheia.html" class="module-link">
-        Aletheia
-      </a>
-
-      <a href="/pages/logos.html" class="module-link active">
-        Logos
-      </a>
-
-      <a href="/pages/rey-filosofo.html" class="module-link">
-        Rey Filósofo
-      </a>
-
-      <a href="/pages/sophia.html" class="module-link">
-        Sophia
-      </a>
-
+      <a href="/pages/archive-template.html" class="module-link">Academia</a>
+      <a href="/pages/aletheia.html"         class="module-link">Aletheia</a>
+      <a href="/pages/logos.html"            class="module-link active">Logos</a>
+      <a href="/pages/rey-filosofo.html"     class="module-link">Rey Filósofo</a>
+      <a href="/pages/sophia.html"           class="module-link">Sophia</a>
     </nav>
-
-<button
-class="mobile-menu-btn"
-id="mobileMenuBtn">
-
-<svg
-width="22"
-height="22"
-viewBox="0 0 24 24"
-fill="none"
-stroke="currentColor"
-stroke-width="2"
-stroke-linecap="round">
-
-<path d="M4 6H20"/>
-<path d="M4 12H20"/>
-<path d="M4 18H20"/>
-
-</svg>
-
-</button>
-    
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M4 6H20"/><path d="M4 12H20"/><path d="M4 18H20"/>
+      </svg>
+    </button>
     <div class="topbar-right">
-
-      <a href="#" class="user-menu" id="userLabel">
-        ⌂ Invitado
-      </a>
-
-      <a href="#" class="auth-btn" id="authButton">
-        Log in
-      </a>
-
-      <div class="lang">
-        ES | EN
-      </div>
-
+      <a href="#" class="user-menu" id="userLabel">⌂ Invitado</a>
+      <a href="#" class="auth-btn"  id="authButton">Log in</a>
+      <div class="lang">ES | EN</div>
     </div>
-
   </header>
 
-  <!-- =========================
-       LAYOUT (IDÉNTICO SOPHIA)
-  ========================== -->
+  <!-- LAYOUT -->
   <div class="layout">
 
+    <!-- SIDEBAR -->
     <aside class="sidebar">
-
       <div class="sidebar-content">
 
-        <div class="tree">
-          Open Source Cognitivo
+        <!-- Módulo Label -->
+        <div class="logos-module-label">
+          <span class="module-badge">LO</span>
+          <span class="module-name">LOGOS / DIALÉCTICA</span>
+          <span class="module-version">v1.0</span>
         </div>
 
-        <div class="epistemic">
-
-          <div class="epistemic-title">
-            Indicadores
+        <!-- Nav Tree -->
+        <nav class="logos-nav tree">
+          <div class="logos-nav-section">
+            <button class="logos-nav-item active" data-view="evaluacion">
+              <span class="logos-nav-icon">📊</span> Evaluar Discurso
+            </button>
           </div>
+          <div class="logos-nav-section">
+            <button class="logos-nav-item" data-view="debate">
+              <span class="logos-nav-icon">⇅</span> Mapeo de Debates
+            </button>
+          </div>
+          <div class="logos-nav-section">
+            <button class="logos-nav-item" data-view="opensource">
+              <span class="logos-nav-icon">⚙</span> Open Source Cognitivo
+            </button>
+          </div>
+          <div class="logos-nav-section">
+            <button class="logos-nav-item" data-view="reportes">
+              <span class="logos-nav-icon">📁</span> Informes Emitidos
+            </button>
+          </div>
+        </nav>
 
-          <div>Coherencia</div>
-          <div>Consenso</div>
-          <div>Polarización</div>
-          <div>Argumentos</div>
-
-        </div>
-
-        <div class="philosopher">
-
-          <div>🏛 Logos</div>
-          <div>Facilitación de deliberación colectiva</div>
-
+        <!-- Estado del Motor Lógico -->
+        <div class="epistemic sidebar-status">
+          <div class="epistemic-title">Auditoría Lógica</div>
+          <div class="status-row">
+            <span class="status-dot status-dot--on"></span>
+            <span>Motor: Razonamiento Formal Activo</span>
+          </div>
+          <div class="status-row">
+            <span class="status-dot status-dot--on"></span>
+            <span>Consistencia de Paths: OK</span>
+          </div>
         </div>
 
       </div>
-
       <div class="sidebar-rail">
         <div class="sidebar-toggle">◂</div>
       </div>
-
     </aside>
 
+    <!-- CONTENT AREA -->
     <main class="document">
-
-      <div class="document-header">
-        Logos facilita deliberación colectiva.
+      <div class="document-header" id="viewTitle">
+        Logos — Evaluación Estructural del Discurso
       </div>
 
-      <div class="document-content">
-
-        <textarea class="logos-input" placeholder="Pega aquí un discurso o argumento"></textarea>
-
-        <button class="evaluate-btn">
-          Analizar
-        </button>
-
-        <div class="result" id="result"></div>
-
+      <div class="document-content" id="viewContent">
+        <!-- Inyección SPA dinámica -->
       </div>
-
     </main>
 
   </div>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    LogoDemocracy · Logos
-  </footer>
-
+  <footer class="footer">LogoDemocracy · Logos · Análisis Sintáctico, Semántico y Descomposición Argumental de Mociones</footer>
 </div>
 
 <script src="/assets/js/layout.js"></script>
-<script src="/assets/js/logos.js"></script>
 <script src="/assets/js/mobile-menu.js"></script>
-  
+<script src="/assets/js/logos.js"></script>
 </body>
-  
 </html>

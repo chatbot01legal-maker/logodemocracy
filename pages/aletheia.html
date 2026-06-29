@@ -1,234 +1,115 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1">
-
-<title>Aletheia</title>
-
-<link rel="stylesheet"
-href="/assets/css/base-layout.css">
-
-<link rel="stylesheet"
-href="/assets/css/aletheia.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aletheia — LogoDemocracy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/base-layout.css">
+  <link rel="stylesheet" href="/assets/css/aletheia.css">
 </head>
-
 <body>
-
 <div class="page">
 
-<header class="topbar">
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <a href="/" class="brand">LOGODEMOCRACY</a>
+    <nav class="module-nav">
+      <a href="/pages/archive-template.html" class="module-link">Academia</a>
+      <a href="/pages/aletheia.html"         class="module-link active">Aletheia</a>
+      <a href="/pages/logos.html"            class="module-link">Logos</a>
+      <a href="/pages/rey-filosofo.html"     class="module-link">Rey Filósofo</a>
+      <a href="/pages/sophia.html"           class="module-link">Sophia</a>
+    </nav>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M4 6H20"/><path d="M4 12H20"/><path d="M4 18H20"/>
+      </svg>
+    </button>
+    <div class="topbar-right">
+      <a href="#" class="user-menu" id="userLabel">⌂ Invitado</a>
+      <a href="#" class="auth-btn"  id="authButton">Log in</a>
+      <div class="lang">ES | EN</div>
+    </div>
+  </header>
 
-<a href="https://logodemocracy.tech"
-class="brand">
+  <!-- LAYOUT -->
+  <div class="layout">
 
-LOGODEMOCRACY
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-content">
 
-</a>
+        <!-- Módulo Label -->
+        <div class="aletheia-module-label">
+          <span class="module-badge">AL</span>
+          <span class="module-name">ALETHEIA / VERDAD</span>
+          <span class="module-version">v1.0</span>
+        </div>
 
-<nav class="module-nav">
+        <!-- Nav Tree -->
+        <nav class="aletheia-nav tree">
+          <div class="aletheia-nav-section">
+            <button class="aletheia-nav-item active" data-view="ingenieria">
+              <span class="aletheia-nav-icon">👁</span> Ingeniería Inversa
+            </button>
+          </div>
+          <div class="aletheia-nav-section">
+            <button class="aletheia-nav-item" data-view="subestimacion">
+              <span class="aletheia-nav-icon">📉</span> Coeficiente de Subestimación
+            </button>
+          </div>
+          <div class="aletheia-nav-section">
+            <button class="aletheia-nav-item" data-view="opensource">
+              <span class="aletheia-nav-icon">⚙</span> Open Source Cognitivo
+            </button>
+          </div>
+          <div class="aletheia-nav-section">
+            <button class="aletheia-nav-item" data-view="casos">
+              <span class="aletheia-nav-icon">📁</span> Archivo de Falacias Ocultas
+            </button>
+          </div>
+        </nav>
 
-<a href="/pages/archive-template.html"
-class="module-link">
+        <!-- Estado del Monitor -->
+        <div class="epistemic sidebar-status">
+          <div class="epistemic-title">Descompresor Epistémico</div>
+          <div class="status-row">
+            <span class="status-dot status-dot--on" style="background:#f43f5e; box-shadow:0 0 4px #f43f5e;"></span>
+            <span>Filtro de Desinformación: ON</span>
+          </div>
+          <div class="status-row">
+            <span class="status-dot status-dot--on" style="background:#f43f5e; box-shadow:0 0 4px #f43f5e;"></span>
+            <span>Mapeo de Cinismo: Activo</span>
+          </div>
+        </div>
 
-Academia
+      </div>
+      <div class="sidebar-rail">
+        <div class="sidebar-toggle">◂</div>
+      </div>
+    </aside>
 
-</a>
+    <!-- CONTENT AREA -->
+    <main class="document">
+      <div class="document-header" id="viewTitle">
+        Aletheia — Descomposición de la Posverdad Estructural
+      </div>
 
-<a href="/pages/aletheia.html"
-class="module-link active">
+      <div class="document-content" id="viewContent">
+        <!-- Inyección SPA dinámica -->
+      </div>
+    </main>
 
-Aletheia
+  </div>
 
-</a>
-
-<a href="/pages/logos.html"
-class="module-link">
-
-Logos
-
-</a>
-
-<a href="/pages/rey-filosofo.html"
-class="module-link">
-
-Rey Filósofo
-
-</a>
-
-<a href="/pages/sophia.html"
-class="module-link">
-
-Sophia
-
-</a>
-
-</nav>
-
-<button
-class="mobile-menu-btn"
-id="mobileMenuBtn">
-
-<svg
-width="22"
-height="22"
-viewBox="0 0 24 24"
-fill="none"
-stroke="currentColor"
-stroke-width="2"
-stroke-linecap="round">
-
-<path d="M4 6H20"/>
-<path d="M4 12H20"/>
-<path d="M4 18H20"/>
-
-</svg>
-
-</button>
-  
-<div class="topbar-right">
-
-<a href="#"
-class="user-menu"
-id="userLabel">
-
-⌂ Invitado
-
-</a>
-
-<a href="#"
-class="auth-btn"
-id="authButton">
-
-Log in
-
-</a>
-
-<div class="lang">
-
-ES | EN
-
+  <footer class="footer">LogoDemocracy · Aletheia · Análisis Crítico del Cinismo Político e Inversión Hermenéutica del Discurso Público</footer>
 </div>
-
-</div>
-
-</header>
-
-
-<div class="layout">
-
-<aside class="sidebar">
-
-<div class="sidebar-content">
-
-<div class="tree">
-
-Teorías de la Verdad
-
-</div>
-
-<div class="epistemic">
-
-<div class="epistemic-title">
-
-Perspectivas
-
-</div>
-
-<div>Correspondencia</div>
-
-<div>Coherencia</div>
-
-<div>Pragmatismo</div>
-
-<div>Constructivismo</div>
-
-</div>
-
-<div class="philosopher">
-
-<div>
-
-🔍 Aletheia
-
-</div>
-
-<div>
-
-¿Quieres explorar otras teorías?
-
-</div>
-
-</div>
-
-</div>
-
-<div class="sidebar-rail">
-
-<div class="sidebar-toggle">
-
-◂
-
-</div>
-
-</div>
-
-</aside>
-
-
-<main class="document">
-
-<div class="document-header">
-
-Aletheia explora la verdad.
-
-</div>
-
-<div class="document-content">
-
-<textarea
-class="sophia-input"
-placeholder="Introduce una afirmación">
-
-</textarea>
-
-<button class="evaluate-btn">
-
-Analizar
-
-</button>
-
-<div
-class="result"
-id="result">
-
-</div>
-
-</div>
-
-</main>
-
-</div>
-
-
-<footer class="footer">
-
-LogoDemocracy · Aletheia
-
-</footer>
-
-</div>
-
-<script src="/assets/js/mobile-menu.js"></script>
 
 <script src="/assets/js/layout.js"></script>
-
+<script src="/assets/js/mobile-menu.js"></script>
 <script src="/assets/js/aletheia.js"></script>
-
 </body>
 </html>

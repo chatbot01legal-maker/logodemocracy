@@ -1,36 +1,183 @@
-:root{
-  --accent:#06b6d4;
+/* ═══════════════════════════════════════════════════════
+   LOGOS.CSS — Módulo de Evaluación Dialéctica y Discursiva
+   Acento: #0ea5e9 (Logos Cyan)
+   ═══════════════════════════════════════════════════════ */
 
-  --header-color:#06b6d4;
-
-  --header-border:rgba(6,182,212,.25);
+:root {
+  --accent:        #0ea5e9;
+  --header-color:  #0ea5e9;
+  --header-border: rgba(14, 165, 233, 0.22);
+  
+  --p-surface: #070a12;
+  --p-panel:   #0f1422;
+  --p-border:  rgba(14, 165, 233, 0.15);
 }
 
-.topbar .brand{
+body { font-family: 'IBM Plex Mono', monospace; }
+
+.logos-module-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--p-border);
+  margin-bottom: 4px;
+}
+
+.logos-nav.tree {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 0;
+}
+
+.logos-nav-section { display: contents; }
+
+.logos-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: rgba(229,231,235,.55);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  text-align: left;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 150ms;
+  border-left: 2px solid transparent;
+}
+
+.logos-nav-item:hover {
+  color: #e5e7eb;
+  background: rgba(14, 165, 233, 0.06);
+}
+
+.logos-nav-item.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: rgba(14, 165, 233, 0.08);
+}
+
+.logos-nav-icon {
+  font-size: 0.75rem;
   color: var(--accent);
 }
 
-.document-header{
-  color: var(--accent);
+/* SPA Core Views Styling */
+.view { animation: logosViewIn 200ms ease; }
+@keyframes logosViewIn {
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.footer{
+.view-title {
+  font-size: 1.15rem;
+  font-weight: 500;
   color: var(--accent);
+  margin-bottom: 4px;
 }
 
-.sidebar-toggle{
-  color: var(--accent);
+.view-eyebrow {
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(14, 165, 233, 0.5);
+  margin-bottom: 12px;
 }
 
-/* INPUT estilo equivalente a Sophia */
-.logos-input{
-  width:100%;
-  height:260px;
-  background:#091120;
-  border:1px solid rgba(255,255,255,.1);
-  padding:16px;
-  color:white;
-  resize:none;
-  box-sizing:border-box;
-  margin-bottom:20px;
+.view-body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.88rem;
+  color: rgba(229,231,235,.7);
+  line-height: 1.7;
 }
+
+/* Codeblocks para Open Source Cognitivo */
+.cognitive-codeblock {
+  background: #040711;
+  border: 1px solid var(--p-border);
+  border-left: 3px solid var(--accent);
+  padding: 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.74rem;
+  color: #93c5fd;
+  line-height: 1.5;
+  overflow-x: auto;
+  margin: 16px 0;
+  white-space: pre-wrap;
+}
+
+.cognitive-instruction-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+}
+
+.cognitive-instruction-list li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 10px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.84rem;
+  color: rgba(229,231,235,0.75);
+}
+
+.cognitive-instruction-list li::before {
+  content: "▹";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Formulario de Evaluación simulado */
+.logos-input-group {
+  margin-bottom: 16px;
+}
+.logos-input-group label {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--accent);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.logos-input-group textarea, .logos-input-group select {
+  width: 100%;
+  background: #040711;
+  border: 1px solid var(--p-border);
+  padding: 10px;
+  color: #e5e7eb;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  box-sizing: border-box;
+}
+.logos-input-group textarea:focus, .logos-input-group select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.logos-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 150ms;
+}
+.logos-btn:hover { background: #0284c7; }
+
+/* Report output area */
+.analysis-output-box {
+  margin-top: 20px;
+  background: var(--p-panel);
+  border: 1px solid var(--p-border);
+  padding: 16px;
+  display: none;
+}
+.analysis-output-box.visible { display: block; }
