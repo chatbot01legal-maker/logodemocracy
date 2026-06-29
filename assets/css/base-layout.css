@@ -131,6 +131,8 @@ body {
    TOPBAR — compartido entre landing y todos los módulos
    ═══════════════════════════════════════════════════════ */
 .topbar{
+  position: relative;
+  z-index: 1000;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -142,7 +144,8 @@ body {
 
   border-bottom: 1px solid var(--header-border);
   background: #050a12;
-
+  
+}
   font-family: var(--f-mono);
 }
 
@@ -256,6 +259,7 @@ body {
 
 /* ─── RESPONSIVE ─────────────────────────────────────── */
 @media (max-width: 900px) {
+
   .mobile-menu-btn {
     display: flex;
     align-items: center;
@@ -264,6 +268,8 @@ body {
 
   .topbar {
     flex-wrap: wrap;
+    position: relative;
+    z-index: 1000;
   }
 
   .module-nav {
@@ -288,5 +294,20 @@ body {
   .topbar-right.open {
     display: flex;
     gap: 12px;
+  }
+
+  /* 🔥 ADD ON: SUPERPOSICIÓN CORRECTA */
+  .module-nav.open,
+  .topbar-right.open {
+    position: absolute;
+    top: 56px;
+    left: 0;
+    right: 0;
+
+    background: #050a12;
+    z-index: 999;
+
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
   }
 }
