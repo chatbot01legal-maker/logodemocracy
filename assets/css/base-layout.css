@@ -283,7 +283,28 @@ body {
   }
 
   .module-nav.open {
+
     display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+    position:absolute;
+
+    top:120px;
+
+    left:0;
+    right:0;
+
+    padding:16px;
+
+    background:#050a12;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    z-index:999;
+
 }
 
 .topbar-right {
@@ -293,21 +314,27 @@ body {
 }
 
 .topbar-right.open {
-    display:flex;
-    gap:12px;
-}
 
-/* 🔥 ADD ON: SUPERPOSICIÓN CORRECTA */
-.module-nav.open,
-.topbar-right.open {
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
     position:absolute;
+
     top:56px;
+
     left:0;
     right:0;
 
-    background:#050a12;
-    z-index:999;
+    padding:16px;
 
-    padding:12px 16px;
+    background:#050a12;
+
     border-bottom:1px solid rgba(255,255,255,.08);
+
+    z-index:1000;
+
 }
+
