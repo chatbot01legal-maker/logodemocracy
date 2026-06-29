@@ -192,14 +192,22 @@ body {
 }
 
 .module-link:hover {
-  border-color: var(--c-border);
-  color: var(--c-text);
+
+  border-color: var(--accent);
+
+  color: var(--accent);
+
 }
 
+
 .module-link.active {
-  border: 1px solid var(--c-border);
-  background: rgba(255,255,255,0.03);
-  color: var(--c-text);
+
+  border: 1px solid var(--accent);
+
+  color: var(--accent);
+
+  background: rgba(255,255,255,.03);
+
 }
 
 /* LADO DERECHO */
