@@ -136,11 +136,12 @@ body {
   align-items:center;
   justify-content:space-between;
 
-  padding:10px 16px;
+  height: 64px;
+  padding: 0 16px;
 
   border-bottom:1px solid var(--header-border);
-
   background:#050a12;
+  box-sizing: border-box;
 }
 
 /* LOGO */
