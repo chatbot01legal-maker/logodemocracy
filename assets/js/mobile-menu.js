@@ -1,18 +1,14 @@
-const btn = document.getElementById('mobileMenuBtn');
+document.addEventListener("DOMContentLoaded", () => {
 
-const nav = document.querySelector('.module-nav');
+  const btn = document.getElementById('mobileMenuBtn');
+  const nav = document.querySelector('.module-nav');
+  const right = document.querySelector('.topbar-right');
 
-const right = document.querySelector('.topbar-right');
+  if (!btn || !nav || !right) return;
 
-
-if(btn){
-
-btn.addEventListener('click',()=>{
-
-nav.classList.toggle('open');
-
-right.classList.toggle('open');
+  btn.addEventListener('click', () => {
+    nav.classList.toggle('open');
+    right.classList.toggle('open');
+  });
 
 });
-
-}
