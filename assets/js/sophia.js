@@ -408,6 +408,7 @@ function evaluateText(text) {
   return resultados;
 }
 
+
 // ─── VISTAS ────────────────────────────────────────────
 
 function renderFase(faseId) {
@@ -418,4 +419,384 @@ function renderFase(faseId) {
     <div class="view">
       <div class="view-eyebrow">Fase ${faseId.charAt(faseId.length-1)} del Protocolo</div>
       <h1 class="view-title">${fase.nombre}</h1>
-      <div class="vie
+      <div class="view-body">
+        <p>${fase.descripcion}</p>
+        <p><strong>Constructos clave:</strong> ${fase.criterios.map(c => c.constructo).join(' • ')}</p>
+      </div>
+      <div class="view-section">
+        <div class="view-section-title">Criterios y Átomos</div>
+        ${fase.criterios.map(c => `
+          <div style="margin-bottom: 20px; background: var(--s-panel); padding: 14px; border-left: 2px solid var(--accent);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 500; color: #e5e7eb;">${c.id} — ${c.nombre}</span>
+              <span style="font-size: 0.7rem; color: rgba(229,231,235,.4);">Severidad: ${c.severidad}</span>
+            </div>
+            <div style="font-size: 0.8rem; color: rgba(229,231,235,.5); margin: 6px 0;">${c.definicion}</div>
+            <div style="font-size: 0.7rem; color: rgba(229,231,235,.35);">
+              Constructo: <strong style="color: var(--accent);">${c.constructo}</strong>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+              ${c.atomos.map(a => `<span style="background: rgba(59,130,246,.12); padding: 2px 8px; border-radius: 12px; font-size: 0.6rem; color: var(--accent);">${a.id}</span>`).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ─── VISTAS PREEXISTENTES (actualizadas) ──────────────
+
+const VIEWS = {
+
+  inicio: {
+    title: 'Sophia — Protocolo Abierto de Comunicación Deliberativa',
+    render: () => `
+      <div class="view">
+        <div class="view-eyebrow">Marco de Evaluación Deliberativa · v3.0</div>
+        <h1 class="view-title">¿Qué es SOPHIA?</h1>
+        <div class="view-body">
+          <p>SOPHIA es un <strong>protocolo abierto de comunicación deliberativa</strong> (RFC de la racionalidad pública). No evalúa la verdad del contenido, sino la <strong>legitimidad del proceso argumentativo</strong>.</p>
+          <p>Se fundamenta en una <strong>gramática formal de la deliberación</strong>: un sistema de reglas, átomos semánticos y meta-reglas que cualquier ciudadano puede auditar, debatir y versionar.</p>
+          <p>SOPHIA no censura; <strong>etiqueta</strong>. Su salida es un <em>acta de infracción</em> que detalla qué reglas de la conversación racional han sido violadas y en qué medida.</p>
+          <p>Es, en esencia, un <strong>sistema inmunológico cognitivo</strong> para el espacio público.</p>
+        </div>
+        <div class="view-section">
+          <div class="view-section-title">Las 5 Fases del Protocolo</div>
+          <div class="card-grid">
+            ${PROTOCOL.fases.map(f => `
+              <div class="s-card">
+                <div class="s-card-title">${f.nombre}</div>
+                <div class="s-card-body">${f.descripcion}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>`
+  },
+
+  opensource: {
+    title: 'Open Source Cognitivo',
+    render: () => `
+      <div class="view">
+        <div class="view-eyebrow">Infraestructura Transparente</div>
+        <h1 class="view-title">Open Source Cognitivo</h1>
+        <div class="view-body">
+          <p>Todo criterio, regla o átomo semántico utilizado por SOPHIA es <strong>público, versionable y auditable</strong>.</p>
+          <p>La ciudadanía puede inspeccionar cada fase, cada constructo y cada definición operacional. Puede proponer modificaciones, debatir mejoras y observar el historial de cambios.</p>
+          <p>SOPHIA misma es deliberable: sus reglas pueden ser enmendadas mediante los mecanismos de la <strong>Academia</strong> y el <strong>Ágora</strong>.</p>
+        </div>
+        <div class="view-section">
+          <div class="view-section-title">Trazabilidad Argumentativa</div>
+          <div class="card-grid">
+            <div class="s-card">
+              <div class="s-card-title">Criterios Públicos</div>
+              <div class="s-card-body">20 criterios documentados y accesibles, con sus definiciones operacionales.</div>
+            </div>
+            <div class="s-card">
+              <div class="s-card-title">Historial Versionado</div>
+              <div class="s-card-body">Cada modificación queda registrada; se puede comparar la evolución de las reglas del debate.</div>
+            </div>
+            <div class="s-card">
+              <div class="s-card-title">Auditoría Permanente</div>
+              <div class="s-card-body">Cualquier ciudadano puede verificar por qué un texto obtuvo su puntuación.</div>
+            </div>
+          </div>
+        </div>
+      </div>`
+  },
+
+  atomos: {
+    title: 'Átomos Cognitivos',
+    render: () => {
+      const todosAtomos = [];
+      PROTOCOL.fases.forEach(f => {
+        f.criterios.forEach(c => {
+          c.atomos.forEach(a => {
+            todosAtomos.push({
+              id: a.id,
+              definicion: a.definicion,
+              patrones: a.patrones,
+              criterio: `${c.id} - ${c.nombre}`,
+              fase: f.nombre
+            });
+          });
+        });
+      });
+
+      // Tomamos una muestra representativa (los primeros 8)
+      const muestra = todosAtomos.slice(0, 8);
+
+      return `
+        <div class="view">
+          <div class="view-eyebrow">El Glosario Constitucional</div>
+          <h1 class="view-title">Átomos Semánticos</h1>
+          <div class="view-body">
+            <p>Los <strong>átomos cognitivos</strong> son las unidades mínimas de significado del protocolo. Cada uno tiene una definición operacional y, para la evaluación automática, un conjunto de patrones lingüísticos.</p>
+            <p>Se organizan en 20 criterios distribuidos en 5 fases. A continuación se muestra una selección representativa.</p>
+          </div>
+          <div class="view-section">
+            <div class="view-section-title">Muestra del Repositorio de Átomos</div>
+            <div class="atom-grid">
+              ${muestra.map(a => `
+                <div class="atom-card">
+                  <div class="atom-header">
+                    <span class="atom-name">${a.id.toUpperCase()}</span>
+                    <span class="atom-version">v1.0</span>
+                  </div>
+                  <div class="atom-def">${a.definicion}</div>
+                  <div style="font-size:0.6rem; color: rgba(229,231,235,.3); margin-top:6px;">
+                    <span>Fase: ${a.fase}</span> • <span>Criterio: ${a.criterio}</span>
+                  </div>
+                  ${a.patrones && a.patrones.length > 0 ? `
+                    <div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px;">
+                      ${a.patrones.map(p => `<span style="background: rgba(59,130,246,.08); padding: 1px 6px; border-radius: 10px; font-size: 0.55rem; color: var(--accent);">${p}</span>`).join('')}
+                    </div>
+                  ` : `<div style="margin-top: 8px; font-size:0.55rem; color: rgba(229,231,235,.2);">(sin patrones definidos)</div>`}
+                </div>
+              `).join('')}
+            </div>
+            <div style="margin-top: 12px; font-size: 0.7rem; color: rgba(229,231,235,.3);">
+              Total de átomos en el protocolo: ${todosAtomos.length}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  },
+
+  fase1: { title: 'Fase 1: Estructura Lógica', render: () => renderFase('fase1') },
+  fase2: { title: 'Fase 2: Inferencia', render: () => renderFase('fase2') },
+  fase3: { title: 'Fase 3: Calibración Epistémica', render: () => renderFase('fase3') },
+  fase4: { title: 'Fase 4: Transparencia Retórica', render: () => renderFase('fase4') },
+  fase5: { title: 'Fase 5: Pertinencia Deliberativa', render: () => renderFase('fase5') },
+
+  informe: {
+    title: 'Auditoría de Adherencia',
+    render: () => `
+      <div class="view">
+        <div class="view-eyebrow">Motor de Evaluación</div>
+        <h1 class="view-title">Auditoría de Adherencia</h1>
+        <div class="view-body">
+          <p>Ingresa un texto para estimar su <strong>Índice de Robustez Deliberativa (IRD)</strong>. SOPHIA calculará el puntaje basándose en las 5 fases, 20 criterios y 48 átomos del protocolo.</p>
+          <p>El resultado es un <strong>acta de infracción</strong> con el desglose por fase, las infracciones detectadas y las evidencias textuales.</p>
+        </div>
+        <div class="eval-tool">
+          <textarea class="sophia-input" id="evalInput" placeholder="Pega aquí el documento a auditar. SOPHIA evaluará su adherencia al protocolo de comunicación deliberativa..."></textarea>
+          <div class="eval-actions">
+            <button class="btn-primary" id="evalBtn">Auditar Documento →</button>
+            <span class="eval-note">El algoritmo es determinista y basado en reglas públicas.</span>
+          </div>
+        </div>
+        <div id="evalResult"></div>
+      </div>`
+  },
+
+  academia: {
+    title: 'Integración con Academia',
+    render: () => `
+      <div class="view">
+        <div class="view-eyebrow">Flujo Institucional</div>
+        <h1 class="view-title">Integración con Academia y Ágora</h1>
+        <div class="view-body">
+          <p>SOPHIA actúa como el <strong>protocolo de calidad deliberativa</strong> previo al ingreso de documentos a la <strong>Academia</strong>. No certifica la verdad, pero estima si un argumento fue construido con suficiente responsabilidad.</p>
+          <p>Los documentos que superan el umbral mínimo de adherencia (IRD ≥ 75%) pueden ser sometidos a discusión en el <strong>Ágora</strong>, donde la ciudadanía delibera y vota su inclusión en el repositorio académico.</p>
+        </div>
+        <div class="view-section">
+          <div class="view-section-title">Estándar Mínimo de Adherencia</div>
+          <div class="score-list">
+            <div class="score-row">
+              <span class="score-label">IRD Global Mínimo</span>
+              <div class="score-bar-wrap">
+                <div class="score-bar score-bar--mid" style="width:0%" data-target="75%"></div>
+              </div>
+              <span class="score-value score-value--mid">75%</span>
+            </div>
+          </div>
+        </div>
+      </div>`
+  },
+
+  relaciones: {
+    title: 'Ecosistema Deliberativo',
+    render: () => `
+      <div class="view">
+        <div class="view-eyebrow">Red de Inteligencia Colectiva</div>
+        <h1 class="view-title">Ecosistema Deliberativo</h1>
+        <div class="view-body">
+          <p>SOPHIA no busca producir consenso; busca mejorar las condiciones estructurales bajo las cuales el desacuerdo puede ser intelectualmente fértil.</p>
+        </div>
+        <div class="view-section">
+          <div class="view-section-title">Nodos de Interacción</div>
+          <div class="relation-grid">
+            <div class="relation-card relation-card--academia">
+              <div class="relation-header">
+                <div class="relation-dot"></div>
+                <span class="relation-name">Academia & Ágora</span>
+              </div>
+              <div class="relation-desc">SOPHIA asegura que los documentos que ingresan a la Academia posean trazabilidad argumentativa mínima para ser debatidos responsablemente.</div>
+            </div>
+            <div class="relation-card relation-card--rey">
+              <div class="relation-header">
+                <div class="relation-dot"></div>
+                <span class="relation-name">Rey Filósofo</span>
+              </div>
+              <div class="relation-desc">Cuando un texto presenta baja adherencia, Rey Filósofo actúa como tutor, orientando sobre cómo mejorar la comunicación.</div>
+            </div>
+            <div class="relation-card relation-card--logos">
+              <div class="relation-header">
+                <div class="relation-dot"></div>
+                <span class="relation-name">Logos</span>
+              </div>
+              <div class="relation-desc">Logos audita la matriz estructural del código; SOPHIA audita la honestidad de la arquitectura retórica.</div>
+            </div>
+            <div class="relation-card relation-card--aletheia">
+              <div class="relation-header">
+                <div class="relation-dot"></div>
+                <span class="relation-name">Aletheia</span>
+              </div>
+              <div class="relation-desc">SOPHIA fiscaliza el rigor formal; Aletheia mapea la veracidad empírica de las fuentes.</div>
+            </div>
+          </div>
+        </div>
+      </div>`
+  }
+};
+
+// ─── SPA ROUTER ────────────────────────────────────────
+
+const SOPHIA = {
+  current: 'inicio',
+
+  navigate(id) {
+    const view = VIEWS[id];
+    if (!view) return;
+    this.current = id;
+
+    document.getElementById('viewTitle').textContent = view.title;
+    const content = document.getElementById('viewContent');
+    content.innerHTML = view.render();
+
+    this._animateBars(content);
+
+    if (id === 'informe') this._bindEval();
+
+    document.querySelectorAll('.snav-item[data-view]').forEach(el => {
+      el.classList.toggle('active', el.dataset.view === id);
+    });
+
+    content.scrollTop = 0;
+  },
+
+  _animateBars(root) {
+    requestAnimationFrame(() => {
+      root.querySelectorAll('.score-bar[data-target]').forEach(bar => {
+        requestAnimationFrame(() => {
+          bar.style.width = bar.dataset.target;
+        });
+      });
+    });
+  },
+
+  _bindEval() {
+    const btn = document.getElementById('evalBtn');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const input = document.getElementById('evalInput').value.trim();
+      const out = document.getElementById('evalResult');
+
+      if (!input) {
+        out.innerHTML = `<p style="color:rgba(239,68,68,.7);font-size:.78rem;margin-top:12px;">Ingresa un texto para estimar su calidad deliberativa.</p>`;
+        return;
+      }
+
+      out.innerHTML = `<p style="color:rgba(229,231,235,.35);font-size:.72rem;margin-top:12px;">Analizando adherencia al protocolo...</p>`;
+
+      setTimeout(() => {
+        const resultado = evaluateText(input);
+        if (!resultado) {
+          out.innerHTML = `<p style="color:rgba(239,68,68,.7);font-size:.78rem;">Error al evaluar el texto.</p>`;
+          return;
+        }
+
+        // Construir el acta de infracción
+        const fasesHTML = resultado.fases.map(f => `
+          <div style="margin-bottom: 16px; padding: 12px; background: rgba(255,255,255,.04); border-left: 2px solid ${f.puntaje >= 80 ? 'var(--q-high)' : 'var(--q-mid)'};">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 500; color: #e5e7eb;">${f.nombre}</span>
+              <span style="font-size: 0.9rem; color: ${f.puntaje >= 80 ? 'var(--q-high)' : 'var(--q-mid)'};">${f.puntaje}%</span>
+            </div>
+            ${f.infracciones.length > 0 ? `
+              <div style="font-size: 0.7rem; color: rgba(229,231,235,.5); margin-top: 6px;">
+                Infracciones: ${f.infracciones.map(inf => {
+                  let texto = `${inf.criterio} (${inf.penalizacion} pts)`;
+                  if (inf.meta_regla_aplicada) texto += ` • ${inf.meta_regla_aplicada}`;
+                  return texto;
+                }).join('; ')}
+              </div>
+            ` : `<div style="font-size: 0.7rem; color: rgba(229,231,235,.25); margin-top: 6px;">Sin infracciones detectadas</div>`}
+          </div>
+        `).join('');
+
+        const evidenciasHTML = resultado.evidencias.slice(0, 5).map(e => `
+          <div style="font-size: 0.7rem; color: rgba(229,231,235,.5); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.04);">
+            <span style="color: var(--accent);">${e.atomo}</span> — “${e.fragmento}”
+          </div>
+        `).join('');
+
+        out.innerHTML = `
+          <div class="report-card" style="margin-top:20px;">
+            <div class="report-card-header">
+              <span class="report-card-title">Acta de Infracción</span>
+              <span class="report-stamp">PROTOCOLO SOPHIA v3.0</span>
+            </div>
+            <div class="report-card-body">
+              <div class="report-meta">
+                <div class="report-meta-item">
+                  <div class="meta-value">${resultado.IRD_global}%</div>
+                  <div class="meta-label">IRD Global</div>
+                </div>
+                <div class="report-meta-item">
+                  <div class="meta-value">${resultado.IRD_global >= 75 ? '✓' : '✗'}</div>
+                  <div class="meta-label">${resultado.IRD_global >= 75 ? 'Calidad Aceptada' : 'Calidad Insuficiente'}</div>
+                </div>
+                <div class="report-meta-item">
+                  <div class="meta-value">${resultado.riesgo}</div>
+                  <div class="meta-label">Riesgo Deliberativo</div>
+                </div>
+              </div>
+
+              <div style="margin: 16px 0;">
+                ${fasesHTML}
+              </div>
+
+              ${resultado.evidencias.length > 0 ? `
+                <div style="margin-top: 20px; padding: 14px; background: rgba(59,130,246,.05); border-left: 2px solid var(--accent);">
+                  <div style="font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px;">Evidencias Textuales (muestra)</div>
+                  ${evidenciasHTML}
+                </div>
+              ` : ''}
+
+              <div style="font-size: 0.6rem; color: rgba(229,231,235,.2); margin-top: 12px;">
+                * Evaluación determinista basada en 48 átomos y 20 criterios públicos.
+              </div>
+            </div>
+          </div>
+        `;
+
+        SOPHIA._animateBars(out);
+      }, 600);
+    });
+  },
+
+  init() {
+    document.querySelectorAll('.snav-item[data-view]').forEach(btn => {
+      btn.addEventListener('click', () => this.navigate(btn.dataset.view));
+    });
+    this.navigate('inicio');
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => SOPHIA.init());
+
+                   
