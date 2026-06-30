@@ -1,0 +1,316 @@
+{
+  "timestamp": "2026-06-30T20:56:27.784Z",
+  "version": "0.2",
+  "protocol_version": "0.92-beta",
+  "auditorias": [
+    {
+      "id": "A1",
+      "nombre": "Consistencia de dimensiones",
+      "pasada": true,
+      "detalles": "OK",
+      "name": "Consistencia de dimensiones",
+      "passed": true,
+      "expected": 5,
+      "actual": 5,
+      "message": "OK"
+    },
+    {
+      "id": "A2",
+      "nombre": "Consistencia de criterios",
+      "pasada": true,
+      "detalles": "OK",
+      "name": "Consistencia de criterios",
+      "passed": true,
+      "total": 20,
+      "expected": 20,
+      "porDimension": {
+        "fase1": 4,
+        "fase2": 4,
+        "fase3": 4,
+        "fase4": 4,
+        "fase5": 4
+      },
+      "duplicados": [],
+      "message": "OK"
+    },
+    {
+      "id": "A3",
+      "nombre": "Registro único de constructos",
+      "pasada": true,
+      "detalles": "OK",
+      "name": "Registro único de constructos",
+      "passed": true,
+      "total": 20,
+      "repetidos": [],
+      "sinDefinicion": [],
+      "message": "OK"
+    },
+    {
+      "id": "A4",
+      "nombre": "Definición obligatoria del constructo",
+      "pasada": true,
+      "detalles": "OK",
+      "name": "Definición obligatoria del constructo",
+      "passed": true,
+      "incompletos": [],
+      "message": "OK"
+    },
+    {
+      "id": "A5",
+      "nombre": "Consistencia átomo ↔ criterio",
+      "pasada": false,
+      "detalles": "14 criterios con conceptos sin átomo",
+      "name": "Consistencia átomo ↔ criterio",
+      "passed": false,
+      "problemas": [
+        {
+          "criterio": "1.1",
+          "faltantes": [
+            "resolución"
+          ]
+        },
+        {
+          "criterio": "1.3",
+          "faltantes": [
+            "elección"
+          ]
+        },
+        {
+          "criterio": "2.1",
+          "faltantes": [
+            "conclusión"
+          ]
+        },
+        {
+          "criterio": "2.2",
+          "faltantes": [
+            "correlación"
+          ]
+        },
+        {
+          "criterio": "2.3",
+          "faltantes": [
+            "anécdota"
+          ]
+        },
+        {
+          "criterio": "2.4",
+          "faltantes": [
+            "conclusión",
+            "asunción"
+          ]
+        },
+        {
+          "criterio": "3.2",
+          "faltantes": [
+            "modalidad",
+            "confianza",
+            "alcance"
+          ]
+        },
+        {
+          "criterio": "3.4",
+          "faltantes": [
+            "crítica"
+          ]
+        },
+        {
+          "criterio": "4.2",
+          "faltantes": [
+            "evidencia"
+          ]
+        },
+        {
+          "criterio": "4.4",
+          "faltantes": [
+            "operacionalización"
+          ]
+        },
+        {
+          "criterio": "5.1",
+          "faltantes": [
+            "núcleo"
+          ]
+        },
+        {
+          "criterio": "5.2",
+          "faltantes": [
+            "hipótesis"
+          ]
+        },
+        {
+          "criterio": "5.3",
+          "faltantes": [
+            "estándar"
+          ]
+        },
+        {
+          "criterio": "5.4",
+          "faltantes": [
+            "argumento"
+          ]
+        }
+      ],
+      "message": "14 criterios con conceptos sin átomo"
+    },
+    {
+      "id": "A6",
+      "nombre": "Registro global de átomos",
+      "pasada": true,
+      "detalles": "OK",
+      "name": "Registro global de átomos",
+      "passed": true,
+      "total": 74,
+      "declarado": 74,
+      "atomos": [
+        "discurso",
+        "proposiciones",
+        "excluyentes",
+        "resolucion",
+        "estabilidad",
+        "significado",
+        "conceptos",
+        "argumento",
+        "eleccion",
+        "binaria"
+      ],
+      "message": "OK"
+    },
+    {
+      "id": "A7",
+      "nombre": "Tipología ontológica",
+      "pasada": true,
+      "detalles": "Dominancia de \"Entidad\" (100%)",
+      "name": "Tipología ontológica",
+      "passed": true,
+      "types": {
+        "Entidad": 74
+      },
+      "total": 74,
+      "dominante": "Entidad",
+      "mezclaExcesiva": true,
+      "message": "Dominancia de \"Entidad\" (100%)"
+    },
+    {
+      "id": "A8",
+      "nombre": "Consistencia de definiciones operacionales",
+      "pasada": true,
+      "detalles": "OK",
+      "name": "Consistencia de definiciones operacionales",
+      "passed": true,
+      "incompletos": [],
+      "message": "OK"
+    },
+    {
+      "id": "A9",
+      "nombre": "Cobertura semántica",
+      "pasada": false,
+      "detalles": "Cobertura baja: 24% (mínimo 80%)",
+      "name": "Cobertura semántica",
+      "passed": false,
+      "cobertura": 24,
+      "totalTerminos": 136,
+      "cubiertos": 32,
+      "message": "Cobertura baja: 24% (mínimo 80%)"
+    },
+    {
+      "id": "A10",
+      "nombre": "Meta-reglas",
+      "pasada": true,
+      "detalles": "OK",
+      "name": "Meta-reglas",
+      "passed": true,
+      "total": 0,
+      "invalidas": [],
+      "sinDestino": [],
+      "sinOrigen": [],
+      "message": "OK"
+    },
+    {
+      "id": "A11",
+      "nombre": "Agregación matemática",
+      "pasada": false,
+      "detalles": "Suma de pesos de dimensiones = 125, debería ser 100",
+      "name": "Agregación matemática",
+      "passed": false,
+      "problemas": [
+        "Suma de pesos de dimensiones = 125, debería ser 100"
+      ],
+      "message": "Suma de pesos de dimensiones = 125, debería ser 100"
+    },
+    {
+      "id": "A12",
+      "nombre": "Escalas de severidad",
+      "pasada": true,
+      "detalles": "OK",
+      "name": "Escalas de severidad",
+      "passed": true,
+      "niveles": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "faltantes": [],
+      "message": "OK"
+    },
+    {
+      "id": "A13",
+      "nombre": "Integridad del estándar",
+      "pasada": true,
+      "detalles": "OK",
+      "name": "Integridad del estándar",
+      "passed": true,
+      "elementos": {
+        "dimensiones": 5,
+        "criterios": 20,
+        "constructos": 20,
+        "atomos": 74,
+        "meta_reglas": 0,
+        "versionado": true
+      },
+      "message": "OK"
+    },
+    {
+      "id": "A14",
+      "nombre": "Versionado",
+      "pasada": true,
+      "detalles": "OK",
+      "name": "Versionado",
+      "passed": true,
+      "sinVersion": [],
+      "message": "OK"
+    },
+    {
+      "id": "A15",
+      "nombre": "Objetos huérfanos",
+      "pasada": true,
+      "detalles": "OK",
+      "name": "Objetos huérfanos",
+      "passed": true,
+      "huerfanos": [],
+      "message": "OK"
+    },
+    {
+      "id": "A16",
+      "nombre": "Consistencia Ontológica Global",
+      "pasada": false,
+      "detalles": "1 problemas de ontología",
+      "name": "Consistencia Ontológica Global",
+      "passed": false,
+      "problemas": [
+        "Suma de pesos de dimensiones = 125, debería ser 100"
+      ],
+      "message": "1 problemas de ontología"
+    }
+  ],
+  "indices": {
+    "SOEI": 0,
+    "SCI": 350,
+    "SCC": 24,
+    "OCI": 100,
+    "ACI": 0,
+    "MRI": 100,
+    "Madurez": 75
+  }
+}
