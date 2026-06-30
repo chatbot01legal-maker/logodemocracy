@@ -114,6 +114,13 @@ const META_RULES = {
 };
 
 // ─── PROTOCOLO SOPHIA v0.92-beta ─────────────────────
+
+/* ═══════════════════════════════════════════════════════
+   SOPHIA.JS — Protocolo Abierto de Comunicación Deliberativa
+   v0.92-beta — Ontología Pública de la Deliberación
+   ═══════════════════════════════════════════════════════ */
+
+// ─── PROTOCOLO SOPHIA v0.92-beta ─────────────────────
 const PROTOCOL = {
   version: "0.92-beta",
   fases: [
@@ -130,8 +137,8 @@ const PROTOCOL = {
           peso: 25,
           meta_reglas_aplicables: [],
           atomos: [
-            { id: "discurso", version: "1.0", definicion: "El flujo total de enunciados emitidos por el autor.", patrones: [] },
-            { id: "proposiciones", version: "1.0", definicion: "Enunciados declarativos que afirman o niegan un estado de cosas.", patrones: [] },
+            { id: "discurso", version: "1.0", definicion: "El flujo total de enunciados emitidos por el autor.", patrones: ["discurso", "texto", "enunciado total"] },
+            { id: "proposiciones", version: "1.0", definicion: "Enunciados declarativos que afirman o niegan un estado de cosas.", patrones: ["proposición", "afirmación", "declaración"] },
             { id: "excluyentes", version: "1.0", definicion: "Propiedad de dos enunciados que no pueden ser ambos verdaderos simultáneamente.", patrones: ["pero", "sin embargo", "no obstante", "aunque"] },
             { id: "resolucion", version: "1.0", definicion: "Explicación lógica que reconcilia dos elementos aparentemente opuestos.", patrones: ["por lo tanto", "en consecuencia", "de modo que"] }
           ],
@@ -145,10 +152,10 @@ const PROTOCOL = {
           peso: 25,
           meta_reglas_aplicables: [],
           atomos: [
-            { id: "estabilidad", version: "1.0", definicion: "Propiedad de mantener una definición constante sin fluctuaciones.", patrones: [] },
-            { id: "significado", version: "1.0", definicion: "La definición operativa asignada a un término en la primera instancia de uso.", patrones: [] },
-            { id: "conceptos", version: "1.0", definicion: "Unidades léxicas que portan el peso del contenido temático.", patrones: [] },
-            { id: "argumento", version: "1.0", definicion: "La serie encadenada de enunciados que buscan probar una tesis.", patrones: [] }
+            { id: "estabilidad", version: "1.0", definicion: "Propiedad de mantener una definición constante sin fluctuaciones.", patrones: ["constante", "fluctuación", "cambio"] },
+            { id: "significado", version: "1.0", definicion: "La definición operativa asignada a un término en la primera instancia de uso.", patrones: ["definición", "significa", "sentido"] },
+            { id: "conceptos", version: "1.0", definicion: "Unidades léxicas que portan el peso del contenido temático.", patrones: ["concepto", "idea", "noción"] },
+            { id: "argumento", version: "1.0", definicion: "La serie encadenada de enunciados que buscan probar una tesis.", patrones: ["argumento", "tesis", "razón"] }
           ],
           severidad: 12.5
         },
@@ -162,7 +169,7 @@ const PROTOCOL = {
           atomos: [
             { id: "eleccion", version: "1.0", definicion: "Proceso de selección entre opciones presentadas.", patrones: ["o", "o bien", "alternativa"] },
             { id: "binaria", version: "1.0", definicion: "Estructura que reduce el espectro a solo dos posibilidades.", patrones: ["dos opciones", "dos caminos", "dos posibilidades"] },
-            { id: "problema", version: "1.0", definicion: "El fenómeno central objeto de análisis.", patrones: [] },
+            { id: "problema", version: "1.0", definicion: "El fenómeno central objeto de análisis.", patrones: ["problema", "cuestión", "asunto"] },
             { id: "multidimensional", version: "1.0", definicion: "Fenómeno que requiere más de dos variables para ser comprendido.", patrones: ["complejo", "múltiples factores", "diversos aspectos"] }
           ],
           severidad: 12.5
@@ -175,8 +182,8 @@ const PROTOCOL = {
           peso: 25,
           meta_reglas_aplicables: [],
           atomos: [
-            { id: "enunciado", version: "1.0", definicion: "Unidad mínima de sentido completo.", patrones: [] },
-            { id: "declarativo", version: "1.0", definicion: "Que afirma la existencia o realidad de algo.", patrones: [] },
+            { id: "enunciado", version: "1.0", definicion: "Unidad mínima de sentido completo.", patrones: ["enunciado", "afirmación", "declaración"] },
+            { id: "declarativo", version: "1.0", definicion: "Que afirma la existencia o realidad de algo.", patrones: ["declara", "afirma", "niega"] },
             { id: "soporte", version: "1.0", definicion: "Elemento (dato, premisa, inferencia) que justifica la validez de otro.", patrones: ["porque", "ya que", "dado que"] },
             { id: "logico", version: "1.0", definicion: "Relación de necesidad entre una base y su consecuencia.", patrones: ["si... entonces", "implica", "conlleva"] }
           ],
@@ -199,7 +206,7 @@ const PROTOCOL = {
           atomos: [
             { id: "conclusion", version: "1.0", definicion: "Resultado final derivado de un proceso de razonamiento.", patrones: ["en conclusión", "por lo tanto", "así pues"] },
             { id: "magnitud", version: "1.0", definicion: "Alcance cuantitativo o cualitativo de la afirmación (particular vs. universal).", patrones: ["todos", "siempre", "nunca", "nadie"] },
-            { id: "premisas", version: "1.0", definicion: "Enunciados base tomados como ciertos para derivar la conclusión.", patrones: [] },
+            { id: "premisas", version: "1.0", definicion: "Enunciados base tomados como ciertos para derivar la conclusión.", patrones: ["premisa", "base", "supuesto"] },
             { id: "universalizacion", version: "1.0", definicion: "Extensión de una afirmación a todo un conjunto.", patrones: ["todos", "siempre", "nunca", "nadie"] },
             { id: "extrapolacion", version: "1.0", definicion: "Inferencia más allá del dominio empírico observado.", patrones: ["extrapolando", "más allá", "fuera de"] },
             { id: "representatividad", version: "1.0", definicion: "Propiedad de una muestra que permite extender inferencias con validez.", patrones: ["representativo", "muestra", "estadísticamente"] }
@@ -275,7 +282,7 @@ const PROTOCOL = {
           meta_reglas_aplicables: ["MR001", "MR004"],
           atomos: [
             { id: "matiz", version: "1.0", definicion: "Modificador probabilístico (probablemente, posiblemente).", patrones: ["probablemente", "posiblemente", "quizás", "tal vez"] },
-            { id: "lenguaje", version: "1.0", definicion: "El conjunto de palabras elegidas para expresar la postura.", patrones: [] },
+            { id: "lenguaje", version: "1.0", definicion: "El conjunto de palabras elegidas para expresar la postura.", patrones: ["lenguaje", "discurso", "palabras"] },
             { id: "certeza", version: "1.0", definicion: "Ausencia de duda expresada en una predicción o hecho futuro.", patrones: ["es seguro", "indudablemente", "sin duda", "claramente"] },
             { id: "modalidad_epistemica", version: "1.0", definicion: "Expresión de posibilidad, probabilidad o necesidad (podría, es posible, sugiere).", patrones: ["podría", "es posible", "sugiere"] },
             { id: "grado_confianza", version: "1.0", definicion: "Indicación del nivel de seguridad en la afirmación (bajo, medio, alto).", patrones: ["confianza", "seguridad", "certeza"] },
@@ -359,7 +366,7 @@ const PROTOCOL = {
           meta_reglas_aplicables: [],
           atomos: [
             { id: "identidad", version: "1.0", definicion: "Rasgos, afiliaciones o carácter del sujeto que emite el discurso.", patrones: ["yo", "mi", "nuestro", "ellos"] },
-            { id: "argumento", version: "1.0", definicion: "Estructura racional que debe sostenerse por sí misma.", patrones: [] }
+            { id: "argumento", version: "1.0", definicion: "Estructura racional que debe sostenerse por sí misma.", patrones: ["argumento", "tesis", "razón"] }
           ],
           severidad: 12.5
         },
@@ -371,12 +378,12 @@ const PROTOCOL = {
           peso: 25,
           meta_reglas_aplicables: [],
           atomos: [
-            { id: "palabras", version: "1.0", definicion: "Unidades léxicas usadas para transmitir conceptos.", patrones: [] },
+            { id: "palabras", version: "1.0", definicion: "Unidades léxicas usadas para transmitir conceptos.", patrones: ["palabra", "término", "vocablo"] },
             { id: "ambiguas", version: "1.0", definicion: "Términos que admiten múltiples interpretaciones sin definición operacional.", patrones: ["justo", "bueno", "libertad", "democracia", "igualdad"] },
             { id: "definibilidad", version: "1.0", definicion: "Capacidad de definir claramente un término dentro del discurso.", patrones: ["definimos", "entendemos por"] },
             { id: "operacionalizacion", version: "1.0", definicion: "Grado en que un concepto se traduce en criterios observables.", patrones: ["medible", "cuantificable", "indicador"] },
             { id: "vaguedad", version: "1.0", definicion: "Uso de términos imprecisos que dificultan la comprensión.", patrones: ["más o menos", "aproximadamente", "cierto"] },
-            { id: "referencialidad", version: "1.0", definicion: "Capacidad de referirse a entidades o hechos concretos.", patrones: [] }
+            { id: "referencialidad", version: "1.0", definicion: "Capacidad de referirse a entidades o hechos concretos.", patrones: ["refiere", "alude", "menciona"] }
           ],
           severidad: 12.5
         }
@@ -422,7 +429,8 @@ const PROTOCOL = {
           constructo: "Equidad Epistémica",
           definicion: "Aplicar el mismo estándar de prueba para ambos lados, reconociendo la pluralidad de enfoques.",
           peso: 25,
-          meta_reglas_aplicables: ["MR002"],
+  
+meta_reglas_aplicables: ["MR002"],
           atomos: [
             { id: "estandar", version: "1.0", definicion: "Nivel de exigencia requerido para aceptar una evidencia.", patrones: ["estándar", "criterio", "exigencia"] },
             { id: "prueba", version: "1.0", definicion: "Elemento de juicio que sostiene una afirmación.", patrones: ["prueba", "evidencia", "demostración"] },
@@ -448,6 +456,7 @@ const PROTOCOL = {
     }
   ]
 };
+          
 
 // ─── MECÁNICA DE CÁLCULO (con penalización latente) ──
 function evaluateText(text) {
