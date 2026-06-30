@@ -8,19 +8,19 @@ aggregation:
   dimensions:
     - id: fase1
       name: Estructura Lógica
-      weight: 25
+      weight: 20
     - id: fase2
       name: Inferencia
-      weight: 25
+      weight: 20
     - id: fase3
       name: Calibración Epistémica
-      weight: 25
+      weight: 20
     - id: fase4
       name: Transparencia Retórica
-      weight: 25
+      weight: 20
     - id: fase5
       name: Pertinencia Deliberativa
-      weight: 25
+      weight: 20
   criteria_weight: 25
   max_penalty_per_criterion: 25
 severity_levels:

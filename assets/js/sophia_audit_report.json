@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-30T20:56:27.784Z",
+  "timestamp": "2026-06-30T21:11:33.611Z",
   "version": "0.2",
   "protocol_version": "0.92-beta",
   "auditorias": [
@@ -229,14 +229,12 @@
     {
       "id": "A11",
       "nombre": "Agregación matemática",
-      "pasada": false,
-      "detalles": "Suma de pesos de dimensiones = 125, debería ser 100",
+      "pasada": true,
+      "detalles": "OK",
       "name": "Agregación matemática",
-      "passed": false,
-      "problemas": [
-        "Suma de pesos de dimensiones = 125, debería ser 100"
-      ],
-      "message": "Suma de pesos de dimensiones = 125, debería ser 100"
+      "passed": true,
+      "problemas": [],
+      "message": "OK"
     },
     {
       "id": "A12",
@@ -294,23 +292,21 @@
     {
       "id": "A16",
       "nombre": "Consistencia Ontológica Global",
-      "pasada": false,
-      "detalles": "1 problemas de ontología",
+      "pasada": true,
+      "detalles": "OK",
       "name": "Consistencia Ontológica Global",
-      "passed": false,
-      "problemas": [
-        "Suma de pesos de dimensiones = 125, debería ser 100"
-      ],
-      "message": "1 problemas de ontología"
+      "passed": true,
+      "problemas": [],
+      "message": "OK"
     }
   ],
   "indices": {
-    "SOEI": 0,
-    "SCI": 350,
+    "SOEI": 100,
+    "SCI": 450,
     "SCC": 24,
     "OCI": 100,
-    "ACI": 0,
+    "ACI": 100,
     "MRI": 100,
-    "Madurez": 75
+    "Madurez": 88
   }
 }
