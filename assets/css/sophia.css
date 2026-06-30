@@ -723,3 +723,54 @@ body { font-family: 'IBM Plex Mono', monospace; }
   .atom-grid, .card-grid, .relation-grid { grid-template-columns: 1fr; }
   .report-meta { grid-template-columns: repeat(3, 1fr); gap: 8px; }
   }
+
+
+/* ─── POPUPS ──────────────────────────────────────────── */
+.sophia-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn .2s ease;
+}
+.sophia-popup {
+  background: #0a1424;
+  border: 1px solid rgba(59,130,246,.3);
+  max-width: 480px;
+  width: 90%;
+  padding: 0;
+  box-shadow: 0 8px 40px rgba(0,0,0,.8);
+}
+.sophia-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(59,130,246,.15);
+}
+.sophia-popup-title {
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+.sophia-popup-close {
+  background: none;
+  border: none;
+  color: rgba(229,231,235,.4);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.sophia-popup-body {
+  padding: 16px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: .85rem;
+  color: rgba(229,231,235,.7);
+  line-height: 1.6;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
+}
