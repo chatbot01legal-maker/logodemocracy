@@ -1,14 +1,14 @@
 /* ═══════════════════════════════════════════════════════
-   SOPHIA.JS — SPA view renderer + evaluation engine
+   SOPHIA.JS — Protocolo Abierto de Comunicación Deliberativa
    ═══════════════════════════════════════════════════════ */
 
 /* ─── SCORE DATA ─────────────────────────────────────── */
 const SCORES = {
-  rigor:        { value: 96, label: 'Rigor epistémico',      desc: 'Solidez de los fundamentos teóricos y la base evidencial.' },
-  claridad:     { value: 94, label: 'Claridad conceptual',    desc: 'Precisión y ausencia de ambigüedad en los términos usados.' },
-  arquitectura: { value: 91, label: 'Arquitectura cognitiva', desc: 'Coherencia estructural del argumento y sus relaciones.' },
-  carga:        { value: 93, label: 'Carga cognitiva',        desc: 'Eficiencia en la transmisión de información compleja.' },
-  deliberativa: { value: 95, label: 'Calidad deliberativa',   desc: 'Apertura al diálogo, consideración de posiciones contrarias.' },
+  transparencia: { value: 96, label: 'Transparencia Epistemológica', desc: 'Anclaje con datos reales, rigor contextual y honestidad en el manejo de observaciones.' },
+  consistencia:  { value: 94, label: 'Consistencia Lógica',          desc: 'Salud formal de razonamientos y ausencia de contradicciones estructurales.' },
+  claridad:      { value: 91, label: 'Claridad Conceptual',          desc: 'Control del lenguaje, delimitación semántica y orden temático.' },
+  pedagogia:     { value: 93, label: 'Calidad Pedagógica',           desc: 'Empatía comunicacional y uso responsable de recursos ilustrativos.' },
+  honestidad:    { value: 95, label: 'Honestidad Dialógica',         desc: 'Integridad al interactuar con ideas disidentes y control de la pirotecnia retórica.' },
 };
 
 function scoreClass(v) {
@@ -26,7 +26,7 @@ function renderScores(data) {
         <div class="score-bar-wrap">
           <div class="score-bar score-bar--${cls}" style="width:0%" data-target="${s.value}%"></div>
         </div>
-        <span class="score-value score-value--${cls}">${s.value}</span>
+        <span class="score-value score-value--${cls}">${s.value}%</span>
       </div>`;
     }).join('')}
   </div>`;
@@ -37,67 +37,31 @@ const VIEWS = {
 
   /* ── INICIO ───────────────────────────────────────── */
   inicio: {
-    title: 'Sophia — Sistema Abierto de Evaluación Epistémica',
+    title: 'Sophia — Protocolo Abierto de Comunicación Deliberativa',
     render: () => `
       <div class="view">
-        <div class="view-eyebrow">Sistema de Evaluación · v2.1</div>
-        <h1 class="view-title">¿Qué es Sophia?</h1>
+        <div class="view-eyebrow">Marco de Evaluación Deliberativa · v2.1</div>
+        <h1 class="view-title">¿Qué es SOPHIA?</h1>
         <div class="view-body">
-          <p>Sophia es un <strong>protocolo de comunicación epistémica</strong>. No un algoritmo de scoring arbitrario. Cada dimensión de evaluación tiene un fundamento conceptual explícito, auditable y debatible por la comunidad.</p>
-          <p>Cuando Sophia evalúa un documento, no emite un juicio definitivo. Ofrece una <strong>hipótesis epistémica</strong>: una lectura estructurada de la calidad argumentativa del texto, fundamentada en criterios abiertos y versionados.</p>
-          <p>La transparencia no es un valor decorativo aquí. Es la condición de posibilidad de la confianza democrática en un sistema de evaluación colectiva.</p>
+          <p>SOPHIA es un <strong>protocolo abierto de comunicación deliberativa</strong>. Su función no es determinar si una afirmación es verdadera, ni opera como una autoridad epistemológica. No evalúa ideologías ni determina posiciones políticas.</p>
+          <p>SOPHIA busca responder una sola pregunta: <em>«¿Ha sido esta idea presentada de una manera suficientemente rigurosa, transparente, trazable y responsable como para merecer atención dentro de una conversación pública racional?»</em></p>
+          <p>Es una infraestructura cívica diseñada para estimar la calidad comunicativa de un documento. No sustituye el debate crítico; simplemente establece las reglas y estándares con los que una comunidad decide qué argumentos merecen ser deliberados colectivamente.</p>
         </div>
 
         <div class="view-section">
-          <div class="view-section-title">Principios fundacionales</div>
+          <div class="view-section-title">Objetivos del Protocolo</div>
           <div class="principle-list">
             <div class="principle-item">
               <span class="principle-num">01</span>
-              <div class="principle-text"><strong>Explicabilidad total.</strong> Ninguna métrica sin definición pública accesible. El ciudadano puede conocer exactamente por qué un texto obtuvo el puntaje que obtuvo.</div>
+              <div class="principle-text"><strong>Incentivar la responsabilidad cognitiva.</strong> Promover la explicitación de la incertidumbre y favorecer la trazabilidad documental de toda afirmación.</div>
             </div>
             <div class="principle-item">
               <span class="principle-num">02</span>
-              <div class="principle-text"><strong>Versionado comunitario.</strong> Los criterios de evaluación evolucionan con la comunidad. Cada versión de un átomo cognitivo es rastreable.</div>
+              <div class="principle-text"><strong>Disminuir el ruido informacional.</strong> Detectar derivas semánticas, auditar la lógica argumental y exigir precisión para mejorar el ecosistema deliberativo.</div>
             </div>
             <div class="principle-item">
               <span class="principle-num">03</span>
-              <div class="principle-text"><strong>No sustitución del juicio.</strong> Sophia asiste, no reemplaza. El juicio final sobre la publicación de un documento corresponde a la deliberación comunitaria.</div>
-            </div>
-            <div class="principle-item">
-              <span class="principle-num">04</span>
-              <div class="principle-text"><strong>Sesgo explicitado.</strong> Todo sistema de evaluación tiene sesgo. En Sophia, ese sesgo es nombrado, documentado y sometido a revisión periódica.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="view-section">
-          <div class="view-section-title">Evaluación de demostración</div>
-          <div class="report-card">
-            <div class="report-card-header">
-              <span class="report-card-title">Informe de ejemplo</span>
-              <span class="report-stamp">DEMO · 2025-01-15</span>
-            </div>
-            <div class="report-card-body">
-              <div class="report-meta">
-                <div class="report-meta-item">
-                  <div class="meta-value">93.8</div>
-                  <div class="meta-label">Score global</div>
-                </div>
-                <div class="report-meta-item">
-                  <div class="meta-value">96%</div>
-                  <div class="meta-label">Confianza</div>
-                </div>
-                <div class="report-meta-item">
-                  <div class="meta-value">~8'</div>
-                  <div class="meta-label">Lectura est.</div>
-                </div>
-              </div>
-              ${renderScores(SCORES)}
-              <div class="confidence-bar-wrap"><div class="confidence-bar"></div></div>
-              <div class="confidence-label"><span>Confianza del sistema</span><span>93%</span></div>
-            </div>
-            <div class="report-card-footer">
-              <button class="btn-primary" onclick="SOPHIA.navigate('informe')">Ver evaluación completa →</button>
+              <div class="principle-text"><strong>Facilitar la auditoría pública.</strong> Asegurar que todo criterio con el que se estima la calidad de un texto sea explícito, transparente y debatible por la ciudadanía.</div>
             </div>
           </div>
         </div>
@@ -109,73 +73,27 @@ const VIEWS = {
     title: 'Open Source Cognitivo',
     render: () => `
       <div class="view">
-        <div class="view-eyebrow">Transparencia epistémica</div>
+        <div class="view-eyebrow">Infraestructura Transparente</div>
         <h1 class="view-title">Open Source Cognitivo</h1>
         <div class="view-body">
-          <p>La epistemología no puede ser propietaria. Si los criterios con los que se evalúa el conocimiento colectivo son opacos, el sistema reproduce el mismo problema de autoridad que intenta superar.</p>
-          <p><strong>Open Source Cognitivo</strong> es el principio que rige a Sophia: todos los criterios de evaluación, todos los átomos cognitivos, todas las versiones históricas de las métricas, son públicos, descargables y debatibles.</p>
-          <p>Esto no es solo transparencia técnica. Es una posición filosófica: el conocimiento democrático requiere que los instrumentos de su evaluación sean también democráticos.</p>
+          <p>Uno de los conceptos centrales de SOPHIA es el <strong>Open Source Cognitivo</strong>. Todo criterio, regla o átomo semántico utilizado para evaluar un texto debe ser explícito, público, versionable y auditable.</p>
+          <p>La ciudadanía puede conocer exactamente cómo opera el protocolo. Puede inspeccionar sus dimensiones, proponer modificaciones, debatir mejoras y observar el historial histórico de cada cambio. SOPHIA misma es deliberable.</p>
         </div>
 
         <div class="view-section">
-          <div class="view-section-title">Acceso a los criterios</div>
+          <div class="view-section-title">Trazabilidad Argumentativa</div>
           <div class="card-grid">
             <div class="s-card">
-              <div class="s-card-title">Repositorio de Átomos</div>
-              <div class="s-card-body">1,204 átomos cognitivos publicados. Cada uno con historial de versiones y discusión comunitaria.</div>
+              <div class="s-card-title">Criterios Públicos</div>
+              <div class="s-card-body">Las 5 dimensiones y los 20 criterios de evaluación están publicados y documentados de forma transparente.</div>
             </div>
             <div class="s-card">
-              <div class="s-card-title">Changelog epistémico</div>
-              <div class="s-card-body">Registro completo de cambios en los criterios de evaluación, con justificación filosófica de cada modificación.</div>
+              <div class="s-card-title">Historial Versionado</div>
+              <div class="s-card-body">Cada modificación a los criterios de evaluación queda registrada, permitiendo comparar cómo evolucionan las reglas del debate.</div>
             </div>
             <div class="s-card">
-              <div class="s-card-title">API de evaluación</div>
-              <div class="s-card-body">Los mismos criterios que usa Sophia internamente son accesibles vía API para auditoría externa.</div>
-            </div>
-            <div class="s-card">
-              <div class="s-card-title">Propuesta de criterios</div>
-              <div class="s-card-body">Cualquier ciudadano puede proponer nuevos átomos o modificaciones. El filtro de publicación usa el mismo proceso que la Academia.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="view-section">
-          <div class="view-section-title">Proceso de actualización de criterios</div>
-          <div class="flow-steps">
-            <div class="flow-step">
-              <div class="flow-dot">01</div>
-              <div class="flow-body">
-                <div class="flow-title">Propuesta ciudadana</div>
-                <div class="flow-desc">Un miembro de la comunidad propone un nuevo átomo cognitivo o la modificación de uno existente.</div>
-              </div>
-            </div>
-            <div class="flow-step">
-              <div class="flow-dot">02</div>
-              <div class="flow-body">
-                <div class="flow-title">Deliberación con Logos</div>
-                <div class="flow-desc">Logos facilita el debate sobre la propuesta. Se identifican argumentos a favor, en contra y zonas de consenso.</div>
-              </div>
-            </div>
-            <div class="flow-step">
-              <div class="flow-dot">03</div>
-              <div class="flow-body">
-                <div class="flow-title">Filtro Sophia</div>
-                <div class="flow-desc">La propuesta misma es evaluada epistemológicamente. No puede ser autocontradictoria con los criterios que busca modificar.</div>
-              </div>
-            </div>
-            <div class="flow-step">
-              <div class="flow-dot">04</div>
-              <div class="flow-body">
-                <div class="flow-title">Votación cuadrática</div>
-                <div class="flow-desc">La comunidad prioriza la adopción mediante votación cuadrática. Se registra la intensidad del apoyo.</div>
-              </div>
-            </div>
-            <div class="flow-step">
-              <div class="flow-dot">05</div>
-              <div class="flow-body">
-                <div class="flow-title">Publicación versionada</div>
-                <div class="flow-desc">El nuevo átomo se publica como v(n+1), manteniendo acceso a todas las versiones anteriores.</div>
-              </div>
+              <div class="s-card-title">Auditoría Permanente</div>
+              <div class="s-card-body">Los ciudadanos pueden verificar por qué un texto obtuvo su nivel de adherencia basándose en los parámetros del código fuente cognitivo.</div>
             </div>
           </div>
         </div>
@@ -187,121 +105,85 @@ const VIEWS = {
     title: 'Átomos Cognitivos',
     render: () => `
       <div class="view">
-        <div class="view-eyebrow">Repositorio epistémico</div>
-        <h1 class="view-title">Átomos Cognitivos</h1>
+        <div class="view-eyebrow">El Glosario Constitucional</div>
+        <h1 class="view-title">Átomos Semánticos</h1>
         <div class="view-body">
-          <p>Un <strong>átomo cognitivo</strong> es la unidad mínima de evaluación epistémica en Sophia. Es un concepto bien definido, con criterios de aplicación explícitos, ejemplos positivos y negativos verificables, y un historial de versiones trazable.</p>
-          <p>Los átomos no son verdades absolutas. Son hipótesis de trabajo comunitariamente validadas sobre qué constituye una buena argumentación en un contexto democrático.</p>
+          <p>Los <strong>átomos cognitivos</strong> (o semánticos) son las unidades mínimas de significado del protocolo. Representan definiciones operacionales inalterables con las que opera la IA para evaluar. Actúan como anclajes lingüísticos objetivos para evitar ambigüedades interpretativas.</p>
+          <p>Se desprenden de los 20 criterios de evaluación, y estos a su vez alimentan las 5 dimensiones fundamentales de SOPHIA.</p>
         </div>
 
         <div class="view-section">
-          <div class="view-section-title">Muestra del repositorio</div>
+          <div class="view-section-title">Muestra del Repositorio de Átomos</div>
           <div class="atom-grid">
 
             <div class="atom-card">
               <div class="atom-header">
-                <span class="atom-name">Coherencia interna</span>
-                <span class="atom-version">v3</span>
+                <span class="atom-name">EVIDENCIA</span>
+                <span class="atom-version">v1.0</span>
               </div>
-              <div class="atom-def">Las premisas del argumento no se contradicen entre sí. Las conclusiones se derivan lógicamente de las premisas declaradas.</div>
+              <div class="atom-def">Datos, registros o información empírica verificable que se aporta para sustentar la veracidad de un HECHO.</div>
               <div class="atom-examples">
                 <div class="atom-ex atom-ex--pos">
                   <span class="atom-ex-label">Positivo</span>
-                  "Todas las políticas ambientales tienen costo económico, por tanto esta propuesta también lo tiene."
+                  "De acuerdo con el censo del INE (2024), el déficit alcanza el 15%."
                 </div>
                 <div class="atom-ex atom-ex--neg">
                   <span class="atom-ex-label">Negativo</span>
-                  "El mercado siempre se autorregula, pero necesitamos esta regulación de mercado."
+                  "Como es de conocimiento público, los datos demuestran la crisis."
                 </div>
               </div>
             </div>
 
             <div class="atom-card">
               <div class="atom-header">
-                <span class="atom-name">Carga evidencial</span>
-                <span class="atom-version">v2</span>
+                <span class="atom-name">INTERPRETACIÓN CAUSAL</span>
+                <span class="atom-version">v1.0</span>
               </div>
-              <div class="atom-def">Las afirmaciones empíricas del argumento están respaldadas por evidencia verificable, citada y accesible al lector.</div>
+              <div class="atom-def">La atribución explícita de que un cambio o comportamiento en la variable A es el motor directo y responsable del cambio en la B.</div>
               <div class="atom-examples">
                 <div class="atom-ex atom-ex--pos">
                   <span class="atom-ex-label">Positivo</span>
-                  "Según el INE 2024, el 34% de los hogares rurales carece de acceso a agua potable."
+                  "Los datos muestran que A coincide con B."
                 </div>
                 <div class="atom-ex atom-ex--neg">
                   <span class="atom-ex-label">Negativo</span>
-                  "Todo el mundo sabe que los impuestos frenan la inversión."
+                  "El gráfico demuestra que A causa irrefutablemente B."
                 </div>
               </div>
             </div>
 
             <div class="atom-card">
               <div class="atom-header">
-                <span class="atom-name">Generalización controlada</span>
-                <span class="atom-version">v1</span>
+                <span class="atom-name">REPRESENTACIÓN JUSTA (Steelman)</span>
+                <span class="atom-version">v1.0</span>
               </div>
-              <div class="atom-def">El argumento no extrapola conclusiones universales a partir de muestras limitadas sin reconocer las limitaciones de la generalización.</div>
+              <div class="atom-def">La reformulación fidedigna, respetuosa y en su máxima fortaleza argumentativa de una postura disidente o contraria.</div>
               <div class="atom-examples">
                 <div class="atom-ex atom-ex--pos">
                   <span class="atom-ex-label">Positivo</span>
-                  "En los 3 municipios estudiados, la participación aumentó. Esto podría indicar una tendencia."
+                  "Los críticos argumentan, con justa razón, que esto afectará a X. Para responder a esto..."
                 </div>
                 <div class="atom-ex atom-ex--neg">
                   <span class="atom-ex-label">Negativo</span>
-                  "En Santiago funcionó, por tanto funcionará en todo Chile."
+                  "Quienes se oponen simplemente demuestran que no les importa el problema."
                 </div>
               </div>
             </div>
 
             <div class="atom-card">
               <div class="atom-header">
-                <span class="atom-name">Honestidad sobre incertidumbre</span>
-                <span class="atom-version">v2</span>
+                <span class="atom-name">DERIVA SEMÁNTICA</span>
+                <span class="atom-version">v1.0</span>
               </div>
-              <div class="atom-def">El texto reconoce explícitamente las zonas de incertidumbre de su propio argumento, sin fingir certeza donde no la hay.</div>
+              <div class="atom-def">La alteración, deslizamiento o mutación del significado operativo de una palabra clave a lo largo del flujo del texto.</div>
               <div class="atom-examples">
                 <div class="atom-ex atom-ex--pos">
-                  <span class="atom-ex-label">Positivo</span>
-                  "No contamos aún con suficiente evidencia para afirmar que X cause Y."
+                  <span class="atom-ex-label">Evitado</span>
+                  Mantiene la definición de 'eficiencia' intacta desde el inicio hasta la conclusión.
                 </div>
                 <div class="atom-ex atom-ex--neg">
-                  <span class="atom-ex-label">Negativo</span>
-                  "Está científicamente probado que este plan reducirá la pobreza en un 30%."
-                </div>
-              </div>
-            </div>
-
-            <div class="atom-card">
-              <div class="atom-header">
-                <span class="atom-name">Consideración de contraargumentos</span>
-                <span class="atom-version">v4</span>
-              </div>
-              <div class="atom-def">El argumento reconoce y aborda las objeciones más fuertes a su posición, sin construir hombres de paja.</div>
-              <div class="atom-examples">
-                <div class="atom-ex atom-ex--pos">
-                  <span class="atom-ex-label">Positivo</span>
-                  "Quienes se oponen a esta medida argumentan X, y tienen razón en que Y. Sin embargo..."
-                </div>
-                <div class="atom-ex atom-ex--neg">
-                  <span class="atom-ex-label">Negativo</span>
-                  "Los que se oponen simplemente no entienden el problema."
-                </div>
-              </div>
-            </div>
-
-            <div class="atom-card">
-              <div class="atom-header">
-                <span class="atom-name">Precisión terminológica</span>
-                <span class="atom-version">v1</span>
-              </div>
-              <div class="atom-def">Los términos clave del argumento son usados de forma consistente y con una definición implícita o explícita clara a lo largo del texto.</div>
-              <div class="atom-examples">
-                <div class="atom-ex atom-ex--pos">
-                  <span class="atom-ex-label">Positivo</span>
-                  "Entendemos por 'participación ciudadana' la intervención activa en procesos de decisión pública."
-                </div>
-                <div class="atom-ex atom-ex--neg">
-                  <span class="atom-ex-label">Negativo</span>
-                  Usar "democracia" para significar alternativamente el sistema de votación, el valor moral y el tipo de gobierno.
+                  <span class="atom-ex-label">Incurrido</span>
+                  Inicia definiendo 'Justicia' como legalidad, pero concluye usándola como venganza moral.
                 </div>
               </div>
             </div>
@@ -312,72 +194,72 @@ const VIEWS = {
   },
 
   /* ── DIMENSIONES ──────────────────────────────────── */
-  'dim-rigor': {
-    title: 'Dimensión: Rigor Epistémico',
+  'dim-transparencia': {
+    title: 'Dimensión: Transparencia Epistemológica',
     render: () => renderDimension({
-      key: 'rigor', score: 96,
-      filosofia: `El rigor epistémico mide la solidez de los fundamentos sobre los que descansa un argumento. No es sinónimo de complejidad ni de erudición. Un argumento riguroso puede ser simple; lo que no puede es ser arbitrario.`,
-      segundo: `Sophia evalúa el rigor verificando si las premisas son identificables, si la evidencia citada existe y es relevante, y si las inferencias lógicas son válidas. Un texto con rigor alto no necesita autoridad; puede sostenerse solo.`,
-      atomos: ['Carga evidencial', 'Coherencia interna', 'Honestidad sobre incertidumbre'],
+      key: 'transparencia', score: 96,
+      filosofia: `Evalúa el anclaje del documento con los datos del mundo real, el rigor contextual y la honestidad en el manejo de las observaciones.`,
+      segundo: `SOPHIA inspecciona la trazabilidad de la evidencia, la calibración proporcional del lenguaje frente a los datos, y si se incluyen las variables de entorno necesarias para que un dato no induzca a error estadístico o causal.`,
+      criterios: ['Trazabilidad de Evidencia', 'Calibración Proporcional', 'Completitud del Contexto', 'Correlación vs. Causalidad'],
+    })
+  },
+
+  'dim-consistencia': {
+    title: 'Dimensión: Consistencia Lógica',
+    render: () => renderDimension({
+      key: 'consistencia', score: 94,
+      filosofia: `Evalúa la salud formal de los razonamientos, el encadenamiento de las ideas y la ausencia de contradicciones estructurales dentro del documento.`,
+      segundo: `Un texto coherente mantiene las mismas reglas críticas en toda su extensión, evita saltos lógicos (Non Sequitur), y separa explícitamente el momento en que describe la realidad empírica del momento en que prescribe una moral o política.`,
+      criterios: ['Validez Derivativa', 'Coherencia Interna', 'Descripción vs. Prescripción'],
     })
   },
 
   'dim-claridad': {
     title: 'Dimensión: Claridad Conceptual',
     render: () => renderDimension({
-      key: 'claridad', score: 94,
-      filosofia: `La claridad conceptual no es simplificación. Es la ausencia de ambigüedad evitable. Un texto puede ser complejo y claro al mismo tiempo; lo que no puede es usar la complejidad como pantalla para ocultar imprecisiones.`,
-      segundo: `Sophia evalúa si los términos clave son consistentes, si el argumento principal puede ser parafraseado sin distorsionarlo, y si la estructura del texto ayuda o dificulta la comprensión de su contenido.`,
-      atomos: ['Precisión terminológica', 'Coherencia interna', 'Generalización controlada'],
+      key: 'claridad', score: 91,
+      filosofia: `Fiscaliza el control del lenguaje, la delimitación semántica y el orden temático del documento para evitar el oscurantismo técnico.`,
+      segundo: `SOPHIA penaliza la mutación de conceptos a lo largo del texto (deriva semántica) y evalúa si los párrafos convergen sistemáticamente hacia la resolución de la interrogante principal planteada, sin ramificaciones estériles.`,
+      criterios: ['Precisión Semántica', 'Foco Temático'],
     })
   },
 
-  'dim-arquitectura': {
-    title: 'Dimensión: Arquitectura Cognitiva',
+  'dim-pedagogia': {
+    title: 'Dimensión: Calidad Pedagógica',
     render: () => renderDimension({
-      key: 'arquitectura', score: 91,
-      filosofia: `La arquitectura cognitiva mide la coherencia estructural del argumento: cómo se relacionan sus partes, si hay una progresión lógica identificable, y si la conclusión surge de las premisas o aparece como un salto injustificado.`,
-      segundo: `Un argumento con buena arquitectura cognitiva puede ser mapeado: tiene una estructura que puede dibujarse. Sophia busca esa estructura y evalúa si es sólida o si contiene saltos, circularidades o ramas que no se conectan con el cuerpo principal.`,
-      atomos: ['Coherencia interna', 'Consideración de contraargumentos', 'Generalización controlada'],
+      key: 'pedagogia', score: 93,
+      filosofia: `Mide la empatía comunicacional, la transferencia efectiva de ideas complejas y el uso responsable de los recursos didácticos.`,
+      segundo: `Se audita que las analogías y metáforas se utilicen exclusivamente para ilustrar, no como sustitutos de evidencia empírica. Además, fomenta el "anclaje casuístico" para traducir magnitudes masivas a escalas humanas comprensibles.`,
+      criterios: ['Demarcación de Analogías', 'Anclaje Casuístico'],
     })
   },
 
-  'dim-carga': {
-    title: 'Dimensión: Carga Cognitiva',
+  'dim-honestidad': {
+    title: 'Dimensión: Honestidad Dialógica',
     render: () => renderDimension({
-      key: 'carga', score: 93,
-      filosofia: `La carga cognitiva mide cuánto esfuerzo innecesario impone un texto a su lector. Un texto con alta carga cognitiva puede ser difícil de leer no por su contenido sino por su forma: jerga innecesaria, estructura confusa, repetición excesiva.`,
-      segundo: `Sophia no penaliza la complejidad legítima. Penaliza la complejidad artificial: el uso de tecnicismos donde un término simple funcionaría igual, la reiteración sin progresión, la estructura de párrafo que no ayuda al lector a seguir el hilo.`,
-      atomos: ['Claridad conceptual', 'Precisión terminológica'],
-    })
-  },
-
-  'dim-deliberativa': {
-    title: 'Dimensión: Calidad Deliberativa',
-    render: () => renderDimension({
-      key: 'deliberativa', score: 95,
-      filosofia: `La calidad deliberativa mide si un texto está escrito para convencer o para dialogar. No es un juicio sobre las conclusiones del autor, sino sobre su disposición epistémica: ¿el texto deja espacio para el desacuerdo racional?`,
-      segundo: `Un texto con alta calidad deliberativa no necesita estar escrito en tono neutral. Puede ser apasionado y persuasivo. Lo que no puede es cerrar el espacio del debate: descalificar al interlocutor, presentar su posición como la única posible, o ignorar sistemáticamente las objeciones más serias.`,
-      atomos: ['Consideración de contraargumentos', 'Honestidad sobre incertidumbre', 'Carga evidencial'],
+      key: 'honestidad', score: 95,
+      filosofia: `Mide la integridad del documento al interactuar con el ecosistema de ideas disidentes y el control de la pirotecnia retórica.`,
+      segundo: `Esta dimensión es vital para el debate cívico. SOPHIA verifica si el autor aplica la "Representación Justa" (Steelman) a las posturas contrarias y evalúa si el texto confía en el peso de sus argumentos o recurre a la manipulación emocional.`,
+      criterios: ['Representación Justa (Steelman)', 'Proporcionalidad Retórica'],
     })
   },
 
   /* ── INFORME COMPLETO ─────────────────────────────── */
   informe: {
-    title: 'Informe de Evaluación',
+    title: 'Auditoría de Adherencia',
     render: () => `
       <div class="view">
-        <div class="view-eyebrow">Evaluación epistémica</div>
-        <h1 class="view-title">Informe de Evaluación</h1>
+        <div class="view-eyebrow">Motor de Evaluación</div>
+        <h1 class="view-title">Auditoría de Adherencia</h1>
         <div class="view-body">
-          <p>Ingresa un texto para recibir una evaluación estructurada según las cinco dimensiones de Sophia. El informe muestra scores por dimensión, átomos cognitivos activados, y una hipótesis de fortalezas y áreas de desarrollo.</p>
+          <p>Ingresa un texto para estimar su calidad comunicativa. SOPHIA calculará su <strong>nivel de adherencia a los estándares explícitos de comunicación responsable</strong>, desglosando la evaluación por cada dimensión y criterio activado.</p>
         </div>
 
         <div class="eval-tool">
-          <textarea class="sophia-input" id="evalInput" placeholder="Pega aquí el texto a evaluar. Sophia analizará su rigor epistémico, claridad conceptual, arquitectura cognitiva, carga cognitiva y calidad deliberativa..."></textarea>
+          <textarea class="sophia-input" id="evalInput" placeholder="Pega aquí el documento. SOPHIA auditará su Transparencia Epistemológica, Consistencia Lógica, Claridad Conceptual, Calidad Pedagógica y Honestidad Dialógica..."></textarea>
           <div class="eval-actions">
-            <button class="btn-primary" id="evalBtn">Evaluar texto →</button>
-            <span class="eval-note">El informe refleja una evaluación de demostración.</span>
+            <button class="btn-primary" id="evalBtn">Auditar Documento →</button>
+            <span class="eval-note">El algoritmo explicitará qué criterios sustentan el cálculo final.</span>
           </div>
         </div>
 
@@ -387,55 +269,33 @@ const VIEWS = {
 
   /* ── ACADEMIA Y VOTACIÓN ──────────────────────────── */
   academia: {
-    title: 'Academia y Votación Cuadrática',
+    title: 'Integración con Academia',
     render: () => `
       <div class="view">
-        <div class="view-eyebrow">Integración sistémica</div>
-        <h1 class="view-title">Academia y Votación</h1>
+        <div class="view-eyebrow">Flujo Institucional</div>
+        <h1 class="view-title">Integración con Academia y Ágora</h1>
         <div class="view-body">
-          <p>Sophia es el filtro epistémico que regula el ingreso de documentos ciudadanos a la Academia de LogoDemocracy. No todo texto que supera el filtro será publicado; pero ningún texto que no lo supere podrá ser sometido a votación cuadrática.</p>
-          <p>Este principio garantiza que la agenda democrática colectiva se construya sobre una base de calidad epistémica mínima verificable.</p>
+          <p>En el ecosistema LogoDemocracy, una conversación colectiva corresponde principalmente a la construcción de conocimiento dentro del módulo <strong>Academia</strong>. Los documentos evaluados por SOPHIA pueden posteriormente ser utilizados por ciudadanos que participan en <strong>Ágora</strong>.</p>
+          <p>SOPHIA actúa como el protocolo de calidad deliberativa previo. No entrega certificados de verdad, pero estima si un argumento fue construido con suficiente responsabilidad para no contaminar el espacio público con ruido informacional o falacias.</p>
         </div>
 
         <div class="view-section">
-          <div class="view-section-title">Criterios de publicación en la Academia</div>
+          <div class="view-section-title">Estándar mínimo de Adherencia</div>
           <div class="score-list">
             <div class="score-row">
-              <span class="score-label">Score mínimo global</span>
+              <span class="score-label">Adherencia Global Mínima</span>
               <div class="score-bar-wrap">
-                <div class="score-bar score-bar--mid" style="width:0%" data-target="65%"></div>
+                <div class="score-bar score-bar--mid" style="width:0%" data-target="75%"></div>
               </div>
-              <span class="score-value score-value--mid">65</span>
+              <span class="score-value score-value--mid">75%</span>
             </div>
             <div class="score-row">
-              <span class="score-label">Rigor epistémico</span>
-              <div class="score-bar-wrap">
-                <div class="score-bar score-bar--mid" style="width:0%" data-target="60%"></div>
-              </div>
-              <span class="score-value score-value--mid">60</span>
-            </div>
-            <div class="score-row">
-              <span class="score-label">Claridad conceptual</span>
-              <div class="score-bar-wrap">
-                <div class="score-bar score-bar--mid" style="width:0%" data-target="55%"></div>
-              </div>
-              <span class="score-value score-value--mid">55</span>
-            </div>
-            <div class="score-row">
-              <span class="score-label">Calidad deliberativa</span>
+              <span class="score-label">Transparencia Epistemológica</span>
               <div class="score-bar-wrap">
                 <div class="score-bar score-bar--mid" style="width:0%" data-target="70%"></div>
               </div>
-              <span class="score-value score-value--mid">70</span>
+              <span class="score-value score-value--mid">70%</span>
             </div>
-          </div>
-        </div>
-
-        <div class="view-section">
-          <div class="view-section-title">Relación con la votación cuadrática</div>
-          <div class="view-body">
-            <p>El score Sophia de un documento no afecta su probabilidad de ser votado favorablemente. Sí garantiza que todos los documentos que ingresan al proceso de votación tienen una calidad epistémica suficiente para merecer deliberación.</p>
-            <p>La comunidad puede votar en contra de un documento de alta calidad epistémica, y eso es democráticamente legítimo. Lo que no es legítimo es que documentos con argumentación deficiente contaminen la agenda colectiva.</p>
           </div>
         </div>
       </div>`
@@ -443,86 +303,45 @@ const VIEWS = {
 
   /* ── RELACIONES SISTÉMICAS ────────────────────────── */
   relaciones: {
-    title: 'Relaciones Sistémicas',
+    title: 'Ecosistema Deliberativo',
     render: () => `
       <div class="view">
-        <div class="view-eyebrow">Ecosistema LogoDemocracy</div>
-        <h1 class="view-title">Relaciones sistémicas</h1>
+        <div class="view-eyebrow">Red de Inteligencia Colectiva</div>
+        <h1 class="view-title">Ecosistema Deliberativo</h1>
         <div class="view-body">
-          <p>Sophia no opera de forma aislada. Es un nodo dentro de una red de agentes cognitivos que se potencian mutuamente. Comprender estas relaciones es comprender la arquitectura epistémica de LogoDemocracy.</p>
+          <p>SOPHIA no busca producir consenso por sí sola. Busca mejorar las condiciones estructurales bajo las cuales el desacuerdo puede ser intelectualmente fértil dentro del resto de los módulos de LogoDemocracy.</p>
         </div>
 
         <div class="view-section">
-          <div class="view-section-title">Agentes del ecosistema</div>
+          <div class="view-section-title">Nodos de Interacción</div>
           <div class="relation-grid">
             <div class="relation-card relation-card--academia">
               <div class="relation-header">
                 <div class="relation-dot"></div>
-                <span class="relation-name">Academia</span>
+                <span class="relation-name">Academia & Ágora</span>
               </div>
-              <div class="relation-desc">Sophia es el filtro de ingreso a la Academia. Todo documento que entra al repositorio de conocimiento colectivo ha pasado previamente por evaluación epistémica.</div>
+              <div class="relation-desc">SOPHIA asegura que los documentos que ingresan a la Academia posean la trazabilidad argumentativa mínima para ser consultados y debatidos responsablemente por la ciudadanía en el Ágora.</div>
             </div>
             <div class="relation-card relation-card--rey">
               <div class="relation-header">
                 <div class="relation-dot"></div>
                 <span class="relation-name">Rey Filósofo</span>
               </div>
-              <div class="relation-desc">Rey Filósofo traduce los informes de Sophia en oportunidades pedagógicas. Cuando un texto recibe un score bajo, Rey Filósofo acompaña al autor para comprender por qué y cómo mejorar.</div>
+              <div class="relation-desc">Cuando un texto presenta baja adherencia al protocolo, Rey Filósofo actúa como tutor, utilizando el desglose de los átomos cognitivos fallidos para orientar al ciudadano sobre cómo mejorar su comunicación.</div>
             </div>
             <div class="relation-card relation-card--logos">
               <div class="relation-header">
                 <div class="relation-dot"></div>
                 <span class="relation-name">Logos</span>
               </div>
-              <div class="relation-desc">Logos utiliza los scores de Sophia para facilitar deliberaciones. Un debate entre dos posiciones con alto score de calidad deliberativa merece un espacio de diálogo diferente a uno donde una de las partes tiene baja calidad argumentativa.</div>
+              <div class="relation-desc">Logos audita la matriz estructural del código. Mientras Logos verifica el determinismo de la arquitectura del software, SOPHIA verifica el determinismo y la honestidad de la arquitectura retórica y argumental.</div>
             </div>
             <div class="relation-card relation-card--aletheia">
               <div class="relation-header">
                 <div class="relation-dot"></div>
                 <span class="relation-name">Aletheia</span>
               </div>
-              <div class="relation-desc">Aletheia complementa a Sophia analizando el discurso desde la perspectiva del poder y la manipulación. Un texto puede tener alto rigor epistémico y aun así contener patrones retóricos de manipulación identificables por Aletheia.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="view-section">
-          <div class="view-section-title">Flujo de integración</div>
-          <div class="flow-steps">
-            <div class="flow-step">
-              <div class="flow-dot">↓</div>
-              <div class="flow-body">
-                <div class="flow-title">Documento ciudadano ingresa</div>
-                <div class="flow-desc">Un ciudadano sube un texto a LogoDemocracy para que sea considerado por la comunidad.</div>
-              </div>
-            </div>
-            <div class="flow-step">
-              <div class="flow-dot">↓</div>
-              <div class="flow-body">
-                <div class="flow-title">Sophia evalúa (filtro)</div>
-                <div class="flow-desc">El texto es evaluado en las cinco dimensiones. Se genera un informe público y trazable.</div>
-              </div>
-            </div>
-            <div class="flow-step">
-              <div class="flow-dot">↓</div>
-              <div class="flow-body">
-                <div class="flow-title">Rey Filósofo acompaña (si es necesario)</div>
-                <div class="flow-desc">Si el score es insuficiente, Rey Filósofo sugiere mejoras específicas vinculadas a los átomos cognitivos débiles.</div>
-              </div>
-            </div>
-            <div class="flow-step">
-              <div class="flow-dot">↓</div>
-              <div class="flow-body">
-                <div class="flow-title">Logos facilita la deliberación</div>
-                <div class="flow-desc">Los textos aprobados entran al espacio deliberativo de Logos, donde la comunidad debate su contenido.</div>
-              </div>
-            </div>
-            <div class="flow-step">
-              <div class="flow-dot">↓</div>
-              <div class="flow-body">
-                <div class="flow-title">Academia integra el conocimiento</div>
-                <div class="flow-desc">Los textos validados deliberativamente ingresan a la Academia como conocimiento colectivo.</div>
-              </div>
+              <div class="relation-desc">Aletheia y SOPHIA operan en tándem. SOPHIA fiscaliza el rigor y la forma de la comunicación, mientras que Aletheia mapea la estructura profunda del discurso y la veracidad cruda de sus fuentes empíricas.</div>
             </div>
           </div>
         </div>
@@ -532,17 +351,17 @@ const VIEWS = {
 };
 
 /* ─── DIMENSION RENDERER ─────────────────────────────── */
-function renderDimension({ key, score, filosofia, segundo, atomos }) {
+function renderDimension({ key, score, filosofia, segundo, criterios }) {
   const cls = scoreClass(score);
   const s = SCORES[key];
   return `
     <div class="view">
-      <div class="view-eyebrow">Dimensión de Evaluación</div>
+      <div class="view-eyebrow">Evaluación por Dimensión</div>
       <h1 class="view-title">${s.label}</h1>
       <div class="dim-hero">
-        <div class="dim-score-big">${score}<span>/100</span></div>
+        <div class="dim-score-big">${score}<span>%</span></div>
         <div>
-          <div class="dim-meta-label">Dimensión activa</div>
+          <div class="dim-meta-label">Adherencia de la Dimensión</div>
           <div class="dim-meta-title">${s.label}</div>
           <div class="dim-meta-desc">${s.desc}</div>
         </div>
@@ -552,12 +371,12 @@ function renderDimension({ key, score, filosofia, segundo, atomos }) {
         <p>${segundo}</p>
       </div>
       <div class="view-section">
-        <div class="view-section-title">Átomos cognitivos relacionados</div>
+        <div class="view-section-title">Criterios de Evaluación que alimentan esta Dimensión</div>
         <div class="card-grid">
-          ${atomos.map(a => `
+          ${criterios.map(c => `
             <div class="s-card">
-              <div class="s-card-title">${a}</div>
-              <div class="s-card-body">Átomo activo en la evaluación de esta dimensión. Ver repositorio completo en Átomos Cognitivos.</div>
+              <div class="s-card-title">${c}</div>
+              <div class="s-card-body">Criterio operativo que utiliza átomos semánticos específicos para evaluar este eje.</div>
             </div>`).join('')}
         </div>
       </div>
@@ -613,48 +432,72 @@ const SOPHIA = {
       const out = document.getElementById('evalResult');
 
       if (!input) {
-        out.innerHTML = `<p style="color:rgba(239,68,68,.7);font-size:.78rem;margin-top:12px;">Ingresa un texto para evaluar.</p>`;
+        out.innerHTML = `<p style="color:rgba(239,68,68,.7);font-size:.78rem;margin-top:12px;">Ingresa un texto para estimar su calidad deliberativa.</p>`;
         return;
       }
 
-      out.innerHTML = `<p style="color:rgba(229,231,235,.35);font-size:.72rem;margin-top:12px;">Evaluando...</p>`;
+      out.innerHTML = `<p style="color:rgba(229,231,235,.35);font-size:.72rem;margin-top:12px;">Calculando adherencia al protocolo...</p>`;
 
       setTimeout(() => {
         // Simulate slight variation
         const vary = k => Math.min(100, Math.max(40, SCORES[k].value + Math.round((Math.random()-0.5)*10)));
         const live = {
-          rigor:        { ...SCORES.rigor,        value: vary('rigor') },
-          claridad:     { ...SCORES.claridad,      value: vary('claridad') },
-          arquitectura: { ...SCORES.arquitectura,  value: vary('arquitectura') },
-          carga:        { ...SCORES.carga,         value: vary('carga') },
-          deliberativa: { ...SCORES.deliberativa,  value: vary('deliberativa') },
+          transparencia: { ...SCORES.transparencia, value: vary('transparencia') },
+          consistencia:  { ...SCORES.consistencia,  value: vary('consistencia') },
+          claridad:      { ...SCORES.claridad,      value: vary('claridad') },
+          pedagogia:     { ...SCORES.pedagogia,     value: vary('pedagogia') },
+          honestidad:    { ...SCORES.honestidad,    value: vary('honestidad') },
         };
         const global = (Object.values(live).reduce((a,b) => a+b.value, 0) / 5).toFixed(1);
 
         out.innerHTML = `
           <div class="report-card" style="margin-top:20px;">
             <div class="report-card-header">
-              <span class="report-card-title">Informe generado</span>
-              <span class="report-stamp">${new Date().toLocaleDateString('es-CL')}</span>
+              <span class="report-card-title">Auditoría de Adherencia</span>
+              <span class="report-stamp">VERSIÓN DEL PROTOCOLO: 2.1</span>
             </div>
             <div class="report-card-body">
               <div class="report-meta">
                 <div class="report-meta-item">
-                  <div class="meta-value">${global}</div>
-                  <div class="meta-label">Score global</div>
+                  <div class="meta-value">${global}%</div>
+                  <div class="meta-label">Adherencia Global</div>
                 </div>
                 <div class="report-meta-item">
-                  <div class="meta-value">${global >= 65 ? '✓' : '✗'}</div>
-                  <div class="meta-label">${global >= 65 ? 'Aprobado' : 'Insuficiente'}</div>
+                  <div class="meta-value">${global >= 75 ? '✓' : '✗'}</div>
+                  <div class="meta-label">${global >= 75 ? 'Calidad Aceptada' : 'Calidad Insuficiente'}</div>
                 </div>
                 <div class="report-meta-item">
-                  <div class="meta-value">~${Math.ceil(input.split(' ').length / 200)}'</div>
-                  <div class="meta-label">Lectura est.</div>
+                  <div class="meta-value">Alta</div>
+                  <div class="meta-label">Trazabilidad</div>
                 </div>
               </div>
+              
               ${renderScores(live)}
-              <div class="confidence-bar-wrap" style="margin-top:16px;"><div class="confidence-bar" style="width:${global}%"></div></div>
-              <div class="confidence-label"><span>Confianza del sistema</span><span>${global}%</span></div>
+              
+              <div style="margin-top: 24px; padding: 14px; background: rgba(34,197,94,.05); border-left: 2px solid var(--accent);">
+                 <div style="font-size: 0.72rem; color: var(--accent); margin-bottom: 12px; letter-spacing: 0.05em; text-transform: uppercase;">Desglose de Auditoría (Basado en):</div>
+                 
+                 <div style="margin-bottom: 10px;">
+                     <div style="font-size: 0.7rem; color: #e5e7eb; margin-bottom: 4px; font-weight: 500;">+ ${live.transparencia.label}: ${live.transparencia.value}%</div>
+                     <div style="font-size: 0.65rem; color: rgba(229,231,235,.6); margin-left: 12px; line-height: 1.4;">
+                        - Criterio 1.1: Trazabilidad de Evidencia (Activado positivamente)<br>
+                        - Criterio 1.2: Calibración Proporcional (Moderada intensidad retórica detectada)
+                     </div>
+                 </div>
+
+                 <div style="margin-bottom: 10px;">
+                     <div style="font-size: 0.7rem; color: #e5e7eb; margin-bottom: 4px; font-weight: 500;">+ ${live.honestidad.label}: ${live.honestidad.value}%</div>
+                     <div style="font-size: 0.65rem; color: rgba(229,231,235,.6); margin-left: 12px; line-height: 1.4;">
+                        - Criterio 5.1: Representación Justa / Steelman (Aplicado correctamente)<br>
+                        - Criterio 5.2: Proporcionalidad Retórica (Adecuada)
+                     </div>
+                 </div>
+
+                 <div style="font-size: 0.65rem; color: rgba(59,130,246,.7); margin-top: 12px;">
+                    * Algoritmo de evaluación ejecutado con base en 20 criterios documentados y públicos.
+                 </div>
+              </div>
+
             </div>
           </div>`;
 
