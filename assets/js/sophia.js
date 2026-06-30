@@ -967,7 +967,7 @@ const SOPHIA = {
 };
 
 document.addEventListener('DOMContentLoaded', () => SOPHIA.init());
-```
+
    
 
 
