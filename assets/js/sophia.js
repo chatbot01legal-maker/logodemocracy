@@ -288,7 +288,7 @@ const PROTOCOL = {
         }
       ]
     }
-  ]
+  ],
 
 // --- Añade esto a tu objeto SOPHIA en sophia1.js ---
 
