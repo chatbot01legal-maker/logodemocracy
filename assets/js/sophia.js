@@ -1029,58 +1029,33 @@ const SOPHIA = {
     }
   },
 
+
   init() {
-    try {
-      console.log('🚀 Inicializando SOPHIA...');
-      const buttons = document.querySelectorAll('.snav-item[data-view]');
-      if (buttons.length === 0) {
-        showDebug('⚠️ No se encontraron botones .snav-item[data-view]', true);
-        return;
+    // Retrasamos el inicio 100ms para asegurar que todo esté en memoria
+    setTimeout(() => {
+      try {
+        console.log('🚀 Iniciando SOPHIA de forma segura...');
+        
+        // Ejecución protegida de la auditoría
+        if (typeof auditOntology === 'function') {
+          const audit = auditOntology();
+          console.log(`🔖 SOPHIA v${PROTOCOL.version} — SCORE: ${audit.score}/100`);
+        }
+
+        // Vinculación de botones
+        const buttons = document.querySelectorAll('.snav-item[data-view]');
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => this.navigate(btn.dataset.view));
+        });
+
+        // Carga inicial
+        this.navigate('analisis');
+        console.log('✅ SOPHIA inicializada con éxito');
+      } catch (e) {
+        console.error("Error crítico en init():", e);
       }
-      buttons.forEach(btn => {
-        btn.addEventListener('click', () => this.navigate(btn.dataset.view));
-      });
+    }, 100);
+   }
 
-      // Cargamos la vista inicial
-      this.navigate('inicio');
-
-      console.log('✅ SOPHIA inicializada');
-      showDebug('✅ SOPHIA inicializada correctamente.');
-    } catch (e) {
-      showDebug(`❌ Error en init: ${e.message}\n\nStack: ${e.stack}`, true);
-    }
-  }
-};
-
-
-// ─── INICIALIZACIÓN DIFERIDA (Carga Segura) ──
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('📄 DOM listo. Iniciando SOPHIA...');
-
-  // 1. Vinculación de botones sin depender de datos externos
-  const buttons = document.querySelectorAll('.snav-item[data-view]');
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-       // Primero actualizamos la UI
-       document.querySelectorAll('.snav-item').forEach(b => b.classList.remove('active'));
-       btn.classList.add('active');
-       // Luego navegamos
-       SOPHIA.navigate(btn.dataset.view);
-    });
-  });
-
-  // 2. Ejecución protegida de SOPHIA
-  try {
-    // Si PROTOCOL no existe, lo creamos vacío para evitar el crash
-    if (typeof PROTOCOL === 'undefined') {
-      window.PROTOCOL = { version: "3.0", fases: [] };
-    }
+  
     
-    // Iniciamos Sophia
-    SOPHIA.init(); 
-  } catch (e) {
-    console.error("Error en inicialización de Sophia:", e);
-    // Intentamos cargar la vista básica aunque falle la lógica avanzada
-    SOPHIA.navigate('inicio');
-  }
-});
