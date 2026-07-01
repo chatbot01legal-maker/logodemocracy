@@ -291,6 +291,64 @@ const PROTOCOL = {
   ]
 };
 
+// --- Añade esto a tu objeto SOPHIA en sophia1.js ---
+
+  // ... (tu código actual)
+
+  navigate(viewId) {
+    const contentArea = document.getElementById('viewContent');
+    if (!contentArea) {
+      showDebug(`❌ Error: No se encontró #viewContent`, true);
+      return;
+    }
+
+    // Buscamos la vista definida en el objeto VIEWS
+    const view = VIEWS[viewId];
+    if (view) {
+      contentArea.innerHTML = view.render();
+      console.log(`✅ Vista cambiada a: ${viewId}`);
+      
+      // Si la vista requiere inicialización extra (ej. el auditor), llamarla aquí
+      if (viewId === 'analisis') {
+        this.bindUploadEvents();
+      }
+    } else {
+      contentArea.innerHTML = `<h1>404</h1><p>Vista no encontrada: ${viewId}</p>`;
+    }
+  },
+
+  bindUploadEvents() {
+    // Lógica para que el botón de carga funcione
+    const btn = document.getElementById('uploadBtn');
+    if (btn) {
+        btn.addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
+    }
+  },
+
+  init() {
+    try {
+      console.log('🚀 Inicializando SOPHIA...');
+      
+      // Vinculamos los botones del menú sidebar
+      const buttons = document.querySelectorAll('.snav-item[data-view]');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => this.navigate(btn.dataset.view));
+      });
+      
+      // Cargamos la vista inicial
+      this.navigate('inicio'); 
+      
+      console.log('✅ SOPHIA inicializada');
+    } catch (e) {
+      showDebug(`❌ Error en init: ${e.message}`, true);
+    }
+  }
+
+// ... (asegúrate de cerrar bien el objeto SOPHIA)
+
+
 // ─── MECÁNICA DE CÁLCULO (completa, con try/catch) ──
 function evaluateText(text) {
   try {
