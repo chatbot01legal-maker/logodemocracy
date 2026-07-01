@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════
    SOPHIA.JS — Protocolo Abierto de Comunicación Deliberativa
-   v3.0 — Ontología Pública de la Deliberación (con try/catch visible e IA)
+   v3.0 — Ontología Pública de la Deliberación (Corregido)
    ═══════════════════════════════════════════════════════ */
 
 // ─── DEPURACIÓN VISIBLE ────────────────────────────────
@@ -12,7 +12,7 @@ function showDebug(msg, isError = false) {
       <pre style="white-space:pre-wrap; font-size:0.8rem; color:#e5e7eb;">${msg}</pre>
     </div>`;
   } else {
-    document.body.innerHTML = `<div style="padding:20px; color:red;">❌ No se encontró #viewContent</div>`;
+    console.error(msg);
   }
 }
 
@@ -25,58 +25,10 @@ const PROTOCOL = {
       nombre: "Estructura Lógica",
       descripcion: "Integridad de la arquitectura base del argumento.",
       criterios: [
-        {
-          id: "1.1",
-          nombre: "No Contradicción",
-          constructo: "Consistencia Interna",
-          definicion: "Determinar si el discurso presenta proposiciones excluyentes sin resolución.",
-          atomos: [
-            { id: "discurso", definicion: "El flujo total de enunciados emitidos por el autor.", patrones: [] },
-            { id: "proposiciones", definicion: "Enunciados declarativos que afirman o niegan un estado de cosas.", patrones: [] },
-            { id: "excluyentes", definicion: "Propiedad de dos enunciados que no pueden ser ambos verdaderos simultáneamente.", patrones: ["pero", "sin embargo", "no obstante", "aunque"] },
-            { id: "resolucion", definicion: "Explicación lógica que reconcilia dos elementos aparentemente opuestos.", patrones: ["por lo tanto", "en consecuencia", "de modo que"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "1.2",
-          nombre: "Continuidad Semántica",
-          constructo: "Estabilidad Conceptual",
-          definicion: "Evaluar la estabilidad del significado de los conceptos a lo largo del argumento.",
-          atomos: [
-            { id: "estabilidad", definicion: "Propiedad de mantener una definición constante sin fluctuaciones.", patrones: [] },
-            { id: "significado", definicion: "La definición operativa asignada a un término en la primera instancia de uso.", patrones: [] },
-            { id: "conceptos", definicion: "Unidades léxicas que portan el peso del contenido temático.", patrones: [] },
-            { id: "argumento", definicion: "La serie encadenada de enunciados que buscan probar una tesis.", patrones: [] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "1.3",
-          nombre: "Ausencia de Falsas Dicotomías",
-          constructo: "Reducción de Complejidad",
-          definicion: "Verificar si se fuerza una elección binaria ante un problema multidimensional.",
-          atomos: [
-            { id: "eleccion", definicion: "Proceso de selección entre opciones presentadas.", patrones: ["o", "o bien", "alternativa"] },
-            { id: "binaria", definicion: "Estructura que reduce el espectro a solo dos posibilidades.", patrones: ["dos opciones", "dos caminos", "dos posibilidades"] },
-            { id: "problema", definicion: "El fenómeno central objeto de análisis.", patrones: [] },
-            { id: "multidimensional", definicion: "Fenómeno que requiere más de dos variables para ser comprendido.", patrones: ["complejo", "múltiples factores", "diversos aspectos"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "1.4",
-          nombre: "Integridad de las Premisas",
-          constructo: "Anclaje Inferencial",
-          definicion: "Asegurar que cada enunciado declarativo tenga un soporte lógico.",
-          atomos: [
-            { id: "enunciado", definicion: "Unidad mínima de sentido completo.", patrones: [] },
-            { id: "declarativo", definicion: "Que afirma la existencia o realidad de algo.", patrones: [] },
-            { id: "soporte", definicion: "Elemento (dato, premisa, inferencia) que justifica la validez de otro.", patrones: ["porque", "ya que", "dado que"] },
-            { id: "logico", definicion: "Relación de necesidad entre una base y su consecuencia.", patrones: ["si... entonces", "implica", "conlleva"] }
-          ],
-          severidad: 12.5
-        }
+        { id: "1.1", nombre: "No Contradicción", constructo: "Consistencia Interna", severidad: 12.5, atomos: [{ id: "excluyentes", patrones: ["pero", "sin embargo", "no obstante", "aunque"] }, { id: "resolucion", patrones: ["por lo tanto", "en consecuencia", "de modo que"] }] },
+        { id: "1.2", nombre: "Continuidad Semántica", constructo: "Estabilidad Conceptual", severidad: 12.5, atomos: [] },
+        { id: "1.3", nombre: "Ausencia de Falsas Dicotomías", constructo: "Reducción de Complejidad", severidad: 12.5, atomos: [{ id: "eleccion", patrones: ["o", "o bien", "alternativa"] }, { id: "binaria", patrones: ["dos opciones", "dos caminos", "dos posibilidades"] }] },
+        { id: "1.4", nombre: "Integridad de las Premisas", constructo: "Anclaje Inferencial", severidad: 12.5, atomos: [{ id: "soporte", patrones: ["porque", "ya que", "dado que"] }, { id: "logico", patrones: ["si... entonces", "implica", "conlleva"] }] }
       ]
     },
     {
@@ -84,51 +36,10 @@ const PROTOCOL = {
       nombre: "Inferencia",
       descripcion: "Ingeniería de la derivación argumentativa.",
       criterios: [
-        {
-          id: "2.1",
-          nombre: "Suficiencia Inferencial",
-          constructo: "Escalamiento Inferencial",
-          definicion: "Medir si la conclusión es proporcional a la magnitud de las premisas.",
-          atomos: [
-            { id: "conclusion", definicion: "Resultado final derivado de un proceso de razonamiento.", patrones: ["en conclusión", "por lo tanto", "así pues"] },
-            { id: "magnitud", definicion: "Alcance cuantitativo o cualitativo de la afirmación (particular vs. universal).", patrones: ["todos", "siempre", "nunca", "nadie"] },
-            { id: "premisas", definicion: "Enunciados base tomados como ciertos para derivar la conclusión.", patrones: [] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "2.2",
-          nombre: "Causalidad Rigurosa",
-          constructo: "Nexo Causal",
-          definicion: "Diferenciar la correlación estadística de la causalidad demostrada.",
-          atomos: [
-            { id: "correlacion", definicion: "Observación de dos variables que fluctúan simultáneamente.", patrones: ["correlación", "asociación", "relación"] },
-            { id: "causalidad", definicion: "Nexo necesario donde un evento (causa) produce mecánicamente otro (efecto).", patrones: ["causa", "provoca", "genera", "desencadena"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "2.3",
-          nombre: "Proporcionalidad Generalizadora",
-          constructo: "Generalización Justificada",
-          definicion: "Evitar que una anécdota se convierta en una regla universal.",
-          atomos: [
-            { id: "anecdota", definicion: "Registro de un caso singular o no representativo.", patrones: ["por ejemplo", "como en el caso de", "una vez"] },
-            { id: "regla", definicion: "Afirmación que pretende validez para todos los casos de un conjunto.", patrones: ["siempre", "nunca", "todos", "ninguno"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "2.4",
-          nombre: "Inmunidad a Petición de Principio",
-          constructo: "Circularidad Lógica",
-          definicion: "Detectar la circularidad cuando la asunción es la misma conclusión.",
-          atomos: [
-            { id: "circularidad", definicion: "Estructura donde el final del argumento repite el inicio sin avanzar.", patrones: ["porque", "ya que", "dado que"] },
-            { id: "asuncion", definicion: "Premisa no demostrada que se introduce como base del razonamiento.", patrones: ["asumiendo", "suponiendo", "dando por sentado"] }
-          ],
-          severidad: 25.0
-        }
+        { id: "2.1", nombre: "Suficiencia Inferencial", constructo: "Escalamiento Inferencial", severidad: 12.5, atomos: [{ id: "conclusion", patrones: ["en conclusión", "por lo tanto", "así pues"] }, { id: "magnitud", patrones: ["todos", "siempre", "nunca", "nadie"] }] },
+        { id: "2.2", nombre: "Causalidad Rigurosa", constructo: "Nexo Causal", severidad: 12.5, atomos: [{ id: "correlacion", patrones: ["correlación", "asociación", "relación"] }, { id: "causalidad", patrones: ["causa", "provoca", "genera", "desencadena"] }] },
+        { id: "2.3", nombre: "Proporcionalidad Generalizadora", constructo: "Generalización Justificada", severidad: 12.5, atomos: [{ id: "anecdota", patrones: ["por ejemplo", "como en el caso de", "una vez"] }, { id: "regla", patrones: ["siempre", "nunca", "todos", "ninguno"] }] },
+        { id: "2.4", nombre: "Inmunidad a Petición de Principio", constructo: "Circularidad Lógica", severidad: 25.0, atomos: [{ id: "circularidad", patrones: ["porque", "ya que", "dado que"] }, { id: "asuncion", patrones: ["asumiendo", "suponiendo", "dando por sentado"] }] }
       ]
     },
     {
@@ -136,52 +47,10 @@ const PROTOCOL = {
       nombre: "Calibración Epistémica",
       descripcion: "Relación con el conocimiento y la evidencia.",
       criterios: [
-        {
-          id: "3.1",
-          nombre: "Trazabilidad de la Evidencia",
-          constructo: "Anclaje Empírico",
-          definicion: "Identificar el origen y la verificabilidad de los datos.",
-          atomos: [
-            { id: "origen", definicion: "Fuente documental o empírica de la información.", patrones: ["según", "fuente", "estudio", "informe"] },
-            { id: "verificabilidad", definicion: "Capacidad de comprobar la información mediante una fuente externa.", patrones: ["verificable", "comprobable", "contrastable"] },
-            { id: "datos", definicion: "Cifras, hechos o registros utilizados como evidencia.", patrones: ["%", "dato", "cifra", "número"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "3.2",
-          nombre: "Declaración de Incertidumbre",
-          constructo: "Honestidad Epistémica",
-          definicion: "Comparar el matiz del lenguaje con la certeza de la afirmación.",
-          atomos: [
-            { id: "matiz", definicion: "Modificador probabilístico (probablemente, posiblemente).", patrones: ["probablemente", "posiblemente", "quizás", "tal vez"] },
-            { id: "lenguaje", definicion: "El conjunto de palabras elegidas para expresar la postura.", patrones: [] },
-            { id: "certeza", definicion: "Ausencia de duda expresada en una predicción o hecho futuro.", patrones: ["es seguro", "indudablemente", "sin duda", "claramente"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "3.3",
-          nombre: "Delimitación Hecho-Valor",
-          constructo: "Distinción Epistémica",
-          definicion: "Distinguir claramente el hecho empírico del juicio moral.",
-          atomos: [
-            { id: "hecho", definicion: "Afirmación sobre un estado de cosas objetivo.", patrones: ["es", "está", "existe"] },
-            { id: "juicio", definicion: "Valoración subjetiva sobre la bondad o maldad de un hecho.", patrones: ["bueno", "malo", "justo", "injusto", "debería"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "3.4",
-          nombre: "Completitud del Contexto",
-          constructo: "Integridad Contextual",
-          definicion: "Auditar la omisión de variables críticas en el entorno del dato.",
-          atomos: [
-            { id: "variables", definicion: "Elementos que afectan el comportamiento o lectura de un dato.", patrones: ["variable", "factor", "condición"] },
-            { id: "entorno", definicion: "Situación, época o circunstancias que rodean al dato.", patrones: ["contexto", "entorno", "circunstancia"] }
-          ],
-          severidad: 12.5
-        }
+        { id: "3.1", nombre: "Trazabilidad de la Evidencia", constructo: "Anclaje Empírico", severidad: 12.5, atomos: [{ id: "origen", patrones: ["según", "fuente", "estudio", "informe"] }, { id: "datos", patrones: ["%", "dato", "cifra", "número"] }] },
+        { id: "3.2", nombre: "Declaración de Incertidumbre", constructo: "Honestidad Epistémica", severidad: 12.5, atomos: [{ id: "matiz", patrones: ["probablemente", "posiblemente", "quizás", "tal vez"] }, { id: "certeza", patrones: ["es seguro", "indudablemente", "sin duda", "claramente"] }] },
+        { id: "3.3", nombre: "Delimitación Hecho-Valor", constructo: "Distinción Epistémica", severidad: 12.5, atomos: [{ id: "hecho", patrones: ["es", "está", "existe"] }, { id: "juicio", patrones: ["bueno", "malo", "justo", "injusto", "debería"] }] },
+        { id: "3.4", nombre: "Completitud del Contexto", constructo: "Integridad Contextual", severidad: 12.5, atomos: [{ id: "variables", patrones: ["variable", "factor", "condición"] }, { id: "entorno", patrones: ["contexto", "entorno", "circunstancia"] }] }
       ]
     },
     {
@@ -189,51 +58,10 @@ const PROTOCOL = {
       nombre: "Transparencia Retórica",
       descripcion: "Limpieza y honestidad comunicativa.",
       criterios: [
-        {
-          id: "4.1",
-          nombre: "Representación Justa (Steelman)",
-          constructo: "Alteridad Cognitiva",
-          definicion: "Evaluar si el argumento contrario es tratado de forma robusta.",
-          atomos: [
-            { id: "argumento", definicion: "Exposición de razones en contra o a favor.", patrones: ["argumento", "razón", "tesis"] },
-            { id: "contrario", definicion: "Postura disidente a la del emisor.", patrones: ["contrario", "opositor", "crítico", "disidente"] },
-            { id: "robusta", definicion: "Versión que conserva toda la fuerza lógica de la postura opuesta.", patrones: ["fortaleza", "sólido", "robusto"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "4.2",
-          nombre: "Neutralidad Emocional",
-          constructo: "Sustitución Argumental por Activación Emocional",
-          definicion: "Identificar adjetivos que cargan la intención del texto.",
-          atomos: [
-            { id: "adjetivos", definicion: "Modificadores que cualifican sustantivos con carga subjetiva.", patrones: ["terrible", "maravilloso", "horrible", "excelente", "lamentable"] },
-            { id: "intencion", definicion: "Propósito subyacente de manipular la reacción del lector.", patrones: ["manipulación", "engaño", "sesgo"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "4.3",
-          nombre: "Despersonalización del Debate",
-          constructo: "Separación Identidad-Argumento",
-          definicion: "Separar la identidad del emisor del argumento presentado.",
-          atomos: [
-            { id: "identidad", definicion: "Rasgos, afiliaciones o carácter del sujeto que emite el discurso.", patrones: ["yo", "mi", "nuestro", "ellos"] },
-            { id: "argumento", definicion: "Estructura racional que debe sostenerse por sí misma.", patrones: [] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "4.4",
-          nombre: "Claridad Denotativa",
-          constructo: "Precisión Léxica",
-          definicion: "Detectar el uso de palabras ambiguas sin definición.",
-          atomos: [
-            { id: "palabras", definicion: "Unidades léxicas usadas para transmitir conceptos.", patrones: [] },
-            { id: "ambiguas", definicion: "Términos que admiten múltiples interpretaciones (ej: 'justo', 'bueno') sin definición operacional.", patrones: ["justo", "bueno", "libertad", "democracia", "igualdad"] }
-          ],
-          severidad: 12.5
-        }
+        { id: "4.1", nombre: "Representación Justa (Steelman)", constructo: "Alteridad Cognitiva", severidad: 12.5, atomos: [] },
+        { id: "4.2", nombre: "Neutralidad Emocional", constructo: "Sustitución Argumental por Activación Emocional", severidad: 12.5, atomos: [{ id: "adjetivos", patrones: ["terrible", "maravilloso", "horrible", "excelente", "lamentable"] }] },
+        { id: "4.3", nombre: "Despersonalización del Debate", constructo: "Separación Identidad-Argumento", severidad: 12.5, atomos: [] },
+        { id: "4.4", nombre: "Claridad Denotativa", constructo: "Precisión Léxica", severidad: 12.5, atomos: [{ id: "ambiguas", patrones: ["justo", "bueno", "libertad", "democracia", "igualdad"] }] }
       ]
     },
     {
@@ -241,108 +69,70 @@ const PROTOCOL = {
       nombre: "Pertinencia Deliberativa",
       descripcion: "Valor cívico y utilidad pública.",
       criterios: [
-        {
-          id: "5.1",
-          nombre: "Focalización Temática",
-          constructo: "Relevancia Central",
-          definicion: "Evitar que una tangente desvíe el núcleo del debate.",
-          atomos: [
-            { id: "tangente", definicion: "Tema introducido que no altera lógicamente la conclusión del núcleo.", patrones: ["digresión", "tangente", "fuera de tema"] },
-            { id: "nucleo", definicion: "El problema central definido explícitamente en el inicio del intercambio.", patrones: ["objeto", "propósito", "tema central"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "5.2",
-          nombre: "Responsabilidad Constructiva",
-          constructo: "Aportación Propositiva",
-          definicion: "Garantizar que toda crítica incluya una propuesta alternativa.",
-          atomos: [
-            { id: "critica", definicion: "Señalamiento de un error o falla en el argumento ajeno.", patrones: ["crítica", "objeción", "pero"] },
-            { id: "propuesta", definicion: "Aporte de una visión, solución o vía de acción nueva.", patrones: ["propongo", "sugiero", "alternativa", "solución"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "5.3",
-          nombre: "Universalidad (Simetría)",
-          constructo: "Equidad Epistémica",
-          definicion: "Aplicar el mismo estándar de prueba para ambos lados.",
-          atomos: [
-            { id: "estandar", definicion: "Nivel de exigencia requerido para aceptar una evidencia.", patrones: ["estándar", "criterio", "exigencia"] },
-            { id: "prueba", definicion: "Elemento de juicio que sostiene una afirmación.", patrones: ["prueba", "evidencia", "demostración"] },
-            { id: "pluralidad", definicion: "Reconocimiento de la diversidad de enfoques metodológicos legítimos.", patrones: ["pluralidad", "diversidad", "múltiples perspectivas"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "5.4",
-          nombre: "Falsabilidad",
-          constructo: "Refutabilidad",
-          definicion: "Exponer el argumento a la evidencia refutadora.",
-          atomos: [
-            { id: "evidencia", definicion: "Información que entra en conflicto directo con la tesis.", patrones: ["contraejemplo", "refutación", "objeción"] },
-            { id: "refutadora", definicion: "Capaz de demostrar la falsedad del argumento.", patrones: ["refutar", "falsear", "desmentir"] }
-          ],
-          severidad: 25.0
-        }
-      ],
-
-// --- Añade esto a tu objeto SOPHIA en sophia1.js ---
-
-  // ... (tu código actual)
+        { id: "5.1", nombre: "Focalización Temática", constructo: "Relevancia Central", severidad: 12.5, atomos: [{ id: "tangente", patrones: ["digresión", "tangente", "fuera de tema"] }] },
+        { id: "5.2", nombre: "Responsabilidad Constructiva", constructo: "Aportación Propositiva", severidad: 12.5, atomos: [{ id: "critica", patrones: ["crítica", "objeción", "pero"] }, { id: "propuesta", patrones: ["propongo", "sugiero", "alternativa", "solución"] }] },
+        { id: "5.3", nombre: "Universalidad (Simetría)", constructo: "Equidad Epistémica", severidad: 12.5, atomos: [] },
+        { id: "5.4", nombre: "Falsabilidad", constructo: "Refutabilidad", severidad: 25.0, atomos: [{ id: "evidencia", patrones: ["contraejemplo", "refutación", "objeción"] }] }
+      ]
+    }
+  ],
 
   navigate(viewId) {
     const contentArea = document.getElementById('viewContent');
-    if (!contentArea) {
-      showDebug(`❌ Error: No se encontró #viewContent`, true);
-      return;
-    }
-
-    // Buscamos la vista definida en el objeto VIEWS
-    const view = VIEWS[viewId];
-    if (view) {
-      contentArea.innerHTML = view.render();
-      console.log(`✅ Vista cambiada a: ${viewId}`);
-      
-      // Si la vista requiere inicialización extra (ej. el auditor), llamarla aquí
-      if (viewId === 'analisis') {
-        this.bindUploadEvents();
-      }
-    } else {
-      contentArea.innerHTML = `<h1>404</h1><p>Vista no encontrada: ${viewId}</p>`;
+    if (!contentArea) return;
+    if (typeof VIEWS !== 'undefined' && VIEWS[viewId]) {
+      contentArea.innerHTML = VIEWS[viewId].render();
+      if (viewId === 'analisis') this.bindUploadEvents();
     }
   },
 
   bindUploadEvents() {
-    // Lógica para que el botón de carga funcione
     const btn = document.getElementById('uploadBtn');
-    if (btn) {
-        btn.addEventListener('click', () => {
-            document.getElementById('fileInput').click();
-        });
-    }
+    if (btn) btn.addEventListener('click', () => document.getElementById('fileInput').click());
   },
 
   init() {
     try {
-      console.log('🚀 Inicializando SOPHIA...');
-      
-      // Vinculamos los botones del menú sidebar
       const buttons = document.querySelectorAll('.snav-item[data-view]');
-      buttons.forEach(btn => {
-        btn.addEventListener('click', () => this.navigate(btn.dataset.view));
-      });
-      
-      // Cargamos la vista inicial
-      this.navigate('inicio'); 
-      
-      console.log('✅ SOPHIA inicializada');
+      buttons.forEach(btn => btn.addEventListener('click', () => this.navigate(btn.dataset.view)));
+      this.navigate('inicio');
     } catch (e) {
-      showDebug(`❌ Error en init: ${e.message}`, true);
+      showDebug(`❌ Error init: ${e.message}`, true);
     }
+  }
 };
-// ... (asegúrate de cerrar bien el objeto SOPHIA)
+
+// ─── MECÁNICA DE CÁLCULO ──
+function evaluateText(text) {
+  try {
+    if (!text) return null;
+    const oraciones = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    const resultados = { fases: [], evidencias: [], puntajes_fase: {} };
+
+    PROTOCOL.fases.forEach(fase => {
+      let penalizacion_fase = 0;
+      fase.criterios.forEach(criterio => {
+        let penalizacion_criterio = 0;
+        if (criterio.atomos) {
+          criterio.atomos.forEach(atom => {
+            if (atom.patrones) {
+              atom.patrones.forEach(p => {
+                if (text.toLowerCase().includes(p)) penalizacion_criterio += (criterio.severidad / atom.patrones.length);
+              });
+            }
+          });
+        }
+        penalizacion_fase += Math.min(penalizacion_criterio, 25);
+      });
+      resultados.puntajes_fase[fase.id] = Math.max(0, 100 - penalizacion_fase);
+      resultados.fases.push({ id: fase.id, puntaje: resultados.puntajes_fase[fase.id] });
+    });
+    return resultados;
+  } catch (e) {
+    showDebug("Error en evaluación: " + e.message, true);
+    return null;
+  }
+}
 
 
 // ─── MECÁNICA DE CÁLCULO (completa, con try/catch) ──
