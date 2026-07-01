@@ -57,14 +57,20 @@ dimensions:
             type: Entidad
             definition: El flujo total de enunciados emitidos por el autor.
             version: '1.0'
-            patterns: []
+            patterns:
+              - discurso
+              - texto
+              - enunciado total
             aliases: []
           - id: proposiciones
             name: proposiciones
             type: Entidad
             definition: Enunciados declarativos que afirman o niegan un estado de cosas.
             version: '1.0'
-            patterns: []
+            patterns:
+              - proposición
+              - afirmación
+              - declaración
             aliases: []
           - id: excluyentes
             name: excluyentes
@@ -108,7 +114,10 @@ dimensions:
             type: Entidad
             definition: Propiedad de mantener una definición constante sin fluctuaciones.
             version: '1.0'
-            patterns: []
+            patterns:
+              - constante
+              - fluctuación
+              - cambio
             aliases: []
           - id: significado
             name: significado
@@ -117,21 +126,30 @@ dimensions:
               La definición operativa asignada a un término en la primera
               instancia de uso.
             version: '1.0'
-            patterns: []
+            patterns:
+              - definición
+              - significa
+              - sentido
             aliases: []
           - id: conceptos
             name: conceptos
             type: Entidad
             definition: Unidades léxicas que portan el peso del contenido temático.
             version: '1.0'
-            patterns: []
+            patterns:
+              - concepto
+              - idea
+              - noción
             aliases: []
           - id: argumento
             name: argumento
             type: Entidad
             definition: La serie encadenada de enunciados que buscan probar una tesis.
             version: '1.0'
-            patterns: []
+            patterns:
+              - argumento
+              - tesis
+              - razón
             aliases: []
         meta_rules_applicable: []
         severity_level: 2
@@ -170,7 +188,10 @@ dimensions:
             type: Entidad
             definition: El fenómeno central objeto de análisis.
             version: '1.0'
-            patterns: []
+            patterns:
+              - problema
+              - cuestión
+              - asunto
             aliases: []
           - id: multidimensional
             name: multidimensional
@@ -197,14 +218,20 @@ dimensions:
             type: Entidad
             definition: Unidad mínima de sentido completo.
             version: '1.0'
-            patterns: []
+            patterns:
+              - enunciado
+              - afirmación
+              - declaración
             aliases: []
           - id: declarativo
             name: declarativo
             type: Entidad
             definition: Que afirma la existencia o realidad de algo.
             version: '1.0'
-            patterns: []
+            patterns:
+              - declara
+              - afirma
+              - niega
             aliases: []
           - id: soporte
             name: soporte
@@ -273,7 +300,10 @@ dimensions:
             type: Entidad
             definition: Enunciados base tomados como ciertos para derivar la conclusión.
             version: '1.0'
-            patterns: []
+            patterns:
+              - premisa
+              - base
+              - supuesto
             aliases: []
           - id: universalizacion
             name: universalizacion
@@ -486,7 +516,10 @@ dimensions:
             type: Entidad
             definition: El conjunto de palabras elegidas para expresar la postura.
             version: '1.0'
-            patterns: []
+            patterns:
+              - lenguaje
+              - discurso
+              - palabras
             aliases: []
           - id: certeza
             name: certeza
@@ -780,7 +813,10 @@ dimensions:
             type: Entidad
             definition: Estructura racional que debe sostenerse por sí misma.
             version: '1.0'
-            patterns: []
+            patterns:
+              - argumento
+              - tesis
+              - razón
             aliases: []
         meta_rules_applicable: []
         severity_level: 2
@@ -799,7 +835,10 @@ dimensions:
             type: Entidad
             definition: Unidades léxicas usadas para transmitir conceptos.
             version: '1.0'
-            patterns: []
+            patterns:
+              - palabra
+              - término
+              - vocablo
             aliases: []
           - id: ambiguas
             name: ambiguas
@@ -849,7 +888,10 @@ dimensions:
             type: Entidad
             definition: Capacidad de referirse a entidades o hechos concretos.
             version: '1.0'
-            patterns: []
+            patterns:
+              - refiere
+              - alude
+              - menciona
             aliases: []
         meta_rules_applicable: []
         severity_level: 2
