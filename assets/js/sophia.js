@@ -1221,24 +1221,27 @@ const SOPHIA = {
   }
 };
 
-// ─── INICIALIZACIÓN GLOBAL DE SOPHIA ──
+
+// ─── INICIALIZACIÓN GLOBAL ──
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Vinculación de eventos de navegación
   const navButtons = document.querySelectorAll('.snav-item[data-view]');
   navButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
-      // Remover clase active de todos
       navButtons.forEach(b => b.classList.remove('active'));
-      // Añadir clase active al clicado
       e.currentTarget.classList.add('active');
-      
-      // Ejecutar navegación
       SOPHIA.navigate(e.currentTarget.dataset.view);
     });
   });
 
-  // 2. Ejecutar vista inicial
+  // 2. Auditoría y carga inicial
   if (typeof SOPHIA !== 'undefined') {
-    SOPHIA.init();
+    if (typeof auditOntology === 'function') {
+      const audit = auditOntology();
+      console.log(`🔖 SOPHIA v${PROTOCOL.version} — CONSISTENCY SCORE: ${audit.score}/100`);
+    }
+    SOPHIA.navigate('analisis');
+  } else {
+    console.error('❌ Objeto SOPHIA no definido.');
   }
 });
