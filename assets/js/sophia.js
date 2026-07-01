@@ -1114,26 +1114,54 @@ const SOPHIA = {
       if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
     });
   },
+   
+_bindEval(source) {
+  const btn = document.getElementById('evalBtn');
+  if (!btn) return;
+  const newBtn = btn.cloneNode(true);
+  btn.parentNode.replaceChild(newBtn, btn);
 
-  _bindEval(source) {
-    const btn = document.getElementById('evalBtn');
-    if (!btn) return;
-    const newBtn = btn.cloneNode(true);
-    btn.parentNode.replaceChild(newBtn, btn);
+  newBtn.addEventListener('click', async () => {
+    const input = document.getElementById('evalInput');
+    if (!input) return;
+    const text = input.value.trim();
+    const out = document.getElementById('evalResult');
 
-    newBtn.addEventListener('click', () => {
-      const input = document.getElementById('evalInput');
-      if (!input) return;
-      const text = input.value.trim();
-      const out = document.getElementById('evalResult');
+    if (!text) {
+      out.innerHTML = `<p style="color:rgba(239,68,68,.7);font-size:.78rem;margin-top:12px;">Ingresa o carga un texto para estimar su calidad deliberativa.</p>`;
+      return;
+    }
 
-      if (!text) {
-        out.innerHTML = '<p style="color:rgba(239,68,68,.7);font-size:.78rem;margin-top:12px;">Ingresa o carga un texto para estimar su calidad deliberativa.</p>';
-        return;
-      }
+    out.innerHTML = `<p style="color:rgba(229,231,235,.35);font-size:.72rem;margin-top:12px;">Analizando con SOPHIA (motor local + IA)...</p>`;
 
-      out.innerHTML = '<p style="color:rgba(229,231,235,.35);font-size:.72rem;margin-top:12px;">Analizando adherencia al protocolo...</p>';
+    try {
+      const userId = localStorage.getItem('userId') || null;
+      const response = await fetch('/api/sophia/evaluate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, userId })
+      });
 
+      if (!response.ok) throw new Error('Error en la evaluación');
+      const resultado = await response.json();
+
+      // El resultado tiene { local, llm_review, ird, risk, ... }
+      // Renderizar usando el objeto 'local' (que tiene la misma estructura que antes)
+      const localData = resultado.local;
+      const enriched = {
+        ...localData,
+        IRD_global: resultado.ird,
+        riesgo: resultado.risk,
+        llm_review: resultado.llm_review
+      };
+      this._renderEvaluation(enriched, out);
+    } catch (error) {
+      console.error(error);
+      out.innerHTML = `<p style="color:rgba(239,68,68,.7);font-size:.78rem;margin-top:12px;">Error al conectar con el servidor.</p>`;
+    }
+  });
+}
+  
       setTimeout(() => {
         const resultado = evaluateText(text);
         if (!resultado) {
