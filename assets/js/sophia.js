@@ -289,7 +289,6 @@ const PROTOCOL = {
       ]
     }
   ]
-};
 
 // --- Añade esto a tu objeto SOPHIA en sophia1.js ---
 
@@ -345,7 +344,7 @@ const PROTOCOL = {
       showDebug(`❌ Error en init: ${e.message}`, true);
     }
   }
-
+};
 // ... (asegúrate de cerrar bien el objeto SOPHIA)
 
 
