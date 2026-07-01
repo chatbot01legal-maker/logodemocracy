@@ -1029,33 +1029,36 @@ const SOPHIA = {
     }
   },
 
-
-  init() {
-    // Retrasamos el inicio 100ms para asegurar que todo esté en memoria
-    setTimeout(() => {
-      try {
-        console.log('🚀 Iniciando SOPHIA de forma segura...');
-        
-        // Ejecución protegida de la auditoría
-        if (typeof auditOntology === 'function') {
-          const audit = auditOntology();
-          console.log(`🔖 SOPHIA v${PROTOCOL.version} — SCORE: ${audit.score}/100`);
-        }
-
-        // Vinculación de botones
-        const buttons = document.querySelectorAll('.snav-item[data-view]');
-        buttons.forEach(btn => {
-          btn.addEventListener('click', () => this.navigate(btn.dataset.view));
+// ─── INICIALIZACIÓN DE FORZADO TOTAL ──
+(function() {
+  const initSophia = () => {
+    if (typeof SOPHIA !== 'undefined' && typeof SOPHIA.init === 'function') {
+      console.log('✅ SOPHIA detectado, iniciando...');
+      
+      // Vinculación segura
+      const buttons = document.querySelectorAll('.snav-item[data-view]');
+      buttons.forEach(btn => {
+        btn.removeEventListener('click', SOPHIA.navigate); // Limpiamos previas
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.snav-item').forEach(b => b.classList.remove('active'));
+          e.currentTarget.classList.add('active');
+          SOPHIA.navigate(e.currentTarget.dataset.view);
         });
+      });
 
-        // Carga inicial
-        this.navigate('analisis');
-        console.log('✅ SOPHIA inicializada con éxito');
-      } catch (e) {
-        console.error("Error crítico en init():", e);
-      }
-    }, 100);
-   }
+      SOPHIA.init();
+    } else {
+      console.warn('⏳ SOPHIA no listo, reintentando en 200ms...');
+      setTimeout(initSophia, 200);
+    }
+  };
+
+  // Escuchar cuando el DOM esté realmente listo
+  if (document.readyState === 'complete') {
+    initSophia();
+  } else {
+    window.addEventListener('load', initSophia);
+  }
+})();
 
   
-    
