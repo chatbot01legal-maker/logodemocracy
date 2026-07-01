@@ -1209,23 +1209,18 @@ const SOPHIA = {
     });
   },
 
-  init() {
-    // Ejecutar auditoría ontológica al iniciar
-    const audit = auditOntology();
-    console.log(`🔖 SOPHIA v${PROTOCOL.version} — CONSISTENCY SCORE: ${audit.score}/100`);
 
-    document.querySelectorAll('.snav-item[data-view]').forEach(btn => {
-      btn.addEventListener('click', () => this.navigate(btn.dataset.view));
-    });
+  // ─── INICIALIZACIÓN DEFINITIVA ──
+  init() {
+    console.log('🚀 SOPHIA inicializado.');
     this.navigate('analisis');
   }
-};
+}; // <--- Este cierra tu objeto SOPHIA
 
-
-// ─── INICIALIZACIÓN GLOBAL ──
+// SOLO un bloque para iniciar todo
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Vinculación de eventos de navegación
   const navButtons = document.querySelectorAll('.snav-item[data-view]');
+  
   navButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
       navButtons.forEach(b => b.classList.remove('active'));
@@ -1234,14 +1229,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 2. Auditoría y carga inicial
-  if (typeof SOPHIA !== 'undefined') {
-    if (typeof auditOntology === 'function') {
-      const audit = auditOntology();
-      console.log(`🔖 SOPHIA v${PROTOCOL.version} — CONSISTENCY SCORE: ${audit.score}/100`);
-    }
-    SOPHIA.navigate('analisis');
-  } else {
-    console.error('❌ Objeto SOPHIA no definido.');
-  }
+  SOPHIA.init();
 });
