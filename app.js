@@ -14,18 +14,31 @@ const { evaluateText, getLLMReview, PROTOCOL } = require("./modules/sophiaCore")
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ─── LOGS de inicio ──────────────────────────────────
+console.log("🚀 Iniciando servidor SOPHIA...");
+console.log(`📁 Directorio actual: ${__dirname}`);
+console.log(`📦 Protocolo cargado: ${PROTOCOL.version || "desconocido"}`);
+
 // ─── Middleware ────────────────────────────────────────
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.static(__dirname));
 
+// ─── LOG de cada petición ─────────────────────────────
+app.use((req, res, next) => {
+  console.log(`📥 ${req.method} ${req.url} - ${req.ip}`);
+  next();
+});
+
 // ─── Ruta principal ────────────────────────────────────
 app.get("/", (req, res) => {
+  console.log("📄 Sirviendo index.html");
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
 // ─── Health Check ─────────────────────────────────────
 app.get("/api/health", (req, res) => {
+  console.log("💚 Health check");
   res.json({
     status: "OK",
     version: "SOPHIA v0.92-beta",
@@ -37,14 +50,17 @@ app.get("/api/health", (req, res) => {
 
 // Registro
 app.post("/api/register", async (req, res) => {
+  console.log("📝 Registro de usuario:", req.body.email);
   try {
     const { email, password } = req.body;
     if (!email || !password) {
+      console.log("❌ Registro fallido: faltan datos");
       return res.status(400).json({ error: "Email y contraseña requeridos" });
     }
     const db = await connect();
     const existing = await db.collection("users").findOne({ email });
     if (existing) {
+      console.log("❌ Registro fallido: usuario ya existe");
       return res.status(400).json({ error: "El usuario ya existe" });
     }
     const hashed = await bcrypt.hash(password, 10);
@@ -52,29 +68,34 @@ app.post("/api/register", async (req, res) => {
       email,
       password: hashed,
       createdAt: new Date(),
-      role: "citizen" // por defecto
+      role: "citizen"
     });
+    console.log("✅ Usuario registrado:", email);
     res.json({ message: "Usuario registrado correctamente" });
   } catch (error) {
-    console.error("Error en /api/register:", error);
+    console.error("❌ Error en /api/register:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
 
 // Login
 app.post("/api/login", async (req, res) => {
+  console.log("🔑 Intento de login:", req.body.email);
   try {
     const { email, password } = req.body;
     if (!email || !password) {
+      console.log("❌ Login fallido: faltan datos");
       return res.status(400).json({ error: "Email y contraseña requeridos" });
     }
     const db = await connect();
     const user = await db.collection("users").findOne({ email });
     if (!user) {
+      console.log("❌ Login fallido: usuario no encontrado");
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
+      console.log("❌ Login fallido: contraseña incorrecta");
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
     const token = jwt.sign(
@@ -82,6 +103,7 @@ app.post("/api/login", async (req, res) => {
       process.env.JWT_SECRET || "secreto",
       { expiresIn: "7d" }
     );
+    console.log("✅ Login exitoso:", email);
     res.json({
       token,
       userId: user._id,
@@ -89,7 +111,7 @@ app.post("/api/login", async (req, res) => {
       role: user.role || "citizen"
     });
   } catch (error) {
-    console.error("Error en /api/login:", error);
+    console.error("❌ Error en /api/login:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
@@ -112,27 +134,38 @@ function authenticate(req, res, next) {
 
 // ─── Evaluación con SOPHIA (híbrida) ─────────────────
 app.post("/api/sophia/evaluate", async (req, res) => {
+  console.log("📊 Petición de evaluación recibida");
   try {
     const { text, userId } = req.body;
+    console.log(`📝 Texto recibido (${text?.length || 0} caracteres), userId: ${userId || "anonimo"}`);
+
     if (!text || text.trim().length === 0) {
+      console.log("❌ Texto vacío");
       return res.status(400).json({ error: "Texto requerido" });
     }
 
     // 1️⃣ Evaluación local (determinista, auditable)
+    console.log("🔍 Ejecutando evaluación local...");
     const localResult = evaluateText(text);
     if (!localResult) {
+      console.log("❌ Error en evaluación local");
       return res.status(400).json({ error: "Error al evaluar el texto" });
     }
+    console.log(`✅ Evaluación local completada. IRD: ${localResult.IRD_global}, evidencias: ${localResult.evidencias?.length || 0}`);
 
     // 2️⃣ Revisión semántica con Gemini (solo si es necesario)
     let llmReview = null;
     if (localResult.IRD_global < 85 || localResult.evidencias.length > 0) {
+      console.log("🤖 Solicitando revisión semántica a Gemini...");
       try {
         llmReview = await getLLMReview(text, localResult);
+        console.log("✅ Revisión semántica completada");
       } catch (llmError) {
-        console.error("Error en LLM review:", llmError);
+        console.error("❌ Error en LLM review:", llmError);
         llmReview = { error: "Revisión semántica no disponible" };
       }
+    } else {
+      console.log("⏩ Saltando revisión semántica (IRD alto y sin evidencias)");
     }
 
     // 3️⃣ Ensamblar informe final
@@ -141,36 +174,46 @@ app.post("/api/sophia/evaluate", async (req, res) => {
       evaluated_at: new Date().toISOString(),
       local: localResult,
       llm_review: llmReview,
-      // Campos enriquecidos
       ird: localResult.IRD_global,
       risk: localResult.riesgo,
       evidence_density: localResult.evidencias.length / (text.split(/\s+/).length || 1)
     };
+    console.log(`📊 IRD final: ${finalReport.ird}%`);
 
     // 4️⃣ Guardar en MongoDB (si hay userId)
     if (userId) {
-      const db = await connect();
-      const textHash = crypto.createHash("sha256").update(text).digest("hex");
-      await db.collection("evaluations").insertOne({
-        userId,
-        text_hash: textHash,
-        text_preview: text.substring(0, 500),
-        protocol_version: PROTOCOL.version || "0.92-beta",
-        model_used: "gemini-2.5-flash",
-        evaluated_at: new Date(),
-        result: finalReport
-      });
+      console.log("💾 Guardando evaluación en MongoDB...");
+      try {
+        const db = await connect();
+        const textHash = crypto.createHash("sha256").update(text).digest("hex");
+        await db.collection("evaluations").insertOne({
+          userId,
+          text_hash: textHash,
+          text_preview: text.substring(0, 500),
+          protocol_version: PROTOCOL.version || "0.92-beta",
+          model_used: "gemini-2.5-flash",
+          evaluated_at: new Date(),
+          result: finalReport
+        });
+        console.log("✅ Evaluación guardada en MongoDB");
+      } catch (dbError) {
+        console.error("❌ Error al guardar en DB:", dbError);
+        // No fallamos la respuesta por error de DB
+      }
+    } else {
+      console.log("⏩ Sin userId, omitiendo guardado en DB");
     }
 
     res.json(finalReport);
   } catch (error) {
-    console.error("Error en /api/sophia/evaluate:", error);
+    console.error("❌ Error en /api/sophia/evaluate:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
 
 // ─── Endpoint protegido (ejemplo) ────────────────────
 app.get("/api/profile", authenticate, (req, res) => {
+  console.log(`👤 Perfil solicitado por: ${req.user.email}`);
   res.json({ user: req.user });
 });
 
@@ -178,4 +221,4 @@ app.get("/api/profile", authenticate, (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Servidor SOPHIA ejecutándose en http://localhost:${PORT}`);
   console.log(`📊 Protocolo cargado: ${PROTOCOL.version || "desconocido"}`);
-});
+})

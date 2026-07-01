@@ -1021,3 +1021,4 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('📄 DOM completamente cargado');
   SOPHIA.init();
 });
+// Forzar deploy con versión completa

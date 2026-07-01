@@ -1,46 +1,65 @@
-// modules/sophiaEngine.js
+// modules/sophiaCore.js
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
 
-// Cargar protocolo desde YAML (fuente de verdad)
-const protocolPath = path.join(__dirname, '..', 'assets', 'js', 'protocol', 'sophia_protocol.yaml');
-const protocol = yaml.load(fs.readFileSync(protocolPath, 'utf8'));
+console.log('🧠 Cargando sophiaCore.js...');
 
-// Transformar el YAML al formato que usa el motor (similar a PROTOCOL en sophia.js)
+// ─── CARGA DEL PROTOCOLO DESDE YAML ──────────────────
+const protocolPath = path.join(__dirname, '..', 'assets', 'js', 'protocol', 'sophia_protocol.yaml');
+console.log(`📂 Buscando protocolo en: ${protocolPath}`);
+
+let protocol;
+try {
+  protocol = yaml.load(fs.readFileSync(protocolPath, 'utf8'));
+  console.log(`✅ Protocolo cargado desde YAML. Versión: ${protocol.version || 'desconocida'}`);
+} catch (err) {
+  console.error('❌ Error al cargar protocolo YAML:', err.message);
+  // Fallback a un protocolo vacío para no romper el servidor
+  protocol = { version: '0.0.0', dimensions: [] };
+}
+
+// ─── CONSTRUIR PROTOCOL EN FORMATO INTERNO ──────────
 function buildProtocolFromYAML(yamlData) {
-  // Adapta la estructura de YAML a la que espera evaluateText
-  // (puedes copiar la estructura de PROTOCOL de sophia.js y mapear)
-  // Por ahora, usamos una versión simplificada
-  return {
-    version: yamlData.version,
-    fases: yamlData.dimensions.map(dim => ({
+  console.log('🔧 Construyendo PROTOCOL interno...');
+  const result = {
+    version: yamlData.version || '0.92-beta',
+    fases: (yamlData.dimensions || []).map(dim => ({
       id: dim.id,
       nombre: dim.name,
-      descripcion: dim.description,
-      criterios: dim.criteria.map(c => ({
+      descripcion: dim.description || '',
+      criterios: (dim.criteria || []).map(c => ({
         id: c.id,
         nombre: c.name,
         constructo: c.construct?.name || 'Sin constructo',
         definicion: c.construct?.definition || c.definition || '',
         severidad: c.severity_level || 2,
-        atomos: c.atoms.map(a => ({
+        atomos: (c.atoms || []).map(a => ({
           id: a.id,
-          definicion: a.definition,
+          definicion: a.definition || '',
           patrones: a.patterns || []
         }))
       }))
     }))
   };
+  console.log(`✅ PROTOCOL construido. Fases: ${result.fases.length}`);
+  return result;
 }
 
 const PROTOCOL = buildProtocolFromYAML(protocol);
+console.log(`📊 PROTOCOL versión: ${PROTOCOL.version}`);
 
-// ─── EVALUACIÓN LOCAL (copia de evaluateText de sophia.js) ───
+// ─── EVALUACIÓN LOCAL (determinista) ──────────────────
 function evaluateText(text) {
-  if (!text || text.trim().length === 0) return null;
+  console.log('🔍 evaluateText() llamado');
+  if (!text || text.trim().length === 0) {
+    console.warn('⚠️ Texto vacío o nulo');
+    return null;
+  }
 
   const oraciones = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  console.log(`📝 Oraciones detectadas: ${oraciones.length}`);
+
   const resultados = {
     fases: [],
     evidencias: [],
@@ -73,7 +92,6 @@ function evaluateText(text) {
             const penalizacion_atomo = criterio.severidad * frecuencia;
             penalizacion_criterio += penalizacion_atomo;
             atomos_activados.push({ atomo: atom.id, frecuencia, severidad: criterio.severidad });
-            // Capturar evidencia textual
             const evidencia = text.match(new RegExp(`[^.!?]*\\b${patrones_unicos[0]}\\b[^.!?]*[.!?]`, 'i'));
             if (evidencia) {
               resultados.evidencias.push({
@@ -99,7 +117,7 @@ function evaluateText(text) {
       }
     });
 
-    // Meta-regla MR-001 (mitigación por incertidumbre)
+    // Meta-regla MR-001: mitigación por incertidumbre
     if (fase.id === "fase4" && resultados.puntajes_fase["fase3"] && resultados.puntajes_fase["fase3"] > 80) {
       const infra42 = infracciones_fase.find(inf => inf.criterio.startsWith("4.2"));
       if (infra42) {
@@ -129,11 +147,13 @@ function evaluateText(text) {
   else if (nivel3_count >= 2) resultados.riesgo = "Atención";
   else resultados.riesgo = "Normal";
 
+  console.log(`📊 IRD calculado: ${resultados.IRD_global}%, riesgo: ${resultados.riesgo}`);
   return resultados;
 }
 
 // ─── REVISIÓN CON LLM (complementaria) ──────────────
 async function getLLMReview(text, localResult) {
+  console.log('🤖 getLLMReview() llamado');
   const { askVertex } = require('./vertexClient');
 
   const prompt = `
@@ -155,13 +175,25 @@ async function getLLMReview(text, localResult) {
       "overall_comment": "string"
     }
   `;
-  const response = await askVertex(prompt, 'gemini-2.5-flash');
-  // Extraer JSON con regex más robusto
-  const jsonMatch = response.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) {
-    return { error: 'No se pudo parsear la revisión semántica' };
+
+  console.log('📤 Enviando prompt a Vertex AI...');
+  try {
+    const response = await askVertex(prompt, 'gemini-2.5-flash');
+    console.log('📥 Respuesta recibida de Vertex AI');
+
+    // Extraer JSON con regex robusto
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      console.warn('⚠️ No se encontró JSON en la respuesta, devolviendo error');
+      return { error: 'No se pudo parsear la revisión semántica' };
+    }
+    const parsed = JSON.parse(jsonMatch[0]);
+    console.log('✅ Revisión semántica parseada correctamente');
+    return parsed;
+  } catch (err) {
+    console.error('❌ Error en getLLMReview:', err.message);
+    return { error: 'Revisión semántica no disponible' };
   }
-  return JSON.parse(jsonMatch[0]);
 }
 
-module.exports = { evaluateText, getLLMReview, PROTOCOL, protocol };
+module.exports = { evaluateText, getLLMReview, PROTOCOL };
