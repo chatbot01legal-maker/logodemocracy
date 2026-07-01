@@ -868,54 +868,61 @@ const VIEWS = {
   }
 };
 
-// ─── SPA ROUTER ────────────────────────────────────────
+// ─── SPA ROUTER (CORREGIDO) ───────────────────────────
 const SOPHIA = {
-  current: 'analisis',
+  current: 'inicio',
 
-  navigate(id) {
-    try {
-      const view = VIEWS[id];
-      if (!view) {
-        showDebug(`❌ Vista "${id}" no encontrada`, true);
-        return;
-      }
-      this.current = id;
+  navigate(viewId) {
+    const contentArea = document.getElementById('viewContent');
+    if (!contentArea) {
+      showDebug(`❌ Error: No se encontró #viewContent`, true);
+      return;
+    }
 
+    const view = VIEWS[viewId];
+    if (view) {
+      // Actualizar título
       const titleEl = document.getElementById('viewTitle');
-      const contentEl = document.getElementById('viewContent');
+      if (titleEl) titleEl.textContent = view.title;
 
-      if (!titleEl || !contentEl) {
-        showDebug('❌ Elementos #viewTitle o #viewContent no encontrados', true);
-        return;
-      }
+      contentArea.innerHTML = view.render();
+      console.log(`✅ Vista cambiada a: ${viewId}`);
 
-      titleEl.textContent = view.title;
-      contentEl.innerHTML = view.render();
-      showDebug(`✅ Renderizada vista: ${id}`);
-
-      this._animateBars(contentEl);
-
-      if (id === 'analisis') {
-        this._bindFileUpload();
+      // Inicializar eventos específicos de la vista
+      if (viewId === 'analisis') {
+        this.bindUploadEvents();
         this._bindEval('analisis');
-      } else if (id === 'informe') {
+      } else if (viewId === 'informe') {
         this._bindEval('informe');
       }
 
-      if (id.startsWith('fase')) {
-        this._bindPopups(contentEl);
-      }
-
+      // Activar botón correspondiente en el sidebar
       document.querySelectorAll('.snav-item[data-view]').forEach(el => {
-        el.classList.toggle('active', el.dataset.view === id);
+        el.classList.toggle('active', el.dataset.view === viewId);
       });
 
-      contentEl.scrollTop = 0;
-    } catch (e) {
-      showDebug(`❌ Error en navigate: ${e.message}\n\nStack: ${e.stack}`, true);
+      // Animación de barras (si existe)
+      this._animateBars(contentArea);
+
+      // Popups si es una fase
+      if (viewId.startsWith('fase')) {
+        this._bindPopups(contentArea);
+      }
+    } else {
+      contentArea.innerHTML = `<h1>404</h1><p>Vista no encontrada: ${viewId}</p>`;
     }
   },
 
+  bindUploadEvents() {
+    const btn = document.getElementById('uploadBtn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        document.getElementById('fileInput').click();
+      });
+    }
+  },
+
+  // ─── FUNCIONES AUXILIARES ────────────────────────────
   _animateBars(root) {
     try {
       requestAnimationFrame(() => {
@@ -1078,7 +1085,6 @@ const SOPHIA = {
           if (!response.ok) throw new Error('Error en la evaluación');
           const resultado = await response.json();
 
-          // El resultado puede venir con 'local' y 'ird' o directamente los datos
           const localData = resultado.local || resultado;
           const enriched = {
             ...localData,
@@ -1190,8 +1196,11 @@ const SOPHIA = {
       buttons.forEach(btn => {
         btn.addEventListener('click', () => this.navigate(btn.dataset.view));
       });
-      this.navigate('analisis');
-      console.log('✅ SOPHIA inicializada correctamente');
+
+      // Cargamos la vista inicial
+      this.navigate('inicio');
+
+      console.log('✅ SOPHIA inicializada');
       showDebug('✅ SOPHIA inicializada correctamente.');
     } catch (e) {
       showDebug(`❌ Error en init: ${e.message}\n\nStack: ${e.stack}`, true);
