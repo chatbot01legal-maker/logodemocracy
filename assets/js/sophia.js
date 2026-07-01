@@ -1221,4 +1221,24 @@ const SOPHIA = {
   }
 };
 
-document.addEventListener('DOMContentLoaded', () => SOPHIA.init());
+// ─── INICIALIZACIÓN GLOBAL DE SOPHIA ──
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Vinculación de eventos de navegación
+  const navButtons = document.querySelectorAll('.snav-item[data-view]');
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      // Remover clase active de todos
+      navButtons.forEach(b => b.classList.remove('active'));
+      // Añadir clase active al clicado
+      e.currentTarget.classList.add('active');
+      
+      // Ejecutar navegación
+      SOPHIA.navigate(e.currentTarget.dataset.view);
+    });
+  });
+
+  // 2. Ejecutar vista inicial
+  if (typeof SOPHIA !== 'undefined') {
+    SOPHIA.init();
+  }
+});
