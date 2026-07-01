@@ -1052,13 +1052,35 @@ const SOPHIA = {
   }
 };
 
-console.log('✅ Objeto SOPHIA definido');
 
+// ─── INICIALIZACIÓN DIFERIDA (Carga Segura) ──
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('📄 DOM completamente cargado');
+  console.log('📄 DOM listo. Iniciando SOPHIA...');
+
+  // 1. Vinculación de botones sin depender de datos externos
+  const buttons = document.querySelectorAll('.snav-item[data-view]');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+       // Primero actualizamos la UI
+       document.querySelectorAll('.snav-item').forEach(b => b.classList.remove('active'));
+       btn.classList.add('active');
+       // Luego navegamos
+       SOPHIA.navigate(btn.dataset.view);
+    });
+  });
+
+  // 2. Ejecución protegida de SOPHIA
   try {
-    SOPHIA.init();
+    // Si PROTOCOL no existe, lo creamos vacío para evitar el crash
+    if (typeof PROTOCOL === 'undefined') {
+      window.PROTOCOL = { version: "3.0", fases: [] };
+    }
+    
+    // Iniciamos Sophia
+    SOPHIA.init(); 
   } catch (e) {
-    showDebug(`❌ Error en DOMContentLoaded: ${e.message}\n\nStack: ${e.stack}`, true);
+    console.error("Error en inicialización de Sophia:", e);
+    // Intentamos cargar la vista básica aunque falle la lógica avanzada
+    SOPHIA.navigate('inicio');
   }
 });
