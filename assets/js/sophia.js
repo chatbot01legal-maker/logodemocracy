@@ -286,9 +286,7 @@ const PROTOCOL = {
           ],
           severidad: 25.0
         }
-      ]
-    }
-  ],
+      ],
 
 // --- Añade esto a tu objeto SOPHIA en sophia1.js ---
 
