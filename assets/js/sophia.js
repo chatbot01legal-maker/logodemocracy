@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   SOPHIA.JS — VERSIÓN MÍNIMA FUNCIONAL (solo analisis)
+   SOPHIA.JS — Todas las vistas (contenido simple)
    ═══════════════════════════════════════════════════════ */
 
 function showDebug(msg, isError = false) {
@@ -17,19 +17,124 @@ function showDebug(msg, isError = false) {
 // ─── PROTOCOLO (vacío, solo para que no falle) ────────
 const PROTOCOL = { version: "3.0", fases: [] };
 
-// ─── VISTAS ────────────────────────────────────────────
+// ─── VISTAS (todas con contenido simple) ─────────────
 const VIEWS = {
   analisis: {
-    title: 'Análisis Sophia (prueba)',
+    title: 'Análisis Sophia',
     render: () => `
       <div class="view">
-        <div class="view-eyebrow">Motor de Evaluación</div>
-        <h1 class="view-title">Análisis Sophia</h1>
-        <div class="view-body">
-          <p>✅ Esta vista se renderiza correctamente.</p>
-          <p>Si ves esto, el problema está en las otras vistas o en el contenido completo.</p>
-          <button id="testBtn" style="padding:10px; background:#3b82f6; border:none; color:#fff; cursor:pointer;">Probar</button>
-        </div>
+        <h1>Análisis Sophia</h1>
+        <p>Esta es la vista de análisis.</p>
+        <p>Si ves esto, la vista funciona.</p>
+      </div>
+    `
+  },
+  inicio: {
+    title: 'Protocolo Sophia',
+    render: () => `
+      <div class="view">
+        <h1>Protocolo Sophia</h1>
+        <p>Esta es la vista de inicio.</p>
+        <p>Contiene la filosofía y descripción del protocolo.</p>
+      </div>
+    `
+  },
+  opensource: {
+    title: 'Open Source Cognitivo',
+    render: () => `
+      <div class="view">
+        <h1>Open Source Cognitivo</h1>
+        <p>Explicación del principio de transparencia y código abierto.</p>
+      </div>
+    `
+  },
+  atomos: {
+    title: 'Átomos Cognitivos',
+    render: () => `
+      <div class="view">
+        <h1>Átomos Cognitivos</h1>
+        <p>Listado completo de átomos (próximamente).</p>
+      </div>
+    `
+  },
+  fase1: {
+    title: 'Fase 1: Estructura Lógica',
+    render: () => `
+      <div class="view">
+        <h1>Estructura Lógica</h1>
+        <p>Contenido de la fase 1.</p>
+      </div>
+    `
+  },
+  fase2: {
+    title: 'Fase 2: Inferencia',
+    render: () => `
+      <div class="view">
+        <h1>Inferencia</h1>
+        <p>Contenido de la fase 2.</p>
+      </div>
+    `
+  },
+  fase3: {
+    title: 'Fase 3: Calibración Epistémica',
+    render: () => `
+      <div class="view">
+        <h1>Calibración Epistémica</h1>
+        <p>Contenido de la fase 3.</p>
+      </div>
+    `
+  },
+  fase4: {
+    title: 'Fase 4: Transparencia Retórica',
+    render: () => `
+      <div class="view">
+        <h1>Transparencia Retórica</h1>
+        <p>Contenido de la fase 4.</p>
+      </div>
+    `
+  },
+  fase5: {
+    title: 'Fase 5: Pertinencia Deliberativa',
+    render: () => `
+      <div class="view">
+        <h1>Pertinencia Deliberativa</h1>
+        <p>Contenido de la fase 5.</p>
+      </div>
+    `
+  },
+  formula: {
+    title: 'Fórmula de Cálculo',
+    render: () => `
+      <div class="view">
+        <h1>Fórmula de Cálculo</h1>
+        <p>Explicación de la fórmula de agregación.</p>
+      </div>
+    `
+  },
+  academia: {
+    title: 'Integración con Academia',
+    render: () => `
+      <div class="view">
+        <h1>Academia</h1>
+        <p>Relación con el módulo Academia.</p>
+      </div>
+    `
+  },
+  relaciones: {
+    title: 'Ecosistema Deliberativo',
+    render: () => `
+      <div class="view">
+        <h1>Ecosistema Deliberativo</h1>
+        <p>Conexiones con otros módulos de LogoDemocracy.</p>
+      </div>
+    `
+  },
+  informe: {
+    title: 'Auditoría de Adherencia',
+    render: () => `
+      <div class="view">
+        <h1>Auditoría de Adherencia</h1>
+        <p>Formulario para evaluar textos (versión simple).</p>
       </div>
     `
   }
@@ -55,11 +160,8 @@ const SOPHIA = {
       titleEl.textContent = view.title;
       contentEl.innerHTML = view.render();
       showDebug(`✅ Renderizada vista: ${id}`);
-      
-      const testBtn = document.getElementById('testBtn');
-      if (testBtn) testBtn.addEventListener('click', () => alert('✅ Botón funciona'));
     } catch (e) {
-      showDebug(`❌ Error: ${e.message}`, true);
+      showDebug(`❌ Error en navigate: ${e.message}`, true);
     }
   },
 
@@ -69,6 +171,7 @@ const SOPHIA = {
         btn.addEventListener('click', () => this.navigate(btn.dataset.view));
       });
       this.navigate('analisis');
+      showDebug('✅ SOPHIA inicializada correctamente. Todas las vistas están definidas.');
     } catch (e) {
       showDebug(`❌ Error en init: ${e.message}`, true);
     }
