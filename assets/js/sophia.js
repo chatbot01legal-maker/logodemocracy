@@ -1,7 +1,9 @@
 /* ═══════════════════════════════════════════════════════
    SOPHIA.JS — Protocolo Abierto de Comunicación Deliberativa
-   v3.0 — Ontología Pública de la Deliberación
+   v3.0 — Ontología Pública de la Deliberación (con logs)
    ═══════════════════════════════════════════════════════ */
+
+console.log('📦 SOPHIA.JS cargando...');
 
 // ─── PROTOCOLO SOPHIA v3.0 ────────────────────────────
 const PROTOCOL = {
@@ -278,18 +280,17 @@ const PROTOCOL = {
   ]
 };
 
+console.log(`✅ PROTOCOL cargado. Fases: ${PROTOCOL.fases.length}`);
+
 // ─── MECÁNICA DE CÁLCULO (fallback local, no se usa en este modo) ──
 function evaluateText(text) {
-  // Esta función se mantiene solo como respaldo, pero el frontend ahora llama a la API
-  // Puedes eliminarla si quieres, pero no interfiere.
-  if (!text || text.trim().length === 0) return null;
-  // ... (código de evaluación local, igual que antes)
-  // Por brevedad no lo repito, pero puedes dejarlo como estaba.
+  console.warn('⚠️ evaluateText local llamado (no debería usarse)');
   return { IRD_global: 0, riesgo: "Normal", fases: [], evidencias: [] };
 }
 
 // ─── SISTEMA DE POPUPS ─────────────────────────────────
 function showDefinitionPopup(title, definition) {
+  console.log(`🔔 Popup: ${title}`);
   const existing = document.querySelector('.sophia-popup-overlay');
   if (existing) existing.remove();
 
@@ -312,6 +313,7 @@ function showDefinitionPopup(title, definition) {
 
 // ─── RENDER DE FASES (con popups) ─────────────────────
 function renderFase(faseId) {
+  console.log(`🖥️ Renderizando fase: ${faseId}`);
   const fase = PROTOCOL.fases.find(f => f.id === faseId);
   if (!fase) return "<p>Fase no encontrada.</p>";
 
@@ -350,6 +352,7 @@ function renderFase(faseId) {
 }
 
 // ─── VISTAS ────────────────────────────────────────────
+console.log('🔄 Construyendo vistas...');
 const VIEWS = {
   analisis: {
     title: 'Análisis Sophia',
@@ -392,7 +395,7 @@ const VIEWS = {
         <div class="view-body">
           <p>SOPHIA es un <strong>protocolo abierto de comunicación deliberativa</strong> (RFC de la racionalidad pública). No evalúa la verdad del contenido, sino la <strong>legitimidad del proceso argumentativo</strong>.</p>
           <p>Se fundamenta en una <strong>gramática formal de la deliberación</strong>: un sistema de reglas, átomos semánticos y meta-reglas que cualquier ciudadano puede auditar, debatir y versionar.</p>
-          <p>Todo el código fuente cognitivo es <strong>Open Source</strong>; cada criterio, constructo y átomo está documentado y es debatible. La ciudadanía puede inspeccionar cada fase y definición operacional, proponer modificaciones y observar el historial de cambios.</p>
+          <p>Todo el código fuente cognitivo es <strong>Open Source</strong>; cada criterio, constructo y átomo está documentado y es debatible.</p>
           <p>SOPHIA no censura; <strong>etiqueta</strong>. Su salida es un <em>acta de infracción</em> que detalla qué reglas de la conversación racional han sido violadas y en qué medida.</p>
           <p>Es, en esencia, un <strong>sistema inmunológico cognitivo</strong> para el espacio público.</p>
         </div>
@@ -702,23 +705,37 @@ const VIEWS = {
       </div>`
   }
 };
+console.log(`✅ Vistas cargadas: ${Object.keys(VIEWS).join(', ')}`);
 
 // ─── SPA ROUTER ────────────────────────────────────────
 const SOPHIA = {
   current: 'analisis',
 
   navigate(id) {
+    console.log(`🔀 Navegando a: ${id}`);
     const view = VIEWS[id];
-    if (!view) return;
+    if (!view) {
+      console.error(`❌ Vista ${id} no encontrada`);
+      return;
+    }
     this.current = id;
 
-    document.getElementById('viewTitle').textContent = view.title;
-    const content = document.getElementById('viewContent');
-    content.innerHTML = view.render();
+    const titleEl = document.getElementById('viewTitle');
+    const contentEl = document.getElementById('viewContent');
 
-    this._animateBars(content);
+    if (!titleEl || !contentEl) {
+      console.error('❌ Elementos #viewTitle o #viewContent no encontrados en el DOM');
+      return;
+    }
+
+    titleEl.textContent = view.title;
+    contentEl.innerHTML = view.render();
+    console.log(`✅ Renderizada vista: ${id}`);
+
+    this._animateBars(contentEl);
 
     if (id === 'analisis') {
+      console.log('📎 Vinculando carga de archivos y evaluación...');
       this._bindFileUpload();
       this._bindEval('analisis');
     } else if (id === 'informe') {
@@ -726,14 +743,14 @@ const SOPHIA = {
     }
 
     if (id.startsWith('fase')) {
-      this._bindPopups(content);
+      this._bindPopups(contentEl);
     }
 
     document.querySelectorAll('.snav-item[data-view]').forEach(el => {
       el.classList.toggle('active', el.dataset.view === id);
     });
 
-    content.scrollTop = 0;
+    contentEl.scrollTop = 0;
   },
 
   _animateBars(root) {
@@ -747,6 +764,7 @@ const SOPHIA = {
   },
 
   _bindPopups(root) {
+    console.log('🔗 Vinculando popups...');
     root.querySelectorAll('[data-constructo]').forEach(el => {
       el.style.cursor = 'pointer';
       el.style.color = 'var(--accent)';
@@ -786,6 +804,7 @@ const SOPHIA = {
   },
 
   _bindFileUpload() {
+    console.log('📎 Configurando carga de archivos...');
     const uploadArea = document.getElementById('uploadArea');
     const fileInput = document.getElementById('fileInput');
     const uploadBtn = document.getElementById('uploadBtn');
@@ -798,6 +817,7 @@ const SOPHIA = {
 
     const handleFile = (file) => {
       if (!file) return;
+      console.log(`📂 Archivo seleccionado: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`);
       const ext = file.name.split('.').pop().toLowerCase();
       if (!['txt', 'pdf'].includes(ext)) {
         alert('Formato no soportado. Usa .txt o .pdf.');
@@ -811,9 +831,11 @@ const SOPHIA = {
         const reader = new FileReader();
         reader.onload = (e) => {
           evalInput.value = e.target.result;
+          console.log(`✅ Archivo TXT cargado: ${file.name}`);
         };
         reader.readAsText(file);
       } else if (ext === 'pdf') {
+        console.log('📄 Cargando PDF.js...');
         const script = document.createElement('script');
         script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js';
         script.onload = () => {
@@ -829,6 +851,7 @@ const SOPHIA = {
               fullText += strings.join(' ') + '\n';
             }
             evalInput.value = fullText;
+            console.log(`✅ PDF cargado: ${file.name}, ${pdf.numPages} páginas`);
           };
           reader.readAsArrayBuffer(file);
         };
@@ -855,8 +878,8 @@ const SOPHIA = {
     });
   },
 
-  // ─── NUEVO _bindEval (llama a la API) ────────────────
   _bindEval(source) {
+    console.log('🔘 Vinculando botón de evaluación...');
     const btn = document.getElementById('evalBtn');
     if (!btn) return;
     const newBtn = btn.cloneNode(true);
@@ -873,20 +896,24 @@ const SOPHIA = {
         return;
       }
 
+      console.log(`📤 Enviando texto a evaluar (${text.length} caracteres)`);
       out.innerHTML = `<p style="color:rgba(229,231,235,.35);font-size:.72rem;margin-top:12px;">Analizando con SOPHIA (motor local + IA)...</p>`;
 
       try {
         const userId = localStorage.getItem('userId') || null;
+        console.log(`👤 userId: ${userId || 'anonimo'}`);
+
         const response = await fetch('/api/sophia/evaluate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ text, userId })
         });
 
-        if (!response.ok) throw new Error('Error en la evaluación');
+        console.log(`📥 Respuesta del servidor: ${response.status}`);
+        if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
         const resultado = await response.json();
+        console.log(`✅ Evaluación completada. IRD: ${resultado.ird}%`);
 
-        // El resultado tiene { local, llm_review, ird, risk, ... }
         const localData = resultado.local;
         const enriched = {
           ...localData,
@@ -896,14 +923,14 @@ const SOPHIA = {
         };
         this._renderEvaluation(enriched, out);
       } catch (error) {
-        console.error(error);
-        out.innerHTML = `<p style="color:rgba(239,68,68,.7);font-size:.78rem;margin-top:12px;">Error al conectar con el servidor. Asegúrate de que el backend esté corriendo.</p>`;
+        console.error('❌ Error en evaluación:', error);
+        out.innerHTML = `<p style="color:rgba(239,68,68,.7);font-size:.78rem;margin-top:12px;">Error al conectar con el servidor: ${error.message}</p>`;
       }
     });
   },
 
-  // ─── NUEVO _renderEvaluation (con revisión semántica) ──
   _renderEvaluation(resultado, out) {
+    console.log('📊 Renderizando acta de infracción...');
     const fasesHTML = resultado.fases.map(f => `
       <div style="margin-bottom: 16px; padding: 12px; background: rgba(255,255,255,.04); border-left: 2px solid ${f.puntaje >= 80 ? 'var(--q-high)' : 'var(--q-mid)'};">
         <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -974,15 +1001,23 @@ const SOPHIA = {
         </div>
       </div>
     `;
+    console.log('✅ Acta de infracción renderizada');
     this._animateBars(out);
   },
 
   init() {
+    console.log('🚀 Inicializando SOPHIA...');
     document.querySelectorAll('.snav-item[data-view]').forEach(btn => {
       btn.addEventListener('click', () => this.navigate(btn.dataset.view));
     });
     this.navigate('analisis');
+    console.log('✅ SOPHIA inicializada correctamente');
   }
 };
 
-document.addEventListener('DOMContentLoaded', () => SOPHIA.init());
+console.log('✅ Objeto SOPHIA definido');
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('📄 DOM completamente cargado');
+  SOPHIA.init();
+});
