@@ -341,7 +341,6 @@ const PROTOCOL = {
     } catch (e) {
       showDebug(`❌ Error en init: ${e.message}`, true);
     }
-  }
 };
 // ... (asegúrate de cerrar bien el objeto SOPHIA)
 
