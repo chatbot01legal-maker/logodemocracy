@@ -1108,9 +1108,11 @@ const SOPHIA = {
         showDebug(`❌ Error en _bindEval: ${error.message}`, true);
       }
     });
+  
+  } catch (e) {
+    showDebug(`❌ Error en _bindEval: ${e.message}`, true);
+}
   },
-
-    
       init() {
     try {
       console.log('🚀 Inicializando SOPHIA...');
