@@ -1061,4 +1061,31 @@ const SOPHIA = {
   }
 })();
 
-  
+  // ─── PARCHE PARA EL BOTÓN DEL SIDEBAR (SOLO EN SOPHIA) ──
+(function patchSidebar() {
+  var sidebar = document.querySelector('.sidebar');
+  var toggle = document.querySelector('.sidebar-toggle');
+  if (!sidebar || !toggle) return;
+
+  // Si la pantalla es pequeña (como tablet), lo dejamos oculto al inicio
+  if (window.innerWidth <= 1024) {
+    sidebar.classList.add('collapsed');
+    toggle.textContent = '▸';
+  }
+
+  // Eliminamos los eventos anteriores y ponemos los nuestros (para que funcione táctil)
+  var nuevoToggle = toggle.cloneNode(true);
+  toggle.parentNode.replaceChild(nuevoToggle, toggle);
+
+  function alternar(e) {
+    e.preventDefault();
+    var colapsado = sidebar.classList.toggle('collapsed');
+    nuevoToggle.textContent = colapsado ? '▸' : '◂';
+  }
+
+  // Escuchamos tanto clic como toque (para tablet)
+  nuevoToggle.addEventListener('click', alternar);
+  nuevoToggle.addEventListener('touchstart', alternar, { passive: false });
+
+  console.log('✅ Sidebar reparado en Sophia');
+})();
