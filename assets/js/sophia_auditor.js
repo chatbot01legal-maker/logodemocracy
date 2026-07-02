@@ -255,3 +255,34 @@ function runAudits(protocol) {
 // ─────────────────────────────────────────────
 
 module.exports = { runAudits };
+
+
+// ─────────────────────────────────────────────
+// CLI ENTRY POINT (FALTANTE)
+// ─────────────────────────────────────────────
+
+function main() {
+  const fs = require('fs');
+  const path = require('path');
+  const yaml = require('js-yaml');
+
+  const protocolPath = path.join(__dirname, 'protocol', 'sophia_protocol.yaml');
+
+  console.log("🔍 SOPHIA AUDITOR vNEXT");
+  console.log("📄 Cargando protocolo...");
+
+  const protocol = yaml.load(fs.readFileSync(protocolPath, 'utf8'));
+
+  const { resultados, indices } = runAudits(protocol);
+
+  console.log("\n📊 RESULTADOS:");
+  for (const r of resultados) {
+    console.log(`- ${r.id}: ${r.passed ? "OK" : "FAIL"} — ${r.message}`);
+  }
+
+  console.log("\n📈 MADUREZ:", indices.Madurez ?? indices.SCC ?? 0);
+}
+
+if (require.main === module) {
+  main();
+}
