@@ -345,19 +345,32 @@ function main() {
   const protocol = loadProtocol(protocolPath);
   const { resultados, indices } = runAudits(protocol);
 
-  console.log("\n📊 RESULTADOS:");
-  for (const r of resultados) {
-    console.log(`- ${r.id}: ${r.passed ? "OK" : "FAIL"} — ${r.message}`);
-  }
-
-  console.log("\n📈 MADUREZ:", indices.Madurez ?? indices.SCC ?? 0);
-
   const trace = resultados.find(r => r.id === "A9-TRACE");
 
-  if (trace?.worst_criteria?.length) {
-    console.log("\n🔥 PEOR CRITERIO:");
-    console.log(trace.worst_criteria[0]);
-  }
+  console.log("\n📊 COBERTURA POR DIMENSIÓN Y CRITERIO");
+
+  trace.dimensions.forEach(dim => {
+    console.log(`\n📦 ${dim.dimension} (avg: ${dim.avgCoverage}%)`);
+
+    dim.criteria.forEach(c => {
+      const symbol =
+        c.coverage >= 80 ? "🟢" :
+        c.coverage >= 50 ? "🟡" : "🔴";
+
+      console.log(`   ${symbol} ${c.id}: ${c.coverage}%`);
+    });
+  });
+
+  console.log("\n📊 RESUMEN GLOBAL");
+  console.log(`ADEF: ${resultados.find(r => r.id === "ADEF").passed ? "OK" : "FAIL"}`);
+  console.log(`A8: ${resultados.find(r => r.id === "A8").passed ? "OK" : "FAIL"}`);
+  console.log(`APAT issues: ${resultados.find(r => r.id === "APAT").issues.length}`);
+  console.log(`AMAP mejoras: ${resultados.find(r => r.id === "AMAP").suggestions.length}`);
+  console.log(`A9: ${resultados.find(r => r.id === "A9").coverage}%`);
+
+  console.log(`\n🎯 FOCO: ${trace.worstCriteria?.[0]?.dimension}.${trace.worstCriteria?.[0]?.id} (${trace.worstCriteria?.[0]?.coverage}%)`);
+
+  console.log(`📈 MADUREZ: ${indices.Madurez ?? 0}`);
 }
 
 if (require.main === module) {
