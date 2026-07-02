@@ -1110,7 +1110,8 @@ const SOPHIA = {
     });
   },
 
-    init() {
+    
+      init() {
     try {
       console.log('🚀 Inicializando SOPHIA...');
       const buttons = document.querySelectorAll('button.snav-item');
@@ -1127,15 +1128,10 @@ const SOPHIA = {
   }
 };
 
-// ─── INICIALIZACIÓN FINAL ────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   console.log('✅ El motor está encendido');
   SOPHIA.init();
 });
-
-  SOPHIA.init();
-});
-
 
 
            
