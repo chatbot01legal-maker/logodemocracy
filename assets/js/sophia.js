@@ -1097,162 +1097,28 @@ const SOPHIA = {
             riesgo: resultado.risk || localData.riesgo,
             llm_review: resultado.llm_review || null
           };
-          this._renderEvaluation(enriched, out);
-        } catch (error) {
-          console.error('❌ Error en evaluación:', error);
-          const out = document.getElementById('evalResult');
-          if (out) {
-            out.innerHTML = `<p style="color:rgba(239,68,68,.7);font-size:.78rem;margin-top:12px;">Error al conectar con el servidor: ${error.message}</p>`;
-          }
-          showDebug(`❌ Error en _bindEval: ${error.message}`, true);
+
+        this._renderEvaluation(enriched, out);
+      } catch (error) {
+        console.error('❌ Error en evaluación:', error);
+        const out = document.getElementById('evalResult');
+        if (out) {
+          out.innerHTML = `<p style="color:rgba(239,68,68,.7);font-size:.78rem;margin-top:12px;">Error: ${error.message}</p>`;
         }
-      });
-    } catch (e) {
-      showDebug(`❌ Error en _bindEval: ${e.message}`, true);
-    }
-  },
-
-  _renderEvaluation(resultado, out) {
-    try {
-      const fasesHTML = resultado.fases.map(f => `
-        <div style="margin-bottom: 16px; padding: 12px; background: rgba(255,255,255,.04); border-left: 2px solid ${f.puntaje >= 80 ? 'var(--q-high)' : 'var(--q-mid)'};">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-weight: 500; color: #e5e7eb;">${f.nombre}</span>
-            <span style="font-size: 0.9rem; color: ${f.puntaje >= 80 ? 'var(--q-high)' : 'var(--q-mid)'};">${f.puntaje}%</span>
-          </div>
-          ${f.infracciones && f.infracciones.length > 0 ? `
-            <div style="font-size: 0.7rem; color: rgba(229,231,235,.5); margin-top: 6px;">
-              Infracciones: ${f.infracciones.map(inf => {
-                let texto = `${inf.criterio} (${inf.penalizacion} pts)`;
-                if (inf.meta_regla_aplicada) texto += ` • ${inf.meta_regla_aplicada}`;
-                return texto;
-              }).join('; ')}
-            </div>
-          ` : `<div style="font-size: 0.7rem; color: rgba(229,231,235,.25); margin-top: 6px;">Sin infracciones detectadas</div>`}
-        </div>
-      `).join('');
-
-      const evidenciasHTML = (resultado.evidencias || []).slice(0, 5).map(e => `
-        <div style="font-size: 0.7rem; color: rgba(229,231,235,.5); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.04);">
-          <span style="color: var(--accent);">${e.atomo}</span> — “${e.fragmento}”
-        </div>
-      `).join('');
-
-      const llmReviewHTML = resultado.llm_review && !resultado.llm_review.error ? `
-        <div style="margin-top: 20px; padding: 14px; background: rgba(139,92,246,.08); border-left: 2px solid #8b5cf6;">
-          <div style="font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8b5cf6; margin-bottom: 10px;">Revisión Semántica (IA)</div>
-          <div style="font-size: 0.75rem; color: rgba(229,231,235,.6);">
-            ${resultado.llm_review.evidence_quality ? `<div>Calidad de evidencia: <strong>${resultado.llm_review.evidence_quality}</strong></div>` : ''}
-            ${resultado.llm_review.tone_proportionality ? `<div>Proporcionalidad tonal: <strong>${resultado.llm_review.tone_proportionality}</strong></div>` : ''}
-            ${resultado.llm_review.overall_comment ? `<div style="margin-top:6px;">${resultado.llm_review.overall_comment}</div>` : ''}
-          </div>
-        </div>
-      ` : '';
-
-      out.innerHTML = `
-        <div class="report-card" style="margin-top:20px;">
-          <div class="report-card-header">
-            <span class="report-card-title">Acta de Infracción</span>
-            <span class="report-stamp">PROTOCOLO SOPHIA v0.92-beta</span>
-          </div>
-          <div class="report-card-body">
-            <div class="report-meta">
-              <div class="report-meta-item">
-                <div class="meta-value">${resultado.IRD_global}%</div>
-                <div class="meta-label">IRD Global</div>
-              </div>
-              <div class="report-meta-item">
-                <div class="meta-value">${resultado.IRD_global >= 75 ? '✓' : '✗'}</div>
-                <div class="meta-label">${resultado.IRD_global >= 75 ? 'Calidad Aceptada' : 'Calidad Insuficiente'}</div>
-              </div>
-              <div class="report-meta-item">
-                <div class="meta-value">${resultado.riesgo}</div>
-                <div class="meta-label">Riesgo Deliberativo</div>
-              </div>
-            </div>
-            <div style="margin: 16px 0;">${fasesHTML}</div>
-            ${evidenciasHTML ? `
-              <div style="margin-top: 20px; padding: 14px; background: rgba(59,130,246,.05); border-left: 2px solid var(--accent);">
-                <div style="font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px;">Evidencias Textuales (muestra)</div>
-                ${evidenciasHTML}
-              </div>
-            : ''}
-            ${llmReviewHTML}
-            <div style="font-size: 0.6rem; color: rgba(229,231,235,.2); margin-top: 12px;">
-              * Evaluación híbrida: motor local + IA complementaria.
-            </div>
-          </div>
-        </div>
-      `;
-      this._animateBars(out);
-    } catch (e) {
-      showDebug(`❌ Error en _renderEvaluation: ${e.message}`, true);
-    }
+        showDebug(`❌ Error en _bindEval: ${error.message}`, true);
+      }
+    });
   },
 
   init() {
     try {
       console.log('🚀 Inicializando SOPHIA...');
-      const buttons = document.querySelectorAll('.snav-item[data-view]');
-      if (buttons.length === 0) {
-        showDebug('⚠️ No se encontraron botones .snav-item[data-view]', true);
-        return;
-      }
-      buttons.forEach(btn => {
-        btn.addEventListener('click', () => this.navigate(btn.dataset.view));
-        // Activar la clase active solo para el que corresponda (se maneja en navigate)
-      });
-      // Cargamos la vista inicial
-      this.navigate('inicio');
-      console.log('✅ SOPHIA inicializada correctamente');
-    } catch (e) {
-      showDebug(`❌ Error en init: ${e.message}\n\nStack: ${e.stack}`, true);
-    }
-  }
-};
-
-console.log('✅ Objeto SOPHIA definido');
-
-// ─── INICIALIZACIÓN ────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('📄 DOM completamente cargado');
-  try {
-    SOPHIA.init();
-  } catch (e) {
-    showDebug(`❌ Error en DOMContentLoaded: ${e.message}\n\nStack: ${e.stack}`, true);
-  }
-});
-
-
-/* ═══════════════════════════════════════════════════════
-   SOPHIA.JS — Protocolo Abierto de Comunicación Deliberativa
-   v3.0.1 — Parche de inicialización de eventos
-   ═══════════════════════════════════════════════════════ */
-
-// ... [Mantén todo el código anterior hasta SOPHIA.init]
-
-  init() {
-    try {
-      console.log('🚀 Reiniciando SOPHIA...');
-      // Selector corregido para capturar todos los botones de navegación
       const buttons = document.querySelectorAll('button.snav-item');
-      if (buttons.length === 0) {
-        console.error('⚠️ No se encontraron botones de navegación .snav-item');
-        return;
-      }
-      
       buttons.forEach(btn => {
-        // Removemos eventos previos si existen
-        btn.replaceWith(btn.cloneNode(true));
-      });
-
-      // Re-seleccionamos tras el clonado
-      document.querySelectorAll('button.snav-item').forEach(btn => {
         btn.addEventListener('click', (e) => {
           this.navigate(e.currentTarget.dataset.view);
         });
       });
-
       this.navigate('inicio');
       console.log('✅ SOPHIA inicializada con éxito');
     } catch (e) {
@@ -1262,11 +1128,11 @@ document.addEventListener('DOMContentLoaded', () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  SOPHIA.init();
-});
-
-// ─── INICIALIZACIÓN FINAL ────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
   console.log('✅ El motor está encendido');
   SOPHIA.init();
 });
+
+
+
+           
+          
