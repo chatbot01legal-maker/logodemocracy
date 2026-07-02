@@ -224,11 +224,13 @@ function auditSemanticCoverage(protocol) {
 function auditSemanticTrace(protocol) {
   const trace = [];
 
+  // 1. construir estructura por dimensión
   protocol.dimensions.forEach(dim => {
 
-    const dimResult = {
+    const dimEntry = {
       dimension: dim.id,
-      criteria: []
+      criteria: [],
+      avgCoverage: 0
     };
 
     (dim.criteria || []).forEach(c => {
@@ -236,7 +238,10 @@ function auditSemanticTrace(protocol) {
       let total = 0;
       let covered = 0;
 
-      const text = (c.construct?.definition || "") + " " + (c.definition || "");
+      const text =
+        (c.construct?.definition || "") +
+        " " +
+        (c.definition || "");
 
       const atoms = (c.atoms || []).map(a => ({
         id: a.id,
@@ -257,33 +262,49 @@ function auditSemanticTrace(protocol) {
         if (ok) covered++;
       }
 
-      const coverage = total ? (covered / total) * 100 : 0;
+      const coverage = total ? Math.round((covered / total) * 100) : 0;
 
-      dimResult.criteria.push({
+      dimEntry.criteria.push({
         id: c.id,
-        coverage: Math.round(coverage),
-        gap: Math.round(100 - coverage)
+        coverage,
+        gap: 100 - coverage
       });
+
     });
 
-    trace.push(dimResult);
+    // promedio de dimensión
+    dimEntry.avgCoverage = Math.round(
+      dimEntry.criteria.reduce((acc, c) => acc + c.coverage, 0) /
+      (dimEntry.criteria.length || 1)
+    );
+
+    trace.push(dimEntry);
   });
 
-  const ranking = trace
-    .flatMap(d => d.criteria.map(c => ({
-      dimension: d.dimension,
-      ...c
-    })))
+  // 2. ranking global
+  const globalRanking = trace
+    .flatMap(d =>
+      d.criteria.map(c => ({
+        dimension: d.dimension,
+        ...c
+      }))
+    )
     .sort((a, b) => a.coverage - b.coverage);
 
+  // 3. salida estructural completa
   return {
     id: "A9-TRACE",
-    name: "Cobertura trazable",
-    trace,
-    ranking,
-    worst_criteria: ranking.slice(0, 5),
-    best_criteria: ranking.slice(-5),
-    message: ranking.length ? `Worst: ${ranking[0].id}` : "OK"
+    name: "Mapa completo de cobertura semántica",
+    
+    dimensions: trace,
+
+    globalRanking,
+
+    worstCriteria: globalRanking.slice(0, 10),
+
+    bestCriteria: globalRanking.slice(-10),
+
+    message: `Worst: ${globalRanking[0]?.dimension}.${globalRanking[0]?.id} (${globalRanking[0]?.coverage}%)`
   };
 }
 
