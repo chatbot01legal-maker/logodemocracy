@@ -1,0 +1,300 @@
+        <div class="view-section">
+          <div class="view-section-title">Nodos de Interacción</div>
+          <div class="relation-grid">
+            <div class="relation-card relation-card--academia">
+              <div class="relation-header">
+                <div class="relation-dot"></div>
+                <span class="relation-name">Academia & Ágora</span>
+              </div>
+              <div class="relation-desc">SOPHIA asegura que los documentos que ingresan a la Academia posean trazabilidad argumentativa mínima.</div>
+            </div>
+            <div class="relation-card relation-card--rey">
+              <div class="relation-header">
+                <div class="relation-dot"></div>
+                <span class="relation-name">Rey Filósofo</span>
+              </div>
+              <div class="relation-desc">Cuando un texto presenta baja adherencia, Rey Filósofo actúa como tutor.</div>
+            </div>
+            <div class="relation-card relation-card--logos">
+              <div class="relation-header">
+                <div class="relation-dot"></div>
+                <span class="relation-name">Logos</span>
+              </div>
+              <div class="relation-desc">Logos audita la matriz estructural del código; SOPHIA audita la honestidad retórica.</div>
+            </div>
+            <div class="relation-card relation-card--aletheia">
+              <div class="relation-header">
+                <div class="relation-dot"></div>
+                <span class="relation-name">Aletheia</span>
+              </div>
+              <div class="relation-desc">SOPHIA fiscaliza el rigor formal; Aletheia mapea la veracidad empírica.</div>
+            </div>
+          </div>
+        </div>
+      </div>`
+  },
+
+  informe: {
+    title: 'Auditoría de Adherencia',
+    render: () => `
+      <div class="view">
+        <div class="view-eyebrow">Motor de Evaluación</div>
+        <h1 class="view-title">Auditoría de Adherencia</h1>
+        <div class="view-body">
+          <p>Ingresa un texto para estimar su <strong>Índice de Robustez Deliberativa (IRD)</strong>.</p>
+        </div>
+        <div class="eval-tool">
+          <textarea class="sophia-input" id="evalInput" placeholder="Pega aquí el documento a auditar..."></textarea>
+          <div class="eval-actions">
+            <button class="btn-primary" id="evalBtn">Auditar Documento →</button>
+          </div>
+        </div>
+        <div id="evalResult"></div>
+      </div>`
+  }
+};
+
+// ─── SPA ROUTER ────────────────────────────────────────
+const SOPHIA = {
+  current: 'analisis',
+
+  navigate(id) {
+    const view = VIEWS[id];
+    if (!view) return;
+    this.current = id;
+
+    document.getElementById('viewTitle').textContent = view.title;
+    const content = document.getElementById('viewContent');
+    content.innerHTML = view.render();
+
+    this._animateBars(content);
+
+    if (id === 'analisis') {
+      this._bindFileUpload();
+      this._bindEval('analisis');
+    } else if (id === 'informe') {
+      this._bindEval('informe');
+    }
+
+    if (id.startsWith('fase')) {
+      this._bindPopups(content);
+    }
+
+    document.querySelectorAll('.snav-item[data-view]').forEach(el => {
+      el.classList.toggle('active', el.dataset.view === id);
+    });
+
+    content.scrollTop = 0;
+  },
+
+  _animateBars(root) {
+    requestAnimationFrame(() => {
+      root.querySelectorAll('.score-bar[data-target]').forEach(bar => {
+        requestAnimationFrame(() => {
+          bar.style.width = bar.dataset.target;
+        });
+      });
+    });
+  },
+
+  _bindPopups(root) {
+    root.querySelectorAll('[data-constructo]').forEach(el => {
+      el.style.cursor = 'pointer';
+      el.style.color = 'var(--accent)';
+      el.addEventListener('click', () => {
+        const constructo = el.dataset.constructo;
+        let def = 'Definición no disponible.';
+        for (const fase of PROTOCOL.fases) {
+          for (const crit of fase.criterios) {
+            if (crit.constructo === constructo) {
+              def = crit.definicion;
+              break;
+            }
+          }
+        }
+        showDefinitionPopup(`Constructo: ${constructo}`, def);
+      });
+    });
+    root.querySelectorAll('[data-atomo]').forEach(el => {
+      el.style.cursor = 'pointer';
+      el.style.color = '#d97706';
+      el.addEventListener('click', () => {
+        const atomo = el.dataset.atomo.split(' ')[0];
+        let def = 'Definición no disponible.';
+        for (const fase of PROTOCOL.fases) {
+          for (const crit of fase.criterios) {
+            for (const a of crit.atomos) {
+              if (a.id === atomo) {
+                def = a.definicion;
+                break;
+              }
+            }
+          }
+        }
+        showDefinitionPopup(`Átomo: ${atomo}`, def);
+      });
+    });
+  },
+
+  _bindFileUpload() {
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const preview = document.getElementById('filePreview');
+    const fileName = document.getElementById('fileName');
+    const fileSize = document.getElementById('fileSize');
+    const evalInput = document.getElementById('evalInput');
+
+    if (!uploadArea || !fileInput || !uploadBtn) return;
+
+    const handleFile = (file) => {
+      if (!file) return;
+      const ext = file.name.split('.').pop().toLowerCase();
+      if (!['txt', 'pdf'].includes(ext)) {
+        alert('Formato no soportado. Usa .txt o .pdf.');
+        return;
+      }
+      fileName.textContent = file.name;
+      fileSize.textContent = `${(file.size / 1024).toFixed(1)} KB`;
+      preview.style.display = 'block';
+
+      if (ext === 'txt') {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          evalInput.value = e.target.result;
+        };
+        reader.readAsText(file);
+      } else if (ext === 'pdf') {
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js';
+        script.onload = () => {
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            const arrayBuffer = e.target.result;
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let fullText = '';
+            for (let i = 1; i <= pdf.numPages; i++) {
+              const page = await pdf.getPage(i);
+              const content = await page.getTextContent();
+              const strings = content.items.map(item => item.str);
+              fullText += strings.join(' ') + '\n';
+            }
+            evalInput.value = fullText;
+          };
+          reader.readAsArrayBuffer(file);
+        };
+        document.head.appendChild(script);
+      }
+    };
+
+    uploadBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) handleFile(e.target.files[0]);
+    });
+
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.style.borderColor = 'var(--accent)';
+    });
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.style.borderColor = 'rgba(59,130,246,.3)';
+    });
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.style.borderColor = 'rgba(59,130,246,.3)';
+      if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+    });
+  },
+
+  _bindEval(source) {
+    const btn = document.getElementById('evalBtn');
+    if (!btn) return;
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+
+    newBtn.addEventListener('click', () => {
+      const input = document.getElementById('evalInput');
+      if (!input) return;
+      const text = input.value.trim();
+      const out = document.getElementById('evalResult');
+
+      if (!text) {
+        out.innerHTML = '<p style="color:rgba(239,68,68,.7);font-size:.78rem;margin-top:12px;">Ingresa o carga un texto para estimar su calidad deliberativa.</p>';
+        return;
+      }
+
+      out.innerHTML = '<p style="color:rgba(229,231,235,.35);font-size:.72rem;margin-top:12px;">Analizando adherencia al protocolo...</p>';
+
+      setTimeout(() => {
+        const resultado = evaluateText(text);
+        if (!resultado) {
+          out.innerHTML = '<p style="color:rgba(239,68,68,.7);font-size:.78rem;">Error al evaluar el texto.</p>';
+          return;
+        }
+
+        const fasesHTML = resultado.fases.map(f => {
+          const color = f.puntaje >= 80 ? 'var(--q-high)' : 'var(--q-mid)';
+          let infraccionesTexto = '';
+          if (f.infracciones.length > 0) {
+            infraccionesTexto = f.infracciones.map(inf => {
+              let texto = `${inf.criterio} (${inf.penalizacion} pts, saturación ${inf.saturacion}%)`;
+              if (inf.meta_reglas_aplicadas && inf.meta_reglas_aplicadas.length > 0) {
+                texto += ` • MR: ${inf.meta_reglas_aplicadas.join(',')}`;
+              }
+              return texto;
+            }).join('; ');
+          } else {
+            infraccionesTexto = 'Sin infracciones detectadas';
+          }
+          return `
+            <div style="margin-bottom: 16px; padding: 12px; background: rgba(255,255,255,.04); border-left: 2px solid ${color};">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 500; color: #e5e7eb;">${f.nombre}</span>
+                <span style="font-size: 0.9rem; color: ${color};">${f.puntaje}%</span>
+              </div>
+              <div style="font-size: 0.7rem; color: rgba(229,231,235,.5); margin-top: 6px;">
+                Infracciones: ${infraccionesTexto}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        const evidenciasHTML = resultado.evidencias.slice(0, 5).map(e => `
+          <div style="font-size: 0.7rem; color: rgba(229,231,235,.5); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.04);">
+            <span style="color: var(--accent);">${e.atomo}</span> — “${e.fragmento}”
+          </div>
+        `).join('');
+
+        const metaReglasHTML = resultado.meta_reglas_aplicadas && resultado.meta_reglas_aplicadas.length > 0
+          ? `<div style="margin-top:8px; font-size:0.65rem; color:rgba(229,231,235,.4);">Meta-reglas aplicadas: ${resultado.meta_reglas_aplicadas.join(', ')}</div>`
+          : '';
+
+        out.innerHTML = `
+          <div class="report-card" style="margin-top:20px;">
+            <div class="report-card-header">
+              <span class="report-card-title">Acta de Infracción</span>
+              <span class="report-stamp">PROTOCOLO SOPHIA v0.92-beta</span>
+            </div>
+            <div class="report-card-body">
+              <div class="report-meta">
+                <div class="report-meta-item">
+                  <div class="meta-value">${resultado.IRD_global}%</div>
+                  <div class="meta-label">IRD Global</div>
+                </div>
+                <div class="report-meta-item">
+                  <div class="meta-value">${resultado.IRD_global >= 75 ? '✓' : '✗'}</div>
+                  <div class="meta-label">${resultado.IRD_global >= 75 ? 'Calidad Aceptada' : 'Calidad Insuficiente'}</div>
+                </div>
+                <div class="report-meta-item">
+                  <div class="meta-value">${resultado.riesgo}</div>
+                  <div class="meta-label">Riesgo Deliberativo</div>
+                </div>
+              </div>
+              <div style="margin: 16px 0;">${fasesHTML}</div>
+              ${metaReglasHTML}
+              ${resultado.evidencias.length > 0 ? `
+                <div style="margin-top: 20px; padding: 14px; background: rgba(59,130,246,.05); border-left: 2px solid var(--accent);">
+                  <div style="font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px;">Evidencias Textuales (muestra)</div>
+                  ${evidenciasHTML}
+                </div>
+              ` : ''}

@@ -1,0 +1,33 @@
+              <div style="font-size: 0.6rem; color: rgba(229,231,235,.2); margin-top: 12px;">
+                * Evaluación determinista con métricas de saturación.
+              </div>
+            </div>
+          </div>
+        `;
+        this._animateBars(out);
+      }, 600);
+    });
+  },
+
+
+  // ─── INICIALIZACIÓN DEFINITIVA ──
+  init() {
+    console.log('🚀 SOPHIA inicializado.');
+    this.navigate('analisis');
+  }
+}; // <--- Este cierra tu objeto SOPHIA
+
+// SOLO un bloque para iniciar todo
+document.addEventListener('DOMContentLoaded', () => {
+  const navButtons = document.querySelectorAll('.snav-item[data-view]');
+  
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      navButtons.forEach(b => b.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      SOPHIA.navigate(e.currentTarget.dataset.view);
+    });
+  });
+
+  SOPHIA.init();
+});

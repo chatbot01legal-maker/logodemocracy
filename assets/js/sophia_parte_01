@@ -1,0 +1,300 @@
+          id: "3.4",
+          nombre: "Completitud del Contexto",
+          constructo: "Integridad Contextual",
+          definicion: "Auditar la omisión de variables críticas en el entorno del dato.",
+          peso: 25,
+          meta_reglas_aplicables: [],
+          atomos: [
+            { id: "variables", version: "1.0", definicion: "Elementos que afectan el comportamiento o lectura de un dato.", patrones: ["variable", "factor", "condición"] },
+            { id: "entorno", version: "1.0", definicion: "Situación, época o circunstancias que rodean al dato.", patrones: ["contexto", "entorno", "circunstancia"] }
+          ],
+          severidad: 12.5
+        }
+      ]
+    },
+    {
+      id: "fase4",
+      nombre: "Transparencia Retórica",
+      descripcion: "Limpieza y honestidad comunicativa.",
+      criterios: [
+        {
+          id: "4.1",
+          nombre: "Representación Justa (Steelman)",
+          constructo: "Alteridad Cognitiva",
+          definicion: "Evaluar si el argumento contrario es tratado de forma robusta.",
+          peso: 25,
+          meta_reglas_aplicables: ["MR002"],
+          atomos: [
+            { id: "argumento", version: "1.0", definicion: "Exposición de razones en contra o a favor.", patrones: ["argumento", "razón", "tesis"] },
+            { id: "contrario", version: "1.0", definicion: "Postura disidente a la del emisor.", patrones: ["contrario", "opositor", "crítico", "disidente"] },
+            { id: "robusta", version: "1.0", definicion: "Versión que conserva toda la fuerza lógica de la postura opuesta.", patrones: ["fortaleza", "sólido", "robusto"] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "4.2",
+          nombre: "Proporcionalidad Retórica",
+          constructo: "Sustitución Argumental por Activación Emocional",
+          definicion: "Evaluar si la intensidad emocional del lenguaje es proporcional a la solidez de la evidencia presentada.",
+          peso: 25,
+          meta_reglas_aplicables: ["MR001"],
+          atomos: [
+            { id: "adjetivos", version: "1.0", definicion: "Modificadores que cualifican sustantivos con carga subjetiva.", patrones: ["terrible", "maravilloso", "horrible", "excelente", "lamentable"] },
+            { id: "intencion", version: "1.0", definicion: "Propósito subyacente de manipular la reacción del lector.", patrones: ["manipulación", "engaño", "sesgo"] },
+            { id: "hiperbole", version: "1.0", definicion: "Exageración deliberada de la magnitud de un fenómeno.", patrones: ["exagerado", "enorme", "infinito", "nunca", "siempre"] },
+            { id: "dramatizacion", version: "1.0", definicion: "Uso de recursos narrativos que apelan a la emoción extrema.", patrones: ["catástrofe", "tragedia", "colapso"] },
+            { id: "apelacion_moral", version: "1.0", definicion: "Invocación a principios morales como sustituto de evidencia.", patrones: ["deber", "justicia", "bien común"] },
+            { id: "carga_afectiva", version: "1.0", definicion: "Intensidad emocional transmitida por el lenguaje.", patrones: ["indignante", "esperanzador", "temible"] },
+            { id: "catastrofizacion", version: "1.0", definicion: "Presentación de escenarios apocalípticos sin evidencia.", patrones: ["catástrofe", "desastre", "apocalipsis"] },
+            { id: "absolutizacion", version: "1.0", definicion: "Uso de términos que niegan la complejidad o la excepción.", patrones: ["siempre", "nunca", "todos", "ninguno"] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "4.3",
+          nombre: "Despersonalización del Debate",
+          constructo: "Separación Identidad-Argumento",
+          definicion: "Separar la identidad del emisor del argumento presentado.",
+          peso: 25,
+          meta_reglas_aplicables: [],
+          atomos: [
+            { id: "identidad", version: "1.0", definicion: "Rasgos, afiliaciones o carácter del sujeto que emite el discurso.", patrones: ["yo", "mi", "nuestro", "ellos"] },
+            { id: "argumento", version: "1.0", definicion: "Estructura racional que debe sostenerse por sí misma.", patrones: [] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "4.4",
+          nombre: "Claridad Denotativa",
+          constructo: "Precisión Léxica",
+          definicion: "Evaluar la definibilidad, operacionalización, ambigüedad, vaguedad y referencialidad del lenguaje.",
+          peso: 25,
+          meta_reglas_aplicables: [],
+          atomos: [
+            { id: "palabras", version: "1.0", definicion: "Unidades léxicas usadas para transmitir conceptos.", patrones: [] },
+            { id: "ambiguas", version: "1.0", definicion: "Términos que admiten múltiples interpretaciones sin definición operacional.", patrones: ["justo", "bueno", "libertad", "democracia", "igualdad"] },
+            { id: "definibilidad", version: "1.0", definicion: "Capacidad de definir claramente un término dentro del discurso.", patrones: ["definimos", "entendemos por"] },
+            { id: "operacionalizacion", version: "1.0", definicion: "Grado en que un concepto se traduce en criterios observables.", patrones: ["medible", "cuantificable", "indicador"] },
+            { id: "vaguedad", version: "1.0", definicion: "Uso de términos imprecisos que dificultan la comprensión.", patrones: ["más o menos", "aproximadamente", "cierto"] },
+            { id: "referencialidad", version: "1.0", definicion: "Capacidad de referirse a entidades o hechos concretos.", patrones: [] }
+          ],
+          severidad: 12.5
+        }
+      ]
+    },
+    {
+      id: "fase5",
+      nombre: "Pertinencia Deliberativa",
+      descripcion: "Valor cívico y utilidad pública.",
+      criterios: [
+        {
+          id: "5.1",
+          nombre: "Focalización Temática",
+          constructo: "Relevancia Central",
+          definicion: "Evitar que una tangente desvíe el núcleo del debate.",
+          peso: 25,
+          meta_reglas_aplicables: ["MR005"],
+          atomos: [
+            { id: "tangente", version: "1.0", definicion: "Tema introducido que no altera lógicamente la conclusión del núcleo.", patrones: ["digresión", "tangente", "fuera de tema"] },
+            { id: "nucleo", version: "1.0", definicion: "El problema central definido explícitamente en el inicio del intercambio.", patrones: ["objeto", "propósito", "tema central"] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "5.2",
+          nombre: "Contribución Deliberativa",
+          constructo: "Aportación Propositiva",
+          definicion: "Capacidad del discurso para aportar información, preguntas relevantes, hipótesis, alternativas o clarificaciones que permitan avanzar en la comprensión colectiva del problema.",
+          peso: 25,
+          meta_reglas_aplicables: [],
+          atomos: [
+            { id: "critica", version: "1.0", definicion: "Señalamiento de un error o falla en el argumento ajeno.", patrones: ["crítica", "objeción", "pero"] },
+            { id: "propuesta", version: "1.0", definicion: "Aporte de una visión, solución o vía de acción nueva.", patrones: ["propongo", "sugiero", "alternativa", "solución"] },
+            { id: "pregunta_relevante", version: "1.0", definicion: "Planteamiento de una interrogante que ilumina el problema.", patrones: ["¿", "qué pasaría si", "cómo"] },
+            { id: "hipotesis", version: "1.0", definicion: "Formulación de una suposición que puede ser contrastada.", patrones: ["hipótesis", "supongo", "podría ser"] },
+            { id: "reencuadre", version: "1.0", definicion: "Reformulación del problema que abre nuevas perspectivas.", patrones: ["desde otra óptica", "reformulando"] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "5.3",
+          nombre: "Universalidad (Simetría)",
+          constructo: "Equidad Epistémica",
+          definicion: "Aplicar el mismo estándar de prueba para ambos lados, reconociendo la pluralidad de enfoques.",
+          peso: 25,
+          meta_reglas_aplicables: ["MR002"],
+          atomos: [
+            { id: "estandar", version: "1.0", definicion: "Nivel de exigencia requerido para aceptar una evidencia.", patrones: ["estándar", "criterio", "exigencia"] },
+            { id: "prueba", version: "1.0", definicion: "Elemento de juicio que sostiene una afirmación.", patrones: ["prueba", "evidencia", "demostración"] },
+            { id: "pluralidad", version: "1.0", definicion: "Reconocimiento de la diversidad de enfoques metodológicos legítimos.", patrones: ["pluralidad", "diversidad", "múltiples perspectivas"] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "5.4",
+          nombre: "Falsabilidad",
+          constructo: "Refutabilidad",
+          definicion: "Exponer el argumento a la evidencia refutadora, mostrando disposición a ser corregido.",
+          peso: 25,
+          meta_reglas_aplicables: ["MR004"],
+          atomos: [
+            { id: "evidencia", version: "1.0", definicion: "Información que entra en conflicto directo con la tesis.", patrones: ["contraejemplo", "refutación", "objeción"] },
+            { id: "refutadora", version: "1.0", definicion: "Capaz de demostrar la falsedad del argumento.", patrones: ["refutar", "falsear", "desmentir"] },
+            { id: "apertura_critica", version: "1.0", definicion: "Disposición explícita a recibir correcciones.", patrones: ["estoy abierto", "corrijan", "puedo estar equivocado"] }
+          ],
+          severidad: 25.0
+        }
+      ]
+    }
+  ]
+};
+
+// ─── MECÁNICA DE CÁLCULO (con penalización latente) ──
+function evaluateText(text) {
+  if (!text || text.trim().length === 0) return null;
+
+  const oraciones = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const resultados = {
+    fases: [],
+    evidencias: [],
+    puntajes_fase: {},
+    IRD_global: 0,
+    riesgo: "Normal",
+    meta_reglas_aplicadas: []
+  };
+
+  let nivel3_count = 0;
+  let todas_infracciones = [];
+
+  PROTOCOL.fases.forEach(fase => {
+    let penalizacion_fase = 0;
+    let penalizacion_fase_latente = 0;
+    let infracciones_fase = [];
+
+    fase.criterios.forEach(criterio => {
+      let penalizacion_criterio = 0;
+      let penalizacion_latente = 0;
+      let atomos_activados = [];
+
+      criterio.atomos.forEach(atom => {
+        if (atom.patrones && atom.patrones.length > 0) {
+          const patrones_unicos = [...new Set(atom.patrones)];
+          let frecuencia = 0;
+          oraciones.forEach(ora => {
+            const lower = ora.toLowerCase();
+            if (patrones_unicos.some(p => lower.includes(p))) {
+              frecuencia++;
+            }
+          });
+          if (frecuencia > 0) {
+            const penalizacion_atomo = criterio.severidad * frecuencia;
+            penalizacion_latente += penalizacion_atomo;
+            penalizacion_criterio += penalizacion_atomo;
+            atomos_activados.push({ atomo: atom.id, frecuencia, severidad: criterio.severidad });
+            const evidencia = text.match(new RegExp(`[^.!?]*\\b${patrones_unicos[0]}\\b[^.!?]*[.!?]`, 'i'));
+            if (evidencia) {
+              resultados.evidencias.push({
+                atomo: atom.id,
+                fragmento: evidencia[0].trim(),
+                criterio: criterio.id
+              });
+            }
+          }
+        }
+      });
+
+      // Guardar penalización latente antes del tope
+      const penalizacion_latente_final = penalizacion_latente;
+      penalizacion_criterio = Math.min(penalizacion_criterio, 25);
+
+      let saturacion = 0;
+      if (penalizacion_criterio > 0) {
+        saturacion = (penalizacion_latente_final / 25) * 100;
+      }
+
+      if (penalizacion_criterio > 0) {
+        const infra = {
+          criterio: `${criterio.id} - ${criterio.nombre}`,
+          constructo: criterio.constructo,
+          penalizacion: penalizacion_criterio,
+          penalizacion_latente: penalizacion_latente_final,
+          saturacion: Math.round(saturacion),
+          atomos_activados,
+          meta_reglas_aplicadas: []
+        };
+        infracciones_fase.push(infra);
+        todas_infracciones.push(infra);
+        penalizacion_fase += penalizacion_criterio;
+        penalizacion_fase_latente += penalizacion_latente_final;
+        if (penalizacion_criterio === 25) nivel3_count++;
+      }
+    });
+
+    // Aplicar meta-reglas a esta fase
+    Object.keys(META_RULES).forEach(mrId => {
+      const rule = META_RULES[mrId];
+      try {
+        if (rule.condicion(resultados, infracciones_fase)) {
+          const efecto = rule.efecto;
+          const infraAfectada = infracciones_fase.find(inf => inf.criterio.startsWith(efecto.criterio_afectado));
+          if (infraAfectada) {
+            const nuevoValor = efecto.tipo === 'multiplicativo' 
+              ? infraAfectada.penalizacion * efecto.modificador
+              : infraAfectada.penalizacion + efecto.modificador;
+            const delta = nuevoValor - infraAfectada.penalizacion;
+            infraAfectada.penalizacion = Math.min(Math.max(nuevoValor, 0), 25);
+            infraAfectada.meta_reglas_aplicadas.push(mrId);
+            penalizacion_fase += delta;
+            // Recalcular penalización fase para que sea consistente
+            penalizacion_fase = infracciones_fase.reduce((acc, inf) => acc + inf.penalizacion, 0);
+            // Registrar meta-regla aplicada global
+            if (!resultados.meta_reglas_aplicadas.includes(mrId)) {
+              resultados.meta_reglas_aplicadas.push(mrId);
+            }
+          }
+        }
+      } catch (e) { /* falla silenciosa */ }
+    });
+
+    let puntaje_fase = Math.max(0, 100 - penalizacion_fase);
+    if (infracciones_fase.length === 0) puntaje_fase = 100;
+    resultados.puntajes_fase[fase.id] = Math.round(puntaje_fase);
+    resultados.fases.push({
+      id: fase.id,
+      nombre: fase.nombre,
+      puntaje: Math.round(puntaje_fase),
+      penalizacion_fase_latente: Math.round(penalizacion_fase_latente),
+      infracciones: infracciones_fase
+    });
+  });
+
+  const puntajes = Object.values(resultados.puntajes_fase);
+  const ird = puntajes.reduce((a, b) => a + b, 0) / puntajes.length;
+  resultados.IRD_global = Math.round(ird);
+
+  if (nivel3_count >= 4) resultados.riesgo = "Riesgo Extremo";
+  else if (nivel3_count >= 3) resultados.riesgo = "Alta Fragilidad";
+  else if (nivel3_count >= 2) resultados.riesgo = "Atención";
+  else resultados.riesgo = "Normal";
+
+  return resultados;
+}
+
+// ─── SISTEMA DE POPUPS ─────────────────────────────────
+function showDefinitionPopup(title, definition) {
+  const existing = document.querySelector('.sophia-popup-overlay');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.className = 'sophia-popup-overlay';
+  overlay.innerHTML = `
+    <div class="sophia-popup">
+      <div class="sophia-popup-header">
+        <span class="sophia-popup-title">${title}</span>
+        <button class="sophia-popup-close">&times;</button>
+      </div>
+      <div class="sophia-popup-body">${definition}</div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+

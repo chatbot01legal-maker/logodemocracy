@@ -1,0 +1,300 @@
+/* ═══════════════════════════════════════════════════════
+   SOPHIA.JS — Protocolo Abierto de Comunicación Deliberativa
+   v0.92-beta — Ontología Pública de la Deliberación
+   ═══════════════════════════════════════════════════════ */
+
+// ─── AUDITORÍA ONTOLÓGICA (auto‑validación) ──────────
+function auditOntology() {
+  const stats = {
+    criterios: 0,
+    constructos: new Set(),
+    atomos: 0,
+    atomos_duplicados: [],
+    constructos_huérfanos: [],
+    atomos_huérfanos: [],
+    versiones_faltantes: [],
+    referencias_invalidas: []
+  };
+
+  const atomosSet = new Set();
+  const constructosSet = new Set();
+
+  PROTOCOL.fases.forEach(fase => {
+    fase.criterios.forEach(c => {
+      stats.criterios++;
+      if (c.constructo) constructosSet.add(c.constructo);
+      c.atomos.forEach(a => {
+        stats.atomos++;
+        const id = a.id;
+        if (atomosSet.has(id)) {
+          stats.atomos_duplicados.push(id);
+        } else {
+          atomosSet.add(id);
+        }
+        if (!a.version) stats.versiones_faltantes.push(id);
+        // Verificar referencias a meta-reglas
+        if (c.meta_reglas_aplicables) {
+          c.meta_reglas_aplicables.forEach(mr => {
+            if (!META_RULES[mr]) {
+              stats.referencias_invalidas.push(`Criterio ${c.id} refiere a MR ${mr} inexistente`);
+            }
+          });
+        }
+      });
+    });
+  });
+
+  // Verificar constructos sin átomos
+  PROTOCOL.fases.forEach(fase => {
+    fase.criterios.forEach(c => {
+      if (c.atomos.length === 0) {
+        stats.constructos_huérfanos.push(c.constructo);
+      }
+    });
+  });
+
+  console.log('🔍 AUDITORÍA ONTOLÓGICA SOPHIA');
+  console.log(`📊 Criterios: ${stats.criterios}`);
+  console.log(`📊 Constructos: ${constructosSet.size}`);
+  console.log(`📊 Átomos: ${stats.atomos}`);
+  console.log(`📊 Átomos duplicados: ${stats.atomos_duplicados.length > 0 ? stats.atomos_duplicados.join(', ') : '✅ Ninguno'}`);
+  console.log(`📊 Constructos huérfanos: ${stats.constructos_huérfanos.length > 0 ? stats.constructos_huérfanos.join(', ') : '✅ Ninguno'}`);
+  console.log(`📊 Versiones faltantes: ${stats.versiones_faltantes.length > 0 ? stats.versiones_faltantes.join(', ') : '✅ Todas completas'}`);
+  console.log(`📊 Referencias inválidas: ${stats.referencias_invalidas.length > 0 ? stats.referencias_invalidas.join('; ') : '✅ Ninguna'}`);
+
+  const score = 100 - (stats.atomos_duplicados.length * 5 + stats.constructos_huérfanos.length * 10 + stats.versiones_faltantes.length * 2 + stats.referencias_invalidas.length * 8);
+  console.log(`✅ CONSISTENCY SCORE: ${Math.max(0, score)}/100`);
+  return { stats, score: Math.max(0, score) };
+}
+
+// ─── META‑REGLAS ──────────────────────────────────────
+const META_RULES = {
+  "MR001": {
+    nombre: "Mitigación por Incertidumbre",
+    condicion: (resultados) => resultados.puntajes_fase["fase3"] && resultados.puntajes_fase["fase3"] > 80,
+    efecto: { criterio_afectado: "4.2", modificador: 0.5, tipo: "multiplicativo" },
+    justificacion: "Si el autor declara incertidumbre, su carga emocional se interpreta como énfasis legítimo."
+  },
+  "MR002": {
+    nombre: "Refuerzo por Falta de Steelman",
+    condicion: (resultados, infracciones) => {
+      const steelman = infracciones.find(i => i.criterio.startsWith("4.1"));
+      return steelman && steelman.penalizacion > 0;
+    },
+    efecto: { criterio_afectado: "5.3", modificador: 1.5, tipo: "multiplicativo" },
+    justificacion: "La ausencia de representación justa agrava la asimetría deliberativa."
+  },
+  "MR003": {
+    nombre: "Reducción por Evidencia Robusta",
+    condicion: (resultados) => {
+      const evidencia = resultados.puntajes_fase["fase3"];
+      return evidencia && evidencia >= 85;
+    },
+    efecto: { criterio_afectado: "2.3", modificador: 0.7, tipo: "multiplicativo" },
+    justificacion: "Si la evidencia es sólida, la generalización es menos riesgosa."
+  },
+  "MR004": {
+    nombre: "Atenuación por Límites Explícitos",
+    condicion: (resultados, infracciones) => {
+      const incertidumbre = infracciones.find(i => i.criterio.startsWith("3.2"));
+      return incertidumbre && incertidumbre.penalizacion < 10;
+    },
+    efecto: { criterio_afectado: "5.4", modificador: 0.6, tipo: "multiplicativo" },
+    justificacion: "Si el autor explicita límites, la falsabilidad es menos exigible."
+  },
+  "MR005": {
+    nombre: "Pluralidad Explícita",
+    condicion: (resultados, infracciones) => {
+      const plural = infracciones.find(i => i.criterio.startsWith("5.3") && i.atomos_activados.some(a => a.atomo === "pluralidad"));
+      return plural && plural.penalizacion < 5;
+    },
+    efecto: { criterio_afectado: "5.1", modificador: 0.8, tipo: "multiplicativo" },
+    justificacion: "El reconocimiento de pluralidad reduce penalizaciones por falta de foco."
+  }
+};
+
+// ─── PROTOCOLO SOPHIA v0.92-beta ─────────────────────
+const PROTOCOL = {
+  version: "0.92-beta",
+  fases: [
+    {
+      id: "fase1",
+      nombre: "Estructura Lógica",
+      descripcion: "Integridad de la arquitectura base del argumento.",
+      criterios: [
+        {
+          id: "1.1",
+          nombre: "No Contradicción",
+          constructo: "Consistencia Interna",
+          definicion: "Determinar si el discurso presenta proposiciones excluyentes sin resolución.",
+          peso: 25,
+          meta_reglas_aplicables: [],
+          atomos: [
+            { id: "discurso", version: "1.0", definicion: "El flujo total de enunciados emitidos por el autor.", patrones: [] },
+            { id: "proposiciones", version: "1.0", definicion: "Enunciados declarativos que afirman o niegan un estado de cosas.", patrones: [] },
+            { id: "excluyentes", version: "1.0", definicion: "Propiedad de dos enunciados que no pueden ser ambos verdaderos simultáneamente.", patrones: ["pero", "sin embargo", "no obstante", "aunque"] },
+            { id: "resolucion", version: "1.0", definicion: "Explicación lógica que reconcilia dos elementos aparentemente opuestos.", patrones: ["por lo tanto", "en consecuencia", "de modo que"] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "1.2",
+          nombre: "Continuidad Semántica",
+          constructo: "Estabilidad Conceptual",
+          definicion: "Evaluar la estabilidad del significado de los conceptos a lo largo del argumento.",
+          peso: 25,
+          meta_reglas_aplicables: [],
+          atomos: [
+            { id: "estabilidad", version: "1.0", definicion: "Propiedad de mantener una definición constante sin fluctuaciones.", patrones: [] },
+            { id: "significado", version: "1.0", definicion: "La definición operativa asignada a un término en la primera instancia de uso.", patrones: [] },
+            { id: "conceptos", version: "1.0", definicion: "Unidades léxicas que portan el peso del contenido temático.", patrones: [] },
+            { id: "argumento", version: "1.0", definicion: "La serie encadenada de enunciados que buscan probar una tesis.", patrones: [] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "1.3",
+          nombre: "Ausencia de Falsas Dicotomías",
+          constructo: "Reducción de Complejidad",
+          definicion: "Verificar si se fuerza una elección binaria ante un problema multidimensional.",
+          peso: 25,
+          meta_reglas_aplicables: [],
+          atomos: [
+            { id: "eleccion", version: "1.0", definicion: "Proceso de selección entre opciones presentadas.", patrones: ["o", "o bien", "alternativa"] },
+            { id: "binaria", version: "1.0", definicion: "Estructura que reduce el espectro a solo dos posibilidades.", patrones: ["dos opciones", "dos caminos", "dos posibilidades"] },
+            { id: "problema", version: "1.0", definicion: "El fenómeno central objeto de análisis.", patrones: [] },
+            { id: "multidimensional", version: "1.0", definicion: "Fenómeno que requiere más de dos variables para ser comprendido.", patrones: ["complejo", "múltiples factores", "diversos aspectos"] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "1.4",
+          nombre: "Integridad de las Premisas",
+          constructo: "Anclaje Inferencial",
+          definicion: "Asegurar que cada enunciado declarativo tenga un soporte lógico.",
+          peso: 25,
+          meta_reglas_aplicables: [],
+          atomos: [
+            { id: "enunciado", version: "1.0", definicion: "Unidad mínima de sentido completo.", patrones: [] },
+            { id: "declarativo", version: "1.0", definicion: "Que afirma la existencia o realidad de algo.", patrones: [] },
+            { id: "soporte", version: "1.0", definicion: "Elemento (dato, premisa, inferencia) que justifica la validez de otro.", patrones: ["porque", "ya que", "dado que"] },
+            { id: "logico", version: "1.0", definicion: "Relación de necesidad entre una base y su consecuencia.", patrones: ["si... entonces", "implica", "conlleva"] }
+          ],
+          severidad: 12.5
+        }
+      ]
+    },
+    {
+      id: "fase2",
+      nombre: "Inferencia",
+      descripcion: "Ingeniería de la derivación argumentativa.",
+      criterios: [
+        {
+          id: "2.1",
+          nombre: "Suficiencia Inferencial",
+          constructo: "Escalamiento Inferencial",
+          definicion: "Medir si la conclusión es proporcional a la magnitud y representatividad de las premisas.",
+          peso: 25,
+          meta_reglas_aplicables: ["MR003"],
+          atomos: [
+            { id: "conclusion", version: "1.0", definicion: "Resultado final derivado de un proceso de razonamiento.", patrones: ["en conclusión", "por lo tanto", "así pues"] },
+            { id: "magnitud", version: "1.0", definicion: "Alcance cuantitativo o cualitativo de la afirmación (particular vs. universal).", patrones: ["todos", "siempre", "nunca", "nadie"] },
+            { id: "premisas", version: "1.0", definicion: "Enunciados base tomados como ciertos para derivar la conclusión.", patrones: [] },
+            { id: "universalizacion", version: "1.0", definicion: "Extensión de una afirmación a todo un conjunto.", patrones: ["todos", "siempre", "nunca", "nadie"] },
+            { id: "extrapolacion", version: "1.0", definicion: "Inferencia más allá del dominio empírico observado.", patrones: ["extrapolando", "más allá", "fuera de"] },
+            { id: "representatividad", version: "1.0", definicion: "Propiedad de una muestra que permite extender inferencias con validez.", patrones: ["representativo", "muestra", "estadísticamente"] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "2.2",
+          nombre: "Causalidad Rigurosa",
+          constructo: "Nexo Causal",
+          definicion: "Diferenciar la correlación estadística de la causalidad demostrada.",
+          peso: 25,
+          meta_reglas_aplicables: [],
+          atomos: [
+            { id: "correlacion", version: "1.0", definicion: "Observación de dos variables que fluctúan simultáneamente.", patrones: ["correlación", "asociación", "relación"] },
+            { id: "causalidad", version: "1.0", definicion: "Nexo necesario donde un evento (causa) produce mecánicamente otro (efecto).", patrones: ["causa", "provoca", "genera", "desencadena"] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "2.3",
+          nombre: "Proporcionalidad Generalizadora",
+          constructo: "Generalización Justificada",
+          definicion: "Evitar que una anécdota se convierta en una regla universal sin respaldo.",
+          peso: 25,
+          meta_reglas_aplicables: ["MR003"],
+          atomos: [
+            { id: "anecdota", version: "1.0", definicion: "Registro de un caso singular o no representativo.", patrones: ["por ejemplo", "como en el caso de", "una vez"] },
+            { id: "regla", version: "1.0", definicion: "Afirmación que pretende validez para todos los casos de un conjunto.", patrones: ["siempre", "nunca", "todos", "ninguno"] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "2.4",
+          nombre: "Inmunidad a Petición de Principio",
+          constructo: "Circularidad Lógica",
+          definicion: "Detectar la circularidad cuando la asunción es la misma conclusión.",
+          peso: 25,
+          meta_reglas_aplicables: [],
+          atomos: [
+            { id: "circularidad", version: "1.0", definicion: "Estructura donde el final del argumento repite el inicio sin avanzar.", patrones: ["porque", "ya que", "dado que"] },
+            { id: "asuncion", version: "1.0", definicion: "Premisa no demostrada que se introduce como base del razonamiento.", patrones: ["asumiendo", "suponiendo", "dando por sentado"] }
+          ],
+          severidad: 25.0
+        }
+      ]
+    },
+    {
+      id: "fase3",
+      nombre: "Calibración Epistémica",
+      descripcion: "Relación con el conocimiento y la evidencia.",
+      criterios: [
+        {
+          id: "3.1",
+          nombre: "Trazabilidad de la Evidencia",
+          constructo: "Anclaje Empírico",
+          definicion: "Identificar el origen y la verificabilidad de los datos.",
+          peso: 25,
+          meta_reglas_aplicables: [],
+          atomos: [
+            { id: "origen", version: "1.0", definicion: "Fuente documental o empírica de la información.", patrones: ["según", "fuente", "estudio", "informe"] },
+            { id: "verificabilidad", version: "1.0", definicion: "Capacidad de comprobar la información mediante una fuente externa.", patrones: ["verificable", "comprobable", "contrastable"] },
+            { id: "datos", version: "1.0", definicion: "Cifras, hechos o registros utilizados como evidencia.", patrones: ["%", "dato", "cifra", "número"] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "3.2",
+          nombre: "Declaración de Incertidumbre",
+          constructo: "Honestidad Epistémica",
+          definicion: "Evaluar la honestidad en la expresión de la incertidumbre mediante modalidad epistémica, grados de confianza, alcance predictivo y condicionalidad.",
+          peso: 25,
+          meta_reglas_aplicables: ["MR001", "MR004"],
+          atomos: [
+            { id: "matiz", version: "1.0", definicion: "Modificador probabilístico (probablemente, posiblemente).", patrones: ["probablemente", "posiblemente", "quizás", "tal vez"] },
+            { id: "lenguaje", version: "1.0", definicion: "El conjunto de palabras elegidas para expresar la postura.", patrones: [] },
+            { id: "certeza", version: "1.0", definicion: "Ausencia de duda expresada en una predicción o hecho futuro.", patrones: ["es seguro", "indudablemente", "sin duda", "claramente"] },
+            { id: "modalidad_epistemica", version: "1.0", definicion: "Expresión de posibilidad, probabilidad o necesidad (podría, es posible, sugiere).", patrones: ["podría", "es posible", "sugiere"] },
+            { id: "grado_confianza", version: "1.0", definicion: "Indicación del nivel de seguridad en la afirmación (bajo, medio, alto).", patrones: ["confianza", "seguridad", "certeza"] },
+            { id: "alcance_predictivo", version: "1.0", definicion: "Limitación temporal o contextual de la predicción.", patrones: ["a corto plazo", "en el futuro", "si se mantiene"] },
+            { id: "condicionalidad", version: "1.0", definicion: "Expresión de dependencia de condiciones para que se cumpla la afirmación.", patrones: ["si", "en caso de", "depende de"] }
+          ],
+          severidad: 12.5
+        },
+        {
+          id: "3.3",
+          nombre: "Delimitación Hecho-Valor",
+          constructo: "Distinción Epistémica",
+          definicion: "Distinguir claramente el hecho empírico del juicio moral.",
+          peso: 25,
+          meta_reglas_aplicables: [],
+          atomos: [
+            { id: "hecho", version: "1.0", definicion: "Afirmación sobre un estado de cosas objetivo.", patrones: ["es", "está", "existe"] },
+            { id: "juicio", version: "1.0", definicion: "Valoración subjetiva sobre la bondad o maldad de un hecho.", patrones: ["bueno", "malo", "justo", "injusto", "debería"] }
+          ],
+          severidad: 12.5
+        },
+        {
