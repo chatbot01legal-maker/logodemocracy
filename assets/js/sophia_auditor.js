@@ -187,6 +187,79 @@ function auditPatternExpansion(protocol) {
 // ─────────────────────────────────────────────
 
 function auditSemanticCoverage(protocol) {
+  function auditSemanticTrace(protocol) {
+  const trace = [];
+
+  protocol.dimensions.forEach(dim => {
+    const dimResult = {
+      dimension: dim.id,
+      criteria: [],
+      dimensionCoverageSum: 0
+    };
+
+    (dim.criteria || []).forEach(c => {
+
+      let total = 0;
+      let covered = 0;
+
+      const text = (c.construct?.definition || "") + " " + (c.definition || "");
+
+      const atoms = (c.atoms || []).map(a => ({
+        id: a.id,
+        aliases: (a.aliases || []).map(x => x.toLowerCase())
+      }));
+
+      const words = text.toLowerCase().split(/\s+/);
+
+      for (const w of words) {
+        if (w.length < 5) continue;
+
+        total++;
+
+        const ok = atoms.some(a =>
+          a.id === w || a.aliases.some(al => w.includes(al) || al.includes(w))
+        );
+
+        if (ok) covered++;
+      }
+
+      const coverage = total ? (covered / total) * 100 : 0;
+
+      dimResult.criteria.push({
+        id: c.id,
+        coverage: Math.round(coverage),
+        total_terms: total,
+        covered_terms: covered,
+        gap: Math.round(100 - coverage)
+      });
+
+    });
+
+    dimResult.avgCoverage = Math.round(
+      dimResult.criteria.reduce((acc, c) => acc + c.coverage, 0) /
+      (dimResult.criteria.length || 1)
+    );
+
+    trace.push(dimResult);
+  });
+
+  const ranking = trace
+    .flatMap(d => d.criteria.map(c => ({
+      dimension: d.dimension,
+      ...c
+    })))
+    .sort((a, b) => a.coverage - b.coverage);
+
+  return {
+    id: "A9-TRACE",
+    name: "Cobertura semántica trazable",
+    trace,
+    ranking,
+    worst_criteria: ranking.slice(0, 5),
+    best_criteria: ranking.slice(-5),
+    message: `Peor criterio: ${ranking[0]?.id} (${ranking[0]?.coverage}%)`
+  };
+  }
   let total = 0;
   let covered = 0;
 
@@ -232,13 +305,14 @@ function auditSemanticCoverage(protocol) {
 // ─────────────────────────────────────────────
 
 function runAudits(protocol) {
-  const resultados = [
-    auditDefinitions(protocol),            // ADEF
-    auditOperationalDefinitions(protocol), // A8
-    auditPatterns(protocol),               // APAT
-    auditPatternExpansion(protocol),       // AMAP
-    auditSemanticCoverage(protocol),       // A9
-  ];
+const resultados = [
+  auditDefinitions(protocol),
+  auditOperationalDefinitions(protocol),
+  auditPatterns(protocol),
+  auditPatternExpansion(protocol),
+  auditSemanticCoverage(protocol),
+  auditSemanticTrace(protocol)
+];
 
   const indices = {
     SCC: resultados.find(r => r.id === "A9")?.coverage || 0,
@@ -250,6 +324,12 @@ function runAudits(protocol) {
   return { resultados, indices };
 }
 
+const trace = resultados.find(r => r.id === "A9-TRACE");
+
+if (trace?.worst_criteria?.length) {
+  console.log("\n🔥 PEOR CRITERIO:");
+  console.log(trace.worst_criteria[0]);
+}
 // ─────────────────────────────────────────────
 // EXPORT
 // ─────────────────────────────────────────────
