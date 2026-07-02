@@ -3,15 +3,6 @@
    v3.0 — Ontología Pública de la Deliberación (Corregido)
    ═══════════════════════════════════════════════════════ */
 
-console.log('🔍 SOPHIA MINIMA');
-
-document.addEventListener('DOMContentLoaded', function() {
-  const content = document.getElementById('viewContent');
-  if (content) {
-    content.innerHTML = '<h1 style="color:lime;">SOPHIA MINIMA FUNCIONA</h1>';
-  }
-});
-
 // ─── DEPURACIÓN VISIBLE ────────────────────────────────
 function showDebug(msg, isError = false) {
   const content = document.getElementById('viewContent');
@@ -1274,3 +1265,8 @@ document.addEventListener('DOMContentLoaded', () => {
   SOPHIA.init();
 });
 
+// ─── INICIALIZACIÓN FINAL ────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('✅ El motor está encendido');
+  SOPHIA.init();
+});
