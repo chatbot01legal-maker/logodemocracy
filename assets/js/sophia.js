@@ -1231,3 +1231,46 @@ document.addEventListener('DOMContentLoaded', () => {
     showDebug(`❌ Error en DOMContentLoaded: ${e.message}\n\nStack: ${e.stack}`, true);
   }
 });
+
+
+/* ═══════════════════════════════════════════════════════
+   SOPHIA.JS — Protocolo Abierto de Comunicación Deliberativa
+   v3.0.1 — Parche de inicialización de eventos
+   ═══════════════════════════════════════════════════════ */
+
+// ... [Mantén todo el código anterior hasta SOPHIA.init]
+
+  init() {
+    try {
+      console.log('🚀 Reiniciando SOPHIA...');
+      // Selector corregido para capturar todos los botones de navegación
+      const buttons = document.querySelectorAll('button.snav-item');
+      if (buttons.length === 0) {
+        console.error('⚠️ No se encontraron botones de navegación .snav-item');
+        return;
+      }
+      
+      buttons.forEach(btn => {
+        // Removemos eventos previos si existen
+        btn.replaceWith(btn.cloneNode(true));
+      });
+
+      // Re-seleccionamos tras el clonado
+      document.querySelectorAll('button.snav-item').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          this.navigate(e.currentTarget.dataset.view);
+        });
+      });
+
+      this.navigate('inicio');
+      console.log('✅ SOPHIA inicializada con éxito');
+    } catch (e) {
+      console.error(`❌ Error en init: ${e.message}`);
+    }
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  SOPHIA.init();
+});
+
