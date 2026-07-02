@@ -1,6 +1,6 @@
-version: 0.92-beta
+version: '3.0'
 metadata:
-  total_atoms: 74
+  total_atoms: 53
   total_criteria: 20
   total_dimensions: 5
   description: Ontología pública de la deliberación
@@ -8,19 +8,19 @@ aggregation:
   dimensions:
     - id: fase1
       name: Estructura Lógica
-      weight: 20
+      weight: 25
     - id: fase2
       name: Inferencia
-      weight: 20
+      weight: 25
     - id: fase3
       name: Calibración Epistémica
-      weight: 20
+      weight: 25
     - id: fase4
       name: Transparencia Retórica
-      weight: 20
+      weight: 25
     - id: fase5
       name: Pertinencia Deliberativa
-      weight: 20
+      weight: 25
   criteria_weight: 25
   max_penalty_per_criterion: 25
 severity_levels:
@@ -57,20 +57,14 @@ dimensions:
             type: Entidad
             definition: El flujo total de enunciados emitidos por el autor.
             version: '1.0'
-            patterns:
-              - discurso
-              - texto
-              - enunciado total
+            patterns: []
             aliases: []
           - id: proposiciones
             name: proposiciones
             type: Entidad
             definition: Enunciados declarativos que afirman o niegan un estado de cosas.
             version: '1.0'
-            patterns:
-              - proposición
-              - afirmación
-              - declaración
+            patterns: []
             aliases: []
           - id: excluyentes
             name: excluyentes
@@ -114,10 +108,7 @@ dimensions:
             type: Entidad
             definition: Propiedad de mantener una definición constante sin fluctuaciones.
             version: '1.0'
-            patterns:
-              - constante
-              - fluctuación
-              - cambio
+            patterns: []
             aliases: []
           - id: significado
             name: significado
@@ -126,30 +117,21 @@ dimensions:
               La definición operativa asignada a un término en la primera
               instancia de uso.
             version: '1.0'
-            patterns:
-              - definición
-              - significa
-              - sentido
+            patterns: []
             aliases: []
           - id: conceptos
             name: conceptos
             type: Entidad
             definition: Unidades léxicas que portan el peso del contenido temático.
             version: '1.0'
-            patterns:
-              - concepto
-              - idea
-              - noción
+            patterns: []
             aliases: []
           - id: argumento
             name: argumento
             type: Entidad
             definition: La serie encadenada de enunciados que buscan probar una tesis.
             version: '1.0'
-            patterns:
-              - argumento
-              - tesis
-              - razón
+            patterns: []
             aliases: []
         meta_rules_applicable: []
         severity_level: 2
@@ -188,10 +170,7 @@ dimensions:
             type: Entidad
             definition: El fenómeno central objeto de análisis.
             version: '1.0'
-            patterns:
-              - problema
-              - cuestión
-              - asunto
+            patterns: []
             aliases: []
           - id: multidimensional
             name: multidimensional
@@ -218,20 +197,14 @@ dimensions:
             type: Entidad
             definition: Unidad mínima de sentido completo.
             version: '1.0'
-            patterns:
-              - enunciado
-              - afirmación
-              - declaración
+            patterns: []
             aliases: []
           - id: declarativo
             name: declarativo
             type: Entidad
             definition: Que afirma la existencia o realidad de algo.
             version: '1.0'
-            patterns:
-              - declara
-              - afirma
-              - niega
+            patterns: []
             aliases: []
           - id: soporte
             name: soporte
@@ -267,8 +240,8 @@ dimensions:
         construct:
           name: Escalamiento Inferencial
           definition: >-
-            Medir si la conclusión es proporcional a la magnitud y
-            representatividad de las premisas.
+            Medir si la conclusión es proporcional a la magnitud de las
+            premisas.
           version: '1.0'
           aliases: []
         atoms:
@@ -300,46 +273,9 @@ dimensions:
             type: Entidad
             definition: Enunciados base tomados como ciertos para derivar la conclusión.
             version: '1.0'
-            patterns:
-              - premisa
-              - base
-              - supuesto
+            patterns: []
             aliases: []
-          - id: universalizacion
-            name: universalizacion
-            type: Entidad
-            definition: Extensión de una afirmación a todo un conjunto.
-            version: '1.0'
-            patterns:
-              - todos
-              - siempre
-              - nunca
-              - nadie
-            aliases: []
-          - id: extrapolacion
-            name: extrapolacion
-            type: Entidad
-            definition: Inferencia más allá del dominio empírico observado.
-            version: '1.0'
-            patterns:
-              - extrapolando
-              - más allá
-              - fuera de
-            aliases: []
-          - id: representatividad
-            name: representatividad
-            type: Entidad
-            definition: >-
-              Propiedad de una muestra que permite extender inferencias con
-              validez.
-            version: '1.0'
-            patterns:
-              - representativo
-              - muestra
-              - estadísticamente
-            aliases: []
-        meta_rules_applicable:
-          - MR003
+        meta_rules_applicable: []
         severity_level: 2
       - id: '2.2'
         name: Causalidad Rigurosa
@@ -378,9 +314,7 @@ dimensions:
         name: Proporcionalidad Generalizadora
         construct:
           name: Generalización Justificada
-          definition: >-
-            Evitar que una anécdota se convierta en una regla universal sin
-            respaldo.
+          definition: Evitar que una anécdota se convierta en una regla universal.
           version: '1.0'
           aliases: []
         atoms:
@@ -407,8 +341,7 @@ dimensions:
               - todos
               - ninguno
             aliases: []
-        meta_rules_applicable:
-          - MR003
+        meta_rules_applicable: []
         severity_level: 2
       - id: '2.4'
         name: Inmunidad a Petición de Principio
@@ -493,10 +426,7 @@ dimensions:
         name: Declaración de Incertidumbre
         construct:
           name: Honestidad Epistémica
-          definition: >-
-            Evaluar la honestidad en la expresión de la incertidumbre mediante
-            modalidad epistémica, grados de confianza, alcance predictivo y
-            condicionalidad.
+          definition: Comparar el matiz del lenguaje con la certeza de la afirmación.
           version: '1.0'
           aliases: []
         atoms:
@@ -516,10 +446,7 @@ dimensions:
             type: Entidad
             definition: El conjunto de palabras elegidas para expresar la postura.
             version: '1.0'
-            patterns:
-              - lenguaje
-              - discurso
-              - palabras
+            patterns: []
             aliases: []
           - id: certeza
             name: certeza
@@ -532,55 +459,7 @@ dimensions:
               - sin duda
               - claramente
             aliases: []
-          - id: modalidad_epistemica
-            name: modalidad_epistemica
-            type: Entidad
-            definition: >-
-              Expresión de posibilidad, probabilidad o necesidad (podría, es
-              posible, sugiere).
-            version: '1.0'
-            patterns:
-              - podría
-              - es posible
-              - sugiere
-            aliases: []
-          - id: grado_confianza
-            name: grado_confianza
-            type: Entidad
-            definition: >-
-              Indicación del nivel de seguridad en la afirmación (bajo, medio,
-              alto).
-            version: '1.0'
-            patterns:
-              - confianza
-              - seguridad
-              - certeza
-            aliases: []
-          - id: alcance_predictivo
-            name: alcance_predictivo
-            type: Entidad
-            definition: Limitación temporal o contextual de la predicción.
-            version: '1.0'
-            patterns:
-              - a corto plazo
-              - en el futuro
-              - si se mantiene
-            aliases: []
-          - id: condicionalidad
-            name: condicionalidad
-            type: Entidad
-            definition: >-
-              Expresión de dependencia de condiciones para que se cumpla la
-              afirmación.
-            version: '1.0'
-            patterns:
-              - si
-              - en caso de
-              - depende de
-            aliases: []
-        meta_rules_applicable:
-          - MR001
-          - MR004
+        meta_rules_applicable: []
         severity_level: 2
       - id: '3.3'
         name: Delimitación Hecho-Valor
@@ -688,16 +567,13 @@ dimensions:
               - sólido
               - robusto
             aliases: []
-        meta_rules_applicable:
-          - MR002
+        meta_rules_applicable: []
         severity_level: 2
       - id: '4.2'
-        name: Proporcionalidad Retórica
+        name: Neutralidad Emocional
         construct:
           name: Sustitución Argumental por Activación Emocional
-          definition: >-
-            Evaluar si la intensidad emocional del lenguaje es proporcional a la
-            solidez de la evidencia presentada.
+          definition: Identificar adjetivos que cargan la intención del texto.
           version: '1.0'
           aliases: []
         atoms:
@@ -723,71 +599,7 @@ dimensions:
               - engaño
               - sesgo
             aliases: []
-          - id: hiperbole
-            name: hiperbole
-            type: Entidad
-            definition: Exageración deliberada de la magnitud de un fenómeno.
-            version: '1.0'
-            patterns:
-              - exagerado
-              - enorme
-              - infinito
-              - nunca
-              - siempre
-            aliases: []
-          - id: dramatizacion
-            name: dramatizacion
-            type: Entidad
-            definition: Uso de recursos narrativos que apelan a la emoción extrema.
-            version: '1.0'
-            patterns:
-              - catástrofe
-              - tragedia
-              - colapso
-            aliases: []
-          - id: apelacion_moral
-            name: apelacion_moral
-            type: Entidad
-            definition: Invocación a principios morales como sustituto de evidencia.
-            version: '1.0'
-            patterns:
-              - deber
-              - justicia
-              - bien común
-            aliases: []
-          - id: carga_afectiva
-            name: carga_afectiva
-            type: Entidad
-            definition: Intensidad emocional transmitida por el lenguaje.
-            version: '1.0'
-            patterns:
-              - indignante
-              - esperanzador
-              - temible
-            aliases: []
-          - id: catastrofizacion
-            name: catastrofizacion
-            type: Entidad
-            definition: Presentación de escenarios apocalípticos sin evidencia.
-            version: '1.0'
-            patterns:
-              - catástrofe
-              - desastre
-              - apocalipsis
-            aliases: []
-          - id: absolutizacion
-            name: absolutizacion
-            type: Entidad
-            definition: Uso de términos que niegan la complejidad o la excepción.
-            version: '1.0'
-            patterns:
-              - siempre
-              - nunca
-              - todos
-              - ninguno
-            aliases: []
-        meta_rules_applicable:
-          - MR001
+        meta_rules_applicable: []
         severity_level: 2
       - id: '4.3'
         name: Despersonalización del Debate
@@ -813,10 +625,7 @@ dimensions:
             type: Entidad
             definition: Estructura racional que debe sostenerse por sí misma.
             version: '1.0'
-            patterns:
-              - argumento
-              - tesis
-              - razón
+            patterns: []
             aliases: []
         meta_rules_applicable: []
         severity_level: 2
@@ -824,9 +633,7 @@ dimensions:
         name: Claridad Denotativa
         construct:
           name: Precisión Léxica
-          definition: >-
-            Evaluar la definibilidad, operacionalización, ambigüedad, vaguedad y
-            referencialidad del lenguaje.
+          definition: Detectar el uso de palabras ambiguas sin definición.
           version: '1.0'
           aliases: []
         atoms:
@@ -835,17 +642,14 @@ dimensions:
             type: Entidad
             definition: Unidades léxicas usadas para transmitir conceptos.
             version: '1.0'
-            patterns:
-              - palabra
-              - término
-              - vocablo
+            patterns: []
             aliases: []
           - id: ambiguas
             name: ambiguas
             type: Entidad
             definition: >-
-              Términos que admiten múltiples interpretaciones sin definición
-              operacional.
+              Términos que admiten múltiples interpretaciones (ej: 'justo',
+              'bueno') sin definición operacional.
             version: '1.0'
             patterns:
               - justo
@@ -853,45 +657,6 @@ dimensions:
               - libertad
               - democracia
               - igualdad
-            aliases: []
-          - id: definibilidad
-            name: definibilidad
-            type: Entidad
-            definition: Capacidad de definir claramente un término dentro del discurso.
-            version: '1.0'
-            patterns:
-              - definimos
-              - entendemos por
-            aliases: []
-          - id: operacionalizacion
-            name: operacionalizacion
-            type: Entidad
-            definition: Grado en que un concepto se traduce en criterios observables.
-            version: '1.0'
-            patterns:
-              - medible
-              - cuantificable
-              - indicador
-            aliases: []
-          - id: vaguedad
-            name: vaguedad
-            type: Entidad
-            definition: Uso de términos imprecisos que dificultan la comprensión.
-            version: '1.0'
-            patterns:
-              - más o menos
-              - aproximadamente
-              - cierto
-            aliases: []
-          - id: referencialidad
-            name: referencialidad
-            type: Entidad
-            definition: Capacidad de referirse a entidades o hechos concretos.
-            version: '1.0'
-            patterns:
-              - refiere
-              - alude
-              - menciona
             aliases: []
         meta_rules_applicable: []
         severity_level: 2
@@ -932,17 +697,13 @@ dimensions:
               - propósito
               - tema central
             aliases: []
-        meta_rules_applicable:
-          - MR005
+        meta_rules_applicable: []
         severity_level: 2
       - id: '5.2'
-        name: Contribución Deliberativa
+        name: Responsabilidad Constructiva
         construct:
           name: Aportación Propositiva
-          definition: >-
-            Capacidad del discurso para aportar información, preguntas
-            relevantes, hipótesis, alternativas o clarificaciones que permitan
-            avanzar en la comprensión colectiva del problema.
+          definition: Garantizar que toda crítica incluya una propuesta alternativa.
           version: '1.0'
           aliases: []
         atoms:
@@ -967,44 +728,13 @@ dimensions:
               - alternativa
               - solución
             aliases: []
-          - id: pregunta_relevante
-            name: pregunta_relevante
-            type: Entidad
-            definition: Planteamiento de una interrogante que ilumina el problema.
-            version: '1.0'
-            patterns:
-              - ¿
-              - qué pasaría si
-              - cómo
-            aliases: []
-          - id: hipotesis
-            name: hipotesis
-            type: Entidad
-            definition: Formulación de una suposición que puede ser contrastada.
-            version: '1.0'
-            patterns:
-              - hipótesis
-              - supongo
-              - podría ser
-            aliases: []
-          - id: reencuadre
-            name: reencuadre
-            type: Entidad
-            definition: Reformulación del problema que abre nuevas perspectivas.
-            version: '1.0'
-            patterns:
-              - desde otra óptica
-              - reformulando
-            aliases: []
         meta_rules_applicable: []
         severity_level: 2
       - id: '5.3'
         name: Universalidad (Simetría)
         construct:
           name: Equidad Epistémica
-          definition: >-
-            Aplicar el mismo estándar de prueba para ambos lados, reconociendo
-            la pluralidad de enfoques.
+          definition: Aplicar el mismo estándar de prueba para ambos lados.
           version: '1.0'
           aliases: []
         atoms:
@@ -1040,16 +770,13 @@ dimensions:
               - diversidad
               - múltiples perspectivas
             aliases: []
-        meta_rules_applicable:
-          - MR002
+        meta_rules_applicable: []
         severity_level: 2
       - id: '5.4'
         name: Falsabilidad
         construct:
           name: Refutabilidad
-          definition: >-
-            Exponer el argumento a la evidencia refutadora, mostrando
-            disposición a ser corregido.
+          definition: Exponer el argumento a la evidencia refutadora.
           version: '1.0'
           aliases: []
         atoms:
@@ -1073,17 +800,6 @@ dimensions:
               - falsear
               - desmentir
             aliases: []
-          - id: apertura_critica
-            name: apertura_critica
-            type: Entidad
-            definition: Disposición explícita a recibir correcciones.
-            version: '1.0'
-            patterns:
-              - estoy abierto
-              - corrijan
-              - puedo estar equivocado
-            aliases: []
-        meta_rules_applicable:
-          - MR004
+        meta_rules_applicable: []
         severity_level: 2
 meta_rules: []
