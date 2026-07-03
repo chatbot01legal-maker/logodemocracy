@@ -2,30 +2,27 @@ const { VertexAI } = require("@google-cloud/vertexai");
 
 let vertex = null;
 
-/**
- * Inicializa cliente VertexAI de forma segura
- * - Requiere GOOGLE_CLOUD_PROJECT en .env o entorno
- * - Usa región configurable
- */
 function getVertex() {
+
   if (vertex) return vertex;
 
-  const projectId = process.env.GOOGLE_CLOUD_PROJECT;
-  const location = process.env.GOOGLE_CLOUD_LOCATION || "southamerica-west1";
+  const project = process.env.GOOGLE_CLOUD_PROJECT;
+  const location =
+    process.env.GOOGLE_CLOUD_LOCATION || "us-central1";
 
-  if (!projectId) {
-    throw new Error(
-      "[SOPHIA-VERTEX] GOOGLE_CLOUD_PROJECT no está definido en variables de entorno"
-    );
-  }
+  console.log(
+    `[SOPHIA-VERTEX] Inicializando Vertex (${project}) en ${location}`
+  );
 
   vertex = new VertexAI({
-    project: projectId,
-    location: location,
+    project,
+    location
   });
 
   return vertex;
 }
+
+module.exports = { getVertex };
 
 /**
  * Llama a Gemini vía Vertex AI
