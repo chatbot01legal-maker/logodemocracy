@@ -173,7 +173,7 @@ function evaluateText(text) {
 }
 
 // ─── REVISIÓN CON LLM (complementaria) ──────────────
-async function getLLMReview(text, localResult, timeoutMs = 15000) {
+async function getLLMReview(text, localResult, timeoutMs = 30000) {
   console.log('🤖 getLLMReview() llamado (timeout %dms)', timeoutMs);
   const { askVertex } = require('./vertexClient');
 
@@ -209,18 +209,19 @@ Asegúrate de que tu respuesta sea únicamente el objeto JSON, sin texto adicion
     const response = await askVertex(prompt, 'gemini-2.5-flash', timeoutMs);
     console.log('📥 Respuesta recibida de Vertex AI');
 
-    // Extraer JSON con regex robusto
-    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    // Limpieza de formato y extracción robusta de JSON
+    const cleanText = response.replace(/```json/g, '').replace(/```/g, '').trim();
+    const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       console.warn('⚠️ No se encontró JSON en la respuesta, devolviendo error');
-      return { error: 'No se pudo parsear la revisión semántica' };
+      throw new Error('No se pudo parsear la revisión semántica');
     }
     const parsed = JSON.parse(jsonMatch[0]);
     console.log('✅ Revisión semántica parseada correctamente');
     return parsed;
   } catch (err) {
     console.error('❌ Error en getLLMReview:', err.message);
-    return { error: 'Revisión semántica no disponible' };
+    throw new Error('Revisión semántica no disponible');
   }
 }
 
