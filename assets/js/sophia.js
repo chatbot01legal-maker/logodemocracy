@@ -1067,16 +1067,44 @@ const SOPHIA = {
       btn.parentNode.replaceChild(newBtn, btn);
 
       newBtn.addEventListener('click', async () => {
-        try {
-          const input = document.getElementById('evalInput');
-          if (!input) return;
-          const text = input.value.trim();
-          const out = document.getElementById('evalResult');
+      
+         // REEMPLAZA ESTE BLOQUE EN TU ARCHIVO DE 1300 LÍNEAS
+newBtn.addEventListener('click', async () => {
+  try {
+    const input = document.getElementById('evalInput');
+    const text = input ? input.value.trim() : '';
+    const out = document.getElementById('evalResult');
 
-          if (!text) {
-            out.innerHTML = `<p style="color:rgba(239,68,68,.7);font-size:.78rem;margin-top:12px;">Ingresa o carga un texto para estimar su calidad deliberativa.</p>`;
-            return;
-          }
+    if (!text) {
+      out.innerHTML = `<p style="color:#ef4444;">El texto es requerido.</p>`;
+      return;
+    }
+
+    out.innerHTML = `<p>Analizando...</p>`;
+
+    // 1. Llamada al endpoint correcto definido en sophiaRoutes.js
+    const response = await fetch('/api/sophia/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+
+    if (!response.ok) throw new Error('Error en la comunicación con el servidor');
+    
+    const responseData = await response.json();
+    
+    // 2. Aquí conectamos la respuesta con tu función de renderizado
+    if (responseData.success) {
+      this._renderEvaluation(responseData.analysis, out);
+    } else {
+      throw new Error(responseData.error || 'Error desconocido');
+    }
+  } catch (error) {
+    console.error(error);
+    document.getElementById('evalResult').innerHTML = `<p>Error: ${error.message}</p>`;
+  }
+});
+         
 
           out.innerHTML = `<p style="color:rgba(229,231,235,.35);font-size:.72rem;margin-top:12px;">Analizando con SOPHIA (motor local + IA)...</p>`;
 
