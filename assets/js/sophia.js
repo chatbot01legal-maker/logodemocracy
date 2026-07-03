@@ -1059,87 +1059,53 @@ const SOPHIA = {
     }
   },
 
-  _bindEval(source) {
+    _bindEval(viewId) {
     try {
       const btn = document.getElementById('evalBtn');
+      const input = document.getElementById('evalInput');
+      const out = document.getElementById('evalResult');
+
       if (!btn) return;
-      const newBtn = btn.cloneNode(true);
-      btn.parentNode.replaceChild(newBtn, btn);
-      
-         // REEMPLAZA ESTE BLOQUE EN TU ARCHIVO DE 1300 LÍNEAS
-newBtn.addEventListener('click', async () => {
-  try {
-    const input = document.getElementById('evalInput');
-    const text = input ? input.value.trim() : '';
-    const out = document.getElementById('evalResult');
 
-    if (!text) {
-      out.innerHTML = `<p style="color:#ef4444;">El texto es requerido.</p>`;
-      return;
-    }
+      // Usamos un listener único para evitar duplicación
+      btn.onclick = async () => {
+        const text = input ? input.value.trim() : '';
+        if (!text) {
+          out.innerHTML = `<p style="color:#ef4444;">El texto es requerido.</p>`;
+          return;
+        }
 
-    out.innerHTML = `<p>Analizando...</p>`;
+        out.innerHTML = `<p>Analizando documento...</p>`;
 
-    // 1. Llamada al endpoint correcto definido en sophiaRoutes.js
-    const response = await fetch('/api/sophia/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text })
-    });
-
-    if (!response.ok) throw new Error('Error en la comunicación con el servidor');
-    
-    const responseData = await response.json();
-    
-    // 2. Aquí conectamos la respuesta con tu función de renderizado
-    if (responseData.success) {
-      this._renderEvaluation(responseData.analysis, out);
-    } else {
-      throw new Error(responseData.error || 'Error desconocido');
-    }
-  } catch (error) {
-    console.error(error);
-    document.getElementById('evalResult').innerHTML = `<p>Error: ${error.message}</p>`;
-  }
-});
-         
-
-          out.innerHTML = `<p style="color:rgba(229,231,235,.35);font-size:.72rem;margin-top:12px;">Analizando con SOPHIA (motor local + IA)...</p>`;
-
-          const userId = localStorage.getItem('userId') || null;
+        try {
+          // Nota: Asegúrate de que el endpoint /api/sophia/evaluate esté correctamente configurado en tu servidor
           const response = await fetch('/api/sophia/evaluate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text, userId })
+            body: JSON.stringify({ 
+              text, 
+              userId: localStorage.getItem('userId') || null 
+            })
           });
 
-          if (!response.ok) throw new Error('Error en la evaluación');
+          if (!response.ok) throw new Error('Error en la comunicación con el servidor');
+          
           const resultado = await response.json();
+          
+          // Renderizado condicional según la estructura de respuesta de tu API
+          const data = resultado.analysis || resultado; 
+          this._renderEvaluation(data, out);
 
-          const localData = resultado.local || resultado;
-          const enriched = {
-            ...localData,
-            IRD_global: resultado.ird || localData.IRD_global,
-            riesgo: resultado.risk || localData.riesgo,
-            llm_review: resultado.llm_review || null
-          };
-
-        this._renderEvaluation(enriched, out);
-      } catch (error) {
-        console.error('❌ Error en evaluación:', error);
-        const out = document.getElementById('evalResult');
-        if (out) {
-          out.innerHTML = `<p style="color:rgba(239,68,68,.7);font-size:.78rem;margin-top:12px;">Error: ${error.message}</p>`;
+        } catch (error) {
+          console.error('❌ Error en evaluación:', error);
+          out.innerHTML = `<p style="color:#ef4444;">Error: ${error.message}</p>`;
         }
-        showDebug(`❌ Error en _bindEval: ${error.message}`, true);
-      }
-    });
-  } catch (e) {
-  showDebug(`❌ Error en _bindEval: ${e.message}`, true);
+      };
+    } catch (e) {
+      showDebug(`❌ Error en _bindEval: ${e.message}`, true);
     }
-     
   },
-    
+   
       init() {
     try {
       console.log('🚀 Inicializando SOPHIA...');
