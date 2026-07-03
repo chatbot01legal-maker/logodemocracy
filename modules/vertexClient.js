@@ -2,40 +2,93 @@ const { VertexAI } = require("@google-cloud/vertexai");
 
 let vertex = null;
 
+/**
+ * Inicializa cliente VertexAI de forma segura
+ * - Requiere GOOGLE_CLOUD_PROJECT en .env o entorno
+ * - Usa región configurable
+ */
 function getVertex() {
   if (vertex) return vertex;
+
+  const projectId = process.env.GOOGLE_CLOUD_PROJECT;
+  const location = process.env.GOOGLE_CLOUD_LOCATION || "southamerica-west1";
+
+  if (!projectId) {
+    throw new Error(
+      "[SOPHIA-VERTEX] GOOGLE_CLOUD_PROJECT no está definido en variables de entorno"
+    );
+  }
+
   vertex = new VertexAI({
-    project: process.env.GOOGLE_CLOUD_PROJECT,
-    location: "southamerica-west1"
+    project: projectId,
+    location: location,
   });
+
   return vertex;
 }
 
-// Timeout configurable integrado, por defecto 30 segundos
+/**
+ * Llama a Gemini vía Vertex AI
+ * @param {string} prompt
+ * @param {string} model
+ * @param {number} timeoutMs
+ */
 async function askVertex(prompt, model = "gemini-2.5-flash", timeoutMs = 30000) {
-  console.log(`[SOPHIA-VERTEX] Preparando llamada a Vertex (${model}) con timeout de ${timeoutMs}ms`);
+  console.log(
+    `[SOPHIA-VERTEX] Preparando llamada a Vertex (${model}) con timeout de ${timeoutMs}ms`
+  );
+
   const client = getVertex();
   const gm = client.getGenerativeModel({ model });
 
   const timeoutPromise = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error(`Vertex AI Timeout excedido (${timeoutMs}ms)`)), timeoutMs)
+    setTimeout(
+      () => reject(new Error(`Vertex AI Timeout excedido (${timeoutMs}ms)`)),
+      timeoutMs
+    )
   );
 
-  const requestPromise = gm.generateContent(prompt);
+  const requestPromise = gm.generateContent({
+    contents: [
+      {
+        role: "user",
+        parts: [{ text: prompt }],
+      },
+    ],
+  });
 
-  const response = await Promise.race([requestPromise, timeoutPromise]);
-  
-  // Validación estricta de la estructura de respuesta de Vertex
-  if (!response || !response.response || !response.response.candidates || response.response.candidates.length === 0) {
-     throw new Error("Estructura de respuesta de Vertex inválida o vacía");
+  let response;
+
+  try {
+    response = await Promise.race([requestPromise, timeoutPromise]);
+  } catch (err) {
+    console.error(`[SOPHIA-VERTEX] Error en llamada:`, err.message);
+    throw err;
   }
-  
-  const textResponse = response.response.candidates[0]?.content?.parts?.[0]?.text;
+
+  // -------------------------------
+  // VALIDACIÓN ROBUSTA DE RESPUESTA
+  // -------------------------------
+  const candidate = response?.response?.candidates?.[0];
+
+  if (!candidate) {
+    throw new Error(
+      "[SOPHIA-VERTEX] Respuesta inválida: no hay candidates"
+    );
+  }
+
+  const textResponse = candidate?.content?.parts?.find(
+    (p) => p.text
+  )?.text;
+
   if (!textResponse) {
-     throw new Error("El contenido del texto en la respuesta de Vertex está ausente");
+    throw new Error(
+      "[SOPHIA-VERTEX] El contenido de texto está ausente en la respuesta"
+    );
   }
 
   console.log(`[SOPHIA-VERTEX] Respuesta recibida exitosamente`);
+
   return textResponse;
 }
 
