@@ -1128,22 +1128,37 @@ const SOPHIA = {
         out.innerHTML = `<p>Analizando documento...</p>`;
 
         try {
-          // Nota: Asegúrate de que el endpoint /api/sophia/evaluate esté correctamente configurado en tu servidor
-          const response = await fetch('/api/sophia/evaluate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              text, 
-              userId: localStorage.getItem('userId') || null 
-            })
-          });
+          let data = null;
 
-          if (!response.ok) throw new Error('Error en la comunicación con el servidor');
-          
-          const resultado = await response.json();
-          
-          // Renderizado condicional según la estructura de respuesta de tu API
-          const data = resultado.analysis || resultado; 
+          try {
+            // Nota: Asegúrate de que el endpoint /api/sophia/evaluate esté correctamente configurado en tu servidor
+            const response = await fetch('/api/sophia/evaluate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text,
+                userId: localStorage.getItem('userId') || null
+              })
+            });
+
+            if (response.ok) {
+              const resultado = await response.json();
+              // Renderizado condicional según la estructura de respuesta de tu API
+              data = resultado.analysis || resultado;
+            } else {
+              console.warn(`⚠️ /api/sophia/evaluate respondió ${response.status}, usando motor local.`);
+            }
+          } catch (networkError) {
+            console.warn('⚠️ No se pudo contactar /api/sophia/evaluate, usando motor local:', networkError.message);
+          }
+
+          // Si el backend no respondió (endpoint caído, deploy desactualizado,
+          // o aún no implementado), recurrimos al motor determinista local
+          // (evaluateText) para que la auditoría nunca quede bloqueada.
+          if (!data) {
+            data = evaluateText(text);
+          }
+
           this._renderEvaluation(data, out);
 
         } catch (error) {
@@ -1153,6 +1168,101 @@ const SOPHIA = {
       };
     } catch (e) {
       showDebug(`❌ Error en _bindEval: ${e.message}`, true);
+    }
+  },
+
+  _renderEvaluation(data, out) {
+    try {
+      if (!data) {
+        out.innerHTML = `<p style="color:#ef4444;">No se pudo generar la evaluación.</p>`;
+        return;
+      }
+
+      const riesgoColor = {
+        "Normal": "#22c55e",
+        "Atención": "#eab308",
+        "Alta Fragilidad": "#f97316",
+        "Riesgo Extremo": "#ef4444"
+      }[data.riesgo] || "#22c55e";
+
+      const fases = data.fases || [];
+      const evidencias = data.evidencias || [];
+      const hayInfracciones = fases.some(f => (f.infracciones || []).length > 0);
+
+      out.innerHTML = `
+        <div class="view-section">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
+            <div>
+              <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">Índice de Robustez Deliberativa</div>
+              <div style="font-size:2.2rem; font-weight:600; color:var(--accent);">${data.IRD_global}<span style="font-size:1rem; color:rgba(229,231,235,.4);">/100</span></div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">Nivel de riesgo</div>
+              <div style="font-size:1.1rem; font-weight:600; color:${riesgoColor};">${data.riesgo}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="view-section">
+          <div class="view-section-title">Puntaje por fase</div>
+          ${fases.map(f => `
+            <div style="margin-bottom:14px;">
+              <div style="display:flex; justify-content:space-between; font-size:.8rem; margin-bottom:4px;">
+                <span style="color:#e5e7eb;">${f.nombre}</span>
+                <span style="color:rgba(229,231,235,.5);">${f.puntaje}/100</span>
+              </div>
+              <div style="background:rgba(255,255,255,.06); height:6px; border-radius:3px; overflow:hidden;">
+                <div class="score-bar" data-target="${f.puntaje}%" style="display:block; width:0%; height:100%; background:var(--accent); transition:width .6s ease;"></div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        ${hayInfracciones ? `
+          <div class="view-section">
+            <div class="view-section-title">Infracciones detectadas</div>
+            ${fases.filter(f => (f.infracciones || []).length > 0).map(f => `
+              <div style="margin-bottom:16px;">
+                <div style="font-size:.75rem; color:var(--accent); margin-bottom:6px;">${f.nombre}</div>
+                ${f.infracciones.map(inf => `
+                  <div style="background:var(--s-panel); border-left:2px solid #ef4444; padding:10px 14px; margin-bottom:8px;">
+                    <div style="display:flex; justify-content:space-between; font-size:.8rem; gap:8px;">
+                      <span style="color:#e5e7eb;">${inf.criterio}</span>
+                      <span style="color:#ef4444; white-space:nowrap;">-${Number(inf.penalizacion).toFixed(1)} pts</span>
+                    </div>
+                    <div style="font-size:.7rem; color:rgba(229,231,235,.4); margin-top:4px;">Constructo: ${inf.constructo}</div>
+                    ${inf.meta_regla_aplicada ? `<div style="font-size:.65rem; color:#eab308; margin-top:4px;">⚠ ${inf.meta_regla_aplicada}</div>` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            `).join('')}
+          </div>
+        ` : `
+          <div class="view-section">
+            <p style="color:#22c55e;">✅ No se detectaron infracciones al protocolo.</p>
+          </div>
+        `}
+
+        ${evidencias.length > 0 ? `
+          <div class="view-section">
+            <div class="view-section-title">Evidencias textuales</div>
+            <div style="max-height:300px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
+              ${evidencias.map(ev => `
+                <div style="border-bottom:1px solid rgba(255,255,255,.05); padding:8px 0; font-size:.75rem;">
+                  <span style="color:#d97706; font-weight:500;">${ev.atomo}</span>
+                  <span style="color:rgba(229,231,235,.3);"> (${ev.criterio})</span>
+                  <div style="color:rgba(229,231,235,.6); margin-top:2px;">"${ev.fragmento}"</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+      `;
+
+      this._animateBars(out);
+    } catch (e) {
+      showDebug(`❌ Error en _renderEvaluation: ${e.message}`, true);
+      out.innerHTML = `<p style="color:#ef4444;">Error al renderizar la evaluación: ${e.message}</p>`;
     }
   },
    
