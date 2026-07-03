@@ -6,8 +6,8 @@ async function analyzeDocument(text) {
   if (!text || typeof text !== 'string') {
     throw new Error("El texto es nulo o inválido.");
   }
-  if (text.length < 50) {
-    throw new Error("Texto demasiado corto (mínimo 50 caracteres).");
+  if (text.trim().length < 10) {
+    throw new Error("Texto demasiado corto (mínimo 10 caracteres).");
   }
   if (text.length > 100000) {
     throw new Error("Texto demasiado largo (máximo 100000 caracteres).");
@@ -29,8 +29,8 @@ async function analyzeDocument(text) {
     warning = "llm unavailable";
   }
 
-  // Extracción dinámica de la versión del protocolo sin hardcodear
-  const protocolVersion = local.version || (local.protocol && local.protocol.version) || "desconocida";
+  // Extracción dinámica de la versión del protocolo
+  const protocolVersion = local.protocol_version || "3.0";
 
   // 3. Fusión y Respuesta Orquestada
   return {
