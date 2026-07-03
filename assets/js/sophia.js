@@ -1108,8 +1108,7 @@ const SOPHIA = {
     }
   },
    
-
-    _bindEval(viewId) {
+  _bindEval(viewId) {
     try {
       const btn = document.getElementById('evalBtn');
       const input = document.getElementById('evalInput');
@@ -1125,13 +1124,12 @@ const SOPHIA = {
           return;
         }
 
-        out.innerHTML = `<p>Analizando documento...</p>`;
+        out.innerHTML = `<p style="color:rgba(229,231,235,.5); font-size:.8rem; margin-top:12px;">Analizando documento con SOPHIA (Motor Local + IA)...</p>`;
 
         try {
           let data = null;
 
           try {
-            // Nota: Asegúrate de que el endpoint /api/sophia/evaluate esté correctamente configurado en tu servidor
             const response = await fetch('/api/sophia/evaluate', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -1143,8 +1141,9 @@ const SOPHIA = {
 
             if (response.ok) {
               const resultado = await response.json();
-              // Renderizado condicional según la estructura de respuesta de tu API
-              data = resultado.analysis || resultado;
+              // Normalización determinista: busca en las distintas capas de respuesta del backend
+              data = resultado.data || resultado.analysis || resultado.local || resultado;
+              console.log("📥 Datos recibidos del servidor:", data);
             } else {
               console.warn(`⚠️ /api/sophia/evaluate respondió ${response.status}, usando motor local.`);
             }
@@ -1152,10 +1151,9 @@ const SOPHIA = {
             console.warn('⚠️ No se pudo contactar /api/sophia/evaluate, usando motor local:', networkError.message);
           }
 
-          // Si el backend no respondió (endpoint caído, deploy desactualizado,
-          // o aún no implementado), recurrimos al motor determinista local
-          // (evaluateText) para que la auditoría nunca quede bloqueada.
-          if (!data) {
+          // Si el backend no respondió o no devolvió datos estructurados, recurrimos al motor local
+          if (!data || typeof data.IRD_global === 'undefined') {
+            console.log("⚙️ Ejecutando fallback local (evaluateText)...");
             data = evaluateText(text);
           }
 
@@ -1178,12 +1176,16 @@ const SOPHIA = {
         return;
       }
 
+      // Protección contra valores indefinidos en la visualización
+      const irdGlobal = data.IRD_global !== undefined ? data.IRD_global : 0;
+      const nivelRiesgo = data.riesgo || "Normal";
+
       const riesgoColor = {
         "Normal": "#22c55e",
         "Atención": "#eab308",
         "Alta Fragilidad": "#f97316",
         "Riesgo Extremo": "#ef4444"
-      }[data.riesgo] || "#22c55e";
+      }[nivelRiesgo] || "#22c55e";
 
       const fases = data.fases || [];
       const evidencias = data.evidencias || [];
@@ -1194,11 +1196,11 @@ const SOPHIA = {
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
             <div>
               <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">Índice de Robustez Deliberativa</div>
-              <div style="font-size:2.2rem; font-weight:600; color:var(--accent);">${data.IRD_global}<span style="font-size:1rem; color:rgba(229,231,235,.4);">/100</span></div>
+              <div style="font-size:2.2rem; font-weight:600; color:var(--accent);">${irdGlobal}<span style="font-size:1rem; color:rgba(229,231,235,.4);">/100</span></div>
             </div>
             <div style="text-align:right;">
               <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">Nivel de riesgo</div>
-              <div style="font-size:1.1rem; font-weight:600; color:${riesgoColor};">${data.riesgo}</div>
+              <div style="font-size:1.1rem; font-weight:600; color:${riesgoColor};">${nivelRiesgo}</div>
             </div>
           </div>
         </div>
@@ -1208,11 +1210,11 @@ const SOPHIA = {
           ${fases.map(f => `
             <div style="margin-bottom:14px;">
               <div style="display:flex; justify-content:space-between; font-size:.8rem; margin-bottom:4px;">
-                <span style="color:#e5e7eb;">${f.nombre}</span>
-                <span style="color:rgba(229,231,235,.5);">${f.puntaje}/100</span>
+                <span style="color:#e5e7eb;">${f.nombre || 'Fase'}</span>
+                <span style="color:rgba(229,231,235,.5);">${f.puntaje !== undefined ? f.puntaje : 0}/100</span>
               </div>
               <div style="background:rgba(255,255,255,.06); height:6px; border-radius:3px; overflow:hidden;">
-                <div class="score-bar" data-target="${f.puntaje}%" style="display:block; width:0%; height:100%; background:var(--accent); transition:width .6s ease;"></div>
+                <div class="score-bar" data-target="${f.puntaje !== undefined ? f.puntaje : 0}%" style="display:block; width:0%; height:100%; background:var(--accent); transition:width .6s ease;"></div>
               </div>
             </div>
           `).join('')}
@@ -1227,10 +1229,10 @@ const SOPHIA = {
                 ${f.infracciones.map(inf => `
                   <div style="background:var(--s-panel); border-left:2px solid #ef4444; padding:10px 14px; margin-bottom:8px;">
                     <div style="display:flex; justify-content:space-between; font-size:.8rem; gap:8px;">
-                      <span style="color:#e5e7eb;">${inf.criterio}</span>
-                      <span style="color:#ef4444; white-space:nowrap;">-${Number(inf.penalizacion).toFixed(1)} pts</span>
+                      <span style="color:#e5e7eb;">${inf.criterio || 'Criterio sin nombre'}</span>
+                      <span style="color:#ef4444; white-space:nowrap;">-${Number(inf.penalizacion || 0).toFixed(1)} pts</span>
                     </div>
-                    <div style="font-size:.7rem; color:rgba(229,231,235,.4); margin-top:4px;">Constructo: ${inf.constructo}</div>
+                    <div style="font-size:.7rem; color:rgba(229,231,235,.4); margin-top:4px;">Constructo: ${inf.constructo || 'N/A'}</div>
                     ${inf.meta_regla_aplicada ? `<div style="font-size:.65rem; color:#eab308; margin-top:4px;">⚠ ${inf.meta_regla_aplicada}</div>` : ''}
                   </div>
                 `).join('')}
@@ -1249,9 +1251,9 @@ const SOPHIA = {
             <div style="max-height:300px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
               ${evidencias.map(ev => `
                 <div style="border-bottom:1px solid rgba(255,255,255,.05); padding:8px 0; font-size:.75rem;">
-                  <span style="color:#d97706; font-weight:500;">${ev.atomo}</span>
-                  <span style="color:rgba(229,231,235,.3);"> (${ev.criterio})</span>
-                  <div style="color:rgba(229,231,235,.6); margin-top:2px;">"${ev.fragmento}"</div>
+                  <span style="color:#d97706; font-weight:500;">${ev.atomo || 'átomo'}</span>
+                  <span style="color:rgba(229,231,235,.3);"> (${ev.criterio || 'N/A'})</span>
+                  <div style="color:rgba(229,231,235,.6); margin-top:2px;">"${ev.fragmento || ''}"</div>
                 </div>
               `).join('')}
             </div>
@@ -1265,6 +1267,7 @@ const SOPHIA = {
       out.innerHTML = `<p style="color:#ef4444;">Error al renderizar la evaluación: ${e.message}</p>`;
     }
   },
+
    
       init() {
     try {
