@@ -16,30 +16,48 @@ try {
 } catch (err) {
   console.error('❌ Error al cargar protocolo YAML:', err.message);
   // Fallback a un protocolo vacío para no romper el servidor
-  protocol = { version: '0.0.0', dimensions: [] };
+  protocol = { version: '0.0.0', dimensions: [], severity_levels: [] };
 }
 
 // ─── CONSTRUIR PROTOCOL EN FORMATO INTERNO ──────────
 function buildProtocolFromYAML(yamlData) {
   console.log('🔧 Construyendo PROTOCOL interno...');
+
+  // Mapa de niveles de severidad a valores numéricos
+  const severityMap = {};
+  if (yamlData.severity_levels && Array.isArray(yamlData.severity_levels)) {
+    yamlData.severity_levels.forEach(s => {
+      severityMap[s.level] = s.value;
+    });
+  } else {
+    // Fallback según el estándar SOPHIA v3
+    severityMap[0] = 0;
+    severityMap[1] = 5;
+    severityMap[2] = 12.5;
+    severityMap[3] = 25;
+  }
+
   const result = {
     version: yamlData.version || '0.92-beta',
     fases: (yamlData.dimensions || []).map(dim => ({
       id: dim.id,
       nombre: dim.name,
       descripcion: dim.description || '',
-      criterios: (dim.criteria || []).map(c => ({
-        id: c.id,
-        nombre: c.name,
-        constructo: c.construct?.name || 'Sin constructo',
-        definicion: c.construct?.definition || c.definition || '',
-        severidad: c.severity_level || 2,
-        atomos: (c.atoms || []).map(a => ({
-          id: a.id,
-          definicion: a.definition || '',
-          patrones: a.patterns || []
-        }))
-      }))
+      criterios: (dim.criteria || []).map(c => {
+        const level = c.severity_level !== undefined ? c.severity_level : 2;
+        return {
+          id: c.id,
+          nombre: c.name,
+          constructo: c.construct?.name || 'Sin constructo',
+          definicion: c.construct?.definition || c.definition || '',
+          severidad: severityMap[level] || 12.5,  // valor numérico de penalización
+          atomos: (c.atoms || []).map(a => ({
+            id: a.id,
+            definicion: a.definition || '',
+            patrones: a.patterns || []
+          }))
+        };
+      })
     }))
   };
   console.log(`✅ PROTOCOL construido. Fases: ${result.fases.length}`);
@@ -65,7 +83,8 @@ function evaluateText(text) {
     evidencias: [],
     puntajes_fase: {},
     IRD_global: 0,
-    riesgo: "Normal"
+    riesgo: "Normal",
+    protocol_version: PROTOCOL.version
   };
 
   let nivel3_count = 0;
@@ -89,6 +108,7 @@ function evaluateText(text) {
             }
           });
           if (frecuencia > 0) {
+            // Penalización = severidad (valor numérico) * frecuencia
             const penalizacion_atomo = criterio.severidad * frecuencia;
             penalizacion_criterio += penalizacion_atomo;
             atomos_activados.push({ atomo: atom.id, frecuencia, severidad: criterio.severidad });
@@ -104,6 +124,7 @@ function evaluateText(text) {
         }
       });
 
+      // Tope por criterio: 25 puntos (equivalente a una infracción Nivel 3)
       penalizacion_criterio = Math.min(penalizacion_criterio, 25);
       if (penalizacion_criterio > 0) {
         infracciones_fase.push({
@@ -152,33 +173,40 @@ function evaluateText(text) {
 }
 
 // ─── REVISIÓN CON LLM (complementaria) ──────────────
-async function getLLMReview(text, localResult) {
-  console.log('🤖 getLLMReview() llamado');
+async function getLLMReview(text, localResult, timeoutMs = 15000) {
+  console.log('🤖 getLLMReview() llamado (timeout %dms)', timeoutMs);
   const { askVertex } = require('./vertexClient');
 
+  // Extraer solo las infracciones relevantes para el prompt
+  const infracciones = localResult.fases
+    .flatMap(f => f.infracciones)
+    .slice(0, 5); // limitar para no saturar
+
   const prompt = `
-    Eres el módulo de revisión semántica de SOPHIA.
-    El motor local ha detectado las siguientes infracciones:
-    ${JSON.stringify(localResult.fases, null, 2)}
+Eres el módulo de revisión semántica avanzada de SOPHIA v3.0.
+El motor local ha detectado las siguientes infracciones en el texto:
 
-    Texto original (fragmento):
-    "${text.substring(0, 1000)}"
+${JSON.stringify(infracciones, null, 2)}
 
-    Revisa si hay algún matiz que el motor local no haya captado:
-    - ¿Hay falacias no detectadas?
-    - ¿La evidencia es sólida?
-    - ¿El tono es proporcionado?
-    Devuelve un JSON con: {
-      "additional_fallacies": [],
-      "evidence_quality": "alta|media|baja",
-      "tone_proportionality": "adecuado|excesivo|insuficiente",
-      "overall_comment": "string"
-    }
-  `;
+Texto completo (primeros 1500 caracteres):
+"${text.substring(0, 1500)}"
+
+Realiza un análisis crítico y devuelve un JSON con los siguientes campos:
+{
+  "additional_fallacies": ["lista de falacias no detectadas por el motor local, con breve explicación"],
+  "evidence_quality": "alta|media|baja",
+  "tone_proportionality": "adecuado|excesivo|insuficiente",
+  "bias_detected": ["posibles sesgos cognitivos o partidistas detectados"],
+  "rhetorical_devices": ["figuras retóricas o recursos emocionales identificados"],
+  "overall_comment": "comentario general sobre la robustez deliberativa"
+}
+
+Asegúrate de que tu respuesta sea únicamente el objeto JSON, sin texto adicional.
+`;
 
   console.log('📤 Enviando prompt a Vertex AI...');
   try {
-    const response = await askVertex(prompt, 'gemini-2.5-flash');
+    const response = await askVertex(prompt, 'gemini-2.5-flash', timeoutMs);
     console.log('📥 Respuesta recibida de Vertex AI');
 
     // Extraer JSON con regex robusto
