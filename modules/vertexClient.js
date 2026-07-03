@@ -30,7 +30,7 @@ module.exports = { getVertex };
  * @param {string} model
  * @param {number} timeoutMs
  */
-async function askVertex(prompt, model = "gemini-2.5-flash", timeoutMs = 30000) {
+async function askVertex(prompt, model = "gemini-2.5-flash", timeoutMs = 50000) {
   console.log(
     `[SOPHIA-VERTEX] Preparando llamada a Vertex (${model}) con timeout de ${timeoutMs}ms`
   );
