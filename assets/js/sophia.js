@@ -469,13 +469,13 @@ const VIEWS = {
             <div class="view-eyebrow">Motor de Evaluación</div>
             <h1 class="view-title">Análisis Sophia</h1>
             <div class="view-body">
-              <p>Carga un documento para estimar su <strong>Índice de Robustez Deliberativa (IRD)</strong> según el protocolo SOPHIA v3.0.</p>
-              <p>Formatos aceptados: <strong>.txt, .pdf</strong> (próximamente .docx, .odt).</p>
+              <p>Carga un documento o pega directamente un texto para estimar su <strong>Índice de Robustez Deliberativa (IRD)</strong> según el protocolo SOPHIA v3.0.</p>
+              <p>Formatos aceptados: <strong>.txt, .pdf, .docx, .md, .rtf</strong>.</p>
             </div>
             <div class="eval-tool">
               <div class="upload-area" id="uploadArea" style="border:2px dashed rgba(59,130,246,.3); padding:20px; text-align:center; cursor:pointer; border-radius:4px; transition: border-color .2s;">
                 <p style="color:rgba(229,231,235,.4);">Arrastra tu archivo aquí o haz clic para seleccionarlo</p>
-                <input type="file" id="fileInput" accept=".txt,.pdf" style="display:none;">
+                <input type="file" id="fileInput" accept=".txt,.pdf,.docx,.md,.rtf" style="display:none;">
                 <button class="btn-primary" id="uploadBtn">Seleccionar archivo</button>
               </div>
               <div id="filePreview" style="margin-top:12px; display:none;">
@@ -483,8 +483,9 @@ const VIEWS = {
                   <span id="fileName" style="color:var(--accent);"></span>
                   <span id="fileSize" style="color:rgba(229,231,235,.4);font-size:.7rem;"></span>
                 </div>
-                <textarea class="sophia-input" id="evalInput" placeholder="El contenido del archivo aparecerá aquí..." style="height:150px;"></textarea>
               </div>
+              <p style="text-align:center; color:rgba(229,231,235,.3); font-size:.75rem; margin:14px 0;">— o pega el texto directamente —</p>
+              <textarea class="sophia-input" id="evalInput" placeholder="Pega aquí el texto a analizar, o el contenido del archivo cargado aparecerá aquí..." style="height:150px;"></textarea>
               <div class="eval-actions">
                 <button class="btn-primary" id="evalBtn">Auditar Documento →</button>
                 <span class="eval-note">El algoritmo es determinista y basado en reglas públicas.</span>
@@ -895,7 +896,7 @@ const SOPHIA = {
 
       // Inicializar eventos específicos de la vista
       if (viewId === 'analisis') {
-        this.bindUploadEvents();
+        this._bindFileUpload();
         this._bindEval('analisis');
       } else if (viewId === 'informe') {
         this._bindEval('informe');
@@ -997,40 +998,86 @@ const SOPHIA = {
 
       if (!uploadArea || !fileInput || !uploadBtn) return;
 
+      const allowedExtensions = ['txt', 'pdf', 'docx', 'md', 'rtf'];
+
+      const loadScript = (src) => new Promise((resolve, reject) => {
+        if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error(`No se pudo cargar ${src}`));
+        document.head.appendChild(script);
+      });
+
       const handleFile = async (file) => {
         if (!file) return;
         const ext = file.name.split('.').pop().toLowerCase();
-        
-        if (!['txt', 'pdf'].includes(ext)) {
-          alert('Formato no soportado. Usa .txt o .pdf.');
+
+        if (!allowedExtensions.includes(ext)) {
+          alert('Formato no soportado. Usa .txt, .pdf, .docx, .md o .rtf.');
           return;
         }
-        
+
         fileName.textContent = file.name;
         fileSize.textContent = `${(file.size / 1024).toFixed(1)} KB`;
         preview.style.display = 'block';
 
-        if (ext === 'txt') {
+        if (ext === 'txt' || ext === 'md' || ext === 'rtf') {
+          // .rtf se lee como texto plano (incluirá los códigos de control RTF,
+          // pero es suficiente para el análisis; para una extracción limpia
+          // se podría integrar una librería específica de RTF más adelante).
           const reader = new FileReader();
           reader.onload = (e) => { evalInput.value = e.target.result; };
+          reader.onerror = () => alert('No se pudo leer el archivo.');
           reader.readAsText(file);
         } else if (ext === 'pdf') {
-          if (typeof pdfjsLib === 'undefined') {
-            alert("La librería PDF.js no está cargada. Asegúrate de incluirla en tu HTML.");
+          try {
+            if (typeof pdfjsLib === 'undefined') {
+              await loadScript('https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js');
+              if (typeof pdfjsLib !== 'undefined' && pdfjsLib.GlobalWorkerOptions) {
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+              }
+            }
+          } catch (err) {
+            alert('No se pudo cargar el lector de PDF. Revisa tu conexión e inténtalo de nuevo.');
             return;
           }
-          
+
           const reader = new FileReader();
           reader.onload = async (e) => {
-            const typedarray = new Uint8Array(e.target.result);
-            const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
-            let fullText = '';
-            for (let i = 1; i <= pdf.numPages; i++) {
-              const page = await pdf.getPage(i);
-              const content = await page.getTextContent();
-              fullText += content.items.map(item => item.str).join(' ') + '\n';
+            try {
+              const typedarray = new Uint8Array(e.target.result);
+              const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
+              let fullText = '';
+              for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const content = await page.getTextContent();
+                fullText += content.items.map(item => item.str).join(' ') + '\n';
+              }
+              evalInput.value = fullText;
+            } catch (err) {
+              alert('Error al leer el PDF: ' + err.message);
             }
-            evalInput.value = fullText;
+          };
+          reader.readAsArrayBuffer(file);
+        } else if (ext === 'docx') {
+          try {
+            if (typeof mammoth === 'undefined') {
+              await loadScript('https://unpkg.com/mammoth/mammoth.browser.min.js');
+            }
+          } catch (err) {
+            alert('No se pudo cargar el lector de DOCX. Revisa tu conexión e inténtalo de nuevo.');
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            try {
+              const result = await mammoth.extractRawText({ arrayBuffer: e.target.result });
+              evalInput.value = result.value;
+            } catch (err) {
+              alert('Error al leer el DOCX: ' + err.message);
+            }
           };
           reader.readAsArrayBuffer(file);
         }
