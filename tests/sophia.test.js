@@ -1,3 +1,12 @@
+require("dotenv").config({
+  path: ".env.logodemocracy"
+});
+
+console.log("PROJECT =", process.env.GOOGLE_CLOUD_PROJECT);
+console.log("LOCATION =", process.env.GOOGLE_CLOUD_LOCATION);
+console.log("CREDS =", process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
+
 const { analyzeDocument } = require('../modules/sophiaService');
 
 async function runTests() {
