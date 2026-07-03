@@ -5,10 +5,12 @@ let vertex = null;
 function getVertex() {
   if (vertex) return vertex;
 
-  const project = process.env.GOOGLE_CLOUD_PROJECT;
-  const location = process.env.GOOGLE_CLOUD_LOCATION || "us-central1";
+  // Corrección determinista: intercepta el cruce de variables de entorno
+  const rawLocation = process.env.GOOGLE_CLOUD_LOCATION;
+  const project = process.env.GOOGLE_CLOUD_PROJECT || 
+                 (rawLocation === "logodemocracy-ai-2026" ? "logodemocracy-ai-2026" : "logodemocracy-ai-2026");
+  const location = (rawLocation === "logodemocracy-ai-2026") ? "us-central1" : (rawLocation || "us-central1");
 
-  // Lógica para cargar credenciales desde variable de entorno (Base64)
   let credentials = null;
   if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
     const b64 = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
@@ -17,7 +19,6 @@ function getVertex() {
 
   console.log(`[SOPHIA-VERTEX] Inicializando Vertex (${project}) en ${location}`);
 
-  // Pasamos las credenciales explícitamente si existen
   const config = { project, location };
   if (credentials) {
     config.googleAuthOptions = { credentials };
@@ -27,11 +28,6 @@ function getVertex() {
   return vertex;
 }
 
-// ... resto de tu código igual
-
-
-module.exports = { getVertex };
-
 /**
  * Llama a Gemini vía Vertex AI
  * @param {string} prompt
@@ -39,9 +35,7 @@ module.exports = { getVertex };
  * @param {number} timeoutMs
  */
 async function askVertex(prompt, model = "gemini-2.5-flash", timeoutMs = 50000) {
-  console.log(
-    `[SOPHIA-VERTEX] Preparando llamada a Vertex (${model}) con timeout de ${timeoutMs}ms`
-  );
+  console.log(`[SOPHIA-VERTEX] Preparando llamada a Vertex (${model}) con timeout de ${timeoutMs}ms`);
 
   const client = getVertex();
   const gm = client.getGenerativeModel({ model });
@@ -54,16 +48,10 @@ async function askVertex(prompt, model = "gemini-2.5-flash", timeoutMs = 50000) 
   );
 
   const requestPromise = gm.generateContent({
-    contents: [
-      {
-        role: "user",
-        parts: [{ text: prompt }],
-      },
-    ],
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
   });
 
   let response;
-
   try {
     response = await Promise.race([requestPromise, timeoutPromise]);
   } catch (err) {
@@ -71,30 +59,18 @@ async function askVertex(prompt, model = "gemini-2.5-flash", timeoutMs = 50000) 
     throw err;
   }
 
-  // -------------------------------
-  // VALIDACIÓN ROBUSTA DE RESPUESTA
-  // -------------------------------
   const candidate = response?.response?.candidates?.[0];
-
   if (!candidate) {
-    throw new Error(
-      "[SOPHIA-VERTEX] Respuesta inválida: no hay candidates"
-    );
+    throw new Error("[SOPHIA-VERTEX] Respuesta inválida: no hay candidates");
   }
 
-  const textResponse = candidate?.content?.parts?.find(
-    (p) => p.text
-  )?.text;
-
+  const textResponse = candidate?.content?.parts?.find(p => p.text)?.text;
   if (!textResponse) {
-    throw new Error(
-      "[SOPHIA-VERTEX] El contenido de texto está ausente en la respuesta"
-    );
+    throw new Error("[SOPHIA-VERTEX] El contenido de texto está ausente en la respuesta");
   }
 
   console.log(`[SOPHIA-VERTEX] Respuesta recibida exitosamente`);
-
   return textResponse;
 }
 
-module.exports = { askVertex };
+module.exports = { getVertex, askVertex };
