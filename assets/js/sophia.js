@@ -985,7 +985,7 @@ const SOPHIA = {
     }
   },
 
-  _bindFileUpload() {
+    _bindFileUpload() {
     try {
       const uploadArea = document.getElementById('uploadArea');
       const fileInput = document.getElementById('fileInput');
@@ -997,51 +997,52 @@ const SOPHIA = {
 
       if (!uploadArea || !fileInput || !uploadBtn) return;
 
-      const handleFile = (file) => {
+      const handleFile = async (file) => {
         if (!file) return;
         const ext = file.name.split('.').pop().toLowerCase();
+        
         if (!['txt', 'pdf'].includes(ext)) {
           alert('Formato no soportado. Usa .txt o .pdf.');
           return;
         }
+        
         fileName.textContent = file.name;
         fileSize.textContent = `${(file.size / 1024).toFixed(1)} KB`;
         preview.style.display = 'block';
 
         if (ext === 'txt') {
           const reader = new FileReader();
-          reader.onload = (e) => {
-            evalInput.value = e.target.result;
-          };
+          reader.onload = (e) => { evalInput.value = e.target.result; };
           reader.readAsText(file);
         } else if (ext === 'pdf') {
-          const script = document.createElement('script');
-          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js';
-          script.onload = () => {
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-              const arrayBuffer = e.target.result;
-              const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-              let fullText = '';
-              for (let i = 1; i <= pdf.numPages; i++) {
-                const page = await pdf.getPage(i);
-                const content = await page.getTextContent();
-                const strings = content.items.map(item => item.str);
-                fullText += strings.join(' ') + '\n';
-              }
-              evalInput.value = fullText;
-            };
-            reader.readAsArrayBuffer(file);
+          if (typeof pdfjsLib === 'undefined') {
+            alert("La librería PDF.js no está cargada. Asegúrate de incluirla en tu HTML.");
+            return;
+          }
+          
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            const typedarray = new Uint8Array(e.target.result);
+            const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
+            let fullText = '';
+            for (let i = 1; i <= pdf.numPages; i++) {
+              const page = await pdf.getPage(i);
+              const content = await page.getTextContent();
+              fullText += content.items.map(item => item.str).join(' ') + '\n';
+            }
+            evalInput.value = fullText;
           };
-          document.head.appendChild(script);
+          reader.readAsArrayBuffer(file);
         }
       };
 
       uploadBtn.addEventListener('click', () => fileInput.click());
+      
       fileInput.addEventListener('change', (e) => {
         if (e.target.files.length > 0) handleFile(e.target.files[0]);
       });
 
+      // Eventos de arrastrar y soltar
       uploadArea.addEventListener('dragover', (e) => {
         e.preventDefault();
         uploadArea.style.borderColor = 'var(--accent)';
@@ -1054,10 +1055,12 @@ const SOPHIA = {
         uploadArea.style.borderColor = 'rgba(59,130,246,.3)';
         if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
       });
+
     } catch (e) {
       showDebug(`❌ Error en _bindFileUpload: ${e.message}`, true);
     }
   },
+   
 
     _bindEval(viewId) {
     try {
