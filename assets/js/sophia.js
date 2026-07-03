@@ -1065,8 +1065,6 @@ const SOPHIA = {
       if (!btn) return;
       const newBtn = btn.cloneNode(true);
       btn.parentNode.replaceChild(newBtn, btn);
-
-      newBtn.addEventListener('click', async () => {
       
          // REEMPLAZA ESTE BLOQUE EN TU ARCHIVO DE 1300 LÍNEAS
 newBtn.addEventListener('click', async () => {
