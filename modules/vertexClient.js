@@ -3,24 +3,32 @@ const { VertexAI } = require("@google-cloud/vertexai");
 let vertex = null;
 
 function getVertex() {
-
   if (vertex) return vertex;
 
   const project = process.env.GOOGLE_CLOUD_PROJECT;
-  const location =
-    process.env.GOOGLE_CLOUD_LOCATION || "us-central1";
+  const location = process.env.GOOGLE_CLOUD_LOCATION || "us-central1";
 
-  console.log(
-    `[SOPHIA-VERTEX] Inicializando Vertex (${project}) en ${location}`
-  );
+  // Lógica para cargar credenciales desde variable de entorno (Base64)
+  let credentials = null;
+  if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+    const b64 = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
+    credentials = JSON.parse(Buffer.from(b64, 'base64').toString('utf8'));
+  }
 
-  vertex = new VertexAI({
-    project,
-    location
-  });
+  console.log(`[SOPHIA-VERTEX] Inicializando Vertex (${project}) en ${location}`);
 
+  // Pasamos las credenciales explícitamente si existen
+  const config = { project, location };
+  if (credentials) {
+    config.googleAuthOptions = { credentials };
+  }
+
+  vertex = new VertexAI(config);
   return vertex;
 }
+
+// ... resto de tu código igual
+
 
 module.exports = { getVertex };
 
