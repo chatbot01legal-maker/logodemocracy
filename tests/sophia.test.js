@@ -1,12 +1,3 @@
-require("dotenv").config({
-  path: ".env.logodemocracy"
-});
-
-console.log("PROJECT =", process.env.GOOGLE_CLOUD_PROJECT);
-console.log("LOCATION =", process.env.GOOGLE_CLOUD_LOCATION);
-console.log("CREDS =", process.env.GOOGLE_APPLICATION_CREDENTIALS);
-
-
 const { analyzeDocument } = require('../modules/sophiaService');
 
 async function runTests() {
@@ -27,7 +18,26 @@ async function runTests() {
       const result = await analyzeDocument(text);
       console.log(`✅ Engine: ${result.engine} | Versión: ${result.protocol_version}`);
       console.log(`📊 IRD Local: ${result.local?.IRD_global || 'N/A'}`);
-      console.log(`🤖 LLM Fallacies: ${result.llm?.additional_fallacies?.join(', ') || 'Ninguna'}`);
+      
+      // Manejo inteligente para imprimir falacias ya sean texto u objetos
+      let fallaciesDisplay = "Ninguna";
+      const fallaciesList = result.llm?.additional_fallacies || result.llm?.fallacies;
+      
+      if (Array.isArray(fallaciesList) && fallaciesList.length > 0) {
+        fallaciesDisplay = fallaciesList.map(f => {
+          if (typeof f === 'string') return f;
+          if (typeof f === 'object' && f.name) {
+            const conf = f.confidence ? ` (${Math.round(f.confidence * 100)}%)` : '';
+            return `${f.name}${conf}`;
+          }
+          return JSON.stringify(f);
+        }).join(", ");
+      }
+      
+      console.log(`🤖 LLM Fallacies: ${fallaciesDisplay}`);
+      if (result.llm?.overall_comment) {
+        console.log(`💬 Comentario: ${result.llm.overall_comment}`);
+      }
     } catch (error) {
       console.error(`❌ Falló la evaluación:`, error.message);
     }
