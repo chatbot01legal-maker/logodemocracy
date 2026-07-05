@@ -391,6 +391,40 @@ function evaluateText(text) {
   }
 }
 
+// ─── NORMALIZACIÓN DE RESPUESTAS SOPHIA ───────────────
+// El backend híbrido (/api/sophia/evaluate) responde con la forma:
+//   { local: {fases, evidencias, IRD_global, riesgo}, llm_review, ird, risk, ... }
+// El motor local de respaldo (evaluateText) responde con la forma plana:
+//   { fases, evidencias, IRD_global, riesgo }
+// Esta función unifica ambas en un solo objeto para el render.
+function normalizeSophiaResult(raw) {
+  if (!raw) return null;
+
+  // Forma híbrida del backend (tiene "local" anidado)
+  if (raw.local && typeof raw.local === 'object') {
+    const llmOk = raw.llm_review && !raw.llm_review.error ? raw.llm_review : null;
+    const llmErr = raw.llm_review && raw.llm_review.error ? raw.llm_review.error : null;
+    return {
+      fases: raw.local.fases || [],
+      evidencias: raw.local.evidencias || [],
+      IRD_global: raw.ird !== undefined ? raw.ird : raw.local.IRD_global,
+      riesgo: raw.risk || raw.local.riesgo,
+      llm: llmOk,
+      llmError: llmErr
+    };
+  }
+
+  // Forma plana (motor local evaluateText, sin revisión LLM)
+  return {
+    fases: raw.fases || [],
+    evidencias: raw.evidencias || [],
+    IRD_global: raw.IRD_global,
+    riesgo: raw.riesgo,
+    llm: null,
+    llmError: null
+  };
+}
+
 // ─── SISTEMA DE POPUPS ─────────────────────────────────
 function showDefinitionPopup(title, definition) {
   try {
@@ -1141,8 +1175,8 @@ const SOPHIA = {
 
             if (response.ok) {
               const resultado = await response.json();
-              // Normalización determinista: busca en las distintas capas de respuesta del backend
-              data = resultado.data || resultado.analysis || resultado.local || resultado;
+              // Normalización: preserva tanto el análisis local como la revisión de Gemini
+              data = normalizeSophiaResult(resultado);
               console.log("📥 Datos recibidos del servidor:", data);
             } else {
               console.warn(`⚠️ /api/sophia/evaluate respondió ${response.status}, usando motor local.`);
@@ -1154,7 +1188,7 @@ const SOPHIA = {
           // Si el backend no respondió o no devolvió datos estructurados, recurrimos al motor local
           if (!data || typeof data.IRD_global === 'undefined') {
             console.log("⚙️ Ejecutando fallback local (evaluateText)...");
-            data = evaluateText(text);
+            data = normalizeSophiaResult(evaluateText(text));
           }
 
           this._renderEvaluation(data, out);
@@ -1257,6 +1291,52 @@ const SOPHIA = {
                 </div>
               `).join('')}
             </div>
+          </div>
+        ` : ''}
+
+        ${data.llm ? `
+          <div class="view-section">
+            <div class="view-section-title">Revisión semántica (Gemini)</div>
+            <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
+              ${data.llm.overall_comment ? `<p style="font-size:.82rem; color:#e5e7eb; margin:0 0 12px 0; line-height:1.5;">${data.llm.overall_comment}</p>` : ''}
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:10px; margin-bottom:12px;">
+                ${data.llm.evidence_quality ? `
+                  <div>
+                    <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase;">Calidad de evidencia</div>
+                    <div style="font-size:.85rem; color:var(--accent);">${data.llm.evidence_quality}</div>
+                  </div>` : ''}
+                ${data.llm.tone_proportionality ? `
+                  <div>
+                    <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase;">Proporcionalidad del tono</div>
+                    <div style="font-size:.85rem; color:var(--accent);">${data.llm.tone_proportionality}</div>
+                  </div>` : ''}
+              </div>
+              ${(data.llm.additional_fallacies && data.llm.additional_fallacies.length > 0) ? `
+                <div style="margin-bottom:10px;">
+                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Falacias adicionales detectadas</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.llm.additional_fallacies.map(f => `<li>${f}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+              ${(data.llm.bias_detected && data.llm.bias_detected.length > 0) ? `
+                <div style="margin-bottom:10px;">
+                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Sesgos detectados</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.llm.bias_detected.map(b => `<li>${b}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+              ${(data.llm.rhetorical_devices && data.llm.rhetorical_devices.length > 0) ? `
+                <div>
+                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Recursos retóricos identificados</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.llm.rhetorical_devices.map(r => `<li>${r}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+            </div>
+          </div>
+        ` : data.llmError ? `
+          <div class="view-section">
+            <p style="color:rgba(229,231,235,.4); font-size:.78rem;">⚠ Revisión semántica (Gemini) no disponible: ${data.llmError}</p>
           </div>
         ` : ''}
       `;
