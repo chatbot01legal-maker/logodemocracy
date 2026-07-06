@@ -21,7 +21,10 @@ Contexto del análisis previo (SOPHIA): ${sophiaContext ? JSON.stringify(sophiaC
 Consulta del usuario: ${text}
 Por favor, responde con orientación constructiva para mejorar la calidad retórica y lógica de su argumento.`;
 
-    llmResponse = await askVertex(prompt);
+llmResponse = await askVertex(prompt);
+console.log("──────── LLM RESPONSE ────────");
+console.dir(llmResponse, { depth: 5 });
+console.log("──────────────────────────────");
   } catch (error) {
     console.warn(`[REY-FILOSOFO-LLM] Error en conexión: ${error.message}`);
     warning = "llm unavailable";
