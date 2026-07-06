@@ -22,9 +22,9 @@ router.post('/chat', async (req, res) => {
       );
 
     res.json({
-      success: true,
-      consultation
-    });
+  reply: result.advice,
+  debug: result
+});
 
   }
 
