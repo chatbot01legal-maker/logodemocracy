@@ -1,4 +1,4 @@
-const { askVertex } = require('./vertexService');
+const { askVertex } = require('./vertexClient');
 
 async function getPhilosopherConsultation(text, sophiaContext = null) {
   console.log('[REY-FILOSOFO] Iniciando getPhilosopherConsultation');
