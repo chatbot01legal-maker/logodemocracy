@@ -865,7 +865,14 @@ const REY_FILOSOFO = {
       });
       if (response.ok) {
         const data = await response.json();
-        tutorReply = data.reply;
+         
+       console.log("RESPUESTA BACKEND:", data);
+
+tutorReply =
+  data.reply ||
+  data.debug?.advice ||
+  data.debug ||
+  null;
       } else {
         console.warn(`⚠️ /api/reyfilosofo/chat respondió ${response.status}`);
       }
