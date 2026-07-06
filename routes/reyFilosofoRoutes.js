@@ -7,7 +7,7 @@ const {
 } = require('../modules/reyFilosofoService');
 
 
-router.post('/consult', async (req, res) => {
+router.post('/chat', async (req, res) => {
 
   console.log('[REY-FILOSOFO-API] POST /consult recibido');
 
