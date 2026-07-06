@@ -853,6 +853,7 @@ const REY_FILOSOFO = {
     container.scrollTop = container.scrollHeight;
 
     let tutorReply = null;
+    let diagInfo = null; // guarda status + cuerpo crudo para mostrarlo si algo falla
     try {
       const response = await fetch('/api/reyfilosofo/chat', {
         method: 'POST',
@@ -863,26 +864,29 @@ const REY_FILOSOFO = {
           history: this.chatHistory.slice(-12)
         })
       });
-      if (response.ok) {
-        const data = await response.json();
-         
-       console.log("RESPUESTA BACKEND:", data);
 
-tutorReply =
-  data.reply ||
-  data.debug?.advice ||
-  data.debug ||
-  null;
-      } else {
-        console.warn(`⚠️ /api/reyfilosofo/chat respondió ${response.status}`);
+      const rawText = await response.text(); // leemos como texto SIEMPRE, incluso si no es JSON válido
+      diagInfo = `HTTP ${response.status} — ${rawText.slice(0, 400)}`;
+
+      if (response.ok) {
+        let data;
+        try {
+          data = JSON.parse(rawText);
+        } catch (parseError) {
+          diagInfo = `HTTP ${response.status} (respuesta no era JSON) — ${rawText.slice(0, 400)}`;
+          data = null;
+        }
+        if (data) {
+          tutorReply = data.reply || data.debug?.advice || data.debug || null;
+        }
       }
     } catch (networkError) {
-      console.warn('⚠️ No se pudo contactar al tutor cognitivo:', networkError.message);
+      diagInfo = `Error de red: ${networkError.message}`;
     }
 
-if (!tutorReply) {
-  tutorReply = '[Error: no se recibió respuesta del tutor cognitivo]';
-}
+    if (!tutorReply) {
+      tutorReply = `[Error: no se recibió respuesta del tutor cognitivo]<br><span style="font-size:0.7rem; opacity:0.6;">Diagnóstico: ${diagInfo || 'sin datos'}</span>`;
+    }
 
     typingDiv.innerHTML = `<strong>[Tutor]</strong>: ${tutorReply}`;
     container.scrollTop = container.scrollHeight;
