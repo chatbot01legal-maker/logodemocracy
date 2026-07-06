@@ -54,23 +54,37 @@ async function askVertex(prompt, model = "gemini-2.5-flash", timeoutMs = 50000) 
   let response;
   try {
     response = await Promise.race([requestPromise, timeoutPromise]);
+    console.log("🔍 RAW RESPONSE VERTEX:");
+console.dir(response, { depth: 10 });
   } catch (err) {
     console.error(`[SOPHIA-VERTEX] Error en llamada:`, err.message);
     throw err;
   }
+const candidates =
+  response?.response?.candidates ||
+  response?.candidates ||
+  response?.[0]?.candidates;
 
-  const candidate = response?.response?.candidates?.[0];
-  if (!candidate) {
-    throw new Error("[SOPHIA-VERTEX] Respuesta inválida: no hay candidates");
-  }
+if (!candidates || !candidates.length) {
+  throw new Error("[SOPHIA-VERTEX] No hay candidates en la respuesta");
+}
 
-  const textResponse = candidate?.content?.parts?.find(p => p.text)?.text;
-  if (!textResponse) {
-    throw new Error("[SOPHIA-VERTEX] El contenido de texto está ausente en la respuesta");
-  }
+const parts = candidates[0]?.content?.parts;
 
-  console.log(`[SOPHIA-VERTEX] Respuesta recibida exitosamente`);
-  return textResponse;
+if (!parts || !parts.length) {
+  throw new Error("[SOPHIA-VERTEX] No hay parts en la respuesta");
+}
+
+const textResponse =
+  parts.find(p => typeof p.text === "string")?.text;
+
+if (!textResponse) {
+  throw new Error("[SOPHIA-VERTEX] No se encontró texto en parts");
+}
+
+console.log(`[SOPHIA-VERTEX] Texto extraído OK`);
+return textResponse;
+  
 }
 
 module.exports = { getVertex, askVertex };
