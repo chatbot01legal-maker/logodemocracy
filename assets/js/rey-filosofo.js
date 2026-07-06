@@ -873,11 +873,9 @@ const REY_FILOSOFO = {
       console.warn('⚠️ No se pudo contactar al tutor cognitivo:', networkError.message);
     }
 
-    // Respaldo: si el backend/Gemini no está disponible, el diálogo no se
-    // interrumpe — se ofrece una pregunta socrática genérica de andamiaje.
-    if (!tutorReply) {
-      tutorReply = 'Has propuesto una premisa interesante. En lugar de validar si es correcta o incorrecta, examinemos: ¿qué supuestos empíricos sostienen esa afirmación y cómo altera la carga evidencial del argumento?';
-    }
+if (!tutorReply) {
+  tutorReply = '[Error: no se recibió respuesta del tutor cognitivo]';
+}
 
     typingDiv.innerHTML = `<strong>[Tutor]</strong>: ${tutorReply}`;
     container.scrollTop = container.scrollHeight;
