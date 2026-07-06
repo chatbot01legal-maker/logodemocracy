@@ -7,9 +7,7 @@ const {
 } = require('../modules/reyFilosofoService');
 
 
-router.post('/chat', async (req, res) => {
-
-  console.log('[REY-FILOSOFO-API] POST /consult recibido');
+router.post('/consult', async (req, res) => {
 
   try {
 
@@ -22,8 +20,8 @@ router.post('/chat', async (req, res) => {
       );
 
     res.json({
-  reply: result.advice,
-  debug: result
+  reply: consultation.advice,
+  debug: consultation
 });
 
   }
@@ -43,6 +41,54 @@ router.post('/chat', async (req, res) => {
   }
 
 });
+
+
+router.post('/chat', async (req, res) => {
+
+  console.log('[REY-FILOSOFO-API] POST /chat recibido');
+
+  try {
+
+    const result =
+      await getTutorReply(req.body);
+
+    res.json({
+
+      reply:
+        result.advice ||
+
+        "No fue posible generar una respuesta."
+
+    });
+
+  }
+
+  catch (error) {
+
+    console.error(
+
+      '[REY-FILOSOFO-API] Error en /chat:',
+
+      error
+
+    );
+
+    res.status(500).json({
+
+      error:error.message
+
+    });
+
+  }
+
+});
+
+
+module.exports = router;
+
+
+    
+
 
 
 router.post('/chat', async (req, res) => {
