@@ -10,6 +10,8 @@ const crypto = require("crypto");
 const { connect } = require("./modules/database");
 const { askVertex } = require("./modules/vertexClient");
 const { evaluateText, getLLMReview, PROTOCOL } = require("./modules/sophiaCore");
+const { mergeGuestProfileIntoUser } = require("./modules/reyFilosofoService");
+const reyFilosofoRoutes = require("./routes/reyFilosofoRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -82,7 +84,7 @@ app.post("/api/register", async (req, res) => {
 app.post("/api/login", async (req, res) => {
   console.log("🔑 Intento de login:", req.body.email);
   try {
-    const { email, password } = req.body;
+    const { email, password, sessionId } = req.body;
     if (!email || !password) {
       console.log("❌ Login fallido: faltan datos");
       return res.status(400).json({ error: "Email y contraseña requeridos" });
@@ -104,6 +106,17 @@ app.post("/api/login", async (req, res) => {
       { expiresIn: "7d" }
     );
     console.log("✅ Login exitoso:", email);
+
+    // Si el usuario venía navegando como invitado (sessionId local),
+    // fusionamos su perfil pedagógico anónimo con su cuenta.
+    if (sessionId) {
+      try {
+        await mergeGuestProfileIntoUser({ userId: user._id.toString(), sessionId });
+      } catch (mergeError) {
+        console.error("⚠️ No se pudo fusionar el perfil de invitado:", mergeError.message);
+      }
+    }
+
     res.json({
       token,
       userId: user._id,
@@ -210,6 +223,9 @@ app.post("/api/sophia/evaluate", async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
+
+// ─── Rey Filósofo (perfil pedagógico + tutor cognitivo) ─
+app.use("/api/reyfilosofo", reyFilosofoRoutes);
 
 // ─── Endpoint protegido (ejemplo) ────────────────────
 app.get("/api/profile", authenticate, (req, res) => {

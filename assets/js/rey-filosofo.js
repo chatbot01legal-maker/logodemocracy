@@ -24,6 +24,34 @@ const USER_PROGRESS_DB = {
 
 const MT_PROFILE_KEY = 'reyFilosofo_pedagogicalProfile';
 
+/* ─── IDENTIDAD DEL USUARIO (para sincronizar con el backend) ───
+   Mientras no exista login real conectado en este módulo, cada
+   visitante recibe un sessionId anónimo persistente. Si más adelante
+   se conecta un JWT/login real, basta con guardar 'userId' en
+   localStorage y este helper lo tomará automáticamente. */
+function reyFilosofoGetSessionId() {
+  try {
+    let sid = localStorage.getItem('reyFilosofo_sessionId');
+    if (!sid) {
+      sid = (crypto.randomUUID ? crypto.randomUUID() : `sess-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+      localStorage.setItem('reyFilosofo_sessionId', sid);
+    }
+    return sid;
+  } catch (e) {
+    return null;
+  }
+}
+
+function reyFilosofoGetUserId() {
+  try { return localStorage.getItem('userId') || null; } catch (e) { return null; }
+}
+
+function reyFilosofoIdentity() {
+  const userId = reyFilosofoGetUserId();
+  const sessionId = reyFilosofoGetSessionId();
+  return userId ? { userId } : { sessionId };
+}
+
 function mtLoadProfile() {
   try {
     const raw = localStorage.getItem(MT_PROFILE_KEY);
@@ -445,7 +473,21 @@ const MT_ENGINE = {
     const variables = test.compute(this.answers) || {};
     this.profile.completed[test.id] = true;
     this.profile.variables = { ...this.profile.variables, ...variables };
-    mtSaveProfile(this.profile);
+    mtSaveProfile(this.profile); // respaldo local inmediato (funciona incluso sin conexión)
+
+    // Sincronización con el backend (Mongo + evento anonimizado para el
+    // Laboratorio Cívico). Si falla, el perfil ya quedó a salvo localmente
+    // y se reintentará en la próxima sincronización.
+    fetch('/api/reyfilosofo/microtests/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...reyFilosofoIdentity(),
+        testId: test.id,
+        answers: this.answers,
+        variables
+      })
+    }).catch(err => console.warn('⚠️ No se pudo sincronizar el microtest con el servidor:', err.message));
 
     if (this.allCompleted()) {
       this.activeId = null;
@@ -785,7 +827,9 @@ const REY_FILOSOFO = {
     }
   },
 
-  handleUserMessage() {
+  chatHistory: [],
+
+  async handleUserMessage() {
     const input = document.getElementById('chatInput');
     const container = document.getElementById('chatMessages');
     if (!input || !input.value.trim() || !container) return;
@@ -799,15 +843,45 @@ const REY_FILOSOFO = {
     userMsgDiv.innerHTML = `<strong>[Tú]</strong>: ${userText}`;
     container.appendChild(userMsgDiv);
     container.scrollTop = container.scrollHeight;
+    this.chatHistory.push({ role: 'user', text: userText });
 
-    // Respuesta simulada del tutor cognitivo enfocado en andamiaje
-    setTimeout(() => {
-      const tutorMsgDiv = document.createElement('div');
-      tutorMsgDiv.className = 'chat-msg system';
-      tutorMsgDiv.innerHTML = `<strong>[Tutor]</strong>: Has propuesto una premisa interesante. En lugar de validar si es correcta o incorrecta, examinemos: ¿qué supuestos empíricos sostienen esa afirmación y cómo altera la carga evidencial del argumento?`;
-      container.appendChild(tutorMsgDiv);
-      container.scrollTop = container.scrollHeight;
-    }, 750);
+    // Indicador de "escribiendo..."
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'chat-msg system';
+    typingDiv.innerHTML = `<strong>[Tutor]</strong>: <em>reflexionando...</em>`;
+    container.appendChild(typingDiv);
+    container.scrollTop = container.scrollHeight;
+
+    let tutorReply = null;
+    try {
+      const response = await fetch('/api/reyfilosofo/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...reyFilosofoIdentity(),
+          message: userText,
+          history: this.chatHistory.slice(-12)
+        })
+      });
+      if (response.ok) {
+        const data = await response.json();
+        tutorReply = data.reply;
+      } else {
+        console.warn(`⚠️ /api/reyfilosofo/chat respondió ${response.status}`);
+      }
+    } catch (networkError) {
+      console.warn('⚠️ No se pudo contactar al tutor cognitivo:', networkError.message);
+    }
+
+    // Respaldo: si el backend/Gemini no está disponible, el diálogo no se
+    // interrumpe — se ofrece una pregunta socrática genérica de andamiaje.
+    if (!tutorReply) {
+      tutorReply = 'Has propuesto una premisa interesante. En lugar de validar si es correcta o incorrecta, examinemos: ¿qué supuestos empíricos sostienen esa afirmación y cómo altera la carga evidencial del argumento?';
+    }
+
+    typingDiv.innerHTML = `<strong>[Tutor]</strong>: ${tutorReply}`;
+    container.scrollTop = container.scrollHeight;
+    this.chatHistory.push({ role: 'tutor', text: tutorReply });
   }
 };
 
