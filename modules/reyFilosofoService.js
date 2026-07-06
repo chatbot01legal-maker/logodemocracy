@@ -35,4 +35,25 @@ Por favor, responde con orientación constructiva para mejorar la calidad retór
   };
 }
 
-module.exports = { getPhilosopherConsultation };
+/**
+ * Wrapper de compatibilidad para la ruta /api/reyfilosofo/chat
+ * Soporta desestructuración directa de argumentos o recepción del objeto del body.
+ */
+async function getTutorReply(param1, param2 = null) {
+  console.log('[REY-FILOSOFO] Mapeando llamada entrante en getTutorReply');
+  let text = param1;
+  let sophiaContext = param2;
+
+  // Si la ruta pasa un objeto de configuración o el req.body directamente
+  if (param1 && typeof param1 === 'object') {
+    text = param1.text || param1.message || param1.prompt;
+    sophiaContext = param1.sophiaContext || null;
+  }
+
+  return await getPhilosopherConsultation(text, sophiaContext);
+}
+
+module.exports = { 
+  getPhilosopherConsultation,
+  getTutorReply 
+};
