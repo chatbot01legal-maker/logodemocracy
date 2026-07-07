@@ -1,42 +1,35 @@
-const ContextAssembler = require('./ContextAssembler');
-const FSMManager = require('./FSMManager');
-const ZDPResolver = require('./ZDPResolver');
-const AnalogyEngine = require('./AnalogyEngine');
-const ScaffoldEngine = require('./ScaffoldEngine');
-const CompetencyTracker = require('./CompetencyTracker');
-const TelemetryCollector = require('./TelemetryCollector');
-const TransferDetector = require('./TransferDetector');
-
 const RFKernel = {
   async process({ userId, sessionId, provider_module, content, user_response, metadata }) {
+    // 1. Ensamblar contexto y persistencia
     const ctx = await ContextAssembler.assemble(userId, sessionId, provider_module);
     
-    // 1. Detección de Transferencia (sobre respuesta de usuario)
-    const transfer = TransferDetector.analyze(user_response, metadata?.competence);
-    if (transfer.detected) {
-      await CompetencyTracker.recordTransfer(ctx.learningMap, metadata?.competence, transfer.score);
-      await TelemetryCollector.updateAnalogy(ctx.learningMap, metadata?.concept, transfer.score);
-    }
-
-    // 2. Transición de Estado (Evento-céntrica)
-    const event = transfer.detected ? "successful_transfer" : "default";
-    FSMManager.transition(ctx.session, event);
+    // 2. Eventos y Transición (Scheduler)
+    const detectedEvents = EventDetector.detect({ user_response, fsm_state: ctx.session.fsm_state });
+    detectedEvents.forEach(event => FSMManager.transition(ctx.session, event));
     
-    // 3. Resolución de Estrategia
-    const strategy = ZDPResolver.resolve(ctx.profile);
+    // 3. Resolución ZDP (Configuración adaptativa basada en estado)
+    const strategy = ZDPResolver.resolve(ctx.profile, ctx.session.fsm_state);
+    
+    // 4. Selección de Analogía (Capas: Telemetría > Anchors)
     const analogy = await AnalogyEngine.select(metadata?.concept, ctx.profile, ctx.learningMap);
     
-    // 4. Transformación de Contenido
+    // 5. Scaffold (Transformación del contenido)
     const scaffold = ScaffoldEngine.apply(content, strategy, analogy, ctx.session.fsm_state);
     
-    // 5. Persistencia Centralizada
-    await ContextAssembler.persist(ctx);
+    // 6. Monitor de Rendimiento (Competency & Telemetry)
+    if (metadata?.competencies) {
+      for (const comp of metadata.competencies) {
+        await CompetencyTracker.update(ctx.learningMap, comp, user_response);
+      }
+    }
+    
+    // 7. Persistencia final
+    await PersistenceManager.save(ctx);
 
     return {
       adapted_content: scaffold.adapted_content,
       fsm_state: ctx.session.fsm_state,
-      transfer_detected: transfer.detected
+      scaffold_type: scaffold.scaffold_type
     };
   }
 };
-module.exports = RFKernel;
