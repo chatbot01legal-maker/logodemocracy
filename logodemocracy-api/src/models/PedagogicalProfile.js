@@ -8,8 +8,7 @@ const pedagogicalProfileSchema = new mongoose.Schema({
     sparse: true
   },
   sessionId: {
-    type: String,
-    index: true
+    type: String
   },
   // Retrocompatibilidad garantizada con microtestController y frontend actual
   completed_tests: [{
