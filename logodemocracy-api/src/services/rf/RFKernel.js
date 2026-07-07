@@ -8,46 +8,35 @@ const TelemetryCollector = require('./TelemetryCollector');
 const TransferDetector = require('./TransferDetector');
 
 const RFKernel = {
-  async process({ userId, sessionId, provider_module, content, metadata }) {
-    // 1. Ensamblar contexto
+  async process({ userId, sessionId, provider_module, content, user_response, metadata }) {
     const ctx = await ContextAssembler.assemble(userId, sessionId, provider_module);
     
-    // 2. Gestionar estado (FSM)
-    const fsm_previous = ctx.session.fsm_state;
-    await FSMManager.update(ctx.session);
+    // 1. Detección de Transferencia (sobre respuesta de usuario)
+    const transfer = TransferDetector.analyze(user_response, metadata?.competence);
+    if (transfer.detected) {
+      await CompetencyTracker.recordTransfer(ctx.learningMap, metadata?.competence, transfer.score);
+      await TelemetryCollector.updateAnalogy(ctx.learningMap, metadata?.concept, transfer.score);
+    }
+
+    // 2. Transición de Estado (Evento-céntrica)
+    const event = transfer.detected ? "successful_transfer" : "default";
+    FSMManager.transition(ctx.session, event);
     
-    // 3. Resolver ZDP
-    const zdpStrategy = ZDPResolver.resolve(ctx.profile, ctx.learningMap, ctx.session);
-    
-    // 4. Seleccionar analogía
+    // 3. Resolución de Estrategia
+    const strategy = ZDPResolver.resolve(ctx.profile);
     const analogy = await AnalogyEngine.select(metadata?.concept, ctx.profile, ctx.learningMap);
     
-    // 5. Aplicar Andamiaje
-    const scaffold = ScaffoldEngine.apply(content, zdpStrategy, analogy, ctx.session.fsm_state);
+    // 4. Transformación de Contenido
+    const scaffold = ScaffoldEngine.apply(content, strategy, analogy, ctx.session.fsm_state);
     
-    // 6. Detectar Transferencia
-    const transfer = TransferDetector.analyze(content);
-    
-    // 7. Actualizar Competencias y Telemetría
-    if (transfer.detected) {
-      await CompetencyTracker.recordTransfer(ctx.learningMap, metadata?.competence);
-      await TelemetryCollector.record(ctx.learningMap, metadata, analogy, transfer.score);
-    }
-    
-    await ctx.session.save();
-    await ctx.learningMap.save();
+    // 5. Persistencia Centralizada
+    await ContextAssembler.persist(ctx);
 
     return {
       adapted_content: scaffold.adapted_content,
-      analogy_used: analogy ? analogy.analogy : null,
-      analogy_score: analogy ? analogy.confidence : 0,
-      competence: metadata?.competence,
-      fsm_previous,
-      fsm_current: ctx.session.fsm_state,
-      scaffold_applied: scaffold.scaffold_type,
+      fsm_state: ctx.session.fsm_state,
       transfer_detected: transfer.detected
     };
   }
 };
-
 module.exports = RFKernel;
