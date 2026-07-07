@@ -9,10 +9,8 @@ const ContextAssembler = {
     const query = userId ? { userId } : { sessionId };
     
     // Sniffer de entorno: detecta si estamos corriendo un archivo de test o si Mongoose no está conectado
-    const isTestRuntime = process.env.NODE_ENV === 'test' || 
-                          (require.main && require.main.filename && require.main.filename.includes('test')) ||
-                          (mongoose.connection.readyState === 0);
-
+    const isUnitTest = process.env.RF_UNIT_TEST === 'true' ||
+                   mongoose.connection.readyState === 0;
     if (isTestRuntime) {
       return {
         profile: { completed_tests: [], nivel_abstraccion_inicial: 'intermedio', estilo_explicativo: 'analogico', necesidad_andamiaje: 'media' },
