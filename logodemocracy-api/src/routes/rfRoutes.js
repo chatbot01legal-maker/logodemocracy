@@ -3,7 +3,7 @@ const router = express.Router();
 const rfController = require('../controllers/rfController');
 const { optionalAuth } = require('../middlewares/auth');
 
-// Endpoint principal del Pedagogical Operating System
+// Paso 2: Endpoint maestro del proceso cognitivo extremo a extremo
 router.post('/process', optionalAuth, rfController.process);
 
 module.exports = router;
