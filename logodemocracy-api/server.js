@@ -9,7 +9,6 @@ const errorHandler = require('./src/middlewares/errorHandler');
 const authRoutes = require('./src/routes/authRoutes');
 const profileRoutes = require('./src/routes/profileRoutes');
 const microtestRoutes = require('./src/routes/microtestRoutes');
-const rfRoutes = require('./src/routes/rfRoutes');
 const app = express();
 
 // Configuración de Seguridad y Middlewares Globales
