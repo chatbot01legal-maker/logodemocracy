@@ -37,6 +37,7 @@
   --c-rey:      #d97706;
   --c-sophia:   #3b82f6;
   --c-academia: #22c55e;
+  --c-lab:      #94a3b8;
 
   /* Tipografía */
   --f-mono: 'IBM Plex Mono', monospace;
@@ -677,7 +678,139 @@ body {
 
 .timeline-node--last .tl-connector { display: none; }
 
-/* ─── S6 VOTACIÓN CUADRÁTICA ─────────────────────────── */
+/* ─── S6 LABORATORIO CÍVICO ──────────────────────────── */
+.laboratorio-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.laboratorio-content p {
+  color: var(--c-muted);
+  margin-bottom: var(--space-sm);
+  line-height: 1.8;
+}
+
+.laboratorio-content p strong {
+  color: var(--c-text);
+  font-weight: 500;
+}
+
+.laboratorio-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+  margin-top: var(--space-md);
+}
+
+.laboratorio-features li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75em;
+  font-family: var(--f-mono);
+  font-size: 0.8rem;
+  color: var(--c-muted);
+  letter-spacing: 0.04em;
+}
+
+.laboratorio-features li::before {
+  content: '—';
+  color: var(--c-lab);
+  flex-shrink: 0;
+}
+
+/* Panel: flujo de datos anonimizados (mock terminal, estilo academia-panel) */
+.lab-panel {
+  border: 1px solid var(--c-border);
+  border-radius: 1px;
+  background: rgba(255,255,255,0.018);
+  overflow: hidden;
+  font-family: var(--f-mono);
+}
+
+.lab-panel .panel-title { color: var(--c-faint); }
+
+.p-slate { color: var(--c-lab); }
+
+.lab-anon-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-lab);
+  border: 1px solid rgba(148,163,184,0.3);
+  border-radius: 1px;
+  padding: 0.5em 0.9em;
+  background: rgba(148,163,184,0.06);
+  margin-top: var(--space-md);
+}
+
+.lab-anon-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-lab);
+  box-shadow: 0 0 6px var(--c-lab);
+}
+
+/* ─── S6b HIPÓTESIS EN INVESTIGACIÓN ─────────────────── */
+.hipotesis-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.hipotesis-card {
+  position: relative;
+  border: 1px solid var(--c-border);
+  border-left-width: 2px;
+  border-left-color: var(--c-lab);
+  border-radius: 1px;
+  padding: var(--space-md);
+  background: var(--c-glass);
+  transition: background 250ms, transform 250ms, box-shadow 250ms;
+}
+
+.hipotesis-card:hover {
+  background: var(--c-glass-h);
+  transform: translateY(-3px);
+  box-shadow: 0 0 24px rgba(148,163,184,0.1);
+}
+
+.hipotesis-status {
+  display: inline-block;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-lab);
+  border: 1px solid var(--c-border);
+  border-radius: 1px;
+  padding: 0.15em 0.6em;
+  margin-bottom: 0.75em;
+}
+
+.hipotesis-text {
+  font-size: 0.86rem;
+  color: var(--c-text);
+  line-height: 1.6;
+  margin-bottom: 0.5em;
+}
+
+.hipotesis-modulo {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  color: var(--c-faint);
+  letter-spacing: 0.06em;
+}
+
+/* ─── S7 VOTACIÓN CUADRÁTICA ─────────────────────────── */
 .cuadratica-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -784,7 +917,7 @@ body {
   line-height: 1.5;
 }
 
-/* ─── S7 MODELO ──────────────────────────────────────── */
+/* ─── S8 MODELO ──────────────────────────────────────── */
 .formula-wrapper {
   display: flex;
   justify-content: center;
@@ -906,7 +1039,7 @@ body {
   padding-top: var(--space-md);
 }
 
-/* ─── S8 CIERRE ──────────────────────────────────────── */
+/* ─── S9 CIERRE ──────────────────────────────────────── */
 .cierre {
   padding: var(--space-2xl) 0;
   text-align: center;
@@ -1013,6 +1146,8 @@ body {
   .concepto-grid       { grid-template-columns: 1fr; }
   .agentes-grid        { grid-template-columns: 1fr; }
   .academia-layout     { grid-template-columns: 1fr; }
+  .laboratorio-layout  { grid-template-columns: 1fr; }
+  .hipotesis-grid      { grid-template-columns: 1fr; }
   .cuadratica-layout   { grid-template-columns: 1fr; }
   .modelo-variables    { grid-template-columns: 1fr; }
 
@@ -1391,7 +1526,88 @@ body {
   <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
 
   <!-- ═══════════════════════════════════════════════════════
-       S6 — VOTACIÓN CUADRÁTICA
+       S6 — LABORATORIO CÍVICO
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section laboratorio" id="laboratorio">
+    <div class="container">
+      <div class="laboratorio-layout">
+        <div class="laboratorio-content">
+          <span class="section-label" style="--label-color: var(--c-lab)">Investigación</span>
+          <h2 class="section-title">Laboratorio Cívico<br />de Pensamiento Colectivo</h2>
+          <p>Cada microtest respondido, cada documento auditado por Sophia, cada deliberación mediada por Logos y cada sesión de tutoría con el Rey Filósofo deja un rastro. Ese rastro, <strong>despojado de nombre y de identidad</strong>, es la materia prima de este laboratorio.</p>
+          <p>El objetivo no es vigilar al ciudadano: es entender, agregada y anónimamente, cómo aprende una ciudadanía asistida por inteligencia artificial. Qué estilos de aprendizaje predominan, dónde se atascan los conceptos difíciles, qué formas de andamiaje realmente elevan la calidad deliberativa.</p>
+          <p>Esa comprensión colectiva es lo que permite que Sophia, Logos, Aletheia y el Rey Filósofo mejoren con el tiempo —un <strong>open source cognitivo</strong> que se perfecciona con el uso mismo de la plataforma. Es, en ese sentido, tan fundamental para la Democracia Aumentada como el voto o la deliberación misma.</p>
+          <ul class="laboratorio-features">
+            <li>Curvas y estilos de aprendizaje, agregados y anónimos</li>
+            <li>Puntos de fricción por tipo de contenido</li>
+            <li>Efectividad de cada estrategia de andamiaje</li>
+            <li>Mejora continua de Sophia, Logos, Aletheia y Rey Filósofo</li>
+            <li>Insumo para investigación pública sobre IA y democracia</li>
+          </ul>
+          <span class="lab-anon-badge"><span class="dot"></span>Sin nombre, sin identidad, solo patrones</span>
+        </div>
+        <div class="lab-panel">
+          <div class="panel-bar">
+            <span class="panel-dot"></span>
+            <span class="panel-dot"></span>
+            <span class="panel-dot"></span>
+            <span class="panel-title">laboratorio_civico_events</span>
+          </div>
+          <div class="panel-body">
+            <div class="panel-line panel-line--comment"># Evento anonimizado recibido</div>
+            <div class="panel-line"><span class="p-slate">→</span> módulo: <span class="p-green">rey_filosofo</span></div>
+            <div class="panel-line"><span class="p-slate">→</span> tipo: <span class="p-cyan">microtest_completado</span></div>
+            <div class="panel-line"><span class="p-slate">→</span> usuario: <span class="p-amber">a91f3e...(hash)</span></div>
+            <div class="panel-line panel-line--gap"><span class="p-slate">✓</span> sin nombre almacenado</div>
+            <div class="panel-line"><span class="p-slate">✓</span> sin email almacenado</div>
+            <div class="panel-line"><span class="p-slate">✓</span> agregado a estudio longitudinal</div>
+            <div class="panel-line panel-line--comment"># Pregunta de investigación activa</div>
+            <div class="panel-line panel-line--cursor"><span class="p-violet">¿Cómo aprende una ciudadanía asistida por IA?</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       S6b — HIPÓTESIS EN INVESTIGACIÓN
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section hipotesis" id="hipotesis">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label" style="--label-color: var(--c-lab)">En curso</span>
+        <h2 class="section-title">Hipótesis en observación</h2>
+        <p class="section-sub">Algunas de las preguntas que este laboratorio busca responder con datos agregados, a medida que la comunidad crece.</p>
+      </div>
+      <div class="hipotesis-grid">
+        <div class="hipotesis-card">
+          <span class="hipotesis-status">Preliminar</span>
+          <p class="hipotesis-text">Los usuarios con pensamiento sistémico alto responden mejor a mapas causales que a explicaciones lineales.</p>
+          <span class="hipotesis-modulo">Rey Filósofo · perfil pedagógico</span>
+        </div>
+        <div class="hipotesis-card">
+          <span class="hipotesis-status">Preliminar</span>
+          <p class="hipotesis-text">Los usuarios de orientación concreta mejoran su comprensión más rápido cuando el contenido parte de analogías.</p>
+          <span class="hipotesis-modulo">Academia · trayectoria formativa</span>
+        </div>
+        <div class="hipotesis-card">
+          <span class="hipotesis-status">En observación</span>
+          <p class="hipotesis-text">La representación robusta del argumento contrario (steelman) incrementa el Índice de Robustez Deliberativa.</p>
+          <span class="hipotesis-modulo">Sophia · calidad argumentativa</span>
+        </div>
+        <div class="hipotesis-card">
+          <span class="hipotesis-status">En observación</span>
+          <p class="hipotesis-text">Los cierres metacognitivos explícitos aumentan la persistencia y el retorno a la plataforma.</p>
+          <span class="hipotesis-modulo">Rey Filósofo · bitácora metacognitiva</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       S7 — VOTACIÓN CUADRÁTICA
   ══════════════════════════════════════════════════════════ -->
   <section class="section cuadratica" id="cuadratica">
     <div class="container">
@@ -1435,7 +1651,7 @@ body {
   <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
 
   <!-- ═══════════════════════════════════════════════════════
-       S7 — MODELO LOGODEMOCRACY
+       S8 — MODELO LOGODEMOCRACY
   ══════════════════════════════════════════════════════════ -->
   <section class="section modelo" id="modelo">
     <div class="container">
@@ -1488,7 +1704,7 @@ body {
   <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
 
   <!-- ═══════════════════════════════════════════════════════
-       S8 — CIERRE FILOSÓFICO
+       S9 — CIERRE FILOSÓFICO
   ══════════════════════════════════════════════════════════ -->
   <section class="section cierre" id="cierre">
     <div class="container">
@@ -1511,6 +1727,7 @@ body {
         <a href="#">Logos</a>
         <a href="#">Rey Filósofo</a>
         <a href="#">Sophia</a>
+        <a href="#laboratorio">Laboratorio Cívico</a>
       </nav>
       <span class="footer-copy">Democracia Aumentada · 2025</span>
     </div>
@@ -1526,7 +1743,7 @@ body {
   'use strict';
 
   /* ─── INTERSECTION OBSERVER — GENERIC REVEALS ──────── */
-  const revealEls = document.querySelectorAll('.section-header, .concepto-grid, .formula-concepto, .agent-card, .academia-layout, .cuadratica-layout, .formula-wrapper, .modelo-variables, .cierre-quote');
+  const revealEls = document.querySelectorAll('.section-header, .concepto-grid, .formula-concepto, .agent-card, .academia-layout, .laboratorio-layout, .hipotesis-card, .cuadratica-layout, .formula-wrapper, .modelo-variables, .cierre-quote');
 
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
