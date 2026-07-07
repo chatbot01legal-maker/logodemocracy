@@ -9,7 +9,7 @@ const errorHandler = require('./src/middlewares/errorHandler');
 const authRoutes = require('./src/routes/authRoutes');
 const profileRoutes = require('./src/routes/profileRoutes');
 const microtestRoutes = require('./src/routes/microtestRoutes');
-const app = express();
+const rfRoutes = require('./src/routes/rfRoutes');
 
 // Configuración de Seguridad y Middlewares Globales
 app.use(helmet());
@@ -24,10 +24,10 @@ app.use(express.json({ limit: '1mb' }));
 connectDB();
 
 // Montaje de Rutas Core
-app.use('/api/auth', authRoutes);
-app.use('/api', profileRoutes); // Expone /api/profile y /api/learning-map
-app.use('/api/reyfilosofo/microtests', microtestRoutes);
-
+const authRoutes = require('./src/routes/authRoutes');
+const profileRoutes = require('./src/routes/profileRoutes');
+const microtestRoutes = require('./src/routes/microtestRoutes');
+const rfRoutes = require('./src/routes/rfRoutes');
 // Healthcheck
 app.get('/health', (req, res) => {
   res.json({
