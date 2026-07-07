@@ -1,15 +1,15 @@
-const AnalogyEngine = {
-  async select(concept, profile, learningMap) {
-    // 1. Filtrar analogías eficaces del LM
-    const successful = learningMap.telemetry.successful_analogies
-      .filter(a => a.concept === concept)
-      .sort((a, b) => b.effectiveness - a.effectiveness);
+const CompetencyTracker = {
+  async update(learningMap, competenceKey, user_response) {
+    // Lógica de actualización atómica
+    const comp = learningMap.competencies.get(competenceKey) || { autonomy: 10 };
     
-    if (successful.length > 0) {
-      return { analogy: successful[0].analogy, source: 'telemetry', confidence: successful[0].effectiveness };
-    }
+    // Aquí se conectaría la lógica para decidir si es aumento, retroceso o fatiga
+    const delta = this.calculateDelta(user_response); 
     
-    return null;
+    comp.autonomy = Math.min(100, Math.max(0, comp.autonomy + delta));
+    comp.trend = delta > 0 ? 'up' : 'down';
+    comp.last_assessed = new Date();
+    
+    learningMap.competencies.set(competenceKey, comp);
   }
 };
-module.exports = AnalogyEngine;
