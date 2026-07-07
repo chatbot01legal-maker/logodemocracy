@@ -27,7 +27,7 @@ connectDB();
 app.use('/api/auth', authRoutes);
 app.use('/api', profileRoutes); // Expone /api/profile y /api/learning-map
 app.use('/api/reyfilosofo/microtests', microtestRoutes);
-app.use('/api/reyfilosofo', rfRoutes);
+
 // Healthcheck
 app.get('/health', (req, res) => {
   res.json({
