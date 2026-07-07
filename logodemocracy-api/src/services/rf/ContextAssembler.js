@@ -11,7 +11,7 @@ const ContextAssembler = {
     // Sniffer de entorno: detecta si estamos corriendo un archivo de test o si Mongoose no está conectado
     const isUnitTest = process.env.RF_UNIT_TEST === 'true' ||
                    mongoose.connection.readyState === 0;
-    if (isTestRuntime) {
+    if (isUnitTest) {
       return {
         profile: { completed_tests: [], nivel_abstraccion_inicial: 'intermedio', estilo_explicativo: 'analogico', necesidad_andamiaje: 'media' },
         learningMap: { competencies: new Map(), anchors: [], telemetry: { successful_analogies: [] }, interaction_stats: { successful_transfers: 0 } },
