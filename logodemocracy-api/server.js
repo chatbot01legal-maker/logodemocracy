@@ -9,7 +9,7 @@ const errorHandler = require('./src/middlewares/errorHandler');
 const authRoutes = require('./src/routes/authRoutes');
 const profileRoutes = require('./src/routes/profileRoutes');
 const microtestRoutes = require('./src/routes/microtestRoutes');
-
+const rfRoutes = require('./src/routes/rfRoutes');
 const app = express();
 
 // Configuración de Seguridad y Middlewares Globales
@@ -28,7 +28,7 @@ connectDB();
 app.use('/api/auth', authRoutes);
 app.use('/api', profileRoutes); // Expone /api/profile y /api/learning-map
 app.use('/api/reyfilosofo/microtests', microtestRoutes);
-
+app.use('/api/reyfilosofo', rfRoutes);
 // Healthcheck
 app.get('/health', (req, res) => {
   res.json({
