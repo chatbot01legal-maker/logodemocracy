@@ -3,7 +3,7 @@ const ZDPResolver = {
     profile = profile || {};
     return {
       abstraction_level: profile.nivel_abstraccion_inicial || 'intermedio',
-      explanation_style: profile.estilo_explicativo || 'secuencial_estructurado',
+      explanation_style: profile.estilo_explicativo || 'analogico',
       scaffold_intensity: profile.necesidad_andamiaje || 'media',
       preferred_sequence: profile.secuencia_preferida || 'definicion_primero',
       analogy_type: profile.tipo_analogia_dominante || 'constructiva',
@@ -12,4 +12,5 @@ const ZDPResolver = {
     };
   }
 };
+
 module.exports = ZDPResolver;

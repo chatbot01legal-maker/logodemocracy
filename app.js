@@ -5,6 +5,7 @@ require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
 // ─── Módulos propios ──────────────────────────────────
 const { connect } = require("./modules/database");
@@ -227,9 +228,14 @@ app.post("/api/sophia/evaluate", async (req, res) => {
   }
 });
 
-// ─── Rey Filósofo (perfil pedagógico + tutor cognitivo) ─
-app.use("/api/reyfilosofo", reyFilosofoRoutes);
-
+// ─── Rey Filósofo Kernel ZDP (backend nuevo) ─────────
+app.use(
+  "/api/reyfilosofo",
+  createProxyMiddleware({
+    target: "http://localhost:5000",
+    changeOrigin: true
+  })
+);
 // ─── Endpoint protegido (ejemplo) ────────────────────
 app.get("/api/profile", authenticate, (req, res) => {
   console.log(`👤 Perfil solicitado por: ${req.user.email}`);
