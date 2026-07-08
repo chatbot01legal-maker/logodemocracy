@@ -873,8 +873,8 @@ const REY_FILOSOFO = {
     try {
       // 3. LLAMADA AL ENDPOINT CANÓNICO DEL REY FILÓSOFO
       const response = await fetch('/api/reyfilosofo/process', {
+        headers: { 'Content-Type': 'application/json', 'X-Request-ID': 'web-' + Date.now() },
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...reyFilosofoIdentity(),
           provider_module: "SophiaContextProvider",
