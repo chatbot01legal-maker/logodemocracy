@@ -16,7 +16,11 @@ const rfController = {
 
       // Unificamos la entrada: priorizamos content, si no existe usamos message
       const inputContent = content || message || "";
-
+if (!inputContent.trim()) {
+  return res.status(400).json({
+    error: "El campo 'message' es obligatorio."
+  });
+}
       // Invocación del motor cognitivo
       const result = await RFKernel.process({
         userId,
