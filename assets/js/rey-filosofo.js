@@ -1,3 +1,4 @@
+try { console.log("🔍 Rey Filósofo: Iniciando carga..."); } catch(e) {}
 // DEBUGGER: Captura errores de ejecución y los envía a los logs de Render
 window.onerror = function(message, source, lineno, colno, error) {
   fetch('/api/log/error', {
@@ -47,6 +48,7 @@ const MT_PROFILE_KEY = 'reyFilosofo_pedagogicalProfile';
 function reyFilosofoGetSessionId() {
   try {
     let sid = localStorage.getItem('reyFilosofo_sessionId');
+    } catch (err) { alert("Error en init: " + err.message); }
     if (!sid) {
       sid = (crypto.randomUUID ? crypto.randomUUID() : `sess-${Date.now()}-${Math.random().toString(36).slice(2)}`);
       localStorage.setItem('reyFilosofo_sessionId', sid);
@@ -60,6 +62,7 @@ function reyFilosofoGetSessionId() {
 function reyFilosofoGetUserId() {
   try { return localStorage.getItem('userId') || null; } catch (e) { return null; }
 }
+    } catch (err) { alert("Error en init: " + err.message); }
 
 function reyFilosofoIdentity() {
   const userId = reyFilosofoGetUserId();
@@ -70,6 +73,7 @@ function reyFilosofoIdentity() {
 function mtLoadProfile() {
   try {
     const raw = localStorage.getItem(MT_PROFILE_KEY);
+    } catch (err) { alert("Error en init: " + err.message); }
     return raw ? JSON.parse(raw) : { completed: {}, variables: {} };
   } catch (e) {
     return { completed: {}, variables: {} };
@@ -79,6 +83,7 @@ function mtLoadProfile() {
 function mtSaveProfile(profile) {
   try { localStorage.setItem(MT_PROFILE_KEY, JSON.stringify(profile)); } catch (e) { /* silencioso */ }
 }
+    } catch (err) { alert("Error en init: " + err.message); }
 
 const MICROTESTS = [
   {
@@ -746,8 +751,8 @@ const REY_FILOSOFO = {
   currentView: 'inicio',
 
   init() {
-    // 1. Vincular los clicks de la navegación lateral del módulo
-    document.querySelectorAll('.pnav-item[data-view]').forEach(btn => {
+  init() {
+    try {
       btn.addEventListener('click', () => this.navigate(btn.dataset.view));
     });
 
@@ -872,6 +877,7 @@ const REY_FILOSOFO = {
 
     try {
       // 3. LLAMADA AL ENDPOINT CANÓNICO DEL REY FILÓSOFO
+    } catch (err) { alert("Error en init: " + err.message); }
       const response = await fetch('/api/reyfilosofo/process', {
         headers: { 'Content-Type': 'application/json', 'X-Request-ID': 'web-' + Date.now() },
         method: 'POST',
@@ -894,6 +900,7 @@ const REY_FILOSOFO = {
         let data;
         try {
           data = JSON.parse(rawText);
+    } catch (err) { alert("Error en init: " + err.message); }
         } catch (parseError) {
           diagInfo = \`HTTP \${response.status} (Respuesta no era JSON válido)\`;
           data = null;
