@@ -7,6 +7,7 @@ const ScaffoldEngine = require('./ScaffoldEngine');
 const CompetencyTracker = require('./CompetencyTracker');
 const TransferDetector = require('./TransferDetector');
 const PersistenceManager = require('./PersistenceManager');
+const RFResponseGenerator = require('./RFResponseGenerator');
 
 const RFKernel = {
   async process({ userId, sessionId, provider_module, content, user_response, metadata }) {
@@ -30,7 +31,11 @@ const RFKernel = {
     
     // 5. Aplicación de andamiaje sobre el contenido técnico
     const scaffold = ScaffoldEngine.apply(content, strategy, analogy, ctx.session.fsm_state);
-    
+    const tutorResponse = await RFResponseGenerator.generate({
+  content,
+  scaffold,
+  context: ctx
+});
     // 6. Actualización de competencias en LearningMap
     if (metadata?.competence) {
       await CompetencyTracker.update(ctx.learningMap, metadata.competence, user_response, transfer.score);
@@ -45,11 +50,11 @@ const RFKernel = {
 
     // Contrato de salida canónico
     return {
-      adapted_content: scaffold.adapted_content,
-      fsm_state: ctx.session.fsm_state,
-      scaffold_type: scaffold.scaffold_type,
-      transfer_detected: transfer.detected
-    };
+  adapted_content: tutorResponse,
+  fsm_state: ctx.session.fsm_state,
+  scaffold_type: scaffold.scaffold_type,
+  transfer_detected: transfer.detected
+};
   }
 };
 
