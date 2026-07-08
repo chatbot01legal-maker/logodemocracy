@@ -26,11 +26,14 @@ app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.static(__dirname));
 
-// ─── LOG de cada petición ─────────────────────────────
+// ─── LOG de cada petición con ID ÚNICO ────────────────
 app.use((req, res, next) => {
-  console.log(`📥 ${req.method} ${req.url} - ${req.ip}`);
+  req.headers['x-request-id'] = crypto.randomUUID(); // Genera un ID único
+  console.log(`📥 [${req.headers['x-request-id']}] ${req.method} ${req.url}`);
+  res.setHeader('X-Request-ID', req.headers['x-request-id']); // Lo devuelve al navegador
   next();
 });
+
 
 // ─── Ruta principal ────────────────────────────────────
 app.get("/", (req, res) => {
