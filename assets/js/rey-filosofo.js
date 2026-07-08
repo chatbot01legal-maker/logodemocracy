@@ -858,9 +858,11 @@ const REY_FILOSOFO = {
     input.value = '';
 
     // 1. Renderizar mensaje del usuario en la UI
+
+        // 1. Renderizar mensaje del usuario en la UI
     const userMsgDiv = document.createElement('div');
     userMsgDiv.className = 'chat-msg user';
-    userMsgDiv.innerHTML = \`<strong>[Tú]</strong>: \${userText}\`;
+    userMsgDiv.innerHTML = `<strong>[Tú]</strong>: ${userText}`;
     container.appendChild(userMsgDiv);
     container.scrollTop = container.scrollHeight;
     this.chatHistory.push({ role: 'user', text: userText });
@@ -868,7 +870,7 @@ const REY_FILOSOFO = {
     // 2. Indicador visual de procesamiento del Kernel
     const typingDiv = document.createElement('div');
     typingDiv.className = 'chat-msg system';
-    typingDiv.innerHTML = \`<strong>[Tutor]</strong>: <em>mediando cognitivamente (FSM)...</em>\`;
+    typingDiv.innerHTML = `<strong>[Tutor]</strong>: <em>mediando cognitivamente (FSM)...</em>`;
     container.appendChild(typingDiv);
     container.scrollTop = container.scrollHeight;
 
@@ -877,15 +879,14 @@ const REY_FILOSOFO = {
 
     try {
       // 3. LLAMADA AL ENDPOINT CANÓNICO DEL REY FILÓSOFO
-    } catch (err) { alert("Error en init: " + err.message); }
       const response = await fetch('/api/reyfilosofo/process', {
         headers: { 'Content-Type': 'application/json', 'X-Request-ID': 'web-' + Date.now() },
         method: 'POST',
         body: JSON.stringify({
           ...reyFilosofoIdentity(),
           provider_module: "SophiaContextProvider",
-          content: userText,        // Contenido sujeto a andamiaje
-          user_response: userText,  // Para que TransferDetector evalúe asimilación
+          content: userText,
+          user_response: userText,
           metadata: {
             concept: "deliberacion_civica",
             competencies: ["critical_reading", "deliberation", "systems_thinking"]
@@ -894,54 +895,41 @@ const REY_FILOSOFO = {
       });
 
       const rawText = await response.text();
-      diagInfo = \`HTTP \${response.status} — \${rawText.slice(0, 400)}\`;
+      diagInfo = `HTTP ${response.status} — ${rawText.slice(0, 400)}`;
 
       if (response.ok) {
         let data;
         try {
           data = JSON.parse(rawText);
-    } catch (err) { alert("Error en init: " + err.message); }
         } catch (parseError) {
-          diagInfo = \`HTTP \${response.status} (Respuesta no era JSON válido)\`;
+          diagInfo = `HTTP ${response.status} (Respuesta no era JSON válido)`;
           data = null;
         }
         
         // 4. Consumir la salida canónica del Kernel (adapted_content)
         if (data) {
-          const badgeFSM = \`<span style="font-size:0.65rem; background:rgba(217,119,6,0.2); color:var(--accent); padding:2px 6px; border-radius:4px; margin-right:6px;">FSM: \${data.fsm_state}</span>\`;
-          const badgeScaffold = \`<span style="font-size:0.65rem; background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.7); padding:2px 6px; border-radius:4px;">Scaffold: \${data.scaffold_type}</span>\`;
+          const badgeFSM = `<span style="font-size:0.65rem; background:rgba(217,119,6,0.2); color:var(--accent); padding:2px 6px; border-radius:4px; margin-right:6px;">FSM: ${data.fsm_state}</span>`;
+          const badgeScaffold = `<span style="font-size:0.65rem; background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.7); padding:2px 6px; border-radius:4px;">Scaffold: ${data.scaffold_type}</span>`;
           
-          tutorReply = \`<div style="margin-bottom:6px;">\${badgeFSM} \${badgeScaffold}</div>\${data.adapted_content}\`;
+          tutorReply = `<div style="margin-bottom:6px;">${badgeFSM} ${badgeScaffold}</div>${data.adapted_content}`;
         }
       }
     } catch (networkError) {
-      diagInfo = \`Error de conexión con el Kernel: \${networkError.message}\`;
+      diagInfo = `Error de conexión con el Kernel: ${networkError.message}`;
     }
 
     if (!tutorReply) {
-      tutorReply = \`[Error: El Pedagogical Operating System no respondió]<br><span style="font-size:0.7rem; opacity:0.6;">Diagnóstico: \${diagInfo || 'sin datos'}</span>\`;
+      tutorReply = `[Error: El Pedagogical Operating System no respondió]<br><span style="font-size:0.7rem; opacity:0.6;">Diagnóstico: ${diagInfo || 'sin datos'}</span>`;
     }
 
     // 5. Renderizar respuesta final en el widget
-    typingDiv.innerHTML = \`<strong>[Tutor]</strong>:<br>\${tutorReply}\`;
+    typingDiv.innerHTML = `<strong>[Tutor]</strong>:<br>${tutorReply}`;
     container.scrollTop = container.scrollHeight;
     this.chatHistory.push({ role: 'tutor', text: tutorReply });
   }
 };
 
 
-// Reemplaza esto en rey-filosofo.js:
-// document.addEventListener('DOMContentLoaded', () => REY_FILOSOFO.init());
+    
 
-// Por esto:
-const initSafe = () => {
-  if (typeof REY_FILOSOFO !== 'undefined') {
-    REY_FILOSOFO.init();
-  }
-};
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initSafe);
-} else {
-  initSafe();
-}
