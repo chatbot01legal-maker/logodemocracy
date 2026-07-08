@@ -1,27 +1,36 @@
 const RFKernel = require('../services/rf/RFKernel');
 
 const rfController = {
-  async process(req, res) {
+  async process(req, res, next) {
     try {
-      // Mapeo flexible: permitimos 'message' (frontend) o 'content' (API externa)
+      // Extraer campos del body
       const { sessionId, provider_module, content, message, user_response, metadata } = req.body;
 
+      // 1. Validar sessionId (obligatorio)
       if (!sessionId) {
         return res.status(400).json({
           error: "El campo 'sessionId' es mandatorio para el rastreo de estados del Rey Filósofo."
         });
       }
 
+      // 2. Validar contenido
+      const inputContent =
+        (content && content.trim())
+          ? content.trim()
+          : (message && message.trim())
+            ? message.trim()
+            : null;
+
+      if (!inputContent) {
+        return res.status(400).json({
+          error: "El campo 'content' (o 'message') es obligatorio y no puede estar vacío."
+        });
+      }
+
+      // Usuario autenticado opcional
       const userId = req.user ? req.user._id : null;
 
-      // Unificamos la entrada: priorizamos content, si no existe usamos message
-      const inputContent = content || message || "";
-if (!inputContent.trim()) {
-  return res.status(400).json({
-    error: "El campo 'message' es obligatorio."
-  });
-}
-      // Invocación del motor cognitivo
+      // 3. Invocar kernel
       const result = await RFKernel.process({
         userId,
         sessionId,
@@ -31,13 +40,15 @@ if (!inputContent.trim()) {
         metadata
       });
 
+      // 4. Mantener contrato de salida intacto
       return res.status(200).json(result);
 
     } catch (error) {
-      console.error("[rfController Error]:", error.message);
-      return res.status(500).json({
-        error: "Error interno en la ejecución del pipeline del Rey Filósofo."
-      });
+      // Registrar error en servidor
+      console.error("[rfController Error]:", error);
+
+      // Delegar al middleware global
+      next(error);
     }
   }
 };
