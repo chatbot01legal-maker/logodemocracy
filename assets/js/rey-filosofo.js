@@ -837,7 +837,13 @@ const REY_FILOSOFO = {
     const userText = input.value.trim();
     input.value = '';
 
+<<<<<<< HEAD
     // Insertar burbuja de usuario
+=======
+    // 1. Renderizar mensaje del usuario en la UI
+
+        // 1. Renderizar mensaje del usuario en la UI
+>>>>>>> 36cac91539f40283e09886be3018fb920a2fc02b
     const userMsgDiv = document.createElement('div');
     userMsgDiv.className = 'chat-msg user';
     userMsgDiv.innerHTML = `<strong>[Tú]</strong>: ${userText}`;
@@ -848,24 +854,48 @@ const REY_FILOSOFO = {
     // Indicador de "escribiendo..."
     const typingDiv = document.createElement('div');
     typingDiv.className = 'chat-msg system';
+<<<<<<< HEAD
     typingDiv.innerHTML = `<strong>[Tutor]</strong>: <em>reflexionando...</em>`;
+=======
+    typingDiv.innerHTML = `<strong>[Tutor]</strong>: <em>mediando cognitivamente (FSM)...</em>`;
+>>>>>>> 36cac91539f40283e09886be3018fb920a2fc02b
     container.appendChild(typingDiv);
     container.scrollTop = container.scrollHeight;
 
     let tutorReply = null;
     let diagInfo = null; // guarda status + cuerpo crudo para mostrarlo si algo falla
     try {
+<<<<<<< HEAD
       const response = await fetch('/api/reyfilosofo/chat', {
+=======
+      // 3. LLAMADA AL ENDPOINT CANÓNICO DEL REY FILÓSOFO
+      const response = await fetch('/api/reyfilosofo/process', {
+        headers: { 'Content-Type': 'application/json', 'X-Request-ID': 'web-' + Date.now() },
+>>>>>>> 36cac91539f40283e09886be3018fb920a2fc02b
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...reyFilosofoIdentity(),
+<<<<<<< HEAD
           message: userText,
           history: this.chatHistory.slice(-12)
         })
       });
 
       const rawText = await response.text(); // leemos como texto SIEMPRE, incluso si no es JSON válido
+=======
+          provider_module: "SophiaContextProvider",
+          content: userText,
+          user_response: userText,
+          metadata: {
+            concept: "deliberacion_civica",
+            competencies: ["critical_reading", "deliberation", "systems_thinking"]
+          }
+        })
+      });
+
+      const rawText = await response.text();
+>>>>>>> 36cac91539f40283e09886be3018fb920a2fc02b
       diagInfo = `HTTP ${response.status} — ${rawText.slice(0, 400)}`;
 
       if (response.ok) {
@@ -873,10 +903,15 @@ const REY_FILOSOFO = {
         try {
           data = JSON.parse(rawText);
         } catch (parseError) {
+<<<<<<< HEAD
           diagInfo = `HTTP ${response.status} (respuesta no era JSON) — ${rawText.slice(0, 400)}`;
+=======
+          diagInfo = `HTTP ${response.status} (Respuesta no era JSON válido)`;
+>>>>>>> 36cac91539f40283e09886be3018fb920a2fc02b
           data = null;
         }
         if (data) {
+<<<<<<< HEAD
           tutorReply = data.reply || data.debug?.advice || data.debug || null;
         }
       }
@@ -889,9 +924,34 @@ const REY_FILOSOFO = {
     }
 
     typingDiv.innerHTML = `<strong>[Tutor]</strong>: ${tutorReply}`;
+=======
+          const badgeFSM = `<span style="font-size:0.65rem; background:rgba(217,119,6,0.2); color:var(--accent); padding:2px 6px; border-radius:4px; margin-right:6px;">FSM: ${data.fsm_state}</span>`;
+          const badgeScaffold = `<span style="font-size:0.65rem; background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.7); padding:2px 6px; border-radius:4px;">Scaffold: ${data.scaffold_type}</span>`;
+          
+          tutorReply = `<div style="margin-bottom:6px;">${badgeFSM} ${badgeScaffold}</div>${data.adapted_content}`;
+        }
+      }
+    } catch (networkError) {
+      diagInfo = `Error de conexión con el Kernel: ${networkError.message}`;
+    }
+
+    if (!tutorReply) {
+      tutorReply = `[Error: El Pedagogical Operating System no respondió]<br><span style="font-size:0.7rem; opacity:0.6;">Diagnóstico: ${diagInfo || 'sin datos'}</span>`;
+    }
+
+    // 5. Renderizar respuesta final en el widget
+    typingDiv.innerHTML = `<strong>[Tutor]</strong>:<br>${tutorReply}`;
+>>>>>>> 36cac91539f40283e09886be3018fb920a2fc02b
     container.scrollTop = container.scrollHeight;
     this.chatHistory.push({ role: 'tutor', text: tutorReply });
   }
 };
 
+<<<<<<< HEAD
 document.addEventListener('DOMContentLoaded', () => REY_FILOSOFO.init());
+=======
+
+    
+
+
+>>>>>>> 36cac91539f40283e09886be3018fb920a2fc02b
