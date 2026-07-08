@@ -1,19 +1,3 @@
-try { console.log("🔍 Rey Filósofo: Iniciando carga..."); } catch(e) {}
-// DEBUGGER: Captura errores de ejecución y los envía a los logs de Render
-window.onerror = function(message, source, lineno, colno, error) {
-  fetch('/api/log/error', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      msg: message,
-      source: source,
-      line: lineno,
-      stack: error ? error.stack : 'no stack trace'
-    })
-  });
-};
-console.log("REY_FILOSOFO: Sistema de diagnóstico activado");
-
 /* ═══════════════════════════════════════════════════════
    REY-FILOSOFO.JS — Arquitectura SPA y Gestión de Andamiaje
    ═══════════════════════════════════════════════════════ */
@@ -48,7 +32,6 @@ const MT_PROFILE_KEY = 'reyFilosofo_pedagogicalProfile';
 function reyFilosofoGetSessionId() {
   try {
     let sid = localStorage.getItem('reyFilosofo_sessionId');
-    } catch (err) { alert("Error en init: " + err.message); }
     if (!sid) {
       sid = (crypto.randomUUID ? crypto.randomUUID() : `sess-${Date.now()}-${Math.random().toString(36).slice(2)}`);
       localStorage.setItem('reyFilosofo_sessionId', sid);
@@ -62,7 +45,6 @@ function reyFilosofoGetSessionId() {
 function reyFilosofoGetUserId() {
   try { return localStorage.getItem('userId') || null; } catch (e) { return null; }
 }
-    } catch (err) { alert("Error en init: " + err.message); }
 
 function reyFilosofoIdentity() {
   const userId = reyFilosofoGetUserId();
@@ -73,7 +55,6 @@ function reyFilosofoIdentity() {
 function mtLoadProfile() {
   try {
     const raw = localStorage.getItem(MT_PROFILE_KEY);
-    } catch (err) { alert("Error en init: " + err.message); }
     return raw ? JSON.parse(raw) : { completed: {}, variables: {} };
   } catch (e) {
     return { completed: {}, variables: {} };
@@ -83,7 +64,6 @@ function mtLoadProfile() {
 function mtSaveProfile(profile) {
   try { localStorage.setItem(MT_PROFILE_KEY, JSON.stringify(profile)); } catch (e) { /* silencioso */ }
 }
-    } catch (err) { alert("Error en init: " + err.message); }
 
 const MICROTESTS = [
   {
@@ -751,8 +731,8 @@ const REY_FILOSOFO = {
   currentView: 'inicio',
 
   init() {
-  init() {
-    try {
+    // 1. Vincular los clicks de la navegación lateral del módulo
+    document.querySelectorAll('.pnav-item[data-view]').forEach(btn => {
       btn.addEventListener('click', () => this.navigate(btn.dataset.view));
     });
 
@@ -857,91 +837,61 @@ const REY_FILOSOFO = {
     const userText = input.value.trim();
     input.value = '';
 
-    // 1. Renderizar mensaje del usuario en la UI
+    // Insertar burbuja de usuario
     const userMsgDiv = document.createElement('div');
     userMsgDiv.className = 'chat-msg user';
-    userMsgDiv.innerHTML = \`<strong>[Tú]</strong>: \${userText}\`;
+    userMsgDiv.innerHTML = `<strong>[Tú]</strong>: ${userText}`;
     container.appendChild(userMsgDiv);
     container.scrollTop = container.scrollHeight;
     this.chatHistory.push({ role: 'user', text: userText });
 
-    // 2. Indicador visual de procesamiento del Kernel
+    // Indicador de "escribiendo..."
     const typingDiv = document.createElement('div');
     typingDiv.className = 'chat-msg system';
-    typingDiv.innerHTML = \`<strong>[Tutor]</strong>: <em>mediando cognitivamente (FSM)...</em>\`;
+    typingDiv.innerHTML = `<strong>[Tutor]</strong>: <em>reflexionando...</em>`;
     container.appendChild(typingDiv);
     container.scrollTop = container.scrollHeight;
 
     let tutorReply = null;
-    let diagInfo = null;
-
+    let diagInfo = null; // guarda status + cuerpo crudo para mostrarlo si algo falla
     try {
-      // 3. LLAMADA AL ENDPOINT CANÓNICO DEL REY FILÓSOFO
-    } catch (err) { alert("Error en init: " + err.message); }
-      const response = await fetch('/api/reyfilosofo/process', {
-        headers: { 'Content-Type': 'application/json', 'X-Request-ID': 'web-' + Date.now() },
+      const response = await fetch('/api/reyfilosofo/chat', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...reyFilosofoIdentity(),
-          provider_module: "SophiaContextProvider",
-          content: userText,        // Contenido sujeto a andamiaje
-          user_response: userText,  // Para que TransferDetector evalúe asimilación
-          metadata: {
-            concept: "deliberacion_civica",
-            competencies: ["critical_reading", "deliberation", "systems_thinking"]
-          }
+          message: userText,
+          history: this.chatHistory.slice(-12)
         })
       });
 
-      const rawText = await response.text();
-      diagInfo = \`HTTP \${response.status} — \${rawText.slice(0, 400)}\`;
+      const rawText = await response.text(); // leemos como texto SIEMPRE, incluso si no es JSON válido
+      diagInfo = `HTTP ${response.status} — ${rawText.slice(0, 400)}`;
 
       if (response.ok) {
         let data;
         try {
           data = JSON.parse(rawText);
-    } catch (err) { alert("Error en init: " + err.message); }
         } catch (parseError) {
-          diagInfo = \`HTTP \${response.status} (Respuesta no era JSON válido)\`;
+          diagInfo = `HTTP ${response.status} (respuesta no era JSON) — ${rawText.slice(0, 400)}`;
           data = null;
         }
-        
-        // 4. Consumir la salida canónica del Kernel (adapted_content)
         if (data) {
-          const badgeFSM = \`<span style="font-size:0.65rem; background:rgba(217,119,6,0.2); color:var(--accent); padding:2px 6px; border-radius:4px; margin-right:6px;">FSM: \${data.fsm_state}</span>\`;
-          const badgeScaffold = \`<span style="font-size:0.65rem; background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.7); padding:2px 6px; border-radius:4px;">Scaffold: \${data.scaffold_type}</span>\`;
-          
-          tutorReply = \`<div style="margin-bottom:6px;">\${badgeFSM} \${badgeScaffold}</div>\${data.adapted_content}\`;
+          tutorReply = data.reply || data.debug?.advice || data.debug || null;
         }
       }
     } catch (networkError) {
-      diagInfo = \`Error de conexión con el Kernel: \${networkError.message}\`;
+      diagInfo = `Error de red: ${networkError.message}`;
     }
 
     if (!tutorReply) {
-      tutorReply = \`[Error: El Pedagogical Operating System no respondió]<br><span style="font-size:0.7rem; opacity:0.6;">Diagnóstico: \${diagInfo || 'sin datos'}</span>\`;
+      tutorReply = `[Error: no se recibió respuesta del tutor cognitivo]<br><span style="font-size:0.7rem; opacity:0.6;">Diagnóstico: ${diagInfo || 'sin datos'}</span>`;
     }
 
-    // 5. Renderizar respuesta final en el widget
-    typingDiv.innerHTML = \`<strong>[Tutor]</strong>:<br>\${tutorReply}\`;
+    typingDiv.innerHTML = `<strong>[Tutor]</strong>: ${tutorReply}`;
     container.scrollTop = container.scrollHeight;
     this.chatHistory.push({ role: 'tutor', text: tutorReply });
   }
 };
 
-
-// Reemplaza esto en rey-filosofo.js:
-// document.addEventListener('DOMContentLoaded', () => REY_FILOSOFO.init());
-
-// Por esto:
-const initSafe = () => {
-  if (typeof REY_FILOSOFO !== 'undefined') {
-    REY_FILOSOFO.init();
-  }
-};
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initSafe);
-} else {
-  initSafe();
-}
+document.addEventListener('DOMContentLoaded', () => REY_FILOSOFO.init());
