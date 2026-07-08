@@ -855,7 +855,7 @@ const REY_FILOSOFO = {
     let tutorReply = null;
     let diagInfo = null; // guarda status + cuerpo crudo para mostrarlo si algo falla
     try {
-      const response = await fetch('/api/reyfilosofo/chat', {
+      const response = await fetch('http://localhost:5000/api/reyfilosofo/process', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
