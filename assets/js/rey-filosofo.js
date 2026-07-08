@@ -907,4 +907,19 @@ const REY_FILOSOFO = {
   }
 };
 
-document.addEventListener('DOMContentLoaded', () => REY_FILOSOFO.init());
+
+// Reemplaza esto en rey-filosofo.js:
+// document.addEventListener('DOMContentLoaded', () => REY_FILOSOFO.init());
+
+// Por esto:
+const initSafe = () => {
+  if (typeof REY_FILOSOFO !== 'undefined') {
+    REY_FILOSOFO.init();
+  }
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSafe);
+} else {
+  initSafe();
+}
