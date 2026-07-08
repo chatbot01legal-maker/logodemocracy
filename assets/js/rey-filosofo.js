@@ -1,3 +1,18 @@
+// DEBUGGER: Captura errores de ejecución y los envía a los logs de Render
+window.onerror = function(message, source, lineno, colno, error) {
+  fetch('/api/log/error', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      msg: message,
+      source: source,
+      line: lineno,
+      stack: error ? error.stack : 'no stack trace'
+    })
+  });
+};
+console.log("REY_FILOSOFO: Sistema de diagnóstico activado");
+
 /* ═══════════════════════════════════════════════════════
    REY-FILOSOFO.JS — Arquitectura SPA y Gestión de Andamiaje
    ═══════════════════════════════════════════════════════ */
