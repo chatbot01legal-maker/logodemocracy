@@ -10,7 +10,6 @@ const errorHandler = require('./src/middlewares/errorHandler');
 const authRoutes = require('./src/routes/authRoutes');
 const microtestRoutes = require('./src/routes/microtestRoutes');
 const rfRoutes = require('./src/routes/rfRoutes');
-const profileRoutes = require('./src/routes/profileRoutes');
 
 const app = express();
 
@@ -37,7 +36,6 @@ app.get('/health', (req, res) => {
 
 // Rutas API
 app.use('/api/auth', authRoutes);
-app.use('/api/profile', profileRoutes);
 app.use('/api/reyfilosofo/microtests', microtestRoutes);
 app.use('/api/reyfilosofo', rfRoutes);
 
