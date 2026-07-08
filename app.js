@@ -228,13 +228,13 @@ app.post("/api/sophia/evaluate", async (req, res) => {
   }
 });
 
-// ─── Rey Filósofo Kernel ZDP (backend nuevo) ─────────
+// ─── Rey Filósofo Kernel ZDP ─────────
+
+const rfRoutes = require("./logodemocracy-api/src/routes/rfRoutes");
+
 app.use(
   "/api/reyfilosofo",
-  createProxyMiddleware({
-    target: "http://localhost:5000",
-    changeOrigin: true
-  })
+  rfRoutes
 );
 // ─── Endpoint protegido (ejemplo) ────────────────────
 app.get("/api/profile", authenticate, (req, res) => {
