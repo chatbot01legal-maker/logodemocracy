@@ -48,7 +48,6 @@ const MT_PROFILE_KEY = 'reyFilosofo_pedagogicalProfile';
 function reyFilosofoGetSessionId() {
   try {
     let sid = localStorage.getItem('reyFilosofo_sessionId');
-    } catch (err) { alert("Error en init: " + err.message); }
     if (!sid) {
       sid = (crypto.randomUUID ? crypto.randomUUID() : `sess-${Date.now()}-${Math.random().toString(36).slice(2)}`);
       localStorage.setItem('reyFilosofo_sessionId', sid);
