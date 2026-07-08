@@ -31,6 +31,7 @@ const rfController = {
       const userId = req.user ? req.user._id : null;
 
       // 3. Invocar kernel
+      console.log("[RF CONTROLLER] Antes de RFKernel.process");
       const result = await RFKernel.process({
         userId,
         sessionId,
@@ -39,7 +40,8 @@ const rfController = {
         user_response,
         metadata
       });
-
+      
+      console.log("[RF CONTROLLER] Después de RFKernel.process", result);
       // 4. Mantener contrato de salida intacto
       return res.status(200).json(result);
 
