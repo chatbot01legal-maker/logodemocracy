@@ -837,58 +837,71 @@ const REY_FILOSOFO = {
     const userText = input.value.trim();
     input.value = '';
 
-    // Insertar burbuja de usuario
+    // 1. Renderizar mensaje del usuario en la UI
     const userMsgDiv = document.createElement('div');
     userMsgDiv.className = 'chat-msg user';
-    userMsgDiv.innerHTML = `<strong>[Tú]</strong>: ${userText}`;
+    userMsgDiv.innerHTML = \`<strong>[Tú]</strong>: \${userText}\`;
     container.appendChild(userMsgDiv);
     container.scrollTop = container.scrollHeight;
     this.chatHistory.push({ role: 'user', text: userText });
 
-    // Indicador de "escribiendo..."
+    // 2. Indicador visual de procesamiento del Kernel
     const typingDiv = document.createElement('div');
     typingDiv.className = 'chat-msg system';
-    typingDiv.innerHTML = `<strong>[Tutor]</strong>: <em>reflexionando...</em>`;
+    typingDiv.innerHTML = \`<strong>[Tutor]</strong>: <em>mediando cognitivamente (FSM)...</em>\`;
     container.appendChild(typingDiv);
     container.scrollTop = container.scrollHeight;
 
     let tutorReply = null;
-    let diagInfo = null; // guarda status + cuerpo crudo para mostrarlo si algo falla
+    let diagInfo = null;
+
     try {
-      const response = await fetch('http://localhost:5000/api/reyfilosofo/process', {
+      // 3. LLAMADA AL ENDPOINT CANÓNICO DEL REY FILÓSOFO
+      const response = await fetch('/api/reyfilosofo/process', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...reyFilosofoIdentity(),
-          message: userText,
-          history: this.chatHistory.slice(-12)
+          provider_module: "SophiaContextProvider",
+          content: userText,        // Contenido sujeto a andamiaje
+          user_response: userText,  // Para que TransferDetector evalúe asimilación
+          metadata: {
+            concept: "deliberacion_civica",
+            competencies: ["critical_reading", "deliberation", "systems_thinking"]
+          }
         })
       });
 
-      const rawText = await response.text(); // leemos como texto SIEMPRE, incluso si no es JSON válido
-      diagInfo = `HTTP ${response.status} — ${rawText.slice(0, 400)}`;
+      const rawText = await response.text();
+      diagInfo = \`HTTP \${response.status} — \${rawText.slice(0, 400)}\`;
 
       if (response.ok) {
         let data;
         try {
           data = JSON.parse(rawText);
         } catch (parseError) {
-          diagInfo = `HTTP ${response.status} (respuesta no era JSON) — ${rawText.slice(0, 400)}`;
+          diagInfo = \`HTTP \${response.status} (Respuesta no era JSON válido)\`;
           data = null;
         }
+        
+        // 4. Consumir la salida canónica del Kernel (adapted_content)
         if (data) {
-          tutorReply = data.reply || data.debug?.advice || data.debug || null;
+          const badgeFSM = \`<span style="font-size:0.65rem; background:rgba(217,119,6,0.2); color:var(--accent); padding:2px 6px; border-radius:4px; margin-right:6px;">FSM: \${data.fsm_state}</span>\`;
+          const badgeScaffold = \`<span style="font-size:0.65rem; background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.7); padding:2px 6px; border-radius:4px;">Scaffold: \${data.scaffold_type}</span>\`;
+          
+          tutorReply = \`<div style="margin-bottom:6px;">\${badgeFSM} \${badgeScaffold}</div>\${data.adapted_content}\`;
         }
       }
     } catch (networkError) {
-      diagInfo = `Error de red: ${networkError.message}`;
+      diagInfo = \`Error de conexión con el Kernel: \${networkError.message}\`;
     }
 
     if (!tutorReply) {
-      tutorReply = `[Error: no se recibió respuesta del tutor cognitivo]<br><span style="font-size:0.7rem; opacity:0.6;">Diagnóstico: ${diagInfo || 'sin datos'}</span>`;
+      tutorReply = \`[Error: El Pedagogical Operating System no respondió]<br><span style="font-size:0.7rem; opacity:0.6;">Diagnóstico: \${diagInfo || 'sin datos'}</span>\`;
     }
 
-    typingDiv.innerHTML = `<strong>[Tutor]</strong>: ${tutorReply}`;
+    // 5. Renderizar respuesta final en el widget
+    typingDiv.innerHTML = \`<strong>[Tutor]</strong>:<br>\${tutorReply}\`;
     container.scrollTop = container.scrollHeight;
     this.chatHistory.push({ role: 'tutor', text: tutorReply });
   }
