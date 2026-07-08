@@ -109,18 +109,20 @@
       </div>
 
       <div class="document-content" id="viewContent">
-        </div>
+        <!-- El contenido se renderiza dinámicamente -->
+      </div>
     </main>
 
-  </div><div class="chat-popup-container" id="chatPopup">
+  </div>
+
+  <!-- CHAT POPUP -->
+  <div class="chat-popup-container" id="chatPopup">
     <div class="chat-popup-header">
       <div class="chat-popup-title">🏛 Rey Filósofo · Dialogador Epistémico</div>
       <button class="chat-popup-close" id="btnCloseChat">×</button>
     </div>
     <div class="chat-popup-messages" id="chatMessages">
-      <div class="chat-msg system">
-        <strong>[Tutor]</strong> Saludos, ciudadano. Soy tu acompañante cognitivo. No te daré respuestas empaquetadas; examinaré tus premisas y andamiaré tu comprensión de los módulos (Sophia, Logos, Aletheia o la Academia). ¿Qué idea deseas desglosar hoy?
-      </div>
+      <!-- Mensaje de bienvenida se añade desde JS -->
     </div>
     <div class="chat-popup-input-area">
       <input type="text" id="chatInput" placeholder="Escribe tu reflexión o duda conceptual..." autocomplete="off">
@@ -129,8 +131,17 @@
   </div>
 
   <footer class="footer">LogoDemocracy · Rey Filósofo · Zona de Desarrollo Próximo e Integración Epistémica</footer>
-</div><script src="/assets/js/layout.js"></script>
+</div>
+
+<!-- Scripts compartidos (no modificar) -->
+<script src="/assets/js/layout.js"></script>
 <script src="/assets/js/mobile-menu.js"></script>
+
+<!-- Nuevos scripts del módulo Rey Filósofo -->
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/apiClient.js"></script>
+<script src="/assets/js/chatUI.js"></script>
 <script src="/assets/js/rey-filosofo.js"></script>
+
 </body>
 </html>
