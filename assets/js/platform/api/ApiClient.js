@@ -93,21 +93,42 @@ var ApiClient = (function() {
       return text;
     }
 
-    // Fallback: intentar JSON, si falla, devolver texto
-    try {
-      var fallbackData = await response.json();
-      if (!response.ok) {
-        throw new Error(fallbackData.error || fallbackData.message || 'Error en la solicitud');
-      }
-      return fallbackData;
-    } catch (_) {
-      var fallbackText = await response.text();
-      if (!response.ok) {
-        throw new Error(fallbackText || 'Error en la solicitud');
-      }
-      return fallbackText;
-    }
+    
+    // Fallback robusto: leer una sola vez el body
+var rawBody = await response.text();
+
+if (!response.ok) {
+
+  try {
+    var errorData = JSON.parse(rawBody);
+
+    throw new Error(
+      errorData.error ||
+      errorData.message ||
+      'Error en la solicitud'
+    );
+
+  } catch (parseError) {
+
+    throw new Error(
+      rawBody || 'Error en la solicitud'
+    );
+
   }
+
+}
+
+
+// Intentar convertir respuesta válida a JSON
+try {
+
+  return JSON.parse(rawBody);
+
+} catch (_) {
+
+  return rawBody;
+
+}
 
   /**
    * Ejecuta una petición HTTP con el pipeline de interceptores.
