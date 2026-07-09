@@ -1,36 +1,65 @@
-<script src="assets/js/platform/core/CoreConfig.js"></script>
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+    <meta charset="UTF-8">
+    <title>LogoDemocracy Platform Test Runner</title>
+</head>
+
+<body>
+
+<h1>LogoDemocracy Platform Test Runner</h1>
+
+<!-- ========================= -->
+<!-- Core -->
+<!-- ========================= -->
+
+<script src="assets/js/platform/core/CoreConfig.js"></script>
 <script src="assets/js/platform/events/EventBus.js"></script>
 
+<!-- ========================= -->
+<!-- Identity -->
+<!-- ========================= -->
+
 <script src="assets/js/platform/identity/IdentityStorage.js"></script>
-
 <script src="assets/js/platform/identity/CurrentUser.js"></script>
-
 <script src="assets/js/platform/identity/IdentityProvider.js"></script>
+
+<!-- ========================= -->
+<!-- API -->
+<!-- ========================= -->
 
 <script src="assets/js/platform/api/ApiClient.js"></script>
 
-
-<!-- Servicios Hito 2 -->
+<!-- ========================= -->
+<!-- Servicios (Hito 2) -->
+<!-- ========================= -->
 
 <script src="assets/js/platform/services/ProfileService.js"></script>
-
 <script src="assets/js/platform/services/LearningMapService.js"></script>
-
 <script src="assets/js/platform/services/MicrotestService.js"></script>
-
 <script src="assets/js/platform/services/LearningProfileService.js"></script>
 
-
-<!-- Capa Cognitiva Hito 3 -->
+<!-- ========================= -->
+<!-- Capa Cognitiva (Hito 3) -->
+<!-- ========================= -->
 
 <script src="assets/js/platform/cognitive/ContextAdapter.js"></script>
-
 <script src="assets/js/platform/cognitive/LearningStrategy.js"></script>
-
 <script src="assets/js/platform/cognitive/PedagogicalEngine.js"></script>
 
+<!-- ========================= -->
+<!-- Framework de Testing (Hito 3.5) -->
+<!-- ========================= -->
 
+<script src="assets/js/platform/testing/TestRunner.js"></script>
+<script src="assets/js/platform/testing/Reporter.js"></script>
+
+<!-- ========================= -->
 <!-- Tests -->
+<!-- ========================= -->
 
 <script src="assets/js/platform/tests/platform-cognitive.test.js"></script>
+
+</body>
+</html>
