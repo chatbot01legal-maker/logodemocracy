@@ -21,20 +21,26 @@
     }
   }
 
-  function runTests() {
+  async function runTests() {
     console.log('🧪 Ejecutando pruebas del Hito 3 - Cognitive Layer...\n');
 
-    tests.forEach(function(t) {
+    for (var i = 0; i < tests.length; i++) {
+      var t = tests[i];
+
       try {
-        t.fn();
+        await t.fn();
+
         console.log('✅ PASS: ' + t.name);
         passed++;
+
       } catch (e) {
+
         console.error('❌ FAIL: ' + t.name);
         console.error('   ' + e.message);
         failed++;
+
       }
-    });
+    }
 
     console.log('\n📊 Resultado: ' + passed + ' aprobadas / ' + failed + ' fallidas');
 
@@ -198,6 +204,6 @@
   });
 
   // --- Ejecutar pruebas ---
-  runTests();
-
-})();
+  runTests().catch(function(error) {
+  console.error('Error general ejecutando tests:', error);
+});
