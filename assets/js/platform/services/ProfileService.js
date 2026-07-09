@@ -59,7 +59,7 @@ var ProfileService = (function() {
   };
 
     }
-
+  }
   /**
    * Actualiza campos específicos del perfil (stub para futura implementación).
    * @param {object} data - Datos a actualizar.
