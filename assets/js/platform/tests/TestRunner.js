@@ -52,16 +52,16 @@ var TestRunner = (function () {
 
             } catch (err) {
 
-                failed++;
+    failed++;
 
-                _results.push({
-                    name: current.name,
-                    status: "FAIL",
-                    error: err.message
-                });
+    _results.push({
+        name: current.name,
+        status: "FAIL",
+        error: err.message,
+        stack: err.stack || "Sin stack"
+    });
 
             }
-
         }
 
         var elapsed = Date.now() - start;
