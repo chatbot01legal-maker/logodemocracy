@@ -29,11 +29,14 @@ exports.saveMicrotest = async (req, res, next) => {
 
     // 2. Mapear variables al esquema de alto nivel si corresponden
     if (variables) {
-      if (variables.estilo_explicativo) profile.explanation_style = variables.estilo_explicativo;
-      if (variables.preferencia_formato) profile.format_preference = variables.preferencia_formato;
-      if (variables.nivel_abstraccion_inicial) profile.abstraction_level = variables.nivel_abstraccion_inicial;
-      if (variables.necesidad_andamiaje) profile.scaffolding_need = variables.necesidad_andamiaje;
+      if (variables.estilo_explicativo)
+  profile.estilo_explicativo = variables.estilo_explicativo;
 
+if (variables.nivel_abstraccion_inicial)
+  profile.nivel_abstraccion_inicial = variables.nivel_abstraccion_inicial;
+
+if (variables.necesidad_andamiaje)
+  profile.necesidad_andamiaje = variables.necesidad_andamiaje;
       // 3. Fusionar todas las variables crudas computadas por el frontend en raw_variables
       for (const [key, val] of Object.entries(variables)) {
         profile.raw_variables.set(key, val);
