@@ -1,4 +1,3 @@
-cat > RFResponseGenerator.js <<'EOF'
 const { askVertex } = require('../../../../modules/vertexClient');
 
 const RFResponseGenerator = {
@@ -43,4 +42,3 @@ Genera la respuesta del tutor.
 };
 
 module.exports = RFResponseGenerator;
-EOF
