@@ -11,18 +11,43 @@ function getVertex() {
                  (rawLocation === "logodemocracy-ai-2026" ? "logodemocracy-ai-2026" : "logodemocracy-ai-2026");
   const location = (rawLocation === "logodemocracy-ai-2026") ? "us-central1" : (rawLocation || "us-central1");
 
-  let credentials = null;
-  if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
-    const b64 = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
-    credentials = JSON.parse(Buffer.from(b64, 'base64').toString('utf8'));
-  }
+let credentials = null;
 
-  console.log(`[SOPHIA-VERTEX] Inicializando Vertex (${project}) en ${location}`);
+if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
 
-  const config = { project, location };
-  if (credentials) {
-    config.googleAuthOptions = { credentials };
-  }
+  const b64 = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
+
+  credentials = JSON.parse(
+    Buffer.from(b64, 'base64').toString('utf8')
+  );
+
+}
+else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+
+  const fs = require('fs');
+
+  const keyPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+
+  console.log(
+    `[SOPHIA-VERTEX] Cargando credencial desde archivo: ${keyPath}`
+  );
+
+  credentials = JSON.parse(
+    fs.readFileSync(keyPath, 'utf8')
+  );
+}
+
+
+const config = {
+  project,
+  location
+};
+
+if (credentials) {
+  config.googleAuthOptions = {
+    credentials
+  };
+}
 
   vertex = new VertexAI(config);
   return vertex;
