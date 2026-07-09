@@ -32,10 +32,33 @@ var ProfileService = (function() {
       throw new Error('ProfileService: No se pudo obtener sessionId para usuario invitado.');
     }
 
-    return await ApiClient.get(PROFILE_SERVICE, PROFILE_ENDPOINT, {
-      sessionId: sessionId
-    });
-  }
+    try {
+
+  return await ApiClient.get(PROFILE_SERVICE, PROFILE_ENDPOINT, {
+    sessionId: sessionId
+  });
+
+} catch (error) {
+
+  console.warn(
+    '[ProfileService] Backend no disponible, usando perfil mock'
+  );
+
+  return {
+    id: sessionId,
+    level: "intermediate",
+    explanationStyle: "analogical",
+    abstractionLevel: "balanced",
+    preferredFormat: "visual",
+    scaffolding: "medium",
+    systemsThinking: "high",
+    recommendations: [
+      "Usar analogías",
+      "Partir desde ejemplos concretos"
+    ]
+  };
+
+    }
 
   /**
    * Actualiza campos específicos del perfil (stub para futura implementación).
