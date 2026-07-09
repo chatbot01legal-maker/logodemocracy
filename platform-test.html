@@ -17,6 +17,7 @@
 <script src="assets/js/platform/core/CoreConfig.js"></script>
 <script src="assets/js/platform/events/EventBus.js"></script>
 
+
 <!-- ========================= -->
 <!-- Identity -->
 <!-- ========================= -->
@@ -25,11 +26,13 @@
 <script src="assets/js/platform/identity/CurrentUser.js"></script>
 <script src="assets/js/platform/identity/IdentityProvider.js"></script>
 
+
 <!-- ========================= -->
 <!-- API -->
 <!-- ========================= -->
 
 <script src="assets/js/platform/api/ApiClient.js"></script>
+
 
 <!-- ========================= -->
 <!-- Servicios (Hito 2) -->
@@ -40,6 +43,7 @@
 <script src="assets/js/platform/services/MicrotestService.js"></script>
 <script src="assets/js/platform/services/LearningProfileService.js"></script>
 
+
 <!-- ========================= -->
 <!-- Capa Cognitiva (Hito 3) -->
 <!-- ========================= -->
@@ -48,18 +52,70 @@
 <script src="assets/js/platform/cognitive/LearningStrategy.js"></script>
 <script src="assets/js/platform/cognitive/PedagogicalEngine.js"></script>
 
+
 <!-- ========================= -->
-<!-- Framework de Testing (Hito 3.5) -->
+<!-- Cognitive Runtime (Hito 4) -->
+<!-- ========================= -->
+
+<script src="assets/js/platform/runtime/CognitiveRuntime.js"></script>
+<script src="assets/js/platform/runtime/ModuleContextAdapter.js"></script>
+
+
+<!-- ========================= -->
+<!-- Framework Testing -->
 <!-- ========================= -->
 
 <script src="assets/js/platform/tests/TestRunner.js"></script>
 <script src="assets/js/platform/tests/Reporter.js"></script>
+
+
+<!-- ========================= -->
+<!-- Registro de Tests -->
+<!-- ========================= -->
+
+<!-- Hito 1 -->
+<script src="assets/js/platform/tests/platform-core.test.js"></script>
+
+
+<!-- Hito 2 -->
+<script src="assets/js/platform/tests/platform-services.test.js"></script>
+
+
+<!-- Hito 3 -->
 <script src="assets/js/platform/tests/platform-cognitive.test.js"></script>
+
+
+<!-- Hito 4 -->
+<script src="assets/js/platform/tests/platform-runtime.test.js"></script>
+
+
+
+<!-- ========================= -->
+<!-- Ejecución automática -->
+<!-- ========================= -->
+
 <script>
+
 window.onload = async function () {
-    await Reporter.render();
+
+    try {
+
+        await Reporter.render();
+
+    } catch(error) {
+
+        console.error(
+            "Error ejecutando Platform Test Runner:",
+            error
+        );
+
+    }
+
 };
+
 </script>
 
+
 </body>
+
 </html>
