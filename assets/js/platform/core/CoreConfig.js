@@ -1,6 +1,3 @@
-// assets/js/platform/core/CoreConfig.js
-// Configuración del núcleo de LogoDemocracy.
-
 var CoreConfig = (function () {
   'use strict';
 
@@ -8,10 +5,10 @@ var CoreConfig = (function () {
     API_BASE: 'http://localhost:5000/api',
 
     SERVICES: {
-      auth: '/api/auth',
-      profile: '/api/profile',
-      reyfilosofo: '/api/reyfilosofo',
-      microtests: '/api/reyfilosofo/microtests'
+      auth: '/auth',
+      profile: '/profile',
+      reyfilosofo: '/reyfilosofo',
+      microtests: '/reyfilosofo/microtests'
     },
 
     STORAGE_KEYS: {
