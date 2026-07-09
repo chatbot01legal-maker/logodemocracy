@@ -58,8 +58,13 @@ var Reporter = (function () {
 
             } else {
 
-                output += _line("❌ FAIL  " + result.name);
-                output += _line("        " + result.error);
+    output += _line("❌ FAIL  " + result.name);
+    output += _line("        " + result.error);
+
+    if (result.stack) {
+        output += _line("        STACK:");
+        output += _line("        " + result.stack);
+    }
             }
 
         });
