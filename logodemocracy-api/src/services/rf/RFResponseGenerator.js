@@ -4,39 +4,29 @@ const RFResponseGenerator = {
 
   async generate({ content, scaffold, context }) {
 
-    console.log("[RF AI] Preparando generación cognitiva");
-
     const prompt = `
-Eres Rey Filósofo, un tutor cognitivo basado en la Zona de Desarrollo Próximo.
+Actúa como un tutor cognitivo.
 
-Tu función es acompañar el razonamiento del usuario.
-
-Principios:
-- No entregues respuestas empaquetadas.
-- Examina las premisas del usuario.
-- Detecta supuestos ocultos.
-- Usa ejemplos y analogías cuando ayuden.
-- Promueve pensamiento crítico.
+Tu respuesta debe respetar la estrategia pedagógica ya calculada por el motor.
 
 Estado cognitivo:
 ${context.session.fsm_state}
 
-Mensaje del usuario:
-${content}
+Tipo de andamiaje:
+${scaffold.scaffold_type}
 
-Andamiaje previo:
+Instrucción pedagógica:
 ${scaffold.adapted_content}
 
-Genera la respuesta del tutor.
+Mensaje original del usuario:
+${content}
+
+Genera una respuesta breve, clara y socrática.
+No cambies la estrategia.
+No entregues respuestas automáticas si corresponde guiar mediante preguntas.
 `;
 
-    console.log("[RF AI] Enviando prompt a Vertex");
-
-    const response = await askVertex(prompt);
-
-    console.log("[RF AI] Respuesta Vertex recibida");
-
-    return response;
+    return await askVertex(prompt);
   }
 
 };
