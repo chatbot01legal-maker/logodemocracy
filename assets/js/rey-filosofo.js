@@ -10,7 +10,23 @@
   // --- Estado ---
   var sessionId = null;
   var isLoading = false;
+  
+// --- Hito 5.2: Contexto Cognitivo Centralizado ---
 
+function getCognitiveContext(){
+
+  if(
+    typeof CognitiveRuntime !== 'undefined' &&
+    typeof CognitiveRuntime.getUserContext === 'function'
+  ){
+
+    return CognitiveRuntime.getUserContext();
+
+  }
+
+  return null;
+
+}
   // --- Funciones de sesión ---
 
   function getOrCreateSessionId() {
@@ -250,7 +266,13 @@
   function init() {
     // Obtener o crear sessionId
     sessionId = getOrCreateSessionId();
+    var cognitiveContext = getCognitiveContext();
 
+console.log(
+  "[Rey Filósofo] Contexto cognitivo:",
+  cognitiveContext
+);
+    
     // Configurar eventos del chat
     ChatUI.onSendClick(sendMessage);
     ChatUI.onInputEnter(sendMessage);
