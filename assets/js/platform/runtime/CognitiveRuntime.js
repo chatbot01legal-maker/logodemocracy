@@ -1,6 +1,6 @@
 // assets/js/platform/runtime/CognitiveRuntime.js
 // ==========================================================
-// Cognitive Runtime Layer - Hito 4
+// Cognitive Runtime Layer - Hito 4 & 5.0
 // Punto de entrada cognitivo para todos los módulos de la plataforma.
 // Orquesta el acceso a la estrategia pedagógica personalizada.
 // ==========================================================
@@ -12,6 +12,15 @@ var CognitiveRuntime = (function() {
   var _initialized = false;
   var _currentStrategy = null;
   var _lastUpdate = null;
+
+  // Hito 5.0: Estructura base del contexto cognitivo
+  var _userContext = {
+    identity: {},
+    profile: {},
+    learning: {},
+    strategy: {},
+    module: { id: null, type: null, context: {} }
+  };
 
   // --- Inicialización ---
 
@@ -111,6 +120,21 @@ var CognitiveRuntime = (function() {
   }
 
   /**
+   * Obtiene una copia superficial del contexto cognitivo.
+   * Contrato Hito 5.0 - Solo lectura.
+   * @returns {object}
+   */
+  function getUserContext() {
+    return {
+      identity: _userContext.identity,
+      profile: _userContext.profile,
+      learning: _userContext.learning,
+      strategy: _userContext.strategy,
+      module: _userContext.module
+    };
+  }
+
+  /**
    * Verifica si el runtime está inicializado.
    * @returns {boolean}
    */
@@ -131,6 +155,7 @@ var CognitiveRuntime = (function() {
     initialize: initialize,
     getCurrentStrategy: getCurrentStrategy,
     refreshStrategy: refreshStrategy,
+    getUserContext: getUserContext,
     isInitialized: isInitialized,
     getLastUpdate: getLastUpdate
   };
