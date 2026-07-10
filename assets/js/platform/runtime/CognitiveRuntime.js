@@ -1,6 +1,6 @@
 // assets/js/platform/runtime/CognitiveRuntime.js
 // ==========================================================
-// Cognitive Runtime Layer - Hito 4 & 5.0
+// Cognitive Runtime Layer - Hito 4, 5.0 & 5.1
 // Punto de entrada cognitivo para todos los módulos de la plataforma.
 // Orquesta el acceso a la estrategia pedagógica personalizada.
 // ==========================================================
@@ -22,6 +22,36 @@ var CognitiveRuntime = (function() {
     module: { id: null, type: null, context: {} }
   };
 
+  // --- Actualización de Identidad (Hito 5.1) ---
+  
+  /**
+   * Actualiza el nodo identity dentro del contexto cognitivo.
+   * Consulta al IdentityProvider de forma defensiva.
+   */
+  function updateIdentity() {
+    var identity = {};
+    
+    if (typeof IdentityProvider !== 'undefined') {
+      if (typeof IdentityProvider.getIdentity === 'function') {
+        identity = IdentityProvider.getIdentity();
+      } else {
+        // Fallback defensivo si getIdentity no existe aún
+        identity.mode = (typeof IdentityProvider.getMode === 'function') 
+          ? IdentityProvider.getMode() 
+          : 'unknown';
+          
+        if (typeof IdentityProvider.getCurrentUser === 'function') {
+          var currentUser = IdentityProvider.getCurrentUser();
+          if (currentUser) {
+            identity.user = currentUser;
+          }
+        }
+      }
+    }
+    
+    _userContext.identity = identity || {};
+  }
+
   // --- Inicialización ---
 
   /**
@@ -42,6 +72,9 @@ var CognitiveRuntime = (function() {
     }
 
     try {
+      // Hito 5.1: Cargar identidad inicial
+      updateIdentity();
+
       // Escuchar cuando el perfil se cargue para refrescar la estrategia
       EventBus.on('profile:loaded', function() {
         refreshStrategy();
@@ -49,10 +82,10 @@ var CognitiveRuntime = (function() {
 
       // Escuchar cuando se genere una nueva estrategia para actualizar caché
       EventBus.on('cognitive:strategy_generated', function(strategy) {
-    _currentStrategy = strategy;
-    _userContext.strategy = strategy;
-    _lastUpdate = Date.now();
-});
+        _currentStrategy = strategy;
+        _userContext.strategy = strategy;
+        _lastUpdate = Date.now();
+      });
 
       // Cargar estrategia inicial
       await refreshStrategy();
@@ -104,8 +137,8 @@ var CognitiveRuntime = (function() {
       var strategy = await PedagogicalEngine.getStrategy(true);
 
       _currentStrategy = strategy;
-_userContext.strategy = strategy;
-_lastUpdate = Date.now();
+      _userContext.strategy = strategy;
+      _lastUpdate = Date.now();
 
       // Emitir evento de estrategia actualizada
       EventBus.emit('runtime:strategy_updated', {
