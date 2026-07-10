@@ -24,6 +24,10 @@ console.log(`📦 Protocolo cargado: ${PROTOCOL.version || "desconocido"}`);
 
 // ─── Middleware ────────────────────────────────────────
 
+app.use(cors());
+app.use(express.json({ limit: "10mb" }));
+app.use(express.static(__dirname));
+
 // ─── LOG de cada petición con ID ÚNICO ────────────────
 app.use((req, res, next) => {
   req.headers['x-request-id'] = crypto.randomUUID(); // Genera un ID único
