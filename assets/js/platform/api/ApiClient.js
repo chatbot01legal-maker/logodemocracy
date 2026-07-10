@@ -27,14 +27,23 @@ var ApiClient = (function() {
    * @returns {string} URL base del servicio.
    */
   function _getBaseUrl(service) {
+
     if (!service) {
-      throw new Error('ApiClient: service es obligatorio');
+        throw new Error('ApiClient: service es obligatorio');
     }
 
     var base = CoreConfig.API_BASE;
     var servicePath = CoreConfig.SERVICES[service];
 
     if (!servicePath) {
+        return service.startsWith('/')
+            ? base + service
+            : base + '/' + service;
+    }
+
+    return base + servicePath;
+  }
+  
       // Si el servicio no está definido en CoreConfig.SERVICES,
       // se asume que service es una ruta relativa o absoluta.
       // Esto permite flexibilidad para servicios temporales o externos.
