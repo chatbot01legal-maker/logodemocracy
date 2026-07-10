@@ -40,8 +40,9 @@ app.use(
   createProxyMiddleware({
     target: "http://localhost:5000",
     changeOrigin: true,
-    pathRewrite: {
-      "^/api/reyfilosofo/microtests": "/api/reyfilosofo/microtests"
+
+    pathRewrite: (path) => {
+      return "/api/reyfilosofo/microtests" + path;
     }
   })
 );
