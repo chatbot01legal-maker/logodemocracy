@@ -203,6 +203,11 @@ try {
 
     try {
       // Ejecutar fetch con la configuración posiblemente modificada
+      // Ejecutar fetch con la configuración posiblemente modificada
+console.log('API URL:', context.url);
+
+var response = await fetch(context.url, context.config);
+context.response = response;
       var response = await fetch(context.url, context.config);
       context.response = response;
 
