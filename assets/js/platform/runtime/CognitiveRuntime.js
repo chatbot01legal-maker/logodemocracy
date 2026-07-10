@@ -49,9 +49,10 @@ var CognitiveRuntime = (function() {
 
       // Escuchar cuando se genere una nueva estrategia para actualizar caché
       EventBus.on('cognitive:strategy_generated', function(strategy) {
-        _currentStrategy = strategy;
-        _lastUpdate = Date.now();
-      });
+    _currentStrategy = strategy;
+    _userContext.strategy = strategy;
+    _lastUpdate = Date.now();
+});
 
       // Cargar estrategia inicial
       await refreshStrategy();
@@ -103,7 +104,8 @@ var CognitiveRuntime = (function() {
       var strategy = await PedagogicalEngine.getStrategy(true);
 
       _currentStrategy = strategy;
-      _lastUpdate = Date.now();
+_userContext.strategy = strategy;
+_lastUpdate = Date.now();
 
       // Emitir evento de estrategia actualizada
       EventBus.emit('runtime:strategy_updated', {
