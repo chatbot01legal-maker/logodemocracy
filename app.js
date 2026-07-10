@@ -23,16 +23,7 @@ console.log(`📁 Directorio actual: ${__dirname}`);
 console.log(`📦 Protocolo cargado: ${PROTOCOL.version || "desconocido"}`);
 
 // ─── Middleware ────────────────────────────────────────
-app.use(cors());
-app.use(express.json({ limit: "10mb" }));
-app.use(express.static(__dirname));
-app.use(
-  "/api/reyfilosofo/microtests",
-  createProxyMiddleware({
-    target: "http://localhost:5000",
-    changeOrigin: true
-  })
-);
+
 // ─── LOG de cada petición con ID ÚNICO ────────────────
 app.use((req, res, next) => {
   req.headers['x-request-id'] = crypto.randomUUID(); // Genera un ID único
@@ -40,7 +31,16 @@ app.use((req, res, next) => {
   res.setHeader('X-Request-ID', req.headers['x-request-id']); // Lo devuelve al navegador
   next();
 });
-
+app.use(
+  "/api/reyfilosofo/microtests",
+  createProxyMiddleware({
+    target: "http://localhost:5000",
+    changeOrigin: true,
+    pathRewrite: {
+      "^/api/reyfilosofo/microtests": "/api/reyfilosofo/microtests"
+    }
+  })
+);
 
 // ─── Ruta principal ────────────────────────────────────
 app.get("/", (req, res) => {
