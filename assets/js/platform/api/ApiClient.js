@@ -43,15 +43,6 @@ var ApiClient = (function() {
 
     return base + servicePath;
   }
-  
-      // Si el servicio no está definido en CoreConfig.SERVICES,
-      // se asume que service es una ruta relativa o absoluta.
-      // Esto permite flexibilidad para servicios temporales o externos.
-      return service.startsWith('/') ? service : '/' + service;
-    }
-
-    return servicePath;
-  }
 
   /**
    * Construye los headers para la petición.
@@ -102,43 +93,32 @@ var ApiClient = (function() {
       return text;
     }
 
-    
     // Fallback robusto: leer una sola vez el body
-var rawBody = await response.text();
+    var rawBody = await response.text();
 
-if (!response.ok) {
+    if (!response.ok) {
+      try {
+        var errorData = JSON.parse(rawBody);
+        throw new Error(
+          errorData.error ||
+          errorData.message ||
+          'Error en la solicitud'
+        );
+      } catch (parseError) {
+        throw new Error(
+          rawBody || 'Error en la solicitud'
+        );
+      }
+    }
 
-  try {
-    var errorData = JSON.parse(rawBody);
-
-    throw new Error(
-      errorData.error ||
-      errorData.message ||
-      'Error en la solicitud'
-    );
-
-  } catch (parseError) {
-
-    throw new Error(
-      rawBody || 'Error en la solicitud'
-    );
-
+    // Intentar convertir respuesta válida a JSON
+    try {
+      return JSON.parse(rawBody);
+    } catch (_) {
+      return rawBody;
+    }
   }
 
-}
-
-
-// Intentar convertir respuesta válida a JSON
-try {
-
-  return JSON.parse(rawBody);
-
-} catch (_) {
-
-  return rawBody;
-
-}
-  }
   /**
    * Ejecuta una petición HTTP con el pipeline de interceptores.
    * @param {object} options - Opciones de la petición.
@@ -212,11 +192,8 @@ try {
 
     try {
       // Ejecutar fetch con la configuración posiblemente modificada
-      // Ejecutar fetch con la configuración posiblemente modificada
-console.log('API URL:', context.url);
+      console.log('API URL:', context.url);
 
-var response = await fetch(context.url, context.config);
-context.response = response;
       var response = await fetch(context.url, context.config);
       context.response = response;
 
