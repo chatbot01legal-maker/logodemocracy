@@ -21,7 +21,14 @@ var CognitiveRuntime = (function() {
    * @returns {Promise<boolean>} true si la inicialización fue exitosa.
    */
   async function initialize() {
+
     if (_initialized) {
+
+      EventBus.emit('runtime:ready', {
+        timestamp: Date.now(),
+        strategy: _currentStrategy
+      });
+
       return true;
     }
 
