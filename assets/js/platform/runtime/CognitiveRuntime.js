@@ -185,13 +185,12 @@ EventBus.on('auth:changed', function(data) {
    */
   function getUserContext() {
     return {
-  identity: {
-    mode: "authenticated",
-    name: "Rodrigo",
-    user: {
-      id:"u123",
-      name:"Rodrigo"
-    }
+      identity: _userContext.identity,
+      profile: _userContext.profile,
+      learning: _userContext.learning,
+      strategy: _userContext.strategy,
+      module: _userContext.module
+    };
   }
     }
 
