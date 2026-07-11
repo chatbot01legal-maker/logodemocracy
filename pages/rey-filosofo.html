@@ -143,24 +143,21 @@
 <script src="/assets/js/platform/identity/CurrentUser.js"></script>
 
 <script>
-  alert(
-    "ANTES DE IdentityProvider.js:\n\n" +
-    "typeof: " + typeof window.IdentityProvider + "\n\n" +
-    "keys: " + (
-      window.IdentityProvider
-        ? Object.keys(window.IdentityProvider).join(", ")
-        : "NO EXISTE"
-    )
-  );
+alert(
+  "ANTES DE IdentityProvider.js:\n\n" +
+  "typeof LDIdentityProvider: " + typeof window.LDIdentityProvider
+);
 </script>
 
 <script src="/assets/js/platform/identity/IdentityProvider.js"></script>
 
 <script>
-  alert(
-    "DESPUÉS DE IdentityProvider.js:\n\n" +
-    Object.keys(LDIdentityProvider)).join(", ")
-  );
+alert(
+  "DESPUÉS DE IdentityProvider.js:\n\n" +
+  "typeof LDIdentityProvider: " + typeof window.LDIdentityProvider +
+  "\n\nKeys: " +
+  Object.keys(window.LDIdentityProvider).join(", ")
+);
 </script>
 
 
