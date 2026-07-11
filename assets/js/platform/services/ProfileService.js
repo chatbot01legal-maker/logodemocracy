@@ -1,7 +1,7 @@
 // assets/js/platform/services/ProfileService.js
 // Servicio de perfil pedagógico del ciudadano.
 // Permite obtener y gestionar el perfil estable de aprendizaje (PedagogicalProfile).
-// Dependencias: CoreConfig, ApiClient, IdentityProvider, EventBus (opcional).
+// Dependencias: CoreConfig, ApiClient, LDIdentityProvider, EventBus (opcional).
 
 var ProfileService = (function() {
   'use strict';
@@ -21,7 +21,7 @@ var ProfileService = (function() {
    */
   async function getProfile() {
 
-    var mode = IdentityProvider.getMode();
+    var mode = LDIdentityProvider.getMode();
 
     // Usuario autenticado:
     // ApiClient añadirá automáticamente el token.
@@ -36,7 +36,7 @@ var ProfileService = (function() {
 
     // Usuario invitado:
     // Se utiliza sessionId.
-    var sessionId = IdentityProvider.getSessionId();
+    var sessionId = LDIdentityProvider.getSessionId();
 
     if (!sessionId) {
       throw new Error(

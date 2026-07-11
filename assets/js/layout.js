@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderAuth() {
     if (!userLabel || !authButton) return;
 
-    if (typeof IdentityProvider !== 'undefined' && IdentityProvider.isAuthenticated()) {
-      var userName = IdentityProvider.getUserName() || 'Usuario';
+    if (typeof LDIdentityProvider !== 'undefined' && LDIdentityProvider.isAuthenticated()) {
+      var userName = LDIdentityProvider.getUserName() || 'Usuario';
       userLabel.textContent = "⌂ " + userName;
       authButton.textContent = "Log out";
     } else {
@@ -29,21 +29,21 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         alert("1. Click detectado");
 
-        if (typeof IdentityProvider !== 'undefined') {
-          alert("2. IdentityProvider existe");
-          alert(Object.keys(IdentityProvider).join(", "));
-          if (IdentityProvider.isAuthenticated()) {
-            IdentityProvider.clear();
+        if (typeof LDIdentityProvider !== 'undefined') {
+          alert("2. LDIdentityProvider existe");
+          alert(Object.keys(LDIdentityProvider).join(", "));
+          if (LDIdentityProvider.isAuthenticated()) {
+            LDIdentityProvider.clear();
             alert("3. clear terminó");
           } else {
-            IdentityProvider.setAuthenticated('mock-jwt-token', { id: 'u123', name: 'Rodrigo' });
+            LDIdentityProvider.setAuthenticated('mock-jwt-token', { id: 'u123', name: 'Rodrigo' });
             alert("3. setAuthenticated terminó");
           }
           
-          alert("4. Modo actual: " + IdentityProvider.getMode());
-          alert("5. Usuario: " + IdentityProvider.getUserName());
+          alert("4. Modo actual: " + LDIdentityProvider.getMode());
+          alert("5. Usuario: " + LDIdentityProvider.getUserName());
         } else {
-          alert("ERROR FATAL: IdentityProvider es undefined al hacer click.");
+          alert("ERROR FATAL: LDIdentityProvider es undefined al hacer click.");
         }
       } catch (error) {
         alert("EXCEPCIÓN ATRAPADA: " + error.message);

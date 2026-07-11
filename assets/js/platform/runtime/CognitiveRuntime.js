@@ -26,23 +26,23 @@ var CognitiveRuntime = (function() {
   
   /**
    * Actualiza el nodo identity dentro del contexto cognitivo.
-   * Consulta al IdentityProvider de forma defensiva.
+   * Consulta al LDIdentityProvider de forma defensiva.
    */
   function updateIdentity() {
 
   var identity = {};
 
-  if (typeof IdentityProvider !== 'undefined') {
+  if (typeof LDIdentityProvider !== 'undefined') {
 
     identity.mode =
-      typeof IdentityProvider.getMode === 'function'
-        ? IdentityProvider.getMode()
+      typeof LDIdentityProvider.getMode === 'function'
+        ? LDIdentityProvider.getMode()
         : 'unknown';
 
 
-    if (typeof IdentityProvider.getUser === 'function') {
+    if (typeof LDIdentityProvider.getUser === 'function') {
 
-      var currentUser = IdentityProvider.getUser();
+      var currentUser = LDIdentityProvider.getUser();
 
       if (currentUser) {
 

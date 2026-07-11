@@ -1,7 +1,7 @@
 // assets/js/platform/identity/AuthService.js
 // Servicio de autenticación de LogoDemocracy.
 // Responsable de la comunicación con los endpoints de autenticación del backend.
-// Delega la gestión del estado de identidad en IdentityProvider.
+// Delega la gestión del estado de identidad en LDIdentityProvider.
 
 var AuthService = (function() {
   'use strict';
@@ -79,7 +79,7 @@ var AuthService = (function() {
     // data = { token, user }
 
     // Actualizar el estado global de identidad
-    IdentityProvider.setAuthenticated(data.token, data.user);
+    LDIdentityProvider.setAuthenticated(data.token, data.user);
 
     return data;
   }
@@ -105,7 +105,7 @@ var AuthService = (function() {
     var data = await _request('/register', payload);
     // data = { token, user }
 
-    IdentityProvider.setAuthenticated(data.token, data.user);
+    LDIdentityProvider.setAuthenticated(data.token, data.user);
 
     return data;
   }
@@ -117,7 +117,7 @@ var AuthService = (function() {
    */
   function logout() {
     // Limpiar estado de identidad
-    IdentityProvider.clear();
+    LDIdentityProvider.clear();
 
     // Futuro: si el backend implementa /logout, aquí se llamaría:
     // await _request('/logout', {});
@@ -130,7 +130,7 @@ var AuthService = (function() {
    * @returns {Promise<object>} Datos del usuario.
    */
   async function whoAmI() {
-    var token = IdentityProvider.getToken();
+    var token = LDIdentityProvider.getToken();
 
     if (!token) {
       throw new Error('No hay sesión activa');

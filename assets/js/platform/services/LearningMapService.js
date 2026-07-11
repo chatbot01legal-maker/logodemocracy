@@ -1,7 +1,7 @@
 // assets/js/platform/services/LearningMapService.js
 // Servicio de mapa de aprendizaje dinámico del ciudadano.
 // Permite obtener el estado actual de competencias cognitivas (LearningMap).
-// Dependencias: CoreConfig, ApiClient, IdentityProvider.
+// Dependencias: CoreConfig, ApiClient, LDIdentityProvider.
 
 var LearningMapService = (function() {
   'use strict';
@@ -21,7 +21,7 @@ var LearningMapService = (function() {
    */
   async function getLearningMap() {
 
-    var mode = IdentityProvider.getMode();
+    var mode = LDIdentityProvider.getMode();
 
 
     // Usuario autenticado:
@@ -36,7 +36,7 @@ var LearningMapService = (function() {
 
 
     // Usuario invitado:
-    var sessionId = IdentityProvider.getSessionId();
+    var sessionId = LDIdentityProvider.getSessionId();
 
     if (!sessionId) {
 

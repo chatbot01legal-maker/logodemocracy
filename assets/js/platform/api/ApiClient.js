@@ -54,7 +54,7 @@ var ApiClient = (function() {
       'Accept': 'application/json'
     };
 
-    var token = IdentityProvider.getToken();
+    var token = LDIdentityProvider.getToken();
     if (token) {
       headers['Authorization'] = 'Bearer ' + token;
     }

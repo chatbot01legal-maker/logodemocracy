@@ -1,7 +1,7 @@
 // assets/js/platform/services/MicrotestService.js
 // Servicio de gestión de microtests pedagógicos.
 // Permite guardar resultados y consultar el listado de microtests completados.
-// Dependencias: CoreConfig, ApiClient, IdentityProvider, EventBus, CurrentUser.
+// Dependencias: CoreConfig, ApiClient, LDIdentityProvider, EventBus, CurrentUser.
 
 var MicrotestService = (function() {
   'use strict';
@@ -19,7 +19,7 @@ var MicrotestService = (function() {
    * @returns {object} Payload completo con identificación.
    */
   function _buildPayload(baseData) {
-    var mode = IdentityProvider.getMode();
+    var mode = LDIdentityProvider.getMode();
     var payload = { ...baseData };
 
     if (mode === 'authenticated') {
@@ -32,7 +32,7 @@ var MicrotestService = (function() {
       // No se incluye sessionId cuando está autenticado.
     } else {
       // Usuario invitado: usar sessionId.
-      var sessionId = IdentityProvider.getSessionId();
+      var sessionId = LDIdentityProvider.getSessionId();
       if (!sessionId) {
         throw new Error('MicrotestService: No se pudo obtener sessionId para usuario invitado.');
       }
@@ -88,7 +88,7 @@ var MicrotestService = (function() {
    * @returns {Promise<{ completed_tests: string[] }>}
    */
   async function listCompleted() {
-    var mode = IdentityProvider.getMode();
+    var mode = LDIdentityProvider.getMode();
 
     // Usuario autenticado: ApiClient añade el token automáticamente.
     if (mode === 'authenticated') {
@@ -96,7 +96,7 @@ var MicrotestService = (function() {
     }
 
     // Usuario invitado: enviar sessionId como query param.
-    var sessionId = IdentityProvider.getSessionId();
+    var sessionId = LDIdentityProvider.getSessionId();
     if (!sessionId) {
       throw new Error('MicrotestService.listCompleted: No se pudo obtener sessionId para usuario invitado.');
     }
