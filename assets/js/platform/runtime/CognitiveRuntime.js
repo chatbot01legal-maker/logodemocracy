@@ -88,8 +88,6 @@ EventBus.on('auth:changed', function(data) {
 
   console.log('[CognitiveRuntime] nueva identity:', _userContext.identity);
 
-});
-
   EventBus.emit('runtime:identity_updated', {
     identity: _userContext.identity,
     timestamp: Date.now()
