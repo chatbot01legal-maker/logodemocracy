@@ -80,9 +80,15 @@ var CognitiveRuntime = (function() {
         refreshStrategy();
       });
 // Hito 5.4: Sincronización reactiva de identidad
-EventBus.on('auth:changed', function() {
+EventBus.on('auth:changed', function(data) {
+
+  console.log('[CognitiveRuntime] auth:changed recibido:', data);
 
   updateIdentity();
+
+  console.log('[CognitiveRuntime] nueva identity:', _userContext.identity);
+
+});
 
   EventBus.emit('runtime:identity_updated', {
     identity: _userContext.identity,
