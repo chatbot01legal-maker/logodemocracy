@@ -210,7 +210,35 @@ alert(
 
 
 <script src="/assets/js/platform/cognitive/ContextAdapter.js"></script>
+<script>
+(function () {
 
+  let realProvider = window.LDIdentityProvider;
+
+  Object.defineProperty(window, "LDIdentityProvider", {
+
+    configurable: true,
+
+    enumerable: true,
+
+    get() {
+      return realProvider;
+    },
+
+    set(value) {
+
+      alert("ALGUIEN INTENTÓ MODIFICAR LDIdentityProvider");
+
+      console.trace();
+
+      realProvider = value;
+
+    }
+
+  });
+
+})();
+</script>
 
 <script>
 alert(
