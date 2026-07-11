@@ -192,7 +192,7 @@ EventBus.on('auth:changed', function(data) {
       module: _userContext.module
     };
   }
-    }
+    
 
   /**
    * Verifica si el runtime está inicializado.
