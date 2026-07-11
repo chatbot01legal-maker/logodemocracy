@@ -1,4 +1,3 @@
-// assets/js/platform/tests/platform-identity-context.test.js
 (function() {
   'use strict';
 
@@ -6,18 +5,21 @@
     if (!condition) throw new Error(message || 'Assertion failed');
   }
 
-  TestRunner.test('CognitiveRuntime expone identity en contexto', function() {
+  TestRunner.test('IdentityProvider propaga identidad hacia CognitiveRuntime', function() {
+    // 1. Preparamos datos simulados
+    var mockToken = 'mock-jwt-token';
+    var mockUser = { id: 'u123', name: 'Rodrigo' };
+
+    // 2. Ejecutamos la mutación
+    IdentityProvider.setAuthenticated(mockToken, mockUser);
+
+    // 3. Verificamos la propagación a través de CognitiveRuntime
     var context = CognitiveRuntime.getUserContext();
-    assert('identity' in context, 'Debe existir identity en el contexto');
-  });
 
-  TestRunner.test('Contexto identity contiene estructura inicial valida', function() {
-    return CognitiveRuntime.initialize()
-      .then(function() {
-        var context = CognitiveRuntime.getUserContext();
-        assert(context.identity !== undefined, 'Identity debe existir después de inicializar');
-        assert(typeof context.identity === 'object', 'Identity debe ser un objeto');
-      });
-  });
+    assert(context.identity.name === 'Rodrigo', 'El nombre en context debe ser Rodrigo');
+    assert(context.identity.mode === 'authenticated', 'El modo debe ser authenticated');
 
+    // 4. Limpiamos
+    IdentityProvider.clear();
+  });
 })();
