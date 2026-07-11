@@ -16,7 +16,6 @@
 
   <header class="topbar">
     <a href="/" class="brand">LOGODEMOCRACY</a>
-
     <nav class="module-nav">
       <a href="/pages/archive-template.html" class="module-link">Academia</a>
       <a href="/pages/aletheia.html" class="module-link">Aletheia</a>
@@ -26,7 +25,8 @@
     </nav>
 
     <button class="mobile-menu-btn" id="mobileMenuBtn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <path d="M4 6H20"/>
         <path d="M4 12H20"/>
         <path d="M4 18H20"/>
@@ -40,11 +40,9 @@
     </div>
   </header>
 
-
   <div class="layout">
 
     <aside class="sidebar">
-
       <div class="sidebar-content">
 
         <div class="phil-module-label">
@@ -53,93 +51,61 @@
           <span class="module-version">v1.0</span>
         </div>
 
-
         <nav class="phil-nav tree">
-
           <div class="pnav-section">
             <button class="pnav-item active" data-view="inicio">
-              <span class="pnav-icon">🏛</span>
-              Tutoría Cognitiva
+              <span class="pnav-icon">🏛</span> Tutoría Cognitiva
             </button>
           </div>
-
 
           <div class="pnav-section">
             <button class="pnav-item" data-view="microtests">
-              <span class="pnav-icon">◎</span>
-              Perfil de Aprendizaje
+              <span class="pnav-icon">◎</span> Perfil de Aprendizaje
             </button>
           </div>
-
 
           <div class="pnav-section">
             <button class="pnav-item" data-view="zdp">
-              <span class="pnav-icon">⤱</span>
-              Trayectoria y ZPD
+              <span class="pnav-icon">⤱</span> Trayectoria y ZPD
             </button>
           </div>
-
 
           <div class="pnav-section">
             <button class="pnav-item" data-view="curriculum">
-              <span class="pnav-icon">◈</span>
-              Todo Ciudadano Sabe
+              <span class="pnav-icon">◈</span> Todo Ciudadano Sabe
             </button>
           </div>
-
 
           <div class="pnav-section">
             <button class="pnav-item" data-view="metacognicion">
-              <span class="pnav-icon">⎔</span>
-              Bitácora Metacognitiva
+              <span class="pnav-icon">⎔</span> Bitácora Metacognitiva
             </button>
           </div>
-
         </nav>
 
-
         <div class="epistemic sidebar-status">
+          <div class="epistemic-title">Perfil de Aprendizaje</div>
 
-          <div class="epistemic-title">
-            Perfil de Aprendizaje
+          <div class="status-row">
+            <span class="status-dot status-dot--on"></span>
+            <span id="lblUserSync">Usuario: Invitado (Local)</span>
           </div>
 
           <div class="status-row">
             <span class="status-dot status-dot--on"></span>
-            <span id="lblUserSync">
-              Usuario: Invitado (Local)
-            </span>
+            <span id="lblZdpLevel">ZPD: Nivel Introductorio</span>
           </div>
-
-          <div class="status-row">
-            <span class="status-dot status-dot--on"></span>
-            <span id="lblZdpLevel">
-              ZPD: Nivel Introductorio
-            </span>
-          </div>
-
         </div>
-
 
         <div class="philosopher sidebar-philosopher clickable-trigger" id="btnOpenChat">
-
           <div class="phil-icon">🏛</div>
-
           <div>
-            <div class="phil-name">
-              Interrogar al Tutor
-            </div>
-
-            <div class="phil-msg">
-              Click para abrir diálogo emergente...
-            </div>
+            <div class="phil-name">Interrogar al Tutor</div>
+            <div class="phil-msg">Click para abrir diálogo emergente...</div>
           </div>
-
         </div>
 
-
       </div>
-
 
       <div class="sidebar-rail">
         <div class="sidebar-toggle">◂</div>
@@ -147,20 +113,17 @@
 
     </aside>
 
-
-    <main class="document">
+        <main class="document">
 
       <div class="document-header" id="viewTitle">
         Rey Filósofo — Tutoría Cognitiva Personalizada
       </div>
-
 
       <div class="document-content" id="viewContent">
         <!-- El contenido se renderiza dinámicamente -->
       </div>
 
     </main>
-
 
   </div>
 
@@ -170,7 +133,6 @@
   <div class="chat-popup-container" id="chatPopup">
 
     <div class="chat-popup-header">
-
       <div class="chat-popup-title">
         🏛 Rey Filósofo · Dialogador Epistémico
       </div>
@@ -178,28 +140,22 @@
       <button class="chat-popup-close" id="btnCloseChat">
         ×
       </button>
-
     </div>
-
 
     <div class="chat-popup-messages" id="chatMessages">
       <!-- Mensaje de bienvenida se añade desde JS -->
     </div>
 
-
     <div class="chat-popup-input-area">
-
-      <input 
-        type="text" 
+      <input
+        type="text"
         id="chatInput"
         placeholder="Escribe tu reflexión o duda conceptual..."
-        autocomplete="off"
-      >
+        autocomplete="off">
 
       <button id="btnSendChat">
         Enviar
       </button>
-
     </div>
 
   </div>
@@ -209,42 +165,52 @@
     LogoDemocracy · Rey Filósofo · Zona de Desarrollo Próximo e Integración Epistémica
   </footer>
 
-
 </div>
 
-  <!-- ========================================== -->
+
+
+<!-- ========================================== -->
 <!-- CORE PLATAFORMA -->
 <!-- ========================================== -->
 
 <script src="/assets/js/platform/events/EventBus.js"></script>
 
 <script src="/assets/js/platform/identity/IdentityStorage.js"></script>
+
 <script src="/assets/js/platform/identity/CurrentUser.js"></script>
+
 
 <script>
 alert(
   "ANTES DE IdentityProvider.js:\n\n" +
-  "typeof LDIdentityProvider: " + typeof window.LDIdentityProvider
+  "typeof LDIdentityProvider: " +
+  typeof window.LDIdentityProvider
 );
 </script>
 
+
 <script src="/assets/js/platform/identity/IdentityProvider.js"></script>
+
 
 <script>
 alert(
   "DESPUÉS DE IdentityProvider.js:\n\n" +
-  "typeof LDIdentityProvider: " + typeof window.LDIdentityProvider +
+  "typeof LDIdentityProvider: " +
+  typeof window.LDIdentityProvider +
   "\n\nKeys: " +
   Object.keys(window.LDIdentityProvider).join(", ")
 );
 </script>
 
 
+
 <!-- ========================================== -->
 <!-- MOTOR COGNITIVO -->
 <!-- ========================================== -->
 
+
 <script src="/assets/js/platform/cognitive/ContextAdapter.js"></script>
+
 
 <script>
 alert(
@@ -253,10 +219,15 @@ alert(
 );
 </script>
 
+
+
 <script src="/assets/js/platform/cognitive/LearningStrategy.js"></script>
+
 <script src="/assets/js/platform/cognitive/PedagogicalEngine.js"></script>
 
+
 <script src="/assets/js/platform/runtime/CognitiveRuntime.js"></script>
+
 
 <script>
 alert(
@@ -265,21 +236,25 @@ alert(
 );
 </script>
 
+
 <script src="/assets/js/platform/runtime/ModuleContextAdapter.js"></script>
 
-
-<!-- ========================================== -->
+  <!-- ========================================== -->
 <!-- SERVICIOS -->
 <!-- ========================================== -->
 
 <script src="/assets/js/config.js"></script>
+
 <script src="/assets/js/apiClient.js"></script>
+
 <script src="/assets/js/chatUI.js"></script>
+
 
 
 <!-- ========================================== -->
 <!-- UI GLOBAL -->
 <!-- ========================================== -->
+
 
 <script>
 alert(
@@ -288,15 +263,20 @@ alert(
 );
 </script>
 
+
 <script src="/assets/js/layout.js"></script>
+
 <script src="/assets/js/mobile-menu.js"></script>
+
 
 
 <!-- ========================================== -->
 <!-- VISTA -->
 <!-- ========================================== -->
 
+
 <script src="/assets/js/rey-filosofo.js"></script>
+
 
 </body>
 </html>
