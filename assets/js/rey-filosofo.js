@@ -1,4 +1,3 @@
-
 // assets/js/rey-filosofo.js
 // Controlador principal del Rey Filósofo.
 // Coordina ApiClient y ChatUI, gestiona la sesión y el flujo de mensajes.
@@ -10,7 +9,8 @@
   // --- Estado ---
   var sessionId = null;
   var isLoading = false;
-    // --- Hito 5.3: Contexto Cognitivo Centralizado ---
+  
+  // --- Hito 5.3: Contexto Cognitivo Centralizado ---
   function getCognitiveContext() {
     if (
       typeof CognitiveRuntime !== 'undefined' &&
@@ -21,23 +21,6 @@
     return null;
   }
   
-  
-// --- Hito 5.2: Contexto Cognitivo Centralizado ---
-
-function getCognitiveContext(){
-
-  if(
-    typeof CognitiveRuntime !== 'undefined' &&
-    typeof CognitiveRuntime.getUserContext === 'function'
-  ){
-
-    return CognitiveRuntime.getUserContext();
-
-  }
-
-  return null;
-
-}
   // --- Funciones de sesión ---
 
   function getOrCreateSessionId() {
@@ -279,10 +262,10 @@ function getCognitiveContext(){
     sessionId = getOrCreateSessionId();
     var cognitiveContext = getCognitiveContext();
 
-console.log(
-  "[Rey Filósofo] Contexto cognitivo:",
-  cognitiveContext
-);
+    console.log(
+      "[Rey Filósofo] Contexto cognitivo:",
+      cognitiveContext
+    );
     
     // Configurar eventos del chat
     ChatUI.onSendClick(sendMessage);
@@ -314,8 +297,7 @@ console.log(
       ChatUI.showMessage('<strong>[Tutor]</strong>: Saludos, ciudadano. Soy tu acompañante cognitivo. No te daré respuestas empaquetadas; examinaré tus premisas y andamiaré tu comprensión de los módulos (Sophia, Logos, Aletheia o la Academia). ¿Qué idea deseas desglosar hoy?', 'system');
     }
 
-        // --- Hito 5.3: Sincronización UI defensiva (Estricta al contrato) ---
-    var cognitiveContext = getCognitiveContext();
+    // --- Hito 5.3: Sincronización UI defensiva (Estricta al contrato) ---
     var lblSync = document.getElementById('lblUserSync');
     var lblZdp = document.getElementById('lblZdpLevel');
     var userLabel = document.getElementById('userLabel');
@@ -335,6 +317,7 @@ console.log(
         lblSync.textContent = isLoggedIn ? 'Usuario: Autenticado (Local)' : 'Usuario: Invitado (Local)';
       }
     }
+  } // <-- Lllave de cierre de init() que faltaba
     
   // Ejecutar cuando el DOM esté listo
   if (document.readyState === 'loading') {
