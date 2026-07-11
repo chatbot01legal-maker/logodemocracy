@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderAuth() {
     if (!userLabel || !authButton) return;
 
-    if (typeof LDIdentityProvider !== 'undefined' && LDIdentityProvider.isAuthenticated()) {
-      var userName = LDIdentityProvider.getUserName() || 'Usuario';
+    if (typeof window.LDIdentityProvider !== 'undefined' && window.LDIdentityProvider.isAuthenticated()) {
+      var userName = window.LDIdentityProvider.getUserName() || 'Usuario';
       userLabel.textContent = "⌂ " + userName;
       authButton.textContent = "Log out";
     } else {
@@ -29,19 +29,19 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         alert("1. Click detectado");
 
-        if (typeof LDIdentityProvider !== 'undefined') {
+        if (typeof window.LDIdentityProvider !== 'undefined') {
           alert("2. LDIdentityProvider existe");
-          alert(Object.keys(LDIdentityProvider).join(", "));
-          if (LDIdentityProvider.isAuthenticated()) {
-            LDIdentityProvider.clear();
+          alert(Object.keys(window.LDIdentityProvider).join(", "));
+          if (window.LDIdentityProvider.isAuthenticated()) {
+            window.LDIdentityProvider.clear();
             alert("3. clear terminó");
           } else {
-            LDIdentityProvider.setAuthenticated('mock-jwt-token', { id: 'u123', name: 'Rodrigo' });
+            window.LDIdentityProvider.setAuthenticated('mock-jwt-token', { id: 'u123', name: 'Rodrigo' });
             alert("3. setAuthenticated terminó");
           }
           
-          alert("4. Modo actual: " + LDIdentityProvider.getMode());
-          alert("5. Usuario: " + LDIdentityProvider.getUserName());
+          alert("4. Modo actual: " + window.LDIdentityProvider.getMode());
+          alert("5. Usuario: " + window.LDIdentityProvider.getUserName());
         } else {
           alert("ERROR FATAL: LDIdentityProvider es undefined al hacer click.");
         }
