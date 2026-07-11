@@ -10,6 +10,17 @@
   // --- Estado ---
   var sessionId = null;
   var isLoading = false;
+    // --- Hito 5.3: Contexto Cognitivo Centralizado ---
+  function getCognitiveContext() {
+    if (
+      typeof CognitiveRuntime !== 'undefined' &&
+      typeof CognitiveRuntime.getUserContext === 'function'
+    ) {
+      return CognitiveRuntime.getUserContext();
+    }
+    return null;
+  }
+  
   
 // --- Hito 5.2: Contexto Cognitivo Centralizado ---
 
@@ -303,17 +314,28 @@ console.log(
       ChatUI.showMessage('<strong>[Tutor]</strong>: Saludos, ciudadano. Soy tu acompañante cognitivo. No te daré respuestas empaquetadas; examinaré tus premisas y andamiaré tu comprensión de los módulos (Sophia, Logos, Aletheia o la Academia). ¿Qué idea deseas desglosar hoy?', 'system');
     }
 
-    // Actualizar estado de usuario en sidebar (simulado)
-    var userLabel = document.getElementById('userLabel');
+        // --- Hito 5.3: Sincronización UI defensiva (Estricta al contrato) ---
+    var cognitiveContext = getCognitiveContext();
     var lblSync = document.getElementById('lblUserSync');
-    if (userLabel && lblSync) {
-      var isLoggedIn = userLabel.textContent.includes('Invitado') ? false : true;
-      lblSync.textContent = isLoggedIn ? 'Usuario: Rodrigo (Sincronizado)' : 'Usuario: Invitado (Local)';
+    var lblZdp = document.getElementById('lblZdpLevel');
+    var userLabel = document.getElementById('userLabel');
+
+    if (cognitiveContext) {
+      // Contrato validado: solo sabemos que existe 'identity' y 'strategy'
+      if (lblSync && cognitiveContext.identity) {
+        lblSync.textContent = 'Usuario: Sincronizado (Runtime)';
+      }
+      if (lblZdp && cognitiveContext.strategy) {
+        lblZdp.textContent = 'ZPD: Estrategia Vinculada';
+      }
+    } else {
+      // Fallback estricto si no hay Runtime
+      if (userLabel && lblSync) {
+        var isLoggedIn = !userLabel.textContent.includes('Invitado');
+        lblSync.textContent = isLoggedIn ? 'Usuario: Autenticado (Local)' : 'Usuario: Invitado (Local)';
+      }
     }
-
-    console.log('Rey Filósofo iniciado con sessionId:', sessionId);
-  }
-
+    
   // Ejecutar cuando el DOM esté listo
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
