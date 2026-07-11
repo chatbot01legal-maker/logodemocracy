@@ -79,7 +79,17 @@ var CognitiveRuntime = (function() {
       EventBus.on('profile:loaded', function() {
         refreshStrategy();
       });
+// Hito 5.4: Sincronización reactiva de identidad
+EventBus.on('auth:changed', function() {
 
+  updateIdentity();
+
+  EventBus.emit('runtime:identity_updated', {
+    identity: _userContext.identity,
+    timestamp: Date.now()
+  });
+
+});
       // Escuchar cuando se genere una nueva estrategia para actualizar caché
       EventBus.on('cognitive:strategy_generated', function(strategy) {
         _currentStrategy = strategy;
