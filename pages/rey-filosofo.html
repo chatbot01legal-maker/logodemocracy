@@ -142,6 +142,9 @@
 <script src="/assets/js/platform/identity/IdentityStorage.js"></script>
 <script src="/assets/js/platform/identity/CurrentUser.js"></script>
 <script src="/assets/js/platform/identity/IdentityProvider.js"></script>
+<script>
+  alert("POST IdentityProvider.js:\n" + Object.keys(IdentityProvider).join(", "));
+</script>
 
 
 <!-- ========================================== -->
@@ -149,10 +152,16 @@
 <!-- ========================================== -->
 
 <script src="/assets/js/platform/cognitive/ContextAdapter.js"></script>
+<script>
+  alert("POST ContextAdapter:\n" + Object.keys(IdentityProvider).join(", "));
+</script>
 <script src="/assets/js/platform/cognitive/LearningStrategy.js"></script>
 <script src="/assets/js/platform/cognitive/PedagogicalEngine.js"></script>
 
 <script src="/assets/js/platform/runtime/CognitiveRuntime.js"></script>
+<script>
+  alert("POST CognitiveRuntime:\n" + Object.keys(IdentityProvider).join(", "));
+</script>
 <script src="/assets/js/platform/runtime/ModuleContextAdapter.js"></script>
 
 
@@ -169,6 +178,9 @@
 <!-- UI GLOBAL -->
 <!-- ========================================== -->
 
+<script>
+  alert("ANTES DE layout:\n" + Object.keys(IdentityProvider).join(", "));
+</script>
 <script src="/assets/js/layout.js"></script>
 <script src="/assets/js/mobile-menu.js"></script>
 
@@ -178,8 +190,6 @@
 <!-- ========================================== -->
 
 <script src="/assets/js/rey-filosofo.js"></script>
-
-  
 
 </body>
 </html>
