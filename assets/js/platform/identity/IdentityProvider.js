@@ -6,6 +6,8 @@
 var LDIdentityProvider = (function() {
   'use strict';
 
+  alert("IdentityProvider: Iniciando evaluación de IIFE");
+
   // --- Estado interno ---
   var _token = null;
   var _sessionId = null;
@@ -19,25 +21,39 @@ var LDIdentityProvider = (function() {
    * Se ejecuta automáticamente al cargar el módulo.
    */
   function _init() {
+    alert("IdentityProvider [_init]: Entrando a la función");
     if (_initialized) return;
 
     // 1. Cargar token y sessionId desde almacenamiento
+    alert("IdentityProvider [_init]: Antes de IdentityStorage.getToken()");
     _token = IdentityStorage.getToken();
+    
+    alert("IdentityProvider [_init]: Antes de IdentityStorage.getSessionId()");
     _sessionId = IdentityStorage.getSessionId();
 
     // 2. Si no hay sessionId, generar uno nuevo y guardarlo
+    alert("IdentityProvider [_init]: Evaluando si existe sessionId (" + _sessionId + ")");
     if (!_sessionId) {
+      alert("IdentityProvider [_init]: Antes de IdentityStorage.generateSessionId()");
       _sessionId = IdentityStorage.generateSessionId();
+      
+      alert("IdentityProvider [_init]: Antes de IdentityStorage.saveSessionId()");
       IdentityStorage.saveSessionId(_sessionId);
     }
 
     // 3. Si hay token, cargar el usuario desde almacenamiento
+    alert("IdentityProvider [_init]: Evaluando si existe token (" + _token + ")");
     if (_token) {
+      alert("IdentityProvider [_init]: Antes de IdentityStorage.getUser()");
       var user = IdentityStorage.getUser();
+      
+      alert("IdentityProvider [_init]: Evaluando usuario cargado");
       if (user) {
+        alert("IdentityProvider [_init]: Antes de CurrentUser.set(user)");
         CurrentUser.set(user);
       } else {
         // Token sin usuario: inconsistencia, limpiar token
+        alert("IdentityProvider [_init]: Token sin usuario. Antes de IdentityStorage.clearToken()");
         _token = null;
         IdentityStorage.clearToken();
       }
@@ -46,10 +62,16 @@ var LDIdentityProvider = (function() {
     _initialized = true;
 
     // 4. Emitir evento de identidad lista
+    alert("IdentityProvider [_init]: Antes de getMode() / CurrentUser.exists() (para EventBus)");
+    var mode = getMode();
+    
+    alert("IdentityProvider [_init]: Antes de EventBus.emit()");
     EventBus.emit('identity:ready', {
-      mode: getMode(),
+      mode: mode,
       sessionId: _sessionId
     });
+
+    alert("IdentityProvider [_init]: Fin de la función");
   }
 
   // --- Getters públicos ---
@@ -170,7 +192,9 @@ var LDIdentityProvider = (function() {
   }
 
   // --- Inicialización automática ---
+  alert("IdentityProvider: Antes de llamar a _init() dentro del IIFE");
   _init();
+  alert("IdentityProvider: _init() ejecutado exitosamente. Preparando retorno de API pública.");
 
   // --- Exponer API pública ---
   return {
@@ -188,4 +212,6 @@ var LDIdentityProvider = (function() {
 
 })();
 
+alert("IdentityProvider: IIFE retornó correctamente. Asignando a window.LDIdentityProvider");
 window.LDIdentityProvider = LDIdentityProvider;
+alert("IdentityProvider: Archivo completamente ejecutado.");
