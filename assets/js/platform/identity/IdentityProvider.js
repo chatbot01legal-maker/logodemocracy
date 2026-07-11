@@ -3,7 +3,7 @@
 // Mantiene el estado de autenticación y sesión de la plataforma.
 // Actúa como fachada entre los módulos y los componentes de identidad.
 
-var IdentityProvider = (function() {
+var LDIdentityProvider = (function() {
   'use strict';
 
   // --- Estado interno ---
@@ -187,3 +187,5 @@ var IdentityProvider = (function() {
   };
 
 })();
+
+window.LDIdentityProvider = LDIdentityProvider;
