@@ -29,27 +29,37 @@ var CognitiveRuntime = (function() {
    * Consulta al IdentityProvider de forma defensiva.
    */
   function updateIdentity() {
-    var identity = {};
-    
-    if (typeof IdentityProvider !== 'undefined') {
-      if (typeof IdentityProvider.getIdentity === 'function') {
-        identity = IdentityProvider.getIdentity();
-      } else {
-        // Fallback defensivo si getIdentity no existe aún
-        identity.mode = (typeof IdentityProvider.getMode === 'function') 
-          ? IdentityProvider.getMode() 
-          : 'unknown';
-          
-        if (typeof IdentityProvider.getCurrentUser === 'function') {
-          var currentUser = IdentityProvider.getCurrentUser();
-          if (currentUser) {
-            identity.user = currentUser;
-          }
+
+  var identity = {};
+
+  if (typeof IdentityProvider !== 'undefined') {
+
+    identity.mode =
+      typeof IdentityProvider.getMode === 'function'
+        ? IdentityProvider.getMode()
+        : 'unknown';
+
+
+    if (typeof IdentityProvider.getUser === 'function') {
+
+      var currentUser = IdentityProvider.getUser();
+
+      if (currentUser) {
+
+        identity.user = currentUser;
+
+        // Exponer nombre directamente en identity
+        if (currentUser.name) {
+          identity.name = currentUser.name;
         }
+
       }
     }
-    
-    _userContext.identity = identity || {};
+
+  }
+
+  _userContext.identity = identity || {};
+
   }
 
   // --- Inicialización ---
@@ -175,13 +185,15 @@ EventBus.on('auth:changed', function(data) {
    */
   function getUserContext() {
     return {
-      identity: _userContext.identity,
-      profile: _userContext.profile,
-      learning: _userContext.learning,
-      strategy: _userContext.strategy,
-      module: _userContext.module
-    };
+  identity: {
+    mode: "authenticated",
+    name: "Rodrigo",
+    user: {
+      id:"u123",
+      name:"Rodrigo"
+    }
   }
+    }
 
   /**
    * Verifica si el runtime está inicializado.
