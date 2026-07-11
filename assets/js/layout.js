@@ -28,10 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
       
       try {
         alert("1. Click detectado");
-        
+
         if (typeof IdentityProvider !== 'undefined') {
           alert("2. IdentityProvider existe");
-          
+          alert(Object.keys(IdentityProvider).join(", "));
           if (IdentityProvider.isAuthenticated()) {
             IdentityProvider.clear();
             alert("3. clear terminó");
