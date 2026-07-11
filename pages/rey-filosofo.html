@@ -141,9 +141,26 @@
 
 <script src="/assets/js/platform/identity/IdentityStorage.js"></script>
 <script src="/assets/js/platform/identity/CurrentUser.js"></script>
-<script src="/assets/js/platform/identity/IdentityProvider.js"></script>
+
 <script>
-  alert("POST IdentityProvider.js:\n" + Object.keys(IdentityProvider).join(", "));
+  alert(
+    "ANTES DE IdentityProvider.js:\n\n" +
+    "typeof: " + typeof window.IdentityProvider + "\n\n" +
+    "keys: " + (
+      window.IdentityProvider
+        ? Object.keys(window.IdentityProvider).join(", ")
+        : "NO EXISTE"
+    )
+  );
+</script>
+
+<script src="/assets/js/platform/identity/IdentityProvider.js"></script>
+
+<script>
+  alert(
+    "DESPUÉS DE IdentityProvider.js:\n\n" +
+    Object.keys(IdentityProvider).join(", ")
+  );
 </script>
 
 
@@ -152,16 +169,26 @@
 <!-- ========================================== -->
 
 <script src="/assets/js/platform/cognitive/ContextAdapter.js"></script>
+
 <script>
-  alert("POST ContextAdapter:\n" + Object.keys(IdentityProvider).join(", "));
+  alert(
+    "POST ContextAdapter:\n\n" +
+    Object.keys(IdentityProvider).join(", ")
+  );
 </script>
+
 <script src="/assets/js/platform/cognitive/LearningStrategy.js"></script>
 <script src="/assets/js/platform/cognitive/PedagogicalEngine.js"></script>
 
 <script src="/assets/js/platform/runtime/CognitiveRuntime.js"></script>
+
 <script>
-  alert("POST CognitiveRuntime:\n" + Object.keys(IdentityProvider).join(", "));
+  alert(
+    "POST CognitiveRuntime:\n\n" +
+    Object.keys(IdentityProvider).join(", ")
+  );
 </script>
+
 <script src="/assets/js/platform/runtime/ModuleContextAdapter.js"></script>
 
 
@@ -179,8 +206,12 @@
 <!-- ========================================== -->
 
 <script>
-  alert("ANTES DE layout:\n" + Object.keys(IdentityProvider).join(", "));
+  alert(
+    "ANTES DE layout:\n\n" +
+    Object.keys(IdentityProvider).join(", ")
+  );
 </script>
+
 <script src="/assets/js/layout.js"></script>
 <script src="/assets/js/mobile-menu.js"></script>
 
