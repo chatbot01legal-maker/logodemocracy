@@ -254,18 +254,31 @@
       ChatUI.focusInput();
     }
   }
+// --- Inicialización ---
 
-  // --- Inicialización ---
+async function init() {
 
-  function init() {
-    // Obtener o crear sessionId
-    sessionId = getOrCreateSessionId();
-    var cognitiveContext = getCognitiveContext();
+  // Obtener o crear sessionId
+  sessionId = getOrCreateSessionId();
 
-    console.log(
-      "[Rey Filósofo] Contexto cognitivo:",
-      cognitiveContext
-    );
+  // Inicializar el runtime cognitivo antes de usarlo
+  if (
+    typeof CognitiveRuntime !== 'undefined' &&
+    !CognitiveRuntime.isInitialized()
+  ) {
+    await CognitiveRuntime.initialize();
+  }
+
+  var cognitiveContext = getCognitiveContext();
+
+  console.log(
+    "[Rey Filósofo] Contexto cognitivo:",
+    cognitiveContext
+  );
+
+  ...
+}
+
     
     // Configurar eventos del chat
     ChatUI.onSendClick(sendMessage);
