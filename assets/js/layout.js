@@ -1,51 +1,50 @@
-(function () {
-  'use strict';
-
-  var debug = document.createElement('div');
-  debug.id = 'debug-layout';
-  debug.style.position = 'fixed';
-  debug.style.top = '10px';
-  debug.style.left = '10px';
-  debug.style.zIndex = '99999';
-  debug.style.background = 'white';
-  debug.style.color = 'black';
-  debug.style.padding = '10px';
-  debug.style.border = '2px solid red';
-  debug.style.fontSize = '14px';
-
-  document.body.appendChild(debug);
-
-  function debugLog(msg) {
-    debug.innerHTML += msg + '<br>';
-  }
-
-  debugLog('🔥 layout.js cargado');
 // assets/js/layout.js
 // Controlador del layout compartido (topbar, sidebar, botón de login).
-// Usa SIEMPRE window.LDIdentityProvider de forma explícita — nunca el
-// identificador "pelado" — para eliminar cualquier ambigüedad de scope.
+// Usa SIEMPRE window.LDIdentityProvider de forma explícita.
 
 (function () {
   'use strict';
 
+  // ─── Panel de debug visual en pantalla ──────────────
+  // Útil para depurar en dispositivos sin DevTools (ej. tablet).
+  // Se activa agregando ?debug=1 a la URL; si no, queda oculto.
+  var DEBUG_ON = window.location.search.indexOf('debug=1') !== -1;
+  var debugPanel = null;
+
+  function debugLog(msg) {
+    if (!DEBUG_ON) return;
+    if (!debugPanel) {
+      debugPanel = document.createElement('div');
+      debugPanel.id = 'debug-layout';
+      debugPanel.style.cssText =
+        'position:fixed;top:10px;left:10px;z-index:99999;background:#fff;' +
+        'color:#000;padding:10px;border:2px solid red;font-size:12px;' +
+        'max-width:80vw;max-height:40vh;overflow:auto;font-family:monospace;';
+      document.body.appendChild(debugPanel);
+    }
+    debugPanel.innerHTML += msg + '<br>';
+  }
+
   function initLayout() {
+    debugLog('🔥 layout.js cargado');
 
     // ─── Verificación de dependencia ───────────────────
     if (!window.LDIdentityProvider) {
-      console.error(
-        '[layout.js] window.LDIdentityProvider no está disponible. ' +
-        'Verifica que IdentityProvider.js se haya cargado ANTES que layout.js ' +
-        'en el <script> del HTML, y que no haya un archivo duplicado ' +
-        '(con o sin extensión .js) siendo servido en su lugar.'
-      );
+      var msg = '[layout.js] window.LDIdentityProvider no está disponible. ' +
+        'Verifica que IdentityProvider.js se haya cargado ANTES que layout.js, ' +
+        'y que ese archivo realmente contenga el código de IdentityProvider ' +
+        '(no otro script por error de ubicación).';
+      console.error(msg);
+      debugLog('❌ ' + msg);
       return;
     }
 
     var IDP = window.LDIdentityProvider;
-    debugLog('✅ IdentityProvider encontrado');
+    debugLog('✅ LDIdentityProvider encontrado. Modo: ' + IDP.getMode());
+
     var authButton = document.getElementById('authButton');
-    debugLog('🔎 authButton: ' + authButton);
     var userLabel = document.getElementById('userLabel');
+    debugLog('🔎 authButton: ' + (authButton ? 'encontrado' : 'NO ENCONTRADO'));
 
     if (!authButton) {
       console.error('[layout.js] No se encontró #authButton en el DOM.');
@@ -66,32 +65,34 @@
 
     renderAuthState();
 
+    // ─── Reaccionar a cambios de identidad desde cualquier módulo ───
+    if (typeof EventBus !== 'undefined') {
+      EventBus.on('auth:changed', renderAuthState);
+    }
+
     // ─── Click en el botón de login/logout ─────────────
-authButton.addEventListener('click', function (e) {
+    authButton.addEventListener('click', function (e) {
+      debugLog('🖱️ CLICK DETECTADO');
+      e.preventDefault();
 
-  debugLog('🖱️ CLICK DETECTADO');
+      console.log('[layout.js] Click en authButton. Modo actual:', IDP.getMode());
 
-  e.preventDefault();
-
-  console.log('[layout.js] Click en authButton. Modo actual:', IDP.getMode());
-
-  if (IDP.isAuthenticated()) {
-    IDP.clear();
-    console.log('[layout.js] Sesión cerrada.');
-  } else {
-
-    
-        // TODO: reemplazar por el flujo real de login (formulario / OAuth).
-        // Por ahora, autenticación simulada para continuar el desarrollo
-        // del resto de la plataforma sin bloquear en el backend de auth.
+      if (IDP.isAuthenticated()) {
+        IDP.clear();
+        console.log('[layout.js] Sesión cerrada.');
+      } else {
+        // TODO: reemplazar por el flujo real de login (formulario / OAuth)
+        // vía AuthService.login(). Por ahora, autenticación simulada.
         IDP.setAuthenticated('mock-jwt-token', { id: 'u123', name: 'Rodrigo' });
         console.log('[layout.js] Sesión simulada iniciada.');
       }
 
       renderAuthState();
+      debugLog('🔄 Estado actualizado. Modo: ' + IDP.getMode());
     });
 
     console.log('[layout.js] Inicializado. Modo:', IDP.getMode());
+    debugLog('✅ layout.js inicializado correctamente');
   }
 
   // ─── Arranque seguro, sin importar dónde se cargue el script ───
