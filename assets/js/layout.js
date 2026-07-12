@@ -1,3 +1,5 @@
+console.log('[layout.js] ARCHIVO CARGADO');
+
 // assets/js/layout.js
 // Controlador del layout compartido (topbar, sidebar, botón de login).
 // Usa SIEMPRE window.LDIdentityProvider de forma explícita — nunca el
