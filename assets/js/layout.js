@@ -43,21 +43,21 @@
 
     renderAuthState();
 
-    // ─── Reaccionar a cambios de identidad desde cualquier módulo ───
-    if (typeof EventBus !== 'undefined') {
-      EventBus.on('auth:changed', renderAuthState);
-    }
-
     // ─── Click en el botón de login/logout ─────────────
-    authButton.addEventListener('click', function (e) {
-      e.preventDefault();
+authButton.addEventListener('click', function (e) {
 
-      console.log('[layout.js] Click en authButton. Modo actual:', IDP.getMode());
+  console.log('[layout.js] CLICK EVENT DETECTADO');
 
-      if (IDP.isAuthenticated()) {
-        IDP.clear();
-        console.log('[layout.js] Sesión cerrada.');
-      } else {
+  e.preventDefault();
+
+  console.log('[layout.js] Click en authButton. Modo actual:', IDP.getMode());
+
+  if (IDP.isAuthenticated()) {
+    IDP.clear();
+    console.log('[layout.js] Sesión cerrada.');
+  } else {
+
+    
         // TODO: reemplazar por el flujo real de login (formulario / OAuth).
         // Por ahora, autenticación simulada para continuar el desarrollo
         // del resto de la plataforma sin bloquear en el backend de auth.
