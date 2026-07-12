@@ -1,87 +1,155 @@
+// assets/js/platform/identity/IdentityProvider.js
+// Proveedor central de identidad de LogoDemocracy.
+// Expone window.LDIdentityProvider (nombre no-nativo, evita colisión con
+// la API FedCM del navegador, que reserva el identificador "IdentityProvider").
+// Dependencias: EventBus, IdentityStorage, CurrentUser (deben cargarse antes).
+
 (function () {
   'use strict';
 
-  // Guardar originales
-  var originalConsoleLog   = console.log;
-  var originalConsoleWarn  = console.warn;
-  var originalConsoleError = console.error;
-  var originalAlert        = window.alert;
+  // ─── Guardia anti-doble-carga ───────────────────────
+  // Si este archivo se incluye dos veces (duplicado en el HTML, o servido
+  // por dos rutas distintas), lo detectamos aquí en vez de fallar en
+  // silencio más adelante.
+  if (window.LDIdentityProvider) {
+    console.error(
+      '[LDIdentityProvider] ADVERTENCIA: window.LDIdentityProvider ya existia ' +
+      'antes de ejecutar este script. Esto indica que IdentityProvider.js se ' +
+      'esta cargando mas de una vez, o que otro archivo ya definio este nombre. ' +
+      'Revisa duplicados con: find . -iname "IdentityProvider.js" -not -path "*/node_modules/*"'
+    );
+  }
 
-  // Bandera para evitar bucles recursivos si fetch llegara a disparar logs
-  var sending = false;
+  // ─── Dependencias requeridas ─────────────────────────
+  if (typeof EventBus === 'undefined') {
+    console.error('[LDIdentityProvider] EventBus no esta definido. Se cargo EventBus.js antes que este archivo?');
+  }
+  if (typeof IdentityStorage === 'undefined') {
+    console.error('[LDIdentityProvider] IdentityStorage no esta definido. Se cargo IdentityStorage.js antes que este archivo?');
+  }
+  if (typeof CurrentUser === 'undefined') {
+    console.error('[LDIdentityProvider] CurrentUser no esta definido. Se cargo CurrentUser.js antes que este archivo?');
+  }
 
-  function sendToServer(level, messages) {
-    if (sending) return;
-    sending = true;
+  var _token = null;
+  var _sessionId = null;
+  var _initialized = false;
 
-    var serialized = Array.from(messages).map(function (arg) {
-      try {
-        if (arg instanceof Error) {
-          return arg.message + '\n' + (arg.stack || '');
-        }
-        if (typeof arg === 'object') {
-          return JSON.stringify(arg);
-        }
-        return String(arg);
-      } catch (e) {
-        return '[No serializable]';
-      }
-    }).join(' ');
+  function _init() {
+    if (_initialized) return;
 
-    // Asegurar stack del error si se envió como último argumento
-    if (level === 'error' && messages.length > 0 && messages[messages.length - 1] instanceof Error) {
-      var err = messages[messages.length - 1];
-      serialized += '\n' + (err.stack || '');
+    _token = IdentityStorage.getToken();
+    _sessionId = IdentityStorage.getSessionId();
+
+    if (!_sessionId) {
+      _sessionId = IdentityStorage.generateSessionId();
+      IdentityStorage.saveSessionId(_sessionId);
     }
 
-    fetch('/api/debug-log', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ level: level, message: serialized })
-    })
-    .catch(function () { /* evita que un error de fetch genere más logs */ })
-    .finally(function () {
-      sending = false;
+    if (_token) {
+      var user = IdentityStorage.getUser();
+      if (user) {
+        CurrentUser.set(user);
+      } else {
+        _token = null;
+        IdentityStorage.clearToken();
+      }
+    }
+
+    _initialized = true;
+
+    EventBus.emit('identity:ready', {
+      mode: getMode(),
+      sessionId: _sessionId
     });
   }
 
-  console.log = function () {
-    originalConsoleLog.apply(console, arguments);
-    sendToServer('log', arguments);
+  function getToken() {
+    return _token;
+  }
+
+  function getSessionId() {
+    return _sessionId;
+  }
+
+  function getMode() {
+    return _token && CurrentUser.exists() ? 'authenticated' : 'guest';
+  }
+
+  function isAuthenticated() {
+    return getMode() === 'authenticated';
+  }
+
+  function getUser() {
+    return CurrentUser.get();
+  }
+
+  function getUserId() {
+    var user = CurrentUser.get();
+    return user ? user.id : null;
+  }
+
+  function getUserName() {
+    return CurrentUser.getName();
+  }
+
+  function setAuthenticated(token, user) {
+    if (!token || !user) {
+      throw new Error('LDIdentityProvider.setAuthenticated: token y user son obligatorios');
+    }
+
+    _token = token;
+    IdentityStorage.saveToken(token);
+
+    CurrentUser.set(user);
+    IdentityStorage.saveUser(user);
+
+    EventBus.emit('auth:changed', {
+      token: _token,
+      user: CurrentUser.get(),
+      mode: 'authenticated'
+    });
+  }
+
+  function clear() {
+    _token = null;
+    IdentityStorage.clearToken();
+    CurrentUser.clear();
+    IdentityStorage.clearUser();
+
+    EventBus.emit('auth:changed', {
+      token: null,
+      user: null,
+      mode: 'guest'
+    });
+  }
+
+  function refreshSession() {
+    _sessionId = IdentityStorage.resetSession();
+    return _sessionId;
+  }
+
+  _init();
+
+  var api = {
+    getToken: getToken,
+    getSessionId: getSessionId,
+    getMode: getMode,
+    isAuthenticated: isAuthenticated,
+    getUser: getUser,
+    getUserId: getUserId,
+    getUserName: getUserName,
+    setAuthenticated: setAuthenticated,
+    clear: clear,
+    refreshSession: refreshSession
   };
 
-  console.warn = function () {
-    originalConsoleWarn.apply(console, arguments);
-    sendToServer('warn', arguments);
-  };
+  // Unica forma de exponerlo: SIEMPRE explicito en window, nunca "var" a
+  // nivel de archivo suelto. Esto evita cualquier ambiguedad de scope y
+  // hace trivial detectar si algo mas esta pisando este mismo nombre.
+  window.LDIdentityProvider = api;
 
-  console.error = function () {
-    originalConsoleError.apply(console, arguments);
-    sendToServer('error', arguments);
-  };
+  console.log('[LDIdentityProvider] Inicializado correctamente. Modo:', getMode(), '| sessionId:', _sessionId);
 
-  window.alert = function (message) {
-    sendToServer('alert', [message]);
-    // no se llama al original para evitar pop-ups
-  };
-
-  // Captura de errores no manejados (excepciones que no pasan por console.error)
-  window.addEventListener('error', function (e) {
-    var errorData = e.error || {};
-    sendToServer('window-error', [
-      e.message,
-      'en ' + e.filename + ':' + e.lineno + ':' + e.colno,
-      errorData.stack || errorData.message || ''
-    ]);
-  });
-
-  // Captura de promesas rechazadas no manejadas
-  window.addEventListener('unhandledrejection', function (e) {
-    var reason = e.reason;
-    var message = reason instanceof Error ? (reason.message + '\n' + reason.stack) : String(reason);
-    sendToServer('promise', [message]);
-  });
-
-  // Mensaje de confirmación de que el sistema de telemetría arrancó
-  sendToServer('log', ['Telemetría iniciada correctamente']);
 })();
+    
