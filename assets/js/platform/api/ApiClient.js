@@ -309,6 +309,20 @@ var ApiClient = (function() {
     }
   }
 
+  // --- Método específico para el Rey Filósofo (y cualquier otro módulo de diálogo) ---
+  /**
+   * Procesa un mensaje del usuario a través del servicio del Rey Filósofo.
+   * Utiliza el pipeline estándar de ApiClient, por lo que incluye automáticamente
+   * el token JWT si el usuario está autenticado.
+   * @param {object} payload - Datos a enviar (sessionId, content, provider_module, etc.)
+   * @returns {Promise<any>} Respuesta del backend (ej: { adapted_content, ... })
+   */
+  function process(payload) {
+    // Llama a post con el servicio 'reyfilosofo' y el endpoint '/process'
+    // Ajusta el nombre del servicio y endpoint según tu configuración en CoreConfig.SERVICES.
+    return post('reyfilosofo', '/process', payload);
+  }
+
   // --- Exponer API pública ---
   return {
     request: request,
@@ -316,7 +330,8 @@ var ApiClient = (function() {
     post: post,
     put: put,
     delete: del,
-    setInterceptor: setInterceptor
+    setInterceptor: setInterceptor,
+    process: process   // <-- Nuevo método añadido
   };
 
 })();
