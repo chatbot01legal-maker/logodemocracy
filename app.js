@@ -28,6 +28,13 @@ app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.static(__dirname));
 
+app.post('/api/debug-log', (req, res) => {
+  const { level, message } = req.body;
+  console.log(`[FRONTEND:${level}] ${message}`);
+  res.sendStatus(200);
+});
+
+
 // ─── LOG de cada petición con ID ÚNICO ────────────────
 app.use((req, res, next) => {
   req.headers['x-request-id'] = crypto.randomUUID(); // Genera un ID único
