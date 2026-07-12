@@ -1,5 +1,25 @@
-console.log('[layout.js] ARCHIVO CARGADO');
+(function () {
+  'use strict';
 
+  var debug = document.createElement('div');
+  debug.id = 'debug-layout';
+  debug.style.position = 'fixed';
+  debug.style.top = '10px';
+  debug.style.left = '10px';
+  debug.style.zIndex = '99999';
+  debug.style.background = 'white';
+  debug.style.color = 'black';
+  debug.style.padding = '10px';
+  debug.style.border = '2px solid red';
+  debug.style.fontSize = '14px';
+
+  document.body.appendChild(debug);
+
+  function debugLog(msg) {
+    debug.innerHTML += msg + '<br>';
+  }
+
+  debugLog('🔥 layout.js cargado');
 // assets/js/layout.js
 // Controlador del layout compartido (topbar, sidebar, botón de login).
 // Usa SIEMPRE window.LDIdentityProvider de forma explícita — nunca el
@@ -22,8 +42,9 @@ console.log('[layout.js] ARCHIVO CARGADO');
     }
 
     var IDP = window.LDIdentityProvider;
-
+    debugLog('✅ IdentityProvider encontrado');
     var authButton = document.getElementById('authButton');
+    debugLog('🔎 authButton: ' + authButton);
     var userLabel = document.getElementById('userLabel');
 
     if (!authButton) {
@@ -48,7 +69,7 @@ console.log('[layout.js] ARCHIVO CARGADO');
     // ─── Click en el botón de login/logout ─────────────
 authButton.addEventListener('click', function (e) {
 
-  console.log('[layout.js] CLICK EVENT DETECTADO');
+  debugLog('🖱️ CLICK DETECTADO');
 
   e.preventDefault();
 
