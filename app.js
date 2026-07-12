@@ -28,7 +28,7 @@ app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.static(__dirname));
 
-app.post('/api/debug-log', (req, res) => {
+app.post("/api/debug-log", (req, res) => {
   const { level, message } = req.body;
   console.log(`[FRONTEND:${level}] ${message}`);
   res.sendStatus(200);
