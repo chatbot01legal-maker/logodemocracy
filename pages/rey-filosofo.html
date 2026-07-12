@@ -192,25 +192,27 @@
 
   Object.defineProperty(window, "LDIdentityProvider", {
 
-    configurable: true,
+  configurable: true,
+  enumerable: true,
 
-    enumerable: true,
+  get() {
+    return realProvider;
+  },
 
-    get() {
-      return realProvider;
-    },
+  set(value) {
 
-    set(value) {
+    const err = new Error("LDIdentityProvider fue sobrescrito");
 
-      alert("ALGUIEN INTENTÓ MODIFICAR LDIdentityProvider");
+    alert("ALGUIEN INTENTÓ MODIFICAR LDIdentityProvider");
 
-      console.trace();
+    console.error(err.stack);
 
-      realProvider = value;
+    realProvider = value;
 
-    }
+  }
 
-  });
+});
+  
 
 })();
 </script>
