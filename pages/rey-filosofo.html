@@ -172,6 +172,8 @@
 <!-- ========================================== -->
 <!-- CORE PLATAFORMA -->
 <!-- ========================================== -->
+
+  <script src="/assets/js/debug/RemoteLogger.js"></script>
   <script src="/assets/js/config.js"></script>
 
 <script src="/assets/js/platform/events/EventBus.js"></script>
@@ -180,28 +182,8 @@
 
 <script src="/assets/js/platform/identity/CurrentUser.js"></script>
 
-
-<script>
-alert(
-  "ANTES DE IdentityProvider.js:\n\n" +
-  "typeof LDIdentityProvider: " +
-  typeof window.LDIdentityProvider
-);
-</script>
-
-
 <script src="/assets/js/platform/identity/IdentityProvider.js"></script>
 
-
-<script>
-alert(
-  "DESPUÉS DE IdentityProvider.js:\n\n" +
-  "typeof LDIdentityProvider: " +
-  typeof window.LDIdentityProvider +
-  "\n\nKeys: " +
-  Object.keys(window.LDIdentityProvider).join(", ")
-);
-</script>
 
 <script>
 (function () {
@@ -240,38 +222,17 @@ alert(
 
 <script src="/assets/js/platform/cognitive/ContextAdapter.js"></script>
 
-<script>
-alert(
-  "POST ContextAdapter:\n\n" +
-  Object.keys(window.LDIdentityProvider).join(", ")
-);
-</script>
-
-
-
 <script src="/assets/js/platform/cognitive/LearningStrategy.js"></script>
 
 <script src="/assets/js/platform/cognitive/PedagogicalEngine.js"></script>
 
-
 <script src="/assets/js/platform/runtime/CognitiveRuntime.js"></script>
-
-
-<script>
-alert(
-  "POST CognitiveRuntime:\n\n" +
-  Object.keys(window.LDIdentityProvider).join(", ")
-);
-</script>
-
 
 <script src="/assets/js/platform/runtime/ModuleContextAdapter.js"></script>
 
   <!-- ========================================== -->
 <!-- SERVICIOS -->
 <!-- ========================================== -->
-
-
 
 <script src="/assets/js/apiClient.js"></script>
 
@@ -282,15 +243,6 @@ alert(
 <!-- ========================================== -->
 <!-- UI GLOBAL -->
 <!-- ========================================== -->
-
-
-<script>
-alert(
-  "ANTES DE layout:\n\n" +
-  Object.keys(window.LDIdentityProvider).join(", ")
-);
-</script>
-
 
 <script src="/assets/js/layout.js"></script>
 
