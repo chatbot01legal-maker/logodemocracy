@@ -30,8 +30,13 @@ app.use(express.static(__dirname));
 
 app.post("/api/debug-log", (req, res) => {
   const { level, message } = req.body;
-  console.log(`[FRONTEND:${level}] ${message}`);
-  res.sendStatus(200);
+  const ts = new Date().toISOString();
+
+  console.log(
+    `📱 [REMOTE-${(level || "log").toUpperCase()}] ${ts} — ${message}`
+  );
+
+  res.sendStatus(204);
 });
 
 
