@@ -1,4 +1,3 @@
-<script>
 (function () {
   'use strict';
 
@@ -86,4 +85,3 @@
   // Mensaje de confirmación de que el sistema de telemetría arrancó
   sendToServer('log', ['Telemetría iniciada correctamente']);
 })();
-</script>
