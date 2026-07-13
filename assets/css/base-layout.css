@@ -319,29 +319,28 @@ body {
 
   }
 
-  .module-nav.open{
+.module-nav.open{
 
-      display:flex;
+    display:flex;
 
-      flex-direction:column;
+    flex-direction:column;
 
-      gap:14px;
+    gap:14px;
 
-      position:absolute;
+    position:absolute;
 
-      left:0;
-      right:0;
+    left:0;
+    right:0;
 
-      top:108px;
+    top:108px;
 
-      padding:16px;
+    padding:16px;
 
-      background:#050a12;
+    background:#050a12;
 
-      border-bottom:1px solid rgba(255,255,255,.08);
+    border-bottom:1px solid rgba(255,255,255,.08);
 
-      z-index:999;
+    z-index:999;
 
-  }
-
+}
 }
