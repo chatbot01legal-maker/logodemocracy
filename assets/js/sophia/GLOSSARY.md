@@ -105,7 +105,7 @@ El Estándar SOPHIA constituye la **única fuente normativa del proyecto**. Todo
 
 ### 4.5. Documento evaluable
 
-Objeto textual, estructurado o no estructurado, que es sometido al Protocolo SOPHIA para la evaluación de su robustez deliberativa. Un documento es evaluable si satisface las condiciones de evaluabilidad definidas en el estándar.
+Objeto textual, estructurado o no estructurado, que es sometido al Protocolo SOPHIA para la evaluación de su robustez deliberativa.
 
 Un documento es evaluable cuando satisface las condiciones de evaluabilidad establecidas por el Estándar SOPHIA.
 
