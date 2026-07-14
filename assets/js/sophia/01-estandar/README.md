@@ -161,7 +161,4 @@ La versión inicial es 1.0.0. Los cambios que alteren el significado arquitectó
 
 ---
 
-**Versión:** 1.0.0  
-**Fecha:** [A completar al momento de la aprobación]  
-**Próximo documento en el flujo del Nivel 1:** `CHECKLIST.md`  
-```
+
