@@ -254,37 +254,55 @@ body {
 
 /* BOTÓN HAMBURGUESA */
 .mobile-menu-btn {
-  display: none;
-  background: none;
-  border: none;
-  color: var(--header-color);
-  padding: 4px;
-  cursor: pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:none;
+  border:none;
+  color:var(--header-color);
+  padding:4px;
+  cursor:pointer;
 }
 
 .mobile-menu-btn svg {
   display: block;
 }
 
+.module-nav.open{
 
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+    position:absolute;
+
+    left:0;
+    right:0;
+
+    top:56px;
+
+    padding:16px;
+
+    background:#050a12;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    z-index:9999;
+
+}
 /* ───────────────── RESPONSIVE ───────────────── */
 
 @media (max-width:900px){
 
-  .mobile-menu-btn{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-  }
-
+  
   .topbar{
       position:relative;
       z-index:1000;
   }
 
-  .module-nav{
-      display:none;
-  }
+
 
   .topbar-right{
       display:none;
@@ -319,28 +337,5 @@ body {
 
   }
 
-.module-nav.open{
 
-    display:flex;
-
-    flex-direction:column;
-
-    gap:14px;
-
-    position:absolute;
-
-    left:0;
-    right:0;
-
-    top:56px;
-
-    padding:16px;
-
-    background:#050a12;
-
-    border-bottom:1px solid rgba(255,255,255,.08);
-
-    z-index:9999;
-
-}
 }
