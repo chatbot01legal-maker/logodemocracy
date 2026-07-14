@@ -169,7 +169,7 @@ body {
 
 /* NAV CENTRAL */
 .module-nav {
-  display: flex;
+  display: none;
   gap: 14px;
   align-items: center;
 }
@@ -292,50 +292,5 @@ body {
     z-index:9999;
 
 }
-/* ───────────────── RESPONSIVE ───────────────── */
-
-@media (max-width:900px){
-
-  
-  .topbar{
-      position:relative;
-      z-index:1000;
-  }
-
-
-
-  .topbar-right{
-      display:none;
-  }
-
-  .topbar-right.open{
-
-      display:flex;
-
-      flex-direction:row;
-
-      align-items:center;
-
-      justify-content:flex-start;
-
-      gap:16px;
-
-      position:absolute;
-
-      top:56px;
-
-      left:0;
-      right:0;
-
-      padding:16px;
-
-      background:#050a12;
-
-      border-bottom:1px solid rgba(255,255,255,.08);
-
-      z-index:1000;
-
-  }
-
 
 }
