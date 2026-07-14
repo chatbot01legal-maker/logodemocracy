@@ -169,7 +169,7 @@ body {
 
 /* NAV CENTRAL */
 .module-nav {
-  display: flex;
+  display: none;
   gap: 14px;
   align-items: center;
 }
@@ -254,70 +254,21 @@ body {
 
 /* BOTÓN HAMBURGUESA */
 .mobile-menu-btn {
-  display: none;
-  background: none;
-  border: none;
-  color: var(--header-color);
-  padding: 4px;
-  cursor: pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:none;
+  border:none;
+  color:var(--header-color);
+  padding:4px;
+  cursor:pointer;
+ margin-left:auto;
+
 }
 
 .mobile-menu-btn svg {
   display: block;
 }
-
-
-/* ───────────────── RESPONSIVE ───────────────── */
-
-@media (max-width:900px){
-
-  .mobile-menu-btn{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-  }
-
-  .topbar{
-      position:relative;
-      z-index:1000;
-  }
-
-  .module-nav{
-      display:none;
-  }
-
-  .topbar-right{
-      display:none;
-  }
-
-  .topbar-right.open{
-
-      display:flex;
-
-      flex-direction:row;
-
-      align-items:center;
-
-      justify-content:flex-start;
-
-      gap:16px;
-
-      position:absolute;
-
-      top:56px;
-
-      left:0;
-      right:0;
-
-      padding:16px;
-
-      background:#050a12;
-
-      border-bottom:1px solid rgba(255,255,255,.08);
-
-      z-index:1000;
-
-  }
 
 .module-nav.open{
 
@@ -343,4 +294,5 @@ body {
     z-index:9999;
 
 }
+
 }
