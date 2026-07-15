@@ -273,6 +273,9 @@ Todo átomo cargado debe registrar la versión del átomo base y del perfil cont
 Principio 6 – Completitud respecto al estándar.
 El CAAC debe contener al menos un átomo por cada criterio del estándar que sea aplicable al documento. La ausencia de átomos para un criterio aplicable debe ser justificada o considerarse una carga incompleta.
 
+Principio 7 – Provisionalidad del CAAC.
+El Conjunto Activo de Átomos Cognitivos constituye una configuración operacional derivada de una hipótesis documental. Su validez depende de la validez de dicha hipótesis. Si el Instrumento dispone de evidencia suficiente para reconsiderar la clasificación documental, deberá reconstruir el CAAC conforme a la nueva hipótesis, preservando la trazabilidad entre ambas configuraciones.
+
 
 ---
 
