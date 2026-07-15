@@ -21,7 +21,7 @@ Salida: Estructura atómica en memoria lista para evaluación.
 
 
 
-3. EVIDENCE_COLLECTION.md (Pendiente)
+3. EVIDENCE_COLLECTION.md 
 
 Entrada: Fuentes documentales, fácticas y normativas.
 
@@ -65,7 +65,7 @@ Salida: Nivel de cumplimiento de los Criterios del estándar.
 
 Entrada: Resoluciones de Criterios y Constructos.
 
-Salida: Puntuación matemática consolidada e Índice de Riesgo Democrático (IRD).
+Salida: Puntuación matemática consolidada e Índice de  Robustez Deliberativa (IRD).
 
 
 
