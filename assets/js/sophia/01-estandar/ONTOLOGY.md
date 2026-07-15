@@ -78,7 +78,20 @@ La entidad evaluable no es la clase abstracta, sino la implementación contextua
 
 3. La modificación de cualquier segmento de la ruta o del perfil contextual altera la entidad operacional resultante.
 
+3.4. Principio de no equivalencia semántica contextual
+Dos entidades que comparten un mismo significante lingüístico no deben considerarse equivalentes dentro de SOPHIA si pertenecen a rutas semánticas o perfiles contextuales distintos.
+La equivalencia nominal no implica equivalencia operacional.
+Por ejemplo, el significante "Causalidad" puede aparecer en múltiples entidades del sistema:
 
+SOPHIA → Nivel 2 → Inferencia → Criterio 2.2 → Artículo científico → Causalidad
+
+SOPHIA → Nivel 2 → Inferencia → Criterio 2.2 → Discurso político → Causalidad
+
+SOPHIA → Nivel 2 → Inferencia → Criterio 2.2 → Hipótesis → Causalidad
+
+Aunque todas comparten el mismo nombre, constituyen entidades operacionales diferentes, ya que poseen definiciones operacionales, indicadores, reglas interpretativas y condiciones de evaluación distintas.
+
+En consecuencia, la identidad de una entidad SOPHIA no puede inferirse únicamente a partir de su nombre, sino que requiere considerar su ruta semántica completa y el perfil contextual que la activa.
 
 
 ---
