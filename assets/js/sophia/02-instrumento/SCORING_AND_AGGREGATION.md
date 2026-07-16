@@ -1,4 +1,4 @@
-```markdown
+
 # SCORING_AND_AGGREGATION.md – Puntuación y Agregación de Resultados
 
 **Proyecto:** SOPHIA  
@@ -264,4 +264,3 @@ La Puntuación y Agregación cierra el proceso interno de transformación del In
 Al mantener la agregación y la puntuación como funciones deterministas y versionadas, SOPHIA asegura que el tránsito desde las observaciones puntuales hasta el resumen global sea completamente transparente, verificable y reproducible. La arquitectura resultante es la de un pipeline de compilación epistemológica, donde cada fase transforma datos respetando contratos explícitos, y donde la corrección puede ser verificada de manera independiente en cada nivel.
 
 ---
-
