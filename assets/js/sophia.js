@@ -292,6 +292,26 @@ const PROTOCOL = {
 };
 
 // ─── MECÁNICA DE CÁLCULO (completa) ──────────────────
+// ─── ADAPTADOR DE MOTOR: v4.0 (contextual) con fallback a v3.0 ──
+// Prioriza SophiaEngineV4 (clasificación documental + perfiles
+// contextuales + rutas inferenciales). Si el script no cargó por
+// algún motivo, usa el motor v3.0 legacy para no dejar al usuario
+// sin evaluación — el mismo patrón de resiliencia que ya usamos
+// para la revisión semántica de Gemini.
+function evaluateWithBestAvailableEngine(text) {
+  if (typeof window !== 'undefined' && window.SophiaEngineV4 && typeof window.SophiaEngineV4.evaluate === 'function') {
+    try {
+      const resultV4 = window.SophiaEngineV4.evaluate(text);
+      if (resultV4) return resultV4;
+    } catch (e) {
+      console.warn('⚠️ SophiaEngineV4 falló, usando motor v3.0 legacy:', e.message);
+    }
+  } else {
+    console.warn('⚠️ SophiaEngineV4 no está cargado (falta <script src=".../sophiaEngineV4.js">). Usando motor v3.0 legacy.');
+  }
+  return evaluateText(text);
+}
+
 function evaluateText(text) {
   try {
     if (!text || text.trim().length === 0) return null;
@@ -1188,7 +1208,7 @@ const SOPHIA = {
           // Si el backend no respondió o no devolvió datos estructurados, recurrimos al motor local
           if (!data || typeof data.IRD_global === 'undefined') {
             console.log("⚙️ Ejecutando fallback local (evaluateText)...");
-            data = normalizeSophiaResult(evaluateText(text));
+            data = normalizeSophiaResult(evaluateWithBestAvailableEngine(text));
           }
 
           this._renderEvaluation(data, out);
@@ -1225,7 +1245,21 @@ const SOPHIA = {
       const evidencias = data.evidencias || [];
       const hayInfracciones = fases.some(f => (f.infracciones || []).length > 0);
 
+      const NATURALEZA_LABEL = { SC: 'Científica', INF: 'Informativa', ARG: 'Argumentativa', POL: 'Política Deliberativa', NORM: 'Normativa/Propositiva' };
+      const esV4 = !!data.naturaleza_documental;
+
       out.innerHTML = `
+        ${esV4 ? `
+        <div class="view-section">
+          <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+              <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">Naturaleza documental detectada</div>
+              <div style="font-size:.95rem; color:var(--accent);">${NATURALEZA_LABEL[data.naturaleza_documental] || data.naturaleza_documental}${data.hibrido ? ' (híbrido)' : ''}</div>
+            </div>
+            <div style="font-size:.7rem; color:rgba(229,231,235,.4);">Confianza de clasificación: ${Math.round((data.confianza_clasificacion || 0) * 100)}%</div>
+          </div>
+        </div>` : ''}
+
         <div class="view-section">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
             <div>
@@ -1238,6 +1272,18 @@ const SOPHIA = {
             </div>
           </div>
         </div>
+
+        ${esV4 && data.rutas_evaluadas && data.rutas_evaluadas.saltos_detectados.length > 0 ? `
+        <div class="view-section">
+          <div class="view-section-title">Ruta inferencial: saltos detectados</div>
+          <div style="font-size:.68rem; color:rgba(229,231,235,.35); margin-bottom:8px;">Ruta esperada: ${data.rutas_evaluadas.ruta_esperada.join(' → ')}</div>
+          ${data.rutas_evaluadas.saltos_detectados.map(s => `
+            <div style="background:var(--s-panel); border-left:2px solid #eab308; padding:10px 14px; margin-bottom:8px;">
+              <div style="font-size:.8rem; color:#e5e7eb;">${s.descripcion}</div>
+              <div style="font-size:.68rem; color:#eab308; margin-top:2px;">-${s.penalizacion} pts</div>
+            </div>
+          `).join('')}
+        </div>` : ''}
 
         <div class="view-section">
           <div class="view-section-title">Puntaje por fase</div>
