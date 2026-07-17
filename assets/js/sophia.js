@@ -18,7 +18,7 @@ function showDebug(msg, isError = false) {
 
 // ─── PROTOCOLO SOPHIA v3.0 ────────────────────────────
 const PROTOCOL = {
-  version: "3.0",
+  version: "4.0",
   fases: [
     {
       id: "fase1",
