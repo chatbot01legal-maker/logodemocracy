@@ -11,7 +11,7 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 const { connect } = require("./modules/database");
 const { askVertex } = require("./modules/vertexClient");
 const SophiaEngineV4 = require("./assets/js/sophiaEngineV4");
-const { getLLMReview } = require("./modules/sophiaCore");
+const { getSemanticReview } = require("./modules/sophiaSemanticReview");
 
 const PROTOCOL = {
   version: "4.0"
