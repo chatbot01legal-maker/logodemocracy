@@ -9,9 +9,8 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 
 // ─── Módulos propios ──────────────────────────────────
 const { connect } = require("./modules/database");
-const { askVertex } = require("./modules/vertexClient");
 const SophiaEngineV4 = require("./assets/js/sophiaEngineV4");
-const { getSemanticReview } = require("./modules/sophiaSemanticReview");
+const { generateGeminiReview } = require("./modules/sophiaGeminiReview");
 
 const PROTOCOL = {
   version: "4.0"
@@ -47,20 +46,19 @@ app.post("/api/debug-log", (req, res) => {
   res.sendStatus(204);
 });
 
-
 // ─── LOG de cada petición con ID ÚNICO ────────────────
 app.use((req, res, next) => {
-  req.headers['x-request-id'] = crypto.randomUUID(); // Genera un ID único
+  req.headers['x-request-id'] = crypto.randomUUID();
   console.log(`📥 [${req.headers['x-request-id']}] ${req.method} ${req.url}`);
-  res.setHeader('X-Request-ID', req.headers['x-request-id']); // Lo devuelve al navegador
+  res.setHeader('X-Request-ID', req.headers['x-request-id']);
   next();
 });
+
 app.use(
   "/api/reyfilosofo/microtests",
   createProxyMiddleware({
     target: "http://localhost:5000",
     changeOrigin: true,
-
     pathRewrite: (path) => {
       return "/api/reyfilosofo/microtests" + path;
     }
@@ -85,7 +83,6 @@ app.get("/api/health", (req, res) => {
 
 // ─── Autenticación ────────────────────────────────────
 
-// Registro
 app.post("/api/register", async (req, res) => {
   console.log("📝 Registro de usuario:", req.body.email);
   try {
@@ -115,7 +112,6 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
-// Login
 app.post("/api/login", async (req, res) => {
   console.log("🔑 Intento de login:", req.body.email);
   try {
@@ -142,8 +138,6 @@ app.post("/api/login", async (req, res) => {
     );
     console.log("✅ Login exitoso:", email);
 
-    // Si el usuario venía navegando como invitado (sessionId local),
-    // fusionamos su perfil pedagógico anónimo con su cuenta.
     if (sessionId) {
       try {
         await mergeGuestProfileIntoUser({ userId: user._id.toString(), sessionId });
@@ -164,7 +158,6 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-// ─── Middleware de autenticación (opcional) ──────────
 function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
@@ -202,31 +195,36 @@ app.post("/api/sophia/evaluate", async (req, res) => {
     console.log(`✅ Evaluación local completada. IRD: ${localResult.IRD_global}, evidencias: ${localResult.evidencias?.length || 0}`);
 
     // 2️⃣ Revisión semántica con Gemini (solo si es necesario)
-    let llmReview = null;
+    let geminiReview = null;
     if (localResult.IRD_global < 85 || localResult.evidencias.length > 0) {
       console.log("🤖 Solicitando revisión semántica a Gemini...");
       try {
-        llmReview = await getLLMReview(text, localResult);
+        geminiReview = await generateGeminiReview(text, localResult);
         console.log("✅ Revisión semántica completada");
       } catch (llmError) {
         console.error("❌ Error en LLM review:", llmError);
-        llmReview = { error: "Revisión semántica no disponible" };
+        geminiReview = { error: "Revisión semántica no disponible" };
       }
     } else {
       console.log("⏩ Saltando revisión semántica (IRD alto y sin evidencias)");
     }
 
-    // 3️⃣ Ensamblar informe final
+    // 3️⃣ Ensamblar informe final (Estructura arquitectónica V4)
     const finalReport = {
-      protocol_version: PROTOCOL.version || "0.92-beta",
+      protocol_version: PROTOCOL.version,
       evaluated_at: new Date().toISOString(),
-      local: localResult,
-      llm_review: llmReview,
-      ird: localResult.IRD_global,
-      risk: localResult.riesgo,
+      local: {
+        engine: "SophiaEngineV4",
+        IRD_global: localResult.IRD_global,
+        fases: localResult.fases,
+        evidencias: localResult.evidencias,
+        riesgo: localResult.riesgo,
+        naturaleza_documental: localResult.naturaleza_documental
+      },
+      gemini_review: geminiReview,
       evidence_density: localResult.evidencias.length / (text.split(/\s+/).length || 1)
     };
-    console.log(`📊 IRD final: ${finalReport.ird}%`);
+    console.log(`📊 IRD final: ${finalReport.local.IRD_global}%`);
 
     // 4️⃣ Guardar en MongoDB (si hay userId)
     if (userId) {
@@ -238,7 +236,7 @@ app.post("/api/sophia/evaluate", async (req, res) => {
           userId,
           text_hash: textHash,
           text_preview: text.substring(0, 500),
-          protocol_version: PROTOCOL.version || "0.92-beta",
+          protocol_version: PROTOCOL.version,
           model_used: "gemini-2.5-flash",
           evaluated_at: new Date(),
           result: finalReport
@@ -246,10 +244,7 @@ app.post("/api/sophia/evaluate", async (req, res) => {
         console.log("✅ Evaluación guardada en MongoDB");
       } catch (dbError) {
         console.error("❌ Error al guardar en DB:", dbError);
-        // No fallamos la respuesta por error de DB
       }
-    } else {
-      console.log("⏩ Sin userId, omitiendo guardado en DB");
     }
 
     res.json(finalReport);
@@ -267,6 +262,7 @@ app.use(
   "/api/reyfilosofo",
   rfRoutes
 );
+
 // ─── Endpoint protegido (ejemplo) ────────────────────
 app.get("/api/profile", authenticate, (req, res) => {
   console.log(`👤 Perfil solicitado por: ${req.user.email}`);
@@ -277,4 +273,4 @@ app.get("/api/profile", authenticate, (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Servidor SOPHIA ejecutándose en http://localhost:${PORT}`);
   console.log(`📊 Protocolo cargado: ${PROTOCOL.version || "desconocido"}`);
-})
+});
