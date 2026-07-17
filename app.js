@@ -10,7 +10,14 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 // ─── Módulos propios ──────────────────────────────────
 const { connect } = require("./modules/database");
 const { askVertex } = require("./modules/vertexClient");
-const { evaluateText, getLLMReview, PROTOCOL } = require("./modules/sophiaCore");
+const SophiaEngineV4 = require("./assets/js/sophiaEngineV4");
+const { getLLMReview } = require("./modules/sophiaCore");
+
+const PROTOCOL = {
+  version: "4.0"
+};
+
+const evaluateText = SophiaEngineV4.evaluate;
 const { mergeGuestProfileIntoUser } = require("./modules/reyFilosofoService");
 const reyFilosofoRoutes = require("./routes/reyFilosofoRoutes");
 
