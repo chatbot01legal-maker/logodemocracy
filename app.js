@@ -17,7 +17,8 @@ const PROTOCOL = {
   version: "4.0"
 };
 
-const evaluateText = SophiaEngineV4.evaluate;
+const evaluateText = SophiaEngineV4.evaluate.bind(SophiaEngineV4);
+console.log("🧠 Sophia Engine cargado:", SophiaEngineV4.version);
 const { mergeGuestProfileIntoUser } = require("./modules/reyFilosofoService");
 const reyFilosofoRoutes = require("./routes/reyFilosofoRoutes");
 
