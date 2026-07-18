@@ -9,7 +9,19 @@ async function generateGeminiReview(documentText, localResult, confiabilidadFact
   // 1. Construir la sección de confiabilidad si existen los datos
   let confiabilidadSection = '';
   if (confiabilidadFactual && !confiabilidadFactual.error) {
-    confiabilidadSection = `
+    
+    // MODIFICACIÓN: Intercepción de estado inactivo
+    if (confiabilidadFactual.estado === "verificacion_no_realizada") {
+      confiabilidadSection = `
+RESULTADO DEL PIPELINE DE VERIFICACIÓN (Confiabilidad Factual):
+- ESTADO: VERIFICACIÓN NO REALIZADA (Pipeline sin proveedor de búsqueda configurado en esta instancia).
+- Afirmaciones detectadas pero NO verificadas: ${confiabilidadFactual.claims_extraidos || 0}
+
+INSTRUCCIÓN ESTRICTA PARA LA IA: 
+Como la verificación factual NO se realizó por falta de conexión a un buscador, ESTÁ ESTRICTAMENTE PROHIBIDO mencionar que hay "falta de evidencia", "ausencia de soporte factual" o similares. Ignora la factibilidad por ahora y evalúa la estructura del texto asumiendo que los datos aportados por el autor podrían ser correctos. Concéntrate exclusivamente en la robustez argumentativa y estructural.
+`;
+    } else {
+      confiabilidadSection = `
 RESULTADO DEL PIPELINE DE VERIFICACIÓN (Confiabilidad Factual):
 - Afirmaciones verificadas: ${confiabilidadFactual.claims_verificados?.length || 0}
 - Afirmaciones refutadas: ${confiabilidadFactual.claims_refutados?.length || 0}
@@ -24,6 +36,7 @@ ${confiabilidadFactual.claims_refutados?.map(c => `  ❌ "${c.canonical_text}"`)
 
 Instrucción adicional: En tu 'interpretacion' o 'contexto', menciona brevemente la relación entre la robustez deliberativa (IRD) y la confiabilidad factual de este documento.
 `;
+    }
   }
 
   // 2. Ensamblar el prompt completo
