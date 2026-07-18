@@ -11,6 +11,9 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 const { connect } = require("./modules/database");
 const SophiaEngineV4 = require("./assets/js/sophiaEngineV4");
 const { generateGeminiReview } = require("./modules/sophiaGeminiReview");
+const { extractClaims } = require("./modules/claimExtractor");
+const { normalizeClaims } = require("./modules/claimNormalizer");
+const { verifyClaims } = require("./modules/evidencePipeline");
 
 const PROTOCOL = {
   version: "4.0"
@@ -173,7 +176,7 @@ function authenticate(req, res, next) {
   }
 }
 
-// ─── Evaluación con SOPHIA (híbrida) ─────────────────
+// ─── Evaluación con SOPHIA (híbrida V4.1) ─────────────────
 app.post("/api/sophia/evaluate", async (req, res) => {
   console.log("📊 Petición de evaluación recibida");
   try {
@@ -194,12 +197,42 @@ app.post("/api/sophia/evaluate", async (req, res) => {
     }
     console.log(`✅ Evaluación local completada. IRD: ${localResult.IRD_global}, evidencias: ${localResult.evidencias?.length || 0}`);
 
-    // 2️⃣ Revisión semántica con Gemini (solo si es necesario)
+    // 2️⃣ Auditoría Factual: Extracción → Normalización → Verificación
+    let confiabilidadFactual = null;
+    try {
+      console.log("🔎 Iniciando extracción de afirmaciones...");
+      const rawClaims = await extractClaims(text);
+      console.log(`📋 Afirmaciones extraídas: ${rawClaims.length}`);
+
+      const normalizedClaims = await normalizeClaims(rawClaims);
+      console.log(`📋 Afirmaciones normalizadas: ${normalizedClaims.length}`);
+
+      const verificables = normalizedClaims.filter(c => c.verificable);
+      const noAplicables = normalizedClaims.filter(c => !c.verificable);
+      console.log(`🔬 Afirmaciones verificables: ${verificables.length}, no aplicables: ${noAplicables.length}`);
+
+      console.log("🌐 Iniciando verificación de afirmaciones...");
+      confiabilidadFactual = await verifyClaims(verificables);
+      confiabilidadFactual.claims_no_aplicables = noAplicables;
+      console.log(`✅ Verificación completada. Verificados: ${confiabilidadFactual.claims_verificados?.length || 0}, Refutados: ${confiabilidadFactual.claims_refutados?.length || 0}, En conflicto: ${confiabilidadFactual.claims_en_conflicto?.length || 0}, Sin evidencia: ${confiabilidadFactual.claims_evidencia_insuficiente?.length || 0}`);
+    } catch (factualError) {
+      console.error("❌ Error en verificación factual:", factualError);
+      confiabilidadFactual = {
+        error: "La verificación factual no está disponible en este momento.",
+        claims_verificados: [],
+        claims_refutados: [],
+        claims_en_conflicto: [],
+        claims_evidencia_insuficiente: [],
+        claims_no_aplicables: []
+      };
+    }
+
+    // 3️⃣ Revisión semántica con Gemini (recibe también confiabilidad factual)
     let geminiReview = null;
-    if (localResult.IRD_global < 85 || localResult.evidencias.length > 0) {
+    if (localResult.IRD_global < 85 || localResult.evidencias.length > 0 || confiabilidadFactual) {
       console.log("🤖 Solicitando revisión semántica a Gemini...");
       try {
-        geminiReview = await generateGeminiReview(text, localResult);
+        geminiReview = await generateGeminiReview(text, localResult, confiabilidadFactual);
         console.log("✅ Revisión semántica completada");
       } catch (llmError) {
         console.error("❌ Error en LLM review:", llmError);
@@ -209,7 +242,7 @@ app.post("/api/sophia/evaluate", async (req, res) => {
       console.log("⏩ Saltando revisión semántica (IRD alto y sin evidencias)");
     }
 
-    // 3️⃣ Ensamblar informe final (Estructura arquitectónica V4)
+    // 4️⃣ Ensamblar informe final (Estructura arquitectónica V4.1)
     const finalReport = {
       protocol_version: PROTOCOL.version,
       evaluated_at: new Date().toISOString(),
@@ -219,14 +252,18 @@ app.post("/api/sophia/evaluate", async (req, res) => {
         fases: localResult.fases,
         evidencias: localResult.evidencias,
         riesgo: localResult.riesgo,
-        naturaleza_documental: localResult.naturaleza_documental
+        naturaleza_documental: localResult.naturaleza_documental,
+        confianza_clasificacion: localResult.confianza_clasificacion,
+        hibrido: localResult.hibrido,
+        naturalezas_secundarias: localResult.naturalezas_secundarias
       },
+      confiabilidad_factual: confiabilidadFactual,
       gemini_review: geminiReview,
       evidence_density: localResult.evidencias.length / (text.split(/\s+/).length || 1)
     };
     console.log(`📊 IRD final: ${finalReport.local.IRD_global}%`);
 
-    // 4️⃣ Guardar en MongoDB (si hay userId)
+    // 5️⃣ Guardar en MongoDB (si hay userId)
     if (userId) {
       console.log("💾 Guardando evaluación en MongoDB...");
       try {
