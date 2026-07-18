@@ -4,7 +4,29 @@ const { askVertex } = require("./vertexClient");
  * Módulo puente entre Sophia Engine V4 y Gemini.
  * Responsabilidad: Interpretar contexto sin alterar el cálculo determinista.
  */
-async function generateGeminiReview(documentText, localResult) {
+async function generateGeminiReview(documentText, localResult, confiabilidadFactual = null) {
+  
+  // 1. Construir la sección de confiabilidad si existen los datos
+  let confiabilidadSection = '';
+  if (confiabilidadFactual && !confiabilidadFactual.error) {
+    confiabilidadSection = `
+RESULTADO DEL PIPELINE DE VERIFICACIÓN (Confiabilidad Factual):
+- Afirmaciones verificadas: ${confiabilidadFactual.claims_verificados?.length || 0}
+- Afirmaciones refutadas: ${confiabilidadFactual.claims_refutados?.length || 0}
+- Afirmaciones con evidencia en conflicto: ${confiabilidadFactual.claims_en_conflicto?.length || 0}
+- Afirmaciones sin evidencia suficiente: ${confiabilidadFactual.claims_evidencia_insuficiente?.length || 0}
+
+Detalle de afirmaciones verificadas:
+${confiabilidadFactual.claims_verificados?.map(c => `  ✅ "${c.canonical_text}"`).join('\n') || '  (ninguna)'}
+
+Detalle de afirmaciones refutadas:
+${confiabilidadFactual.claims_refutados?.map(c => `  ❌ "${c.canonical_text}"`).join('\n') || '  (ninguna)'}
+
+Instrucción adicional: En tu 'interpretacion' o 'contexto', menciona brevemente la relación entre la robustez deliberativa (IRD) y la confiabilidad factual de este documento.
+`;
+  }
+
+  // 2. Ensamblar el prompt completo
   const prompt = `
 Eres SOPHIA-Gemini, la capa semántica cognitiva del proyecto LogoDemocracia.
 Tu tarea exclusiva es interpretar los resultados del motor determinista local y ofrecer una capa de comprensión contextual ciudadana.
@@ -23,7 +45,7 @@ RESULTADO DEL MOTOR LOCAL (SOPHIA ENGINE V4):
 """
 ${JSON.stringify(localResult, null, 2)}
 """
-
+${confiabilidadSection}
 Devuelve ÚNICAMENTE un objeto JSON válido con la siguiente estructura exacta (sin bloques de código markdown, sin texto previo ni posterior):
 {
   "interpretacion": "Breve resumen de tu interpretación general del texto y su robustez argumentativa.",
