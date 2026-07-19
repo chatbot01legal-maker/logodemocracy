@@ -197,6 +197,27 @@ app.post("/api/sophia/evaluate", async (req, res) => {
     }
     console.log(`✅ Evaluación local completada. IRD: ${localResult.IRD_global}, evidencias: ${localResult.evidencias?.length || 0}`);
 
+    // VISOR SEMÁNTICO: Análisis de falsos positivos contextuales
+    const { procesarPenalizaciones } = require("./modules/semanticViewer");
+
+    if (localResult.evidencias && localResult.evidencias.length > 0) {
+      console.log(`🔍 Ejecutando Visor Semántico en ${localResult.evidencias.length} penalizaciones...`);
+      try {
+        localResult.evidencias = await procesarPenalizaciones(localResult.evidencias, text);
+        
+        // Estadísticas
+        const falsosPositivos = localResult.evidencias.filter(e => e.revision_semantica?.falso_positivo === true);
+        console.log(`✅ Visor Semántico completado. ${falsosPositivos.length} falsos positivos detectados.`);
+        
+        falsosPositivos.forEach(fp => {
+          console.log(`   🔴 Falso positivo en ${fp.criterion || fp.codigo}: ${fp.revision_semantica.razon}`);
+        });
+      } catch (visorError) {
+        console.error("❌ Error en Visor Semántico:", visorError);
+        // Si falla, continuamos sin revisión semántica (no bloqueante)
+      }
+    }
+
     // 2️⃣ Auditoría Factual: Extracción → Normalización → Verificación
     let confiabilidadFactual = null;
     try {
@@ -211,10 +232,29 @@ app.post("/api/sophia/evaluate", async (req, res) => {
       const noAplicables = normalizedClaims.filter(c => !c.verificable);
       console.log(`🔬 Afirmaciones verificables: ${verificables.length}, no aplicables: ${noAplicables.length}`);
 
-      console.log("🌐 Iniciando verificación de afirmaciones...");
-      confiabilidadFactual = await verifyClaims(verificables);
-      confiabilidadFactual.claims_no_aplicables = noAplicables;
-      console.log(`✅ Verificación completada. Verificados: ${confiabilidadFactual.claims_verificados?.length || 0}, Refutados: ${confiabilidadFactual.claims_refutados?.length || 0}, En conflicto: ${confiabilidadFactual.claims_en_conflicto?.length || 0}, Sin evidencia: ${confiabilidadFactual.claims_evidencia_insuficiente?.length || 0}`);
+      // ─────────────────────────────────────────────────────────
+      // MODIFICACIÓN: Control de estado para evitar falsos negativos
+      // ─────────────────────────────────────────────────────────
+      const isSearchEnabled = process.env.ENABLE_FACTUAL_SEARCH === "true";
+
+      if (!isSearchEnabled) {
+        console.log("⚠️ Proveedor de búsqueda no configurado. Estado: verificacion_no_realizada");
+        confiabilidadFactual = {
+          estado: "verificacion_no_realizada",
+          claims_extraidos: verificables.length,
+          claims_verificados: [],
+          claims_refutados: [],
+          claims_en_conflicto: [],
+          claims_evidencia_insuficiente: [],
+          claims_no_aplicables: noAplicables
+        };
+      } else {
+        console.log("🌐 Iniciando verificación de afirmaciones...");
+        confiabilidadFactual = await verifyClaims(verificables);
+        confiabilidadFactual.estado = "completada";
+        confiabilidadFactual.claims_no_aplicables = noAplicables;
+        console.log(`✅ Verificación completada. Verificados: ${confiabilidadFactual.claims_verificados?.length || 0}, Refutados: ${confiabilidadFactual.claims_refutados?.length || 0}, En conflicto: ${confiabilidadFactual.claims_en_conflicto?.length || 0}, Sin evidencia: ${confiabilidadFactual.claims_evidencia_insuficiente?.length || 0}`);
+      }
     } catch (factualError) {
       console.error("❌ Error en verificación factual:", factualError);
       confiabilidadFactual = {
