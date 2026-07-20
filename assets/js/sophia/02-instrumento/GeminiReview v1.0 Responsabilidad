@@ -1,0 +1,106 @@
+Contrato de Integración
+
+GeminiReview v1.0
+Responsabilidad
+Interpretar el informe completo generado por SOPHIA.
+No evaluar nuevamente el documento.
+Entradas
+Debe recibir exactamente cuatro objetos:
+{
+    documentText,
+
+    sophia: {
+        IRD_global,
+        fases,
+        evidencias,
+        riesgo,
+        naturaleza_documental,
+        ...
+    },
+
+    factChecker: {
+        ...
+    },
+
+    semanticReview: {
+        ...
+    }
+}
+No debe consultar directamente ningún otro módulo.
+Autoridad
+Puede:
+interpretar
+sintetizar
+contextualizar
+explicar
+No puede:
+modificar IRD
+modificar penalizaciones
+modificar evidencia factual
+crear nuevas penalizaciones
+crear nuevos átomos
+recalcular fases
+corregir SOPHIA
+Salida
+Debe devolver únicamente:
+{
+  "schema":"SOPHIA.geminiReview.v1",
+
+  "interpretacion_general":"...",
+
+  "fortalezas":[
+      ...
+  ],
+
+  "limitaciones":[
+      ...
+  ],
+
+  "sintesis":"...",
+
+  "preguntas_reflexivas":[
+      ...
+  ]
+}
+Nada más.
+Prohibiciones
+El prompt debe contener explícitamente:
+No eres parte del motor SOPHIA.
+No eres parte del Fact Checker.
+No eres parte del Semantic Review.
+No puedes modificar ningún resultado recibido.
+Solo puedes interpretarlos.
+¿Por qué quiero hacer esto primero?
+Porque entonces el código sale prácticamente solo.
+De hecho, reescribiría generateGeminiReview() casi completo.
+Pasaría de un módulo de unas 150 líneas con lógica mezclada a uno de unas 70–80 líneas mucho más limpio.
+Además haría otro cambio importante
+Hoy tienes:
+app.js
+haciendo casi toda la orquestación.
+Yo introduciría un quinto módulo:
+modules/
+
+    sophiaPipeline.js
+Ese módulo sería el único responsable del flujo.
+Documento
+     │
+     ▼
+Sophia Engine
+
+     ▼
+Fact Checker
+
+     ▼
+Semantic Review
+
+     ▼
+Gemini Review
+
+     ▼
+Final Report
+Entonces app.js quedaría reducido prácticamente a:
+const report = await sophiaPipeline.evaluate(text);
+
+res.json(report);
+Eso desacopla completamente el servidor HTTP de la lógica del instrumento.
