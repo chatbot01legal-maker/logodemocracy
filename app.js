@@ -9,20 +9,13 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 
 // ─── Módulos propios ──────────────────────────────────
 const { connect } = require("./modules/database");
-const SophiaEngineV4 = require("./assets/js/sophiaEngineV4");
-const { generateGeminiReview } = require("./modules/sophiaGeminiReview");
-const { extractClaims } = require("./modules/claimExtractor");
-const { normalizeClaims } = require("./modules/claimNormalizer");
-const { verifyClaims } = require("./modules/evidencePipeline");
+const { evaluate } = require("./modules/sophiaEvaluationPipeline");
+const { mergeGuestProfileIntoUser } = require("./modules/reyFilosofoService");
+const reyFilosofoRoutes = require("./routes/reyFilosofoRoutes");
 
 const PROTOCOL = {
   version: "4.0"
 };
-
-const evaluateText = SophiaEngineV4.evaluate.bind(SophiaEngineV4);
-console.log("🧠 Sophia Engine cargado:", SophiaEngineV4.version);
-const { mergeGuestProfileIntoUser } = require("./modules/reyFilosofoService");
-const reyFilosofoRoutes = require("./routes/reyFilosofoRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,7 +26,6 @@ console.log(`📁 Directorio actual: ${__dirname}`);
 console.log(`📦 Protocolo cargado: ${PROTOCOL.version || "desconocido"}`);
 
 // ─── Middleware ────────────────────────────────────────
-
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.static(__dirname));
@@ -41,11 +33,7 @@ app.use(express.static(__dirname));
 app.post("/api/debug-log", (req, res) => {
   const { level, message } = req.body;
   const ts = new Date().toISOString();
-
-  console.log(
-    `📱 [REMOTE-${(level || "log").toUpperCase()}] ${ts} — ${message}`
-  );
-
+  console.log(`📱 [REMOTE-${(level || "log").toUpperCase()}] ${ts} — ${message}`);
   res.sendStatus(204);
 });
 
@@ -79,25 +67,22 @@ app.get("/api/health", (req, res) => {
   console.log("💚 Health check");
   res.json({
     status: "OK",
-    version: "SOPHIA v0.92-beta",
+    version: "SOPHIA v4.0",
     protocol_version: PROTOCOL.version || "desconocida"
   });
 });
 
 // ─── Autenticación ────────────────────────────────────
-
 app.post("/api/register", async (req, res) => {
   console.log("📝 Registro de usuario:", req.body.email);
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      console.log("❌ Registro fallido: faltan datos");
       return res.status(400).json({ error: "Email y contraseña requeridos" });
     }
     const db = await connect();
     const existing = await db.collection("users").findOne({ email });
     if (existing) {
-      console.log("❌ Registro fallido: usuario ya existe");
       return res.status(400).json({ error: "El usuario ya existe" });
     }
     const hashed = await bcrypt.hash(password, 10);
@@ -120,18 +105,11 @@ app.post("/api/login", async (req, res) => {
   try {
     const { email, password, sessionId } = req.body;
     if (!email || !password) {
-      console.log("❌ Login fallido: faltan datos");
       return res.status(400).json({ error: "Email y contraseña requeridos" });
     }
     const db = await connect();
     const user = await db.collection("users").findOne({ email });
-    if (!user) {
-      console.log("❌ Login fallido: usuario no encontrado");
-      return res.status(401).json({ error: "Credenciales inválidas" });
-    }
-    const valid = await bcrypt.compare(password, user.password);
-    if (!valid) {
-      console.log("❌ Login fallido: contraseña incorrecta");
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
     const token = jwt.sign(
@@ -145,16 +123,11 @@ app.post("/api/login", async (req, res) => {
       try {
         await mergeGuestProfileIntoUser({ userId: user._id.toString(), sessionId });
       } catch (mergeError) {
-        console.error("⚠️ No se pudo fusionar el perfil de invitado:", mergeError.message);
+        console.error("⚠️ No se pudo fusionar perfil invitado:", mergeError.message);
       }
     }
 
-    res.json({
-      token,
-      userId: user._id,
-      email: user.email,
-      role: user.role || "citizen"
-    });
+    res.json({ token, userId: user._id, email: user.email, role: user.role || "citizen" });
   } catch (error) {
     console.error("❌ Error en /api/login:", error);
     res.status(500).json({ error: "Error interno del servidor" });
@@ -163,107 +136,27 @@ app.post("/api/login", async (req, res) => {
 
 function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
-  if (!authHeader) {
-    return res.status(401).json({ error: "Token no proporcionado" });
-  }
-  const token = authHeader.split(" ")[1];
+  if (!authHeader) return res.status(401).json({ error: "Token no proporcionado" });
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "secreto");
-    req.user = decoded;
+    req.user = jwt.verify(authHeader.split(" ")[1], process.env.JWT_SECRET || "secreto");
     next();
   } catch (error) {
     return res.status(401).json({ error: "Token inválido o expirado" });
   }
 }
 
-// ─── Evaluación con SOPHIA (híbrida V4.1) ─────────────────
+// ─── Evaluación con SOPHIA ─────────────────────────────
 app.post("/api/sophia/evaluate", async (req, res) => {
-  console.log("📊 Petición de evaluación recibida");
   try {
     const { text, userId } = req.body;
-    console.log(`📝 Texto recibido (${text?.length || 0} caracteres), userId: ${userId || "anonimo"}`);
-
     if (!text || text.trim().length === 0) {
-      console.log("❌ Texto vacío");
       return res.status(400).json({ error: "Texto requerido" });
     }
+    
+    // El pipeline solo genera conocimiento
+    const report = await evaluate({ text });
 
-    // 1️⃣ Evaluación local (determinista, auditable)
-    console.log("🔍 Ejecutando evaluación local...");
-    const localResult = evaluateText(text);
-    if (!localResult) {
-      console.log("❌ Error en evaluación local");
-      return res.status(400).json({ error: "Error al evaluar el texto" });
-    }
-    console.log(`✅ Evaluación local completada. IRD: ${localResult.IRD_global}, evidencias: ${localResult.evidencias?.length || 0}`);
-
-    // 2️⃣ Auditoría Factual: Extracción → Normalización → Verificación
-    let confiabilidadFactual = null;
-    try {
-      console.log("🔎 Iniciando extracción de afirmaciones...");
-      const rawClaims = await extractClaims(text);
-      console.log(`📋 Afirmaciones extraídas: ${rawClaims.length}`);
-
-      const normalizedClaims = await normalizeClaims(rawClaims);
-      console.log(`📋 Afirmaciones normalizadas: ${normalizedClaims.length}`);
-
-      const verificables = normalizedClaims.filter(c => c.verificable);
-      const noAplicables = normalizedClaims.filter(c => !c.verificable);
-      console.log(`🔬 Afirmaciones verificables: ${verificables.length}, no aplicables: ${noAplicables.length}`);
-
-      console.log("🌐 Iniciando verificación de afirmaciones...");
-      confiabilidadFactual = await verifyClaims(verificables);
-      confiabilidadFactual.claims_no_aplicables = noAplicables;
-      console.log(`✅ Verificación completada. Verificados: ${confiabilidadFactual.claims_verificados?.length || 0}, Refutados: ${confiabilidadFactual.claims_refutados?.length || 0}, En conflicto: ${confiabilidadFactual.claims_en_conflicto?.length || 0}, Sin evidencia: ${confiabilidadFactual.claims_evidencia_insuficiente?.length || 0}`);
-    } catch (factualError) {
-      console.error("❌ Error en verificación factual:", factualError);
-      confiabilidadFactual = {
-        error: "La verificación factual no está disponible en este momento.",
-        claims_verificados: [],
-        claims_refutados: [],
-        claims_en_conflicto: [],
-        claims_evidencia_insuficiente: [],
-        claims_no_aplicables: []
-      };
-    }
-
-    // 3️⃣ Revisión semántica con Gemini (recibe también confiabilidad factual)
-    let geminiReview = null;
-    if (localResult.IRD_global < 85 || localResult.evidencias.length > 0 || confiabilidadFactual) {
-      console.log("🤖 Solicitando revisión semántica a Gemini...");
-      try {
-        geminiReview = await generateGeminiReview(text, localResult, confiabilidadFactual);
-        console.log("✅ Revisión semántica completada");
-      } catch (llmError) {
-        console.error("❌ Error en LLM review:", llmError);
-        geminiReview = { error: "Revisión semántica no disponible" };
-      }
-    } else {
-      console.log("⏩ Saltando revisión semántica (IRD alto y sin evidencias)");
-    }
-
-    // 4️⃣ Ensamblar informe final (Estructura arquitectónica V4.1)
-    const finalReport = {
-      protocol_version: PROTOCOL.version,
-      evaluated_at: new Date().toISOString(),
-      local: {
-        engine: "SophiaEngineV4",
-        IRD_global: localResult.IRD_global,
-        fases: localResult.fases,
-        evidencias: localResult.evidencias,
-        riesgo: localResult.riesgo,
-        naturaleza_documental: localResult.naturaleza_documental,
-        confianza_clasificacion: localResult.confianza_clasificacion,
-        hibrido: localResult.hibrido,
-        naturalezas_secundarias: localResult.naturalezas_secundarias
-      },
-      confiabilidad_factual: confiabilidadFactual,
-      gemini_review: geminiReview,
-      evidence_density: localResult.evidencias.length / (text.split(/\s+/).length || 1)
-    };
-    console.log(`📊 IRD final: ${finalReport.local.IRD_global}%`);
-
-    // 5️⃣ Guardar en MongoDB (si hay userId)
+    // La capa de infraestructura guarda los datos
     if (userId) {
       console.log("💾 Guardando evaluación en MongoDB...");
       try {
@@ -276,7 +169,7 @@ app.post("/api/sophia/evaluate", async (req, res) => {
           protocol_version: PROTOCOL.version,
           model_used: "gemini-2.5-flash",
           evaluated_at: new Date(),
-          result: finalReport
+          result: report
         });
         console.log("✅ Evaluación guardada en MongoDB");
       } catch (dbError) {
@@ -284,30 +177,23 @@ app.post("/api/sophia/evaluate", async (req, res) => {
       }
     }
 
-    res.json(finalReport);
+    res.json(report);
   } catch (error) {
     console.error("❌ Error en /api/sophia/evaluate:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
 
-// ─── Rey Filósofo Kernel ZDP ─────────
-
+// ─── Rey Filósofo Kernel ZDP ─────────────────────────
 const rfRoutes = require("./logodemocracy-api/src/routes/rfRoutes");
-
-app.use(
-  "/api/reyfilosofo",
-  rfRoutes
-);
+app.use("/api/reyfilosofo", rfRoutes);
 
 // ─── Endpoint protegido (ejemplo) ────────────────────
 app.get("/api/profile", authenticate, (req, res) => {
-  console.log(`👤 Perfil solicitado por: ${req.user.email}`);
   res.json({ user: req.user });
 });
 
 // ─── Iniciar servidor ─────────────────────────────────
 app.listen(PORT, () => {
   console.log(`🚀 Servidor SOPHIA ejecutándose en http://localhost:${PORT}`);
-  console.log(`📊 Protocolo cargado: ${PROTOCOL.version || "desconocido"}`);
 });
