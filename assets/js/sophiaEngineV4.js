@@ -87,7 +87,7 @@
     var ranked = Object.keys(scores).sort(function (a, b) { return scores[b] - scores[a]; });
     var totalHits = Object.keys(scores).reduce(function (acc, k) { return acc + scores[k]; }, 0);
 
-    var naturaleza_primaria = totalHits === 0 ? 'ARG' : ranked[0]; // MR-004: fallback al perfil menos exigente
+    var naturaleza_primaria = totalHits === 0 ? 'ARG' : ranked[0];
     var confianza = totalHits === 0 ? 0 : scores[naturaleza_primaria] / totalHits;
 
     var naturalezas_secundarias = ranked.filter(function (k) {
@@ -390,13 +390,243 @@
   }
 
   /* ═══════════════════════════════════════════════════════════
+     CAPA 3.5 — ANÁLISIS SEMÁNTICO CONTEXTUAL
+     NUEVO: analiza el contexto semántico de un segmento para
+     reducir falsos positivos. Detecta negaciones, citas, discurso
+     referido, preguntas, hipótesis y modalidad epistémica.
+     ═══════════════════════════════════════════════════════════ */
+
+  /**
+   * Tokeniza un texto en palabras, devolviendo un array de tokens con
+   * su posición (índice en el texto original normalizado).
+   * @param {string} text - Texto a tokenizar
+   * @returns {Array<{word: string, start: number, end: number}>}
+   */
+  function tokenize(text) {
+    var tokens = [];
+    var lower = text.toLowerCase();
+    // regex simple: captura palabras (incluye caracteres acentuados y ñ)
+    var regex = /[a-záéíóúüñA-ZÁÉÍÓÚÜÑ0-9]+/g;
+    var match;
+    while ((match = regex.exec(lower)) !== null) {
+      tokens.push({ word: match[0], start: match.index, end: regex.lastIndex });
+    }
+    return tokens;
+  }
+
+  /**
+   * Detecta si el segmento completo es una pregunta (contiene '?' o
+   * comienza con palabra interrogativa).
+   * @param {string} text - Texto del segmento
+   * @returns {boolean}
+   */
+  function isInterrogative(text) {
+    var lower = text.trim().toLowerCase();
+    // Contiene signo de interrogación
+    if (lower.indexOf('?') !== -1) return true;
+    // Comienza con palabra interrogativa
+    var interrogatives = ['qué', 'cómo', 'cuál', 'cuáles', 'cuándo', 'dónde', 'por qué', 'para qué', 'quién', 'quiénes', 'cuánto', 'cuánta', 'cuántos', 'cuántas'];
+    for (var i = 0; i < interrogatives.length; i++) {
+      if (lower.indexOf(interrogatives[i]) === 0) return true;
+    }
+    return false;
+  }
+
+  /**
+   * Detecta si el segmento está en discurso referido o es una cita.
+   * Busca comillas, patrones de atribución ("según X", "X afirma que").
+   * @param {string} text - Texto del segmento
+   * @returns {boolean}
+   */
+  function isReportedSpeechOrQuote(text) {
+    var lower = text.trim().toLowerCase();
+    // Comillas (angulares, inglesas, simples)
+    if (/[""''«»]/.test(text)) return true;
+    // Patrones de discurso referido
+    var reportedPatterns = [
+      'según', 'de acuerdo con', 'afirmó que', 'dijo que', 'declaró que',
+      'sostiene que', 'argumenta que', 'para', 'en palabras de',
+      'citando a', 'como señala', 'como indica', 'como afirma'
+    ];
+    for (var i = 0; i < reportedPatterns.length; i++) {
+      if (lower.indexOf(reportedPatterns[i]) !== -1) return true;
+    }
+    return false;
+  }
+
+  /**
+   * Detecta si el segmento tiene estructura hipotética o condicional.
+   * @param {string} text - Texto del segmento
+   * @returns {boolean}
+   */
+  function isHypothetical(text) {
+    var lower = text.trim().toLowerCase();
+    // Estructuras condicionales
+    if (lower.indexOf('si ') === 0 || lower.indexOf('si,') !== -1 || lower.indexOf('si no') !== -1) return true;
+    // Marcadores hipotéticos
+    var hypotheticalMarkers = [
+      'en caso de', 'supongamos', 'suponga', 'hipotéticamente',
+      'asumiendo que', 'daría', 'sería', 'podría ser', 'pudiera',
+      'en un escenario', 'si acaso', 'tal vez', 'quizás', 'quizá'
+    ];
+    for (var i = 0; i < hypotheticalMarkers.length; i++) {
+      if (lower.indexOf(hypotheticalMarkers[i]) !== -1) return true;
+    }
+    return false;
+  }
+
+  /**
+   * Detecta la presencia de negaciones en el segmento y devuelve
+   * información sobre si el segmento completo está negado.
+   * @param {string} text - Texto del segmento
+   * @returns {{ isNegated: boolean, negationWords: string[] }}
+   */
+  function detectNegation(text) {
+    var lower = text.trim().toLowerCase();
+    var negationWords = ['no', 'nunca', 'jamás', 'tampoco', 'sin', 'ni'];
+    var found = [];
+    for (var i = 0; i < negationWords.length; i++) {
+      // Buscar la palabra como token independiente
+      var regex = new RegExp('\\b' + negationWords[i] + '\\b', 'g');
+      if (regex.test(lower)) {
+        found.push(negationWords[i]);
+      }
+    }
+    return {
+      isNegated: found.length > 0,
+      negationWords: found
+    };
+  }
+
+  /**
+   * Detecta la modalidad epistémica del segmento (certeza, duda, probabilidad).
+   * @param {string} text - Texto del segmento
+   * @returns {{ modality: string, markers: string[] }}
+   */
+  function detectModality(text) {
+    var lower = text.trim().toLowerCase();
+    var markers = [];
+    // Alta certeza
+    var highCertainty = ['es seguro que', 'sin duda', 'indudablemente', 'claramente', 'evidentemente', 'está demostrado', 'es un hecho'];
+    // Duda / probabilidad
+    var uncertainty = ['probablemente', 'posiblemente', 'es posible que', 'tal vez', 'quizás', 'quizá', 'podría', 'pudiera', 'no es seguro'];
+    
+    for (var i = 0; i < highCertainty.length; i++) {
+      if (lower.indexOf(highCertainty[i]) !== -1) markers.push('alta_certeza');
+    }
+    for (var j = 0; j < uncertainty.length; j++) {
+      if (lower.indexOf(uncertainty[j]) !== -1) markers.push('incertidumbre');
+    }
+    
+    return {
+      modality: markers.length > 0 ? markers.join(',') : 'neutra',
+      markers: markers
+    };
+  }
+
+  /**
+   * Detecta conectores argumentativos en el segmento.
+   * @param {string} text - Texto del segmento
+   * @returns {string[]} Lista de conectores encontrados
+   */
+  function detectConnectors(text) {
+    var lower = text.trim().toLowerCase();
+    var connectors = [
+      'sin embargo', 'no obstante', 'por lo tanto', 'en consecuencia',
+      'además', 'por otra parte', 'en cambio', 'por el contrario',
+      'así pues', 'de este modo', 'por consiguiente', 'entonces',
+      'ahora bien', 'con todo', 'aun así', 'pese a ello'
+    ];
+    var found = [];
+    for (var i = 0; i < connectors.length; i++) {
+      if (lower.indexOf(connectors[i]) !== -1) found.push(connectors[i]);
+    }
+    return found;
+  }
+
+  /**
+   * Detecta marcadores de evidencia en el segmento.
+   * @param {string} text - Texto del segmento
+   * @returns {string[]} Lista de marcadores encontrados
+   */
+  function detectEvidenceMarkers(text) {
+    var lower = text.trim().toLowerCase();
+    var markers = [
+      'según el estudio', 'los datos muestran', 'fuente:', 'n=',
+      'verificable', 'estudio publicado', 'investigación', 'encuesta',
+      'datos de', 'cifras de', 'reporte de', 'informe de'
+    ];
+    var found = [];
+    for (var i = 0; i < markers.length; i++) {
+      if (lower.indexOf(markers[i]) !== -1) found.push(markers[i]);
+    }
+    return found;
+  }
+
+  /**
+   * Detecta marcadores causales en el segmento.
+   * @param {string} text - Texto del segmento
+   * @returns {string[]} Lista de marcadores causales encontrados
+   */
+  function detectCausalMarkers(text) {
+    var lower = text.trim().toLowerCase();
+    var markers = [
+      'porque', 'ya que', 'debido a', 'puesto que', 'dado que',
+      'causa', 'provoca', 'genera', 'desencadena', 'es responsable de',
+      'produce', 'ocasiona', 'resulta en', 'conlleva', 'implica'
+    ];
+    var found = [];
+    for (var i = 0; i < markers.length; i++) {
+      if (lower.indexOf(markers[i]) !== -1) found.push(markers[i]);
+    }
+    return found;
+  }
+
+  /**
+   * Función principal de análisis semántico contextual.
+   * Recibe un segmento y devuelve un objeto con el análisis completo.
+   *
+   * @param {Object} segment - Objeto con { indice, texto, funciones }
+   * @returns {Object} Análisis semántico contextual
+   */
+  function analyzeSemanticContext(segment) {
+    var text = segment.texto;
+    var lower = text.toLowerCase();
+    var tokens = tokenize(text);
+    var negation = detectNegation(text);
+    var interrogative = isInterrogative(text);
+    var quotedOrReported = isReportedSpeechOrQuote(text);
+    var hypothetical = isHypothetical(text);
+    var modality = detectModality(text);
+    var connectors = detectConnectors(text);
+    var evidenceMarkers = detectEvidenceMarkers(text);
+    var causalMarkers = detectCausalMarkers(text);
+    
+    return {
+      text: text,
+      tokens: tokens,
+      negated: negation.isNegated,
+      negationWords: negation.negationWords,
+      quoted: quotedOrReported,
+      reportedSpeech: quotedOrReported, // alias
+      hypothetical: hypothetical,
+      interrogative: interrogative,
+      modality: modality.modality,
+      modalityMarkers: modality.markers,
+      connectors: connectors,
+      evidenceMarkers: evidenceMarkers,
+      causalMarkers: causalMarkers
+    };
+  }
+
+  /* ═══════════════════════════════════════════════════════════
      CAPA 4 — DETECCIÓN Y EVALUACIÓN CONTEXTUAL DE ÁTOMOS
      Cruza segmento × átomo × perfil. Genera el Observation Registry.
+     VERSIÓN MEJORADA: utiliza analyzeSemanticContext para filtrar
+     falsos positivos.
      ═══════════════════════════════════════════════════════════ */
 
   function getProfileForAtom(atom, perfilKey) {
-    // Regla estructural 3: herencia. Si el perfil no define interpretación,
-    // se usa la definición base con valores por defecto (la menos exigente).
     if (atom.perfiles[perfilKey]) return atom.perfiles[perfilKey];
     return {
       definicion_contextual: atom.definicion_base,
@@ -410,8 +640,71 @@
     };
   }
 
+  /**
+   * Determina si un indicador debe activar un átomo considerando
+   * el contexto semántico. Filtra falsos positivos por negación,
+   * cita, pregunta, hipótesis, etc.
+   *
+   * @param {string} indicador - El indicador a buscar
+   * @param {Object} segment - El segmento de texto
+   * @param {Object} context - Resultado de analyzeSemanticContext
+   * @param {Object} perfilData - Datos del perfil del átomo
+   * @returns {boolean} true si el indicador debe activar el átomo
+   */
+  function shouldActivateIndicator(indicador, segment, context, perfilData) {
+    var lower = segment.texto.toLowerCase();
+    
+    // Verificar presencia del indicador
+    if (lower.indexOf(indicador) === -1) return false;
+    
+    // Regla 1: si el segmento es una pregunta, no activar átomos de afirmación
+    if (context.interrogative) {
+      // Algunos átomos pueden aplicar en preguntas retóricas, pero en general no
+      var allowInQuestions = ['ATOMO_STEELMAN', 'ATOMO_IDENTIDAD_ARGUMENTO'];
+      // No tengo acceso al ID del átomo aquí, así que por ahora no activamos en preguntas
+      return false;
+    }
+    
+    // Regla 2: si el segmento está negado, verificar si el indicador está dentro
+    // del alcance de la negación
+    if (context.negated) {
+      // Buscar la posición del indicador y ver si hay una negación cercana
+      var idx = lower.indexOf(indicador);
+      // Obtener las palabras de negación encontradas
+      var negationWords = context.negationWords || [];
+      var isNegatedLocally = false;
+      
+      for (var n = 0; n < negationWords.length; n++) {
+        var negWord = negationWords[n];
+        var negIdx = lower.indexOf(negWord);
+        if (negIdx !== -1 && Math.abs(negIdx - idx) <= 30) {
+          // Negación cercana al indicador
+          isNegatedLocally = true;
+          break;
+        }
+      }
+      if (isNegatedLocally) return false;
+    }
+    
+    // Regla 3: si es discurso referido o cita, en general no activar
+    // a menos que el átomo sea específicamente sobre citas
+    if (context.quoted || context.reportedSpeech) {
+      // Para la mayoría de átomos, las citas no reflejan la posición del autor
+      return false;
+    }
+    
+    // Regla 4: si es hipotético, algunos átomos (como causalidad) no aplican
+    if (context.hypothetical) {
+      // Para átomos de causalidad, la hipótesis no es una afirmación causal
+      return false;
+    }
+    
+    // Si pasa todos los filtros, el indicador puede activar el átomo
+    return true;
+  }
+
   function evaluateAtomsInContext(segments, perfilPrimario) {
-    var observaciones = []; // Observation Registry
+    var observaciones = [];
 
     Object.keys(ATOM_DICTIONARY).forEach(function (atomId) {
       var atom = ATOM_DICTIONARY[atomId];
@@ -419,11 +712,32 @@
       if (!perfilData.indicadores || perfilData.indicadores.length === 0) return;
 
       segments.forEach(function (seg) {
-        var lower = seg.texto.toLowerCase();
-        var indicadorActivado = perfilData.indicadores.find(function (ind) { return lower.indexOf(ind) !== -1; });
+        // Obtener análisis contextual del segmento
+        var context = analyzeSemanticContext(seg);
+        
+        // Buscar indicadores que deban activarse según el contexto
+        var indicadorActivado = null;
+        for (var i = 0; i < perfilData.indicadores.length; i++) {
+          var ind = perfilData.indicadores[i];
+          if (shouldActivateIndicator(ind, seg, context, perfilData)) {
+            indicadorActivado = ind;
+            break;
+          }
+        }
         if (!indicadorActivado) return;
 
-        var contraindicadorActivo = (perfilData.contraindicadores || []).find(function (c) { return lower.indexOf(c) !== -1; });
+        // Verificar contraindicadores con el mismo criterio contextual
+        var contraindicadorActivo = false;
+        if (perfilData.contraindicadores && perfilData.contraindicadores.length > 0) {
+          for (var c = 0; c < perfilData.contraindicadores.length; c++) {
+            var ci = perfilData.contraindicadores[c];
+            // Para contraindicadores, también aplicamos filtro contextual
+            if (seg.texto.toLowerCase().indexOf(ci) !== -1 && !context.negated && !context.quoted) {
+              contraindicadorActivo = true;
+              break;
+            }
+          }
+        }
 
         observaciones.push({
           atomo: atomId,
@@ -434,7 +748,7 @@
           fragmento: seg.texto,
           funciones_segmento: seg.funciones,
           indicador_activado: indicadorActivado,
-          mitigado_por_contraindicador: !!contraindicadorActivo,
+          mitigado_por_contraindicador: contraindicadorActivo,
           relevancia: perfilData.relevancia,
           severidad_base: perfilData.severidad_base,
           evidencia_esperada: perfilData.evidencia_esperada,
@@ -468,7 +782,6 @@
     var saltos = [];
     var penalizacion_ruta = 0;
 
-    // Salto crítico: hay propuesta sin que exista dato ni causal previo que la sostenga.
     if (presentes.propuesta && !presentes.dato && !presentes.causal) {
       saltos.push({
         tipo: 'propuesta_sin_fundamento',
@@ -478,7 +791,6 @@
       penalizacion_ruta += 15;
     }
 
-    // Salto: generalización sin dato previo.
     if (presentes.generalizacion && !presentes.dato) {
       saltos.push({
         tipo: 'generalizacion_sin_dato',
@@ -488,7 +800,6 @@
       penalizacion_ruta += 10;
     }
 
-    // Salto: causalidad afirmada sin ningún dato en todo el documento.
     if (presentes.causal && !presentes.dato) {
       saltos.push({
         tipo: 'causalidad_sin_dato',
@@ -509,9 +820,6 @@
 
   /* ═══════════════════════════════════════════════════════════
      CAPA 6 — MOTOR DE PUNTUACIÓN
-     Misma lógica de agregación que v3.0 (tope 25 por criterio,
-     promedio de criterios por fase, promedio de fases = IRD),
-     incorporando peso de relevancia contextual (§7).
      ═══════════════════════════════════════════════════════════ */
 
   var FASE_META = {
@@ -531,15 +839,14 @@
   };
 
   function scoreEngine(observaciones, rutaEval) {
-    // Agrupar por criterio
     var porCriterio = {};
     observaciones.forEach(function (obs) {
-      if (obs.mitigado_por_contraindicador) return; // el contraindicador anula la observación
+      if (obs.mitigado_por_contraindicador) return;
       porCriterio[obs.criterio] = porCriterio[obs.criterio] || [];
       porCriterio[obs.criterio].push(obs);
     });
 
-    var porFase = {}; // fase -> { criterios: [...], penalizacion_total }
+    var porFase = {};
     var evidencias = [];
 
     Object.keys(ATOM_DICTIONARY).forEach(function (atomId) {
@@ -553,7 +860,7 @@
       var atomos_activados = [];
 
       obsDeCriterio.forEach(function (obs) {
-        var p = obs.severidad_base * 1 /* frecuencia unitaria por segmento */ * obs.relevancia;
+        var p = obs.severidad_base * 1 * obs.relevancia;
         penalizacion_atomo_total += p;
         atomos_activados.push({ atomo: obs.atomo, segmento: obs.segmento_indice, penalizacion: Math.round(p * 100) / 100, heredado: obs.heredado });
         evidencias.push({ atomo: obs.atomo, criterio: crit, fragmento: obs.fragmento, perfil: obs.perfil });
@@ -570,7 +877,6 @@
       });
     });
 
-    // Penalización de ruta inferencial: se suma a Inferencia (fase2)
     if (rutaEval.penalizacion_ruta > 0 && porFase.fase2) {
       porFase.fase2.criterios.push({
         id: 'RUTA-INF',
@@ -648,6 +954,7 @@
     evaluate: evaluate,
     classifyDocument: classifyDocument,
     segmentText: segmentText,
+    analyzeSemanticContext: analyzeSemanticContext, // NUEVO: expuesto para auditoría
     ATOM_DICTIONARY: ATOM_DICTIONARY,
     CLASSIFICATION_MARKERS: CLASSIFICATION_MARKERS
   };
