@@ -1,22 +1,24 @@
 // modules/claimExtractor.js
-// Extrae afirmaciones verificables del texto usando Vertex AI (Gemini).
-// No verifica hechos, no opina, solo extrae.
+// Extrae ÚNICAMENTE afirmaciones empíricas y estadísticas verificables del texto.
+// No verifica hechos, no opina, actúa como un filtro estricto de datos duros.
 
 const { askVertex } = require("./vertexClient");
 
 async function extractClaims(text) {
   const prompt = `
-Eres un extractor de afirmaciones del sistema SOPHIA. Tu única función es identificar enunciados declarativos con pretensión de factualidad en el texto proporcionado.
+Eres un extractor de datos empíricos y evidencia del sistema SOPHIA. Tu única función es identificar en el texto enunciados con pretensión de verdad empírica o estadística QUE PUEDAN SER CONTRASTADOS con fuentes externas.
 
 REGLAS ABSOLUTAS:
-- NO evalúes si las afirmaciones son verdaderas o falsas.
-- NO opines sobre el texto.
-- Extrae SOLO afirmaciones que puedan ser contrastadas con fuentes externas.
-- Clasifica cada afirmación en UNO de estos tipos: "factual", "estadístico", "histórico", "científico", "normativo", "predictivo", "metadiscursivo".
-- Marca como "verificable": true SOLO si el tipo es factual, estadístico, histórico o científico.
-- Marca como "verificable": false para normativo, predictivo (no realizable en el presente) y metadiscursivo.
-- Extrae el texto LITERAL de cada afirmación, sin parafrasear.
-- Si no encuentras afirmaciones, devuelve un array vacío [].
+- Extrae ÚNICAMENTE afirmaciones que contengan:
+  * Datos estadísticos, porcentajes, cifras numéricas o métricas.
+  * Menciones explícitas a estudios, investigaciones, informes o autores específicos.
+  * Hechos históricos, científicos o eventos empíricos concretos y precisos.
+- IGNORA Y OMITE por completo:
+  * Opiniones, juicios de valor, posturas éticas o políticas.
+  * Proposiciones normativas ("debemos...", "se debería...", "es necesario...").
+  * Predicciones a futuro o reflexiones abstractas.
+- Extrae el texto LITERAL de la afirmación, sin parafrasear.
+- Si el texto NO contiene ninguna afirmación empírica o estadística verificable, devuelve EXCLUSIVAMENTE un array vacío [].
 
 Texto del documento:
 """
@@ -27,8 +29,8 @@ Devuelve EXCLUSIVAMENTE un array JSON con este formato, sin texto adicional ni e
 [
   {
     "claim_text": "texto literal de la afirmación",
-    "tipo": "factual|estadístico|histórico|científico|normativo|predictivo|metadiscursivo",
-    "verificable": true|false
+    "tipo": "estadístico|factual|histórico|científico",
+    "verificable": true
   }
 ]`;
 
@@ -36,13 +38,19 @@ Devuelve EXCLUSIVAMENTE un array JSON con este formato, sin texto adicional ni e
     const response = await askVertex(prompt);
     // Limpiar marcas de código Markdown
     let cleaned = response.replace(/```json\s?/g, '').replace(/```\s?/g, '').trim();
+    
     // Intentar parsear
     const parsed = JSON.parse(cleaned);
     if (!Array.isArray(parsed)) {
       console.warn("claimExtractor: respuesta no es un array, devolviendo array vacío");
       return [];
     }
-    return parsed;
+    
+    // Filtro defensivo: conservar únicamente los marcados como verificables y con tipo empírico
+    return parsed.filter(item => 
+      item.verificable === true && 
+      ["estadístico", "factual", "histórico", "científico"].includes(item.tipo)
+    );
   } catch (error) {
     console.error("Error en extractClaims:", error.message);
     return [];

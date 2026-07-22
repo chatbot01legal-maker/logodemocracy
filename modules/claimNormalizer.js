@@ -3,7 +3,7 @@
 //
 // Principio fundamental:
 // "El claimNormalizer puede cambiar la forma del texto, pero nunca su significado."
-// Cualquier modificación futura debe preservar este principio.
+// Filtra estrictamente afirmaciones no verificables para proteger la Capa 2.
 
 const NORMALIZATION_VERSION = "1.0";
 
@@ -16,10 +16,6 @@ function normalizeText(text) {
     .replace(/[–—]/g, '-')
     .replace(/(\d)\s+(\d)/g, '$1$2')
     .trim();
-}
-
-function areEquivalent(a, b) {
-  return a === b;
 }
 
 function generateClaimId(index) {
@@ -64,13 +60,19 @@ async function normalizeClaims(claims) {
     return [];
   }
 
-  for (const claim of claims) {
-    if (!claim.claim_text || !claim.tipo || claim.verificable === undefined) {
-      throw new Error(`Claim inválido: ${JSON.stringify(claim)}`);
-    }
+  // Filtrado estricto: descartar cualquier elemento que no sea explícitamente verificable
+  const verifiableClaims = claims.filter(claim => 
+    claim && 
+    claim.claim_text && 
+    claim.verificable === true &&
+    ["estadístico", "factual", "histórico", "científico"].includes(claim.tipo)
+  );
+
+  if (verifiableClaims.length === 0) {
+    return [];
   }
 
-  return groupEquivalentClaims(claims);
+  return groupEquivalentClaims(verifiableClaims);
 }
 
 module.exports = { normalizeClaims };
