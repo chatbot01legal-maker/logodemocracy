@@ -86,30 +86,15 @@ async function evaluate({ text }) {
   }
 
   // ─── PIPELINE STEP 4: Gemini Review (Interpretación) ────
+  // Ejecución garantizada: Siempre evalúa en Capa 4 para asegurar auditoría completa.
   console.log("🤖 PIPELINE STEP 4: Revisión de Gemini...");
-  
-  // Condición lógica corregida: solo se activa si hay problemas reales
-  const tieneProblemasFacticos = confiabilidadFactual && (
-    (confiabilidadFactual.claims_evidencia_insuficiente?.length > 0) ||
-    (confiabilidadFactual.claims_refutados?.length > 0) ||
-    (confiabilidadFactual.claims_en_conflicto?.length > 0)
-  );
-
-  const requiereGemini = localResult.IRD_global < 85 ||
-                         (localResult.evidencias && localResult.evidencias.length > 0) ||
-                         tieneProblemasFacticos;
-
   let geminiReview = null;
-  if (requiereGemini) {
-    try {
-      geminiReview = await generateGeminiReview(text, localResult, confiabilidadFactual);
-      console.log("✅ Revisión de Gemini completada");
-    } catch (llmError) {
-      console.error("❌ Error en Gemini review:", llmError);
-      geminiReview = { error: "Revisión global no disponible" };
-    }
-  } else {
-    console.log("⏩ Saltando revisión de Gemini (IRD alto, sin evidencias y factualidad limpia)");
+  try {
+    geminiReview = await generateGeminiReview(text, localResult, confiabilidadFactual);
+    console.log("✅ Revisión de Gemini completada");
+  } catch (llmError) {
+    console.error("❌ Error en Gemini review:", llmError);
+    geminiReview = { error: "Revisión global no disponible" };
   }
 
   // ─── PIPELINE STEP 5: Ensamblar informe final ───────────
