@@ -420,28 +420,31 @@ function evaluateText(text) {
 function normalizeSophiaResult(raw) {
   if (!raw) return null;
 
-  // Forma híbrida del backend (tiene "local" anidado)
-  if (raw.local && typeof raw.local === 'object') {
-    const llmOk = raw.llm_review && !raw.llm_review.error ? raw.llm_review : null;
-    const llmErr = raw.llm_review && raw.llm_review.error ? raw.llm_review.error : null;
-    return {
-      fases: raw.local.fases || [],
-      evidencias: raw.local.evidencias || [],
-      IRD_global: raw.ird !== undefined ? raw.ird : raw.local.IRD_global,
-      riesgo: raw.risk || raw.local.riesgo,
-      llm: llmOk,
-      llmError: llmErr
-    };
-  }
+  // Si el backend envía todo dentro de "report"
+  const report = raw.report || raw;
 
-  // Forma plana (motor local evaluateText, sin revisión LLM)
   return {
-    fases: raw.fases || [],
-    evidencias: raw.evidencias || [],
-    IRD_global: raw.IRD_global,
-    riesgo: raw.riesgo,
-    llm: null,
-    llmError: null
+    // ===== CAPA 1 =====
+    fases: report.fases || [],
+    evidencias: report.evidencias || [],
+    IRD_global: report.IRD_global ?? 0,
+    riesgo: report.riesgo || "Normal",
+    naturaleza_documental: report.naturaleza_documental,
+    confianza_clasificacion: report.confianza_clasificacion,
+    hibrido: report.hibrido,
+    rutas_evaluadas: report.rutas_evaluadas,
+
+    // ===== CAPA 2 =====
+    confiabilidad_factual: report.confiabilidad_factual || null,
+
+    // ===== CAPA 3 =====
+    semantic_review: report.semantic_review || null,
+
+    // ===== CAPA 4 =====
+    gemini_review: report.gemini_review || null,
+
+    // ===== METADATA =====
+    metadata: report.metadata || null
   };
 }
 
