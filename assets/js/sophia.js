@@ -430,7 +430,11 @@ function normalizeSophiaResult(raw) {
       IRD_global: raw.ird !== undefined ? raw.ird : raw.local.IRD_global,
       riesgo: raw.risk || raw.local.riesgo,
       llm: llmOk,
-      llmError: llmErr
+      llmError: llmErr,
+      semantic_review: raw.semantic_review || [],
+      confiabilidad_factual: raw.confiabilidad_factual || null,
+      gemini_review: raw.gemini_review || null,
+      metadata: raw.metadata || null
     };
   }
 
@@ -441,7 +445,11 @@ function normalizeSophiaResult(raw) {
     IRD_global: raw.IRD_global,
     riesgo: raw.riesgo,
     llm: null,
-    llmError: null
+    llmError: null,
+    semantic_review: raw.semantic_review || [],
+    confiabilidad_factual: raw.confiabilidad_factual || null,
+    gemini_review: raw.gemini_review || null,
+    metadata: raw.metadata || null
   };
 }
 
@@ -1385,6 +1393,100 @@ const SOPHIA = {
             <p style="color:rgba(229,231,235,.4); font-size:.78rem;">⚠ Revisión semántica (Gemini) no disponible: ${data.llmError}</p>
           </div>
         ` : ''}
+
+        ${data.confiabilidad_factual ? `
+          <div class="view-section">
+            <div class="view-section-title">Confiabilidad factual</div>
+            <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
+              ${(data.confiabilidad_factual.claims_verificados && data.confiabilidad_factual.claims_verificados.length > 0) ? `
+                <div style="margin-bottom:10px;">
+                  <div style="font-size:.75rem; color:#22c55e; text-transform:uppercase; margin-bottom:4px;">Afirmaciones verificadas</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.confiabilidad_factual.claims_verificados.map(c => `<li>${c}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+              ${(data.confiabilidad_factual.claims_refutados && data.confiabilidad_factual.claims_refutados.length > 0) ? `
+                <div style="margin-bottom:10px;">
+                  <div style="font-size:.75rem; color:#ef4444; text-transform:uppercase; margin-bottom:4px;">Afirmaciones refutadas</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.confiabilidad_factual.claims_refutados.map(c => `<li>${c}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+              ${(data.confiabilidad_factual.claims_en_conflicto && data.confiabilidad_factual.claims_en_conflicto.length > 0) ? `
+                <div style="margin-bottom:10px;">
+                  <div style="font-size:.75rem; color:#eab308; text-transform:uppercase; margin-bottom:4px;">En conflicto</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.confiabilidad_factual.claims_en_conflicto.map(c => `<li>${c}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+              ${(data.confiabilidad_factual.claims_evidencia_insuficiente && data.confiabilidad_factual.claims_evidencia_insuficiente.length > 0) ? `
+                <div style="margin-bottom:10px;">
+                  <div style="font-size:.75rem; color:#f97316; text-transform:uppercase; margin-bottom:4px;">Evidencia insuficiente</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.confiabilidad_factual.claims_evidencia_insuficiente.map(c => `<li>${c}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+              ${(data.confiabilidad_factual.claims_no_aplicables && data.confiabilidad_factual.claims_no_aplicables.length > 0) ? `
+                <div style="margin-bottom:10px;">
+                  <div style="font-size:.75rem; color:rgba(229,231,235,.5); text-transform:uppercase; margin-bottom:4px;">No aplicables</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.confiabilidad_factual.claims_no_aplicables.map(c => `<li>${c}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+            </div>
+          </div>
+        ` : ''}
+
+        ${data.semantic_review ? `
+          <div class="view-section">
+            <div class="view-section-title">Revisión semántica</div>
+            <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
+              ${(Array.isArray(data.semantic_review) && data.semantic_review.length > 0) ? 
+                data.semantic_review.map(item => `
+                  <div style="margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,.05); padding-bottom:8px;">
+                    ${(item.observacion || item.descripcion) ? `
+                      ${item.observacion ? `<div style="font-size:.85rem; color:var(--accent); font-weight:500; margin-bottom:4px;">${item.observacion}</div>` : ''}
+                      ${item.descripcion ? `<div style="font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">${item.descripcion}</div>` : ''}
+                    ` : `
+                      <div style="font-size:.75rem; color:rgba(229,231,235,.5); font-family:monospace;">${JSON.stringify(item)}</div>
+                    `}
+                  </div>
+                `).join('') 
+                : `<p style="font-size:.8rem; color:rgba(229,231,235,.5); margin:0;">No se detectaron observaciones semánticas.</p>`
+              }
+            </div>
+          </div>
+        ` : ''}
+
+        ${data.gemini_review ? `
+          <div class="view-section">
+            <div class="view-section-title">Interpretación integral</div>
+            <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
+              ${data.gemini_review.interpretacion ? `
+                <div style="margin-bottom:12px;">
+                  <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Interpretación</div>
+                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.interpretacion}</div>
+                </div>` : ''}
+              ${data.gemini_review.contexto ? `
+                <div style="margin-bottom:12px;">
+                  <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Contexto</div>
+                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.contexto}</div>
+                </div>` : ''}
+              ${data.gemini_review.observaciones ? `
+                <div style="margin-bottom:12px;">
+                  <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Observaciones</div>
+                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.observaciones}</div>
+                </div>` : ''}
+              ${(data.gemini_review.preguntas_reflexivas && Array.isArray(data.gemini_review.preguntas_reflexivas) && data.gemini_review.preguntas_reflexivas.length > 0) ? `
+                <div>
+                  <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Preguntas reflexivas</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
+                    ${data.gemini_review.preguntas_reflexivas.map(p => `<li>${p}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+            </div>
+          </div>
+        ` : ''}
       `;
 
       this._animateBars(out);
@@ -1416,7 +1518,3 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('✅ El motor está encendido');
   SOPHIA.init();
 });
-
-
-           
-          
