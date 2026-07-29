@@ -155,7 +155,20 @@ app.post("/api/sophia/evaluate", async (req, res) => {
     
     // El pipeline solo genera conocimiento
     const report = await evaluate({ text });
+app.post("/api/sophia/evaluate", async (req, res) => {
+  try {
+    const { text, userId } = req.body;
+    if (!text || text.trim().length === 0) {
+      return res.status(400).json({ error: "Texto requerido" });
+    }
+    
+    // El pipeline solo genera conocimiento
+    const report = await evaluate({ text });
+    console.log("🔎 JSON FINAL AL FRONTEND:", JSON.stringify(report, null, 2)); // ← AGREGAR ESTA LÍNEA
 
+    // La capa de infraestructura guarda los datos
+    if (userId) {
+    ...
     // La capa de infraestructura guarda los datos
     if (userId) {
       console.log("💾 Guardando evaluación en MongoDB...");
