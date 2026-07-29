@@ -420,30 +420,54 @@ function evaluateText(text) {
 function normalizeSophiaResult(raw) {
   if (!raw) return null;
 
+  // Backend híbrido
+  if (raw.local && typeof raw.local === 'object') {
+
+    const llmOk =
+      raw.llm_review && !raw.llm_review.error
+        ? raw.llm_review
+        : null;
+
+    const llmErr =
+      raw.llm_review && raw.llm_review.error
+        ? raw.llm_review.error
+        : null;
+
+    return {
+      fases: raw.local.fases || [],
+      evidencias: raw.local.evidencias || [],
+      IRD_global: raw.ird ?? raw.local.IRD_global ?? 0,
+      riesgo: raw.risk ?? raw.local.riesgo ?? "Normal",
+
+      llm: llmOk,
+      llmError: llmErr,
+
+      semantic_review: raw.semantic_review || [],
+      gemini_review: raw.gemini_review || null,
+      confiabilidad_factual: raw.confiabilidad_factual || null,
+      metadata: raw.metadata || null,
+
+      naturaleza_documental: raw.naturaleza_documental,
+      confianza_clasificacion: raw.confianza_clasificacion,
+      hibrido: raw.hibrido,
+      rutas_evaluadas: raw.rutas_evaluadas
+    };
+  }
+
+  // Motor local
   return {
-    // CAPA 1
-    fases: raw.fases || raw.local?.fases || [],
-    evidencias: raw.evidencias || raw.local?.evidencias || [],
-    IRD_global: raw.IRD_global ?? raw.local?.IRD_global ?? 0,
-    riesgo: raw.riesgo || raw.local?.riesgo || "Normal",
+    fases: raw.fases || [],
+    evidencias: raw.evidencias || [],
+    IRD_global: raw.IRD_global ?? 0,
+    riesgo: raw.riesgo ?? "Normal",
 
-    // CAPA 1 extra
-    naturaleza_documental: raw.naturaleza_documental,
-    confianza_clasificacion: raw.confianza_clasificacion,
-    hibrido: raw.hibrido,
-    rutas_evaluadas: raw.rutas_evaluadas,
-
-    // CAPA 2
-    confiabilidad_factual: raw.confiabilidad_factual || null,
-
-    // CAPA 3
-    semantic_review: raw.semantic_review || null,
-
-    // CAPA 4
+    semantic_review: raw.semantic_review || [],
     gemini_review: raw.gemini_review || null,
+    confiabilidad_factual: raw.confiabilidad_factual || null,
+    metadata: raw.metadata || null,
 
-    // Información adicional
-    metadata: raw.metadata || null
+    llm: null,
+    llmError: null
   };
 }
 
