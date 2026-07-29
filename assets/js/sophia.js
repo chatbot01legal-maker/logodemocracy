@@ -1195,6 +1195,8 @@ const SOPHIA = {
 
             if (response.ok) {
               const resultado = await response.json();
+console.log("🔎 RAW BACKEND:", JSON.stringify(resultado, null, 2));
+               
               // Normalización: preserva tanto el análisis local como la revisión de Gemini
               data = normalizeSophiaResult(resultado);
               console.log("📥 Datos recibidos del servidor:", data);
