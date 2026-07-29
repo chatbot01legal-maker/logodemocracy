@@ -420,52 +420,26 @@ function evaluateText(text) {
 function normalizeSophiaResult(raw) {
   if (!raw) return null;
 
-  // Backend híbrido
+  // Forma híbrida del backend (tiene "local" anidado)
   if (raw.local && typeof raw.local === 'object') {
-
-    const llmOk =
-      raw.llm_review && !raw.llm_review.error
-        ? raw.llm_review
-        : null;
-
-    const llmErr =
-      raw.llm_review && raw.llm_review.error
-        ? raw.llm_review.error
-        : null;
-
+    const llmOk = raw.llm_review && !raw.llm_review.error ? raw.llm_review : null;
+    const llmErr = raw.llm_review && raw.llm_review.error ? raw.llm_review.error : null;
     return {
       fases: raw.local.fases || [],
       evidencias: raw.local.evidencias || [],
-      IRD_global: raw.ird ?? raw.local.IRD_global ?? 0,
-      riesgo: raw.risk ?? raw.local.riesgo ?? "Normal",
-
+      IRD_global: raw.ird !== undefined ? raw.ird : raw.local.IRD_global,
+      riesgo: raw.risk || raw.local.riesgo,
       llm: llmOk,
-      llmError: llmErr,
-
-      semantic_review: raw.semantic_review || [],
-      gemini_review: raw.gemini_review || null,
-      confiabilidad_factual: raw.confiabilidad_factual || null,
-      metadata: raw.metadata || null,
-
-      naturaleza_documental: raw.naturaleza_documental,
-      confianza_clasificacion: raw.confianza_clasificacion,
-      hibrido: raw.hibrido,
-      rutas_evaluadas: raw.rutas_evaluadas
+      llmError: llmErr
     };
   }
 
-  // Motor local
+  // Forma plana (motor local evaluateText, sin revisión LLM)
   return {
     fases: raw.fases || [],
     evidencias: raw.evidencias || [],
-    IRD_global: raw.IRD_global ?? 0,
-    riesgo: raw.riesgo ?? "Normal",
-
-    semantic_review: raw.semantic_review || [],
-    gemini_review: raw.gemini_review || null,
-    confiabilidad_factual: raw.confiabilidad_factual || null,
-    metadata: raw.metadata || null,
-
+    IRD_global: raw.IRD_global,
+    riesgo: raw.riesgo,
     llm: null,
     llmError: null
   };
@@ -1221,8 +1195,6 @@ const SOPHIA = {
 
             if (response.ok) {
               const resultado = await response.json();
-console.log("🔎 RAW BACKEND:", JSON.stringify(resultado, null, 2));
-               
               // Normalización: preserva tanto el análisis local como la revisión de Gemini
               data = normalizeSophiaResult(resultado);
               console.log("📥 Datos recibidos del servidor:", data);
@@ -1408,116 +1380,9 @@ console.log("🔎 RAW BACKEND:", JSON.stringify(resultado, null, 2));
                 </div>` : ''}
             </div>
           </div>
-                ${data.confiabilidad_factual ? `
+        ` : data.llmError ? `
           <div class="view-section">
-            <div class="view-section-title">Capa 2 · Auditoría Factual</div>
-            <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
-
-              <div style="font-size:.75rem; color:rgba(229,231,235,.6); margin-bottom:10px;">
-                Afirmaciones verificadas: ${data.confiabilidad_factual.claims_verificados?.length || 0}
-                <br>
-                Afirmaciones refutadas: ${data.confiabilidad_factual.claims_refutados?.length || 0}
-                <br>
-                Evidencia insuficiente: ${data.confiabilidad_factual.claims_evidencia_insuficiente?.length || 0}
-              </div>
-
-              ${data.confiabilidad_factual.claims_evidencia_insuficiente?.length > 0 ? `
-                <div style="margin-top:12px;">
-                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase;">
-                    Afirmaciones con evidencia insuficiente
-                  </div>
-
-                  ${data.confiabilidad_factual.claims_evidencia_insuficiente.map(c => `
-                    <div style="background:rgba(255,255,255,.03); padding:10px; margin-top:8px;">
-                      <div style="font-size:.78rem; color:#e5e7eb;">
-                        ${c.canonical_text || ''}
-                      </div>
-                      <div style="font-size:.65rem; color:#eab308; margin-top:4px;">
-                        Estado: ${c.estado || 'Sin clasificar'}
-                      </div>
-                    </div>
-                  `).join('')}
-
-                </div>
-              ` : ''}
-
-            </div>
-          </div>
-        ` : ''}
-
-
-        ${data.semantic_review && data.semantic_review.length > 0 ? `
-          <div class="view-section">
-            <div class="view-section-title">Capa 3 · Revisión del Instrumento SOPHIA</div>
-
-            <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
-              ${data.semantic_review.map(item => `
-                <div style="font-size:.78rem; color:#e5e7eb; margin-bottom:10px;">
-                  ${item.observacion || item.descripcion || JSON.stringify(item)}
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        ` : ''}
-
-
-        ${data.gemini_review ? `
-          <div class="view-section">
-            <div class="view-section-title">Capa 4 · Interpretación Integral</div>
-
-            <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
-
-              ${data.gemini_review.interpretacion ? `
-                <div style="margin-bottom:12px;">
-                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase;">
-                    Interpretación
-                  </div>
-                  <p style="font-size:.82rem; color:#e5e7eb; line-height:1.5;">
-                    ${data.gemini_review.interpretacion}
-                  </p>
-                </div>
-              ` : ''}
-
-
-              ${data.gemini_review.contexto ? `
-                <div style="margin-bottom:12px;">
-                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase;">
-                    Contexto
-                  </div>
-                  <p style="font-size:.82rem; color:#e5e7eb; line-height:1.5;">
-                    ${data.gemini_review.contexto}
-                  </p>
-                </div>
-              ` : ''}
-
-
-              ${data.gemini_review.observaciones ? `
-                <div style="margin-bottom:12px;">
-                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase;">
-                    Observaciones
-                  </div>
-                  <p style="font-size:.82rem; color:#e5e7eb; line-height:1.5;">
-                    ${data.gemini_review.observaciones}
-                  </p>
-                </div>
-              ` : ''}
-
-
-              ${data.gemini_review.preguntas_reflexivas?.length > 0 ? `
-                <div>
-                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase;">
-                    Preguntas reflexivas
-                  </div>
-
-                  <ul style="font-size:.78rem; color:#e5e7eb;">
-                    ${data.gemini_review.preguntas_reflexivas.map(p => `
-                      <li>${p}</li>
-                    `).join('')}
-                  </ul>
-                </div>
-              ` : ''}
-
-            </div>
+            <p style="color:rgba(229,231,235,.4); font-size:.78rem;">⚠ Revisión semántica (Gemini) no disponible: ${data.llmError}</p>
           </div>
         ` : ''}
       `;
