@@ -422,10 +422,10 @@ function normalizeSophiaResult(raw) {
 
   return {
     // CAPA 1
-    fases: raw.fases || [],
-    evidencias: raw.evidencias || [],
-    IRD_global: raw.IRD_global ?? 0,
-    riesgo: raw.riesgo || "Normal",
+    fases: raw.fases || raw.local?.fases || [],
+    evidencias: raw.evidencias || raw.local?.evidencias || [],
+    IRD_global: raw.IRD_global ?? raw.local?.IRD_global ?? 0,
+    riesgo: raw.riesgo || raw.local?.riesgo || "Normal",
 
     // CAPA 1 extra
     naturaleza_documental: raw.naturaleza_documental,
