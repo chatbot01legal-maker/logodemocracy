@@ -420,31 +420,30 @@ function evaluateText(text) {
 function normalizeSophiaResult(raw) {
   if (!raw) return null;
 
-  // Si el backend envía todo dentro de "report"
-  const report = raw.report || raw;
-
   return {
-    // ===== CAPA 1 =====
-    fases: report.fases || [],
-    evidencias: report.evidencias || [],
-    IRD_global: report.IRD_global ?? 0,
-    riesgo: report.riesgo || "Normal",
-    naturaleza_documental: report.naturaleza_documental,
-    confianza_clasificacion: report.confianza_clasificacion,
-    hibrido: report.hibrido,
-    rutas_evaluadas: report.rutas_evaluadas,
+    // CAPA 1
+    fases: raw.fases || [],
+    evidencias: raw.evidencias || [],
+    IRD_global: raw.IRD_global ?? 0,
+    riesgo: raw.riesgo || "Normal",
 
-    // ===== CAPA 2 =====
-    confiabilidad_factual: report.confiabilidad_factual || null,
+    // CAPA 1 extra
+    naturaleza_documental: raw.naturaleza_documental,
+    confianza_clasificacion: raw.confianza_clasificacion,
+    hibrido: raw.hibrido,
+    rutas_evaluadas: raw.rutas_evaluadas,
 
-    // ===== CAPA 3 =====
-    semantic_review: report.semantic_review || null,
+    // CAPA 2
+    confiabilidad_factual: raw.confiabilidad_factual || null,
 
-    // ===== CAPA 4 =====
-    gemini_review: report.gemini_review || null,
+    // CAPA 3
+    semantic_review: raw.semantic_review || null,
 
-    // ===== METADATA =====
-    metadata: report.metadata || null
+    // CAPA 4
+    gemini_review: raw.gemini_review || null,
+
+    // Información adicional
+    metadata: raw.metadata || null
   };
 }
 
