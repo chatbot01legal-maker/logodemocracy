@@ -168,7 +168,7 @@ app.post("/api/sophia/evaluate", async (req, res) => {
 
     // La capa de infraestructura guarda los datos
     if (userId) {
-    ...
+  
     // La capa de infraestructura guarda los datos
     if (userId) {
       console.log("💾 Guardando evaluación en MongoDB...");
