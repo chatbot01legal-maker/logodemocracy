@@ -453,6 +453,15 @@ function normalizeSophiaResult(raw) {
   };
 }
 
+// ─── VERSIÓN DEL PROTOCOLO (dinámica) ──────────────────
+// Se actualiza con metadata.module_versions.protocol tras cada evaluación
+// contra el backend. Si aún no hubo ninguna evaluación, cae al PROTOCOL.version
+// local (legacy) definido arriba. Nunca queda un número escrito a mano.
+let SOPHIA_BACKEND_VERSION = null;
+function getSophiaVersion() {
+  return SOPHIA_BACKEND_VERSION || (PROTOCOL && PROTOCOL.version) || '4.0';
+}
+
 // ─── SISTEMA DE POPUPS ─────────────────────────────────
 function showDefinitionPopup(title, definition) {
   try {
@@ -531,7 +540,7 @@ const VIEWS = {
             <div class="view-eyebrow">Motor de Evaluación</div>
             <h1 class="view-title">Análisis Sophia</h1>
             <div class="view-body">
-              <p>Carga un documento o pega directamente un texto para estimar su <strong>Índice de Robustez Deliberativa (IRD)</strong> según el protocolo SOPHIA v3.0.</p>
+              <p>Carga un documento o pega directamente un texto para estimar su <strong>Índice de Robustez Deliberativa (IRD)</strong> según el protocolo SOPHIA v${getSophiaVersion()}.</p>
               <p>Formatos aceptados: <strong>.txt, .pdf, .docx, .md, .rtf</strong>.</p>
             </div>
             <div class="eval-tool">
@@ -568,7 +577,7 @@ const VIEWS = {
       try {
         return `
           <div class="view">
-            <div class="view-eyebrow">Marco de Evaluación Deliberativa · v3.0</div>
+            <div class="view-eyebrow">Marco de Evaluación Deliberativa · v${getSophiaVersion()}</div>
             <h1 class="view-title">¿Qué es SOPHIA?</h1>
             <div class="view-body">
               <p>SOPHIA es un <strong>protocolo abierto de comunicación deliberativa</strong> (RFC de la racionalidad pública). No evalúa la verdad del contenido, sino la <strong>legitimidad del proceso argumentativo</strong>.</p>
@@ -1205,6 +1214,9 @@ const SOPHIA = {
               const resultado = await response.json();
               // Normalización: preserva tanto el análisis local como la revisión de Gemini
               data = normalizeSophiaResult(resultado);
+              if (data && data.metadata && data.metadata.module_versions && data.metadata.module_versions.protocol) {
+                SOPHIA_BACKEND_VERSION = data.metadata.module_versions.protocol;
+              }
               console.log("📥 Datos recibidos del servidor:", data);
             } else {
               console.warn(`⚠️ /api/sophia/evaluate respondió ${response.status}, usando motor local.`);
@@ -1394,69 +1406,117 @@ const SOPHIA = {
           </div>
         ` : ''}
 
-        ${data.confiabilidad_factual ? `
+        ${data.confiabilidad_factual ? (() => {
+          const cf = data.confiabilidad_factual;
+          // Extrae texto legible de un claim tolerando distintas formas del objeto
+          // (nunca imprime el objeto crudo, nunca deja "undefined" o "null" visibles).
+          const claimText = (c) => {
+            if (c === null || c === undefined) return '(afirmación sin texto)';
+            if (typeof c === 'string') return c;
+            if (typeof c === 'object') {
+              return c.canonical_text
+                || (Array.isArray(c.original_texts) ? c.original_texts.join(' / ') : null)
+                || c.text
+                || c.claim
+                || '(afirmación sin texto)';
+            }
+            return String(c);
+          };
+          const claimSources = (c) => {
+            if (!c || typeof c !== 'object') return [];
+            const f = c.fuentes || c.sources || [];
+            return Array.isArray(f) ? f.filter(Boolean) : [];
+          };
+          const renderGroup = (titulo, claims, color) => {
+            if (!Array.isArray(claims) || claims.length === 0) return '';
+            return `
+              <div style="margin-bottom:14px;">
+                <div style="font-size:.75rem; color:${color}; text-transform:uppercase; margin-bottom:6px;">${titulo} (${claims.length})</div>
+                ${claims.map(c => {
+                  const fuentes = claimSources(c);
+                  return `
+                    <div style="background:rgba(255,255,255,.03); border-left:2px solid ${color}; padding:10px 14px; margin-bottom:8px;">
+                      <div style="font-size:.78rem; color:#e5e7eb; line-height:1.4;">${claimText(c)}</div>
+                      ${fuentes.length > 0
+                        ? `<div style="font-size:.68rem; color:rgba(229,231,235,.45); margin-top:4px;">Fuentes: ${fuentes.join(', ')}</div>`
+                        : `<div style="font-size:.68rem; color:rgba(229,231,235,.3); margin-top:4px;">Sin fuentes registradas</div>`}
+                    </div>`;
+                }).join('')}
+              </div>`;
+          };
+          const verificados = cf.claims_verificados || [];
+          const refutados = cf.claims_refutados || [];
+          const enConflicto = cf.claims_en_conflicto || [];
+          const insuficientes = cf.claims_evidencia_insuficiente || [];
+          const noAplicables = cf.claims_no_aplicables || [];
+          const total = verificados.length + refutados.length + enConflicto.length + insuficientes.length + noAplicables.length;
+
+          return `
           <div class="view-section">
             <div class="view-section-title">Confiabilidad factual</div>
             <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
-              ${(data.confiabilidad_factual.claims_verificados && data.confiabilidad_factual.claims_verificados.length > 0) ? `
-                <div style="margin-bottom:10px;">
-                  <div style="font-size:.75rem; color:#22c55e; text-transform:uppercase; margin-bottom:4px;">Afirmaciones verificadas</div>
-                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
-                    ${data.confiabilidad_factual.claims_verificados.map(c => `<li>${c}</li>`).join('')}
-                  </ul>
-                </div>` : ''}
-              ${(data.confiabilidad_factual.claims_refutados && data.confiabilidad_factual.claims_refutados.length > 0) ? `
-                <div style="margin-bottom:10px;">
-                  <div style="font-size:.75rem; color:#ef4444; text-transform:uppercase; margin-bottom:4px;">Afirmaciones refutadas</div>
-                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
-                    ${data.confiabilidad_factual.claims_refutados.map(c => `<li>${c}</li>`).join('')}
-                  </ul>
-                </div>` : ''}
-              ${(data.confiabilidad_factual.claims_en_conflicto && data.confiabilidad_factual.claims_en_conflicto.length > 0) ? `
-                <div style="margin-bottom:10px;">
-                  <div style="font-size:.75rem; color:#eab308; text-transform:uppercase; margin-bottom:4px;">En conflicto</div>
-                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
-                    ${data.confiabilidad_factual.claims_en_conflicto.map(c => `<li>${c}</li>`).join('')}
-                  </ul>
-                </div>` : ''}
-              ${(data.confiabilidad_factual.claims_evidencia_insuficiente && data.confiabilidad_factual.claims_evidencia_insuficiente.length > 0) ? `
-                <div style="margin-bottom:10px;">
-                  <div style="font-size:.75rem; color:#f97316; text-transform:uppercase; margin-bottom:4px;">Evidencia insuficiente</div>
-                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
-                    ${data.confiabilidad_factual.claims_evidencia_insuficiente.map(c => `<li>${c}</li>`).join('')}
-                  </ul>
-                </div>` : ''}
-              ${(data.confiabilidad_factual.claims_no_aplicables && data.confiabilidad_factual.claims_no_aplicables.length > 0) ? `
-                <div style="margin-bottom:10px;">
-                  <div style="font-size:.75rem; color:rgba(229,231,235,.5); text-transform:uppercase; margin-bottom:4px;">No aplicables</div>
-                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
-                    ${data.confiabilidad_factual.claims_no_aplicables.map(c => `<li>${c}</li>`).join('')}
-                  </ul>
-                </div>` : ''}
+              ${total === 0
+                ? `<p style="font-size:.8rem; color:rgba(229,231,235,.5); margin:0;">No se identificaron afirmaciones verificables en el documento.</p>`
+                : `
+                  ${renderGroup('Verificadas', verificados, '#22c55e')}
+                  ${renderGroup('Refutadas', refutados, '#ef4444')}
+                  ${renderGroup('En conflicto', enConflicto, '#eab308')}
+                  ${renderGroup('Evidencia insuficiente', insuficientes, '#f97316')}
+                  ${renderGroup('No aplicables', noAplicables, 'rgba(229,231,235,.5)')}
+                `}
             </div>
-          </div>
-        ` : ''}
+          </div>`;
+        })() : ''}
 
-        ${data.semantic_review ? `
+        ${data.semantic_review ? (() => {
+          const items = Array.isArray(data.semantic_review) ? data.semantic_review : [];
+          // Toma un campo probando varias claves posibles (tolera variaciones del backend
+          // sin depender de un único nombre exacto), nunca vuelca el objeto crudo.
+          const pick = (obj, keys, fallback) => {
+            for (const k of keys) {
+              if (obj && obj[k] !== undefined && obj[k] !== null && obj[k] !== '') return obj[k];
+            }
+            return fallback;
+          };
+          const cards = items.map(item => {
+            if (item === null || typeof item !== 'object') {
+              return `<div style="font-size:.78rem; color:rgba(229,231,235,.75); padding:8px 0;">${item}</div>`;
+            }
+            const atomo = pick(item, ['atomo', 'atom', 'ATOMO_CAUSALIDAD'], null);
+            const criterio = pick(item, ['criterio', 'criterion'], null);
+            const categoria = pick(item, ['categoria', 'category', 'tipo'], null);
+            const confianza = pick(item, ['confianza', 'confidence'], null);
+            const resultado = pick(item, ['resultado', 'result', 'veredicto'], null);
+            const razon = pick(item, ['razon', 'reason', 'observacion', 'descripcion', 'explicacion'], null);
+
+            const badgeColor = (resultado || '').toString().toLowerCase().includes('falso')
+              ? '#ef4444'
+              : (resultado || '').toString().toLowerCase().includes('correcto') || (resultado || '').toString().toLowerCase().includes('confirmado')
+                ? '#22c55e'
+                : 'var(--accent)';
+
+            return `
+              <div style="background:rgba(255,255,255,.03); border-left:2px solid ${badgeColor}; padding:10px 14px; margin-bottom:10px;">
+                <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:6px; font-size:.68rem; color:rgba(229,231,235,.5); text-transform:uppercase;">
+                  ${atomo ? `<span>Átomo: <strong style="color:#e5e7eb;">${atomo}</strong></span>` : ''}
+                  ${criterio ? `<span>Criterio: <strong style="color:#e5e7eb;">${criterio}</strong></span>` : ''}
+                  ${categoria ? `<span>Categoría: <strong style="color:#e5e7eb;">${categoria}</strong></span>` : ''}
+                  ${confianza !== null ? `<span>Confianza: <strong style="color:#e5e7eb;">${confianza}</strong></span>` : ''}
+                </div>
+                ${resultado ? `<div style="font-size:.85rem; color:${badgeColor}; font-weight:500; margin-bottom:4px;">${resultado}</div>` : ''}
+                ${razon ? `<div style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.5;">${razon}</div>` : ''}
+                ${(!resultado && !razon) ? `<div style="font-size:.78rem; color:rgba(229,231,235,.5);">Sin detalle adicional disponible.</div>` : ''}
+              </div>`;
+          }).join('');
+
+          return `
           <div class="view-section">
             <div class="view-section-title">Revisión semántica</div>
             <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
-              ${(Array.isArray(data.semantic_review) && data.semantic_review.length > 0) ? 
-                data.semantic_review.map(item => `
-                  <div style="margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,.05); padding-bottom:8px;">
-                    ${(item.observacion || item.descripcion) ? `
-                      ${item.observacion ? `<div style="font-size:.85rem; color:var(--accent); font-weight:500; margin-bottom:4px;">${item.observacion}</div>` : ''}
-                      ${item.descripcion ? `<div style="font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">${item.descripcion}</div>` : ''}
-                    ` : `
-                      <div style="font-size:.75rem; color:rgba(229,231,235,.5); font-family:monospace;">${JSON.stringify(item)}</div>
-                    `}
-                  </div>
-                `).join('') 
-                : `<p style="font-size:.8rem; color:rgba(229,231,235,.5); margin:0;">No se detectaron observaciones semánticas.</p>`
-              }
+              ${items.length > 0 ? cards : `<p style="font-size:.8rem; color:rgba(229,231,235,.5); margin:0;">No se detectaron observaciones semánticas — el motor determinista no presenta activaciones que requieran revisión.</p>`}
             </div>
-          </div>
-        ` : ''}
+          </div>`;
+        })() : ''}
 
         ${data.gemini_review ? `
           <div class="view-section">
@@ -1518,3 +1578,4 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('✅ El motor está encendido');
   SOPHIA.init();
 });
+

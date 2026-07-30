@@ -1,0 +1,285 @@
+          ],
+          severidad: 25.0
+        }
+      ]
+    }
+  ]
+};
+
+// ─── MECÁNICA DE CÁLCULO (completa) ──────────────────
+// ─── ADAPTADOR DE MOTOR: v4.0 (contextual) con fallback a v3.0 ──
+// Prioriza SophiaEngineV4 (clasificación documental + perfiles
+// contextuales + rutas inferenciales). Si el script no cargó por
+// algún motivo, usa el motor v3.0 legacy para no dejar al usuario
+// sin evaluación — el mismo patrón de resiliencia que ya usamos
+// para la revisión semántica de Gemini.
+function evaluateWithBestAvailableEngine(text) {
+  if (typeof window !== 'undefined' && window.SophiaEngineV4 && typeof window.SophiaEngineV4.evaluate === 'function') {
+    try {
+      const resultV4 = window.SophiaEngineV4.evaluate(text);
+      if (resultV4) return resultV4;
+    } catch (e) {
+      console.warn('⚠️ SophiaEngineV4 falló, usando motor v3.0 legacy:', e.message);
+    }
+  } else {
+    console.warn('⚠️ SophiaEngineV4 no está cargado (falta <script src=".../sophiaEngineV4.js">). Usando motor v3.0 legacy.');
+  }
+  return evaluateText(text);
+}
+
+function evaluateText(text) {
+  try {
+    if (!text || text.trim().length === 0) return null;
+
+    const oraciones = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    const resultados = {
+      fases: [],
+      evidencias: [],
+      puntajes_fase: {},
+      IRD_global: 0,
+      riesgo: "Normal"
+    };
+
+    let nivel3_count = 0;
+
+    PROTOCOL.fases.forEach(fase => {
+      let penalizacion_fase = 0;
+      let infracciones_fase = [];
+
+      fase.criterios.forEach(criterio => {
+        let penalizacion_criterio = 0;
+        let atomos_activados = [];
+
+        criterio.atomos.forEach(atom => {
+          if (atom.patrones && atom.patrones.length > 0) {
+            const patrones_unicos = [...new Set(atom.patrones)];
+            let frecuencia = 0;
+            oraciones.forEach(ora => {
+              const lower = ora.toLowerCase();
+              if (patrones_unicos.some(p => lower.includes(p))) {
+                frecuencia++;
+              }
+            });
+            if (frecuencia > 0) {
+              const penalizacion_atomo = criterio.severidad * frecuencia;
+              penalizacion_criterio += penalizacion_atomo;
+              atomos_activados.push({ atomo: atom.id, frecuencia, severidad: criterio.severidad });
+              const evidencia = text.match(new RegExp(`[^.!?]*\\b${patrones_unicos[0]}\\b[^.!?]*[.!?]`, 'i'));
+              if (evidencia) {
+                resultados.evidencias.push({
+                  atomo: atom.id,
+                  fragmento: evidencia[0].trim(),
+                  criterio: criterio.id
+                });
+              }
+            }
+          }
+        });
+
+        penalizacion_criterio = Math.min(penalizacion_criterio, 25);
+        if (penalizacion_criterio > 0) {
+          infracciones_fase.push({
+            criterio: `${criterio.id} - ${criterio.nombre}`,
+            constructo: criterio.constructo,
+            penalizacion: penalizacion_criterio,
+            atomos_activados
+          });
+          penalizacion_fase += penalizacion_criterio;
+          if (penalizacion_criterio === 25) nivel3_count++;
+        }
+      });
+
+      // Meta-regla MR-001: mitigación por incertidumbre
+      if (fase.id === "fase4" && resultados.puntajes_fase["fase3"] && resultados.puntajes_fase["fase3"] > 80) {
+        const infra42 = infracciones_fase.find(inf => inf.criterio.startsWith("4.2"));
+        if (infra42) {
+          infra42.penalizacion = infra42.penalizacion * 0.5;
+          infra42.meta_regla_aplicada = "MR-001 (Mitigación por Incertidumbre)";
+          penalizacion_fase = infracciones_fase.reduce((acc, inf) => acc + inf.penalizacion, 0);
+        }
+      }
+
+      let puntaje_fase = Math.max(0, 100 - penalizacion_fase);
+      if (infracciones_fase.length === 0) puntaje_fase = 100;
+      resultados.puntajes_fase[fase.id] = Math.round(puntaje_fase);
+      resultados.fases.push({
+        id: fase.id,
+        nombre: fase.nombre,
+        puntaje: Math.round(puntaje_fase),
+        infracciones: infracciones_fase
+      });
+    });
+
+    const puntajes = Object.values(resultados.puntajes_fase);
+    const ird = puntajes.reduce((a, b) => a + b, 0) / puntajes.length;
+    resultados.IRD_global = Math.round(ird);
+
+    if (nivel3_count >= 4) resultados.riesgo = "Riesgo Extremo";
+    else if (nivel3_count >= 3) resultados.riesgo = "Alta Fragilidad";
+    else if (nivel3_count >= 2) resultados.riesgo = "Atención";
+    else resultados.riesgo = "Normal";
+
+    return resultados;
+  } catch (e) {
+    showDebug(`❌ Error en evaluateText: ${e.message}\n\n${e.stack}`, true);
+    return null;
+  }
+}
+
+// ─── NORMALIZACIÓN DE RESPUESTAS SOPHIA ───────────────
+// El backend híbrido (/api/sophia/evaluate) responde con la forma:
+//   { local: {fases, evidencias, IRD_global, riesgo}, llm_review, ird, risk, ... }
+// El motor local de respaldo (evaluateText) responde con la forma plana:
+//   { fases, evidencias, IRD_global, riesgo }
+// Esta función unifica ambas en un solo objeto para el render.
+function normalizeSophiaResult(raw) {
+  if (!raw) return null;
+
+  // Forma híbrida del backend (tiene "local" anidado)
+  if (raw.local && typeof raw.local === 'object') {
+    const llmOk = raw.llm_review && !raw.llm_review.error ? raw.llm_review : null;
+    const llmErr = raw.llm_review && raw.llm_review.error ? raw.llm_review.error : null;
+    return {
+      fases: raw.local.fases || [],
+      evidencias: raw.local.evidencias || [],
+      IRD_global: raw.ird !== undefined ? raw.ird : raw.local.IRD_global,
+      riesgo: raw.risk || raw.local.riesgo,
+      llm: llmOk,
+      llmError: llmErr
+    };
+  }
+
+  // Forma plana (motor local evaluateText, sin revisión LLM)
+  return {
+    fases: raw.fases || [],
+    evidencias: raw.evidencias || [],
+    IRD_global: raw.IRD_global,
+    riesgo: raw.riesgo,
+    llm: null,
+    llmError: null
+  };
+}
+
+// ─── SISTEMA DE POPUPS ─────────────────────────────────
+function showDefinitionPopup(title, definition) {
+  try {
+    const existing = document.querySelector('.sophia-popup-overlay');
+    if (existing) existing.remove();
+    const overlay = document.createElement('div');
+    overlay.className = 'sophia-popup-overlay';
+    overlay.innerHTML = `
+      <div class="sophia-popup">
+        <div class="sophia-popup-header">
+          <span class="sophia-popup-title">${title}</span>
+          <button class="sophia-popup-close">&times;</button>
+        </div>
+        <div class="sophia-popup-body">${definition}</div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    overlay.querySelector('.sophia-popup-close').addEventListener('click', () => overlay.remove());
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+  } catch (e) {
+    showDebug(`❌ Error en popup: ${e.message}`, true);
+  }
+}
+
+// ─── RENDER DE FASES ─────────────────────────────────────
+function renderFase(faseId) {
+  try {
+    const fase = PROTOCOL.fases.find(f => f.id === faseId);
+    if (!fase) return "<p>Fase no encontrada.</p>";
+    return `
+      <div class="view">
+        <div class="view-eyebrow">Fase ${faseId.charAt(faseId.length-1)} del Protocolo</div>
+        <h1 class="view-title">${fase.nombre}</h1>
+        <div class="view-body">
+          <p>${fase.descripcion}</p>
+          <p><strong>Constructos clave:</strong> ${fase.criterios.map(c => c.constructo).join(' • ')}</p>
+        </div>
+        <div class="view-section">
+          <div class="view-section-title">Criterios y Átomos</div>
+          ${fase.criterios.map(c => `
+            <div style="margin-bottom: 20px; background: var(--s-panel); padding: 14px; border-left: 2px solid var(--accent);">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 500; color: #e5e7eb;">${c.id} — ${c.nombre}</span>
+                <span style="font-size: 0.7rem; color: rgba(229,231,235,.4);">Severidad: ${c.severidad}</span>
+              </div>
+              <div style="font-size: 0.8rem; color: rgba(229,231,235,.5); margin: 6px 0;">${c.definicion}</div>
+              <div style="font-size: 0.7rem; color: rgba(229,231,235,.35);">
+                Constructo: <strong style="color: var(--accent); cursor: pointer;" data-constructo="${c.constructo}">${c.constructo}</strong>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+                ${c.atomos.map(a => `
+                  <span style="background: rgba(59,130,246,.12); padding: 2px 8px; border-radius: 12px; font-size: 0.6rem; color: #d97706; cursor: pointer;" data-atomo="${a.id}">
+                    ${a.id}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  } catch (e) {
+    showDebug(`❌ Error en renderFase(${faseId}): ${e.message}`, true);
+    return `<p>Error al renderizar la fase: ${e.message}</p>`;
+  }
+}
+
+// ─── VISTAS ────────────────────────────────────────────
+const VIEWS = {
+  analisis: {
+    title: 'Análisis Sophia',
+    render: () => {
+      try {
+        return `
+          <div class="view">
+            <div class="view-eyebrow">Motor de Evaluación</div>
+            <h1 class="view-title">Análisis Sophia</h1>
+            <div class="view-body">
+              <p>Carga un documento o pega directamente un texto para estimar su <strong>Índice de Robustez Deliberativa (IRD)</strong> según el protocolo SOPHIA v3.0.</p>
+              <p>Formatos aceptados: <strong>.txt, .pdf, .docx, .md, .rtf</strong>.</p>
+            </div>
+            <div class="eval-tool">
+              <div class="upload-area" id="uploadArea" style="border:2px dashed rgba(59,130,246,.3); padding:20px; text-align:center; cursor:pointer; border-radius:4px; transition: border-color .2s;">
+                <p style="color:rgba(229,231,235,.4);">Arrastra tu archivo aquí o haz clic para seleccionarlo</p>
+                <input type="file" id="fileInput" accept=".txt,.pdf,.docx,.md,.rtf" style="display:none;">
+                <button class="btn-primary" id="uploadBtn">Seleccionar archivo</button>
+              </div>
+              <div id="filePreview" style="margin-top:12px; display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span id="fileName" style="color:var(--accent);"></span>
+                  <span id="fileSize" style="color:rgba(229,231,235,.4);font-size:.7rem;"></span>
+                </div>
+              </div>
+              <p style="text-align:center; color:rgba(229,231,235,.3); font-size:.75rem; margin:14px 0;">— o pega el texto directamente —</p>
+              <textarea class="sophia-input" id="evalInput" placeholder="Pega aquí el texto a analizar, o el contenido del archivo cargado aparecerá aquí..." style="height:150px;"></textarea>
+              <div class="eval-actions">
+                <button class="btn-primary" id="evalBtn">Auditar Documento →</button>
+                <span class="eval-note">El algoritmo es determinista y basado en reglas públicas.</span>
+              </div>
+            </div>
+            <div id="evalResult"></div>
+          </div>
+        `;
+      } catch (e) {
+        showDebug(`❌ Error en vista analisis: ${e.message}`, true);
+        return `<p>Error al renderizar: ${e.message}</p>`;
+      }
+    }
+  },
+  inicio: {
+    title: 'Sophia — Protocolo Abierto de Comunicación Deliberativa',
+    render: () => {
+      try {
+        return `
+          <div class="view">
+            <div class="view-eyebrow">Marco de Evaluación Deliberativa · v3.0</div>
+            <h1 class="view-title">¿Qué es SOPHIA?</h1>
+            <div class="view-body">
+              <p>SOPHIA es un <strong>protocolo abierto de comunicación deliberativa</strong> (RFC de la racionalidad pública). No evalúa la verdad del contenido, sino la <strong>legitimidad del proceso argumentativo</strong>.</p>
+              <p>Se fundamenta en una <strong>gramática formal de la deliberación</strong>: un sistema de reglas, átomos semánticos y meta-reglas que cualquier ciudadano puede auditar, debatir y versionar.</p>
+              <p>Todo el código fuente cognitivo es <strong>Open Source</strong>; cada criterio, constructo y átomo está documentado y es debatible. La ciudadanía puede inspeccionar cada fase y definición operacional, proponer modificaciones y observar el historial de cambios.</p>
+              <p>SOPHIA no censura; <strong>etiqueta</strong>. Su salida es un <em>acta de infracción</em> que detalla qué reglas de la conversación racional han sido violadas y en qué medida.</p>
+              <p>Es, en esencia, un <strong>sistema inmunológico cognitivo</strong> para el espacio público.</p>

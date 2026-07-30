@@ -1,0 +1,282 @@
+      
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) handleFile(e.target.files[0]);
+      });
+
+      // Eventos de arrastrar y soltar
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'var(--accent)';
+      });
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.borderColor = 'rgba(59,130,246,.3)';
+      });
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'rgba(59,130,246,.3)';
+        if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+      });
+
+    } catch (e) {
+      showDebug(`❌ Error en _bindFileUpload: ${e.message}`, true);
+    }
+  },
+   
+  _bindEval(viewId) {
+    try {
+      const btn = document.getElementById('evalBtn');
+      const input = document.getElementById('evalInput');
+      const out = document.getElementById('evalResult');
+
+      if (!btn) return;
+
+      // Usamos un listener único para evitar duplicación
+      btn.onclick = async () => {
+        const text = input ? input.value.trim() : '';
+        if (!text) {
+          out.innerHTML = `<p style="color:#ef4444;">El texto es requerido.</p>`;
+          return;
+        }
+
+        out.innerHTML = `<p style="color:rgba(229,231,235,.5); font-size:.8rem; margin-top:12px;">Analizando documento con SOPHIA (Motor Local + IA)...</p>`;
+
+        try {
+          let data = null;
+
+          try {
+            const response = await fetch('/api/sophia/evaluate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text,
+                userId: localStorage.getItem('userId') || null
+              })
+            });
+
+            if (response.ok) {
+              const resultado = await response.json();
+              // Normalización: preserva tanto el análisis local como la revisión de Gemini
+              data = normalizeSophiaResult(resultado);
+              console.log("📥 Datos recibidos del servidor:", data);
+            } else {
+              console.warn(`⚠️ /api/sophia/evaluate respondió ${response.status}, usando motor local.`);
+            }
+          } catch (networkError) {
+            console.warn('⚠️ No se pudo contactar /api/sophia/evaluate, usando motor local:', networkError.message);
+          }
+
+          // Si el backend no respondió o no devolvió datos estructurados, recurrimos al motor local
+          if (!data || typeof data.IRD_global === 'undefined') {
+            console.log("⚙️ Ejecutando fallback local (evaluateText)...");
+            data = normalizeSophiaResult(evaluateWithBestAvailableEngine(text));
+          }
+
+          this._renderEvaluation(data, out);
+
+        } catch (error) {
+          console.error('❌ Error en evaluación:', error);
+          out.innerHTML = `<p style="color:#ef4444;">Error: ${error.message}</p>`;
+        }
+      };
+    } catch (e) {
+      showDebug(`❌ Error en _bindEval: ${e.message}`, true);
+    }
+  },
+
+  _renderEvaluation(data, out) {
+    try {
+      if (!data) {
+        out.innerHTML = `<p style="color:#ef4444;">No se pudo generar la evaluación.</p>`;
+        return;
+      }
+
+      // Protección contra valores indefinidos en la visualización
+      const irdGlobal = data.IRD_global !== undefined ? data.IRD_global : 0;
+      const nivelRiesgo = data.riesgo || "Normal";
+
+      const riesgoColor = {
+        "Normal": "#22c55e",
+        "Atención": "#eab308",
+        "Alta Fragilidad": "#f97316",
+        "Riesgo Extremo": "#ef4444"
+      }[nivelRiesgo] || "#22c55e";
+
+      const fases = data.fases || [];
+      const evidencias = data.evidencias || [];
+      const hayInfracciones = fases.some(f => (f.infracciones || []).length > 0);
+
+      const NATURALEZA_LABEL = { SC: 'Científica', INF: 'Informativa', ARG: 'Argumentativa', POL: 'Política Deliberativa', NORM: 'Normativa/Propositiva' };
+      const esV4 = !!data.naturaleza_documental;
+
+      out.innerHTML = `
+        ${esV4 ? `
+        <div class="view-section">
+          <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+              <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">Naturaleza documental detectada</div>
+              <div style="font-size:.95rem; color:var(--accent);">${NATURALEZA_LABEL[data.naturaleza_documental] || data.naturaleza_documental}${data.hibrido ? ' (híbrido)' : ''}</div>
+            </div>
+            <div style="font-size:.7rem; color:rgba(229,231,235,.4);">Confianza de clasificación: ${Math.round((data.confianza_clasificacion || 0) * 100)}%</div>
+          </div>
+        </div>` : ''}
+
+        <div class="view-section">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
+            <div>
+              <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">Índice de Robustez Deliberativa</div>
+              <div style="font-size:2.2rem; font-weight:600; color:var(--accent);">${irdGlobal}<span style="font-size:1rem; color:rgba(229,231,235,.4);">/100</span></div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">Nivel de riesgo</div>
+              <div style="font-size:1.1rem; font-weight:600; color:${riesgoColor};">${nivelRiesgo}</div>
+            </div>
+          </div>
+        </div>
+
+        ${esV4 && data.rutas_evaluadas && data.rutas_evaluadas.saltos_detectados.length > 0 ? `
+        <div class="view-section">
+          <div class="view-section-title">Ruta inferencial: saltos detectados</div>
+          <div style="font-size:.68rem; color:rgba(229,231,235,.35); margin-bottom:8px;">Ruta esperada: ${data.rutas_evaluadas.ruta_esperada.join(' → ')}</div>
+          ${data.rutas_evaluadas.saltos_detectados.map(s => `
+            <div style="background:var(--s-panel); border-left:2px solid #eab308; padding:10px 14px; margin-bottom:8px;">
+              <div style="font-size:.8rem; color:#e5e7eb;">${s.descripcion}</div>
+              <div style="font-size:.68rem; color:#eab308; margin-top:2px;">-${s.penalizacion} pts</div>
+            </div>
+          `).join('')}
+        </div>` : ''}
+
+        <div class="view-section">
+          <div class="view-section-title">Puntaje por fase</div>
+          ${fases.map(f => `
+            <div style="margin-bottom:14px;">
+              <div style="display:flex; justify-content:space-between; font-size:.8rem; margin-bottom:4px;">
+                <span style="color:#e5e7eb;">${f.nombre || 'Fase'}</span>
+                <span style="color:rgba(229,231,235,.5);">${f.puntaje !== undefined ? f.puntaje : 0}/100</span>
+              </div>
+              <div style="background:rgba(255,255,255,.06); height:6px; border-radius:3px; overflow:hidden;">
+                <div class="score-bar" data-target="${f.puntaje !== undefined ? f.puntaje : 0}%" style="display:block; width:0%; height:100%; background:var(--accent); transition:width .6s ease;"></div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        ${hayInfracciones ? `
+          <div class="view-section">
+            <div class="view-section-title">Infracciones detectadas</div>
+            ${fases.filter(f => (f.infracciones || []).length > 0).map(f => `
+              <div style="margin-bottom:16px;">
+                <div style="font-size:.75rem; color:var(--accent); margin-bottom:6px;">${f.nombre}</div>
+                ${f.infracciones.map(inf => `
+                  <div style="background:var(--s-panel); border-left:2px solid #ef4444; padding:10px 14px; margin-bottom:8px;">
+                    <div style="display:flex; justify-content:space-between; font-size:.8rem; gap:8px;">
+                      <span style="color:#e5e7eb;">${inf.criterio || 'Criterio sin nombre'}</span>
+                      <span style="color:#ef4444; white-space:nowrap;">-${Number(inf.penalizacion || 0).toFixed(1)} pts</span>
+                    </div>
+                    <div style="font-size:.7rem; color:rgba(229,231,235,.4); margin-top:4px;">Constructo: ${inf.constructo || 'N/A'}</div>
+                    ${inf.meta_regla_aplicada ? `<div style="font-size:.65rem; color:#eab308; margin-top:4px;">⚠ ${inf.meta_regla_aplicada}</div>` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            `).join('')}
+          </div>
+        ` : `
+          <div class="view-section">
+            <p style="color:#22c55e;">✅ No se detectaron infracciones al protocolo.</p>
+          </div>
+        `}
+
+        ${evidencias.length > 0 ? `
+          <div class="view-section">
+            <div class="view-section-title">Evidencias textuales</div>
+            <div style="max-height:300px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
+              ${evidencias.map(ev => `
+                <div style="border-bottom:1px solid rgba(255,255,255,.05); padding:8px 0; font-size:.75rem;">
+                  <span style="color:#d97706; font-weight:500;">${ev.atomo || 'átomo'}</span>
+                  <span style="color:rgba(229,231,235,.3);"> (${ev.criterio || 'N/A'})</span>
+                  <div style="color:rgba(229,231,235,.6); margin-top:2px;">"${ev.fragmento || ''}"</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        ${data.llm ? `
+          <div class="view-section">
+            <div class="view-section-title">Revisión semántica (Gemini)</div>
+            <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
+              ${data.llm.overall_comment ? `<p style="font-size:.82rem; color:#e5e7eb; margin:0 0 12px 0; line-height:1.5;">${data.llm.overall_comment}</p>` : ''}
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:10px; margin-bottom:12px;">
+                ${data.llm.evidence_quality ? `
+                  <div>
+                    <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase;">Calidad de evidencia</div>
+                    <div style="font-size:.85rem; color:var(--accent);">${data.llm.evidence_quality}</div>
+                  </div>` : ''}
+                ${data.llm.tone_proportionality ? `
+                  <div>
+                    <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase;">Proporcionalidad del tono</div>
+                    <div style="font-size:.85rem; color:var(--accent);">${data.llm.tone_proportionality}</div>
+                  </div>` : ''}
+              </div>
+              ${(data.llm.additional_fallacies && data.llm.additional_fallacies.length > 0) ? `
+                <div style="margin-bottom:10px;">
+                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Falacias adicionales detectadas</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.llm.additional_fallacies.map(f => `<li>${f}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+              ${(data.llm.bias_detected && data.llm.bias_detected.length > 0) ? `
+                <div style="margin-bottom:10px;">
+                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Sesgos detectados</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.llm.bias_detected.map(b => `<li>${b}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+              ${(data.llm.rhetorical_devices && data.llm.rhetorical_devices.length > 0) ? `
+                <div>
+                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Recursos retóricos identificados</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.llm.rhetorical_devices.map(r => `<li>${r}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+            </div>
+          </div>
+        ` : data.llmError ? `
+          <div class="view-section">
+            <p style="color:rgba(229,231,235,.4); font-size:.78rem;">⚠ Revisión semántica (Gemini) no disponible: ${data.llmError}</p>
+          </div>
+        ` : ''}
+      `;
+
+      this._animateBars(out);
+    } catch (e) {
+      showDebug(`❌ Error en _renderEvaluation: ${e.message}`, true);
+      out.innerHTML = `<p style="color:#ef4444;">Error al renderizar la evaluación: ${e.message}</p>`;
+    }
+  },
+
+   
+      init() {
+    try {
+      console.log('🚀 Inicializando SOPHIA...');
+      const buttons = document.querySelectorAll('button.snav-item');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          this.navigate(e.currentTarget.dataset.view);
+        });
+      });
+      this.navigate('inicio');
+      console.log('✅ SOPHIA inicializada con éxito');
+    } catch (e) {
+      console.error(`❌ Error en init: ${e.message}`);
+    }
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('✅ El motor está encendido');
+  SOPHIA.init();
+});
+
+
+           
+          

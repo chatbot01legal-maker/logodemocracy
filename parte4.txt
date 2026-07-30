@@ -1,0 +1,285 @@
+              <div class="view-section-title">Nodos de Interacción</div>
+              <div class="relation-grid">
+                <div class="relation-card relation-card--academia">
+                  <div class="relation-header">
+                    <div class="relation-dot"></div>
+                    <span class="relation-name">Academia & Ágora</span>
+                  </div>
+                  <div class="relation-desc">SOPHIA asegura que los documentos que ingresan a la Academia posean trazabilidad argumentativa mínima para ser debatidos responsablemente.</div>
+                </div>
+                <div class="relation-card relation-card--rey">
+                  <div class="relation-header">
+                    <div class="relation-dot"></div>
+                    <span class="relation-name">Rey Filósofo</span>
+                  </div>
+                  <div class="relation-desc">Cuando un texto presenta baja adherencia, Rey Filósofo actúa como tutor, orientando sobre cómo mejorar la comunicación.</div>
+                </div>
+                <div class="relation-card relation-card--logos">
+                  <div class="relation-header">
+                    <div class="relation-dot"></div>
+                    <span class="relation-name">Logos</span>
+                  </div>
+                  <div class="relation-desc">Logos audita la matriz estructural del código; SOPHIA audita la honestidad de la arquitectura retórica.</div>
+                </div>
+                <div class="relation-card relation-card--aletheia">
+                  <div class="relation-header">
+                    <div class="relation-dot"></div>
+                    <span class="relation-name">Aletheia</span>
+                  </div>
+                  <div class="relation-desc">SOPHIA fiscaliza el rigor formal; Aletheia mapea la veracidad empírica de las fuentes.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } catch (e) {
+        showDebug(`❌ Error en vista relaciones: ${e.message}`, true);
+        return `<p>Error al renderizar: ${e.message}</p>`;
+      }
+    }
+  },
+  informe: {
+    title: 'Auditoría de Adherencia',
+    render: () => {
+      try {
+        return `
+          <div class="view">
+            <div class="view-eyebrow">Motor de Evaluación</div>
+            <h1 class="view-title">Auditoría de Adherencia</h1>
+            <div class="view-body">
+              <p>Ingresa un texto para estimar su <strong>Índice de Robustez Deliberativa (IRD)</strong>. SOPHIA calculará el puntaje basándose en las 5 fases, 20 criterios y 48 átomos del protocolo.</p>
+              <p>El resultado es un <strong>acta de infracción</strong> con el desglose por fase, las infracciones detectadas y las evidencias textuales.</p>
+            </div>
+            <div class="eval-tool">
+              <textarea class="sophia-input" id="evalInput" placeholder="Pega aquí el documento a auditar. SOPHIA evaluará su adherencia al protocolo de comunicación deliberativa..."></textarea>
+              <div class="eval-actions">
+                <button class="btn-primary" id="evalBtn">Auditar Documento →</button>
+                <span class="eval-note">El algoritmo es determinista y basado en reglas públicas.</span>
+              </div>
+            </div>
+            <div id="evalResult"></div>
+          </div>
+        `;
+      } catch (e) {
+        showDebug(`❌ Error en vista informe: ${e.message}`, true);
+        return `<p>Error al renderizar: ${e.message}</p>`;
+      }
+    }
+  }
+};
+
+// ─── SPA ROUTER ────────────────────────────────────────
+const SOPHIA = {
+  current: 'inicio',
+
+  navigate(viewId) {
+    try {
+      const contentArea = document.getElementById('viewContent');
+      if (!contentArea) {
+        showDebug(`❌ Error: No se encontró #viewContent`, true);
+        return;
+      }
+
+      const view = VIEWS[viewId];
+      if (!view) {
+        contentArea.innerHTML = `<h1>404</h1><p>Vista no encontrada: ${viewId}</p>`;
+        return;
+      }
+
+      // Actualizar título
+      const titleEl = document.getElementById('viewTitle');
+      if (titleEl) titleEl.textContent = view.title;
+
+      contentArea.innerHTML = view.render();
+      console.log(`✅ Vista cambiada a: ${viewId}`);
+
+      // Inicializar eventos específicos de la vista
+      if (viewId === 'analisis') {
+        this._bindFileUpload();
+        this._bindEval('analisis');
+      } else if (viewId === 'informe') {
+        this._bindEval('informe');
+      }
+
+      // Activar botón correspondiente en el sidebar
+      document.querySelectorAll('.snav-item[data-view]').forEach(el => {
+        el.classList.toggle('active', el.dataset.view === viewId);
+      });
+
+      // Animación de barras (si existe)
+      this._animateBars(contentArea);
+
+      // Popups si es una fase
+      if (viewId.startsWith('fase')) {
+        this._bindPopups(contentArea);
+      }
+    } catch (e) {
+      showDebug(`❌ Error en navigate: ${e.message}\n\n${e.stack}`, true);
+    }
+  },
+
+  bindUploadEvents() {
+    const btn = document.getElementById('uploadBtn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        document.getElementById('fileInput').click();
+      });
+    }
+  },
+
+  // ─── FUNCIONES AUXILIARES ────────────────────────────
+  _animateBars(root) {
+    try {
+      requestAnimationFrame(() => {
+        root.querySelectorAll('.score-bar[data-target]').forEach(bar => {
+          requestAnimationFrame(() => {
+            bar.style.width = bar.dataset.target;
+          });
+        });
+      });
+    } catch (e) {
+      console.warn('Error en _animateBars:', e);
+    }
+  },
+
+  _bindPopups(root) {
+    try {
+      root.querySelectorAll('[data-constructo]').forEach(el => {
+        el.style.cursor = 'pointer';
+        el.style.color = 'var(--accent)';
+        el.addEventListener('click', () => {
+          const constructo = el.dataset.constructo;
+          let def = 'Definición no disponible.';
+          for (const fase of PROTOCOL.fases) {
+            for (const crit of fase.criterios) {
+              if (crit.constructo === constructo) {
+                def = crit.definicion;
+                break;
+              }
+            }
+          }
+          showDefinitionPopup(`Constructo: ${constructo}`, def);
+        });
+      });
+      root.querySelectorAll('[data-atomo]').forEach(el => {
+        el.style.cursor = 'pointer';
+        el.style.color = '#d97706';
+        el.addEventListener('click', () => {
+          const atomo = el.dataset.atomo;
+          let def = 'Definición no disponible.';
+          for (const fase of PROTOCOL.fases) {
+            for (const crit of fase.criterios) {
+              for (const a of crit.atomos) {
+                if (a.id === atomo) {
+                  def = a.definicion;
+                  break;
+                }
+              }
+            }
+          }
+          showDefinitionPopup(`Átomo: ${atomo}`, def);
+        });
+      });
+    } catch (e) {
+      showDebug(`❌ Error en _bindPopups: ${e.message}`, true);
+    }
+  },
+
+    _bindFileUpload() {
+    try {
+      const uploadArea = document.getElementById('uploadArea');
+      const fileInput = document.getElementById('fileInput');
+      const uploadBtn = document.getElementById('uploadBtn');
+      const preview = document.getElementById('filePreview');
+      const fileName = document.getElementById('fileName');
+      const fileSize = document.getElementById('fileSize');
+      const evalInput = document.getElementById('evalInput');
+
+      if (!uploadArea || !fileInput || !uploadBtn) return;
+
+      const allowedExtensions = ['txt', 'pdf', 'docx', 'md', 'rtf'];
+
+      const loadScript = (src) => new Promise((resolve, reject) => {
+        if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error(`No se pudo cargar ${src}`));
+        document.head.appendChild(script);
+      });
+
+      const handleFile = async (file) => {
+        if (!file) return;
+        const ext = file.name.split('.').pop().toLowerCase();
+
+        if (!allowedExtensions.includes(ext)) {
+          alert('Formato no soportado. Usa .txt, .pdf, .docx, .md o .rtf.');
+          return;
+        }
+
+        fileName.textContent = file.name;
+        fileSize.textContent = `${(file.size / 1024).toFixed(1)} KB`;
+        preview.style.display = 'block';
+
+        if (ext === 'txt' || ext === 'md' || ext === 'rtf') {
+          // .rtf se lee como texto plano (incluirá los códigos de control RTF,
+          // pero es suficiente para el análisis; para una extracción limpia
+          // se podría integrar una librería específica de RTF más adelante).
+          const reader = new FileReader();
+          reader.onload = (e) => { evalInput.value = e.target.result; };
+          reader.onerror = () => alert('No se pudo leer el archivo.');
+          reader.readAsText(file);
+        } else if (ext === 'pdf') {
+          try {
+            if (typeof pdfjsLib === 'undefined') {
+              await loadScript('https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js');
+              if (typeof pdfjsLib !== 'undefined' && pdfjsLib.GlobalWorkerOptions) {
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+              }
+            }
+          } catch (err) {
+            alert('No se pudo cargar el lector de PDF. Revisa tu conexión e inténtalo de nuevo.');
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            try {
+              const typedarray = new Uint8Array(e.target.result);
+              const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
+              let fullText = '';
+              for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const content = await page.getTextContent();
+                fullText += content.items.map(item => item.str).join(' ') + '\n';
+              }
+              evalInput.value = fullText;
+            } catch (err) {
+              alert('Error al leer el PDF: ' + err.message);
+            }
+          };
+          reader.readAsArrayBuffer(file);
+        } else if (ext === 'docx') {
+          try {
+            if (typeof mammoth === 'undefined') {
+              await loadScript('https://unpkg.com/mammoth/mammoth.browser.min.js');
+            }
+          } catch (err) {
+            alert('No se pudo cargar el lector de DOCX. Revisa tu conexión e inténtalo de nuevo.');
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            try {
+              const result = await mammoth.extractRawText({ arrayBuffer: e.target.result });
+              evalInput.value = result.value;
+            } catch (err) {
+              alert('Error al leer el DOCX: ' + err.message);
+            }
+          };
+          reader.readAsArrayBuffer(file);
+        }
+      };
+
+      uploadBtn.addEventListener('click', () => fileInput.click());

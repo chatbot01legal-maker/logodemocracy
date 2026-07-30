@@ -1,0 +1,200 @@
+{
+  "local": {
+    "fases": [
+      {
+        "id": "fase1",
+        "nombre": "Estructura Lógica",
+        "puntaje": 63,
+        "infracciones": [
+          {
+            "criterio": "1.1 - No Contradicción",
+            "constructo": "Consistencia Interna",
+            "penalizacion": 12.5,
+            "atomos_activados": [
+              {
+                "atomo": "excluyentes",
+                "frecuencia": 1,
+                "severidad": 12.5
+              }
+            ]
+          },
+          {
+            "criterio": "1.3 - Ausencia de Falsas Dicotomías",
+            "constructo": "Reducción de Complejidad",
+            "penalizacion": 25,
+            "atomos_activados": [
+              {
+                "atomo": "eleccion",
+                "frecuencia": 7,
+                "severidad": 12.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fase2",
+        "nombre": "Inferencia",
+        "puntaje": 88,
+        "infracciones": [
+          {
+            "criterio": "2.2 - Causalidad Rigurosa",
+            "constructo": "Nexo Causal",
+            "penalizacion": 12.5,
+            "atomos_activados": [
+              {
+                "atomo": "causalidad",
+                "frecuencia": 1,
+                "severidad": 12.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fase3",
+        "nombre": "Calibración Epistémica",
+        "puntaje": 38,
+        "infracciones": [
+          {
+            "criterio": "3.1 - Trazabilidad de la Evidencia",
+            "constructo": "Anclaje Empírico",
+            "penalizacion": 12.5,
+            "atomos_activados": [
+              {
+                "atomo": "origen",
+                "frecuencia": 1,
+                "severidad": 12.5
+              }
+            ]
+          },
+          {
+            "criterio": "3.3 - Delimitación Hecho-Valor",
+            "constructo": "Distinción Epistémica",
+            "penalizacion": 25,
+            "atomos_activados": [
+              {
+                "atomo": "hecho",
+                "frecuencia": 7,
+                "severidad": 12.5
+              },
+              {
+                "atomo": "juicio",
+                "frecuencia": 2,
+                "severidad": 12.5
+              }
+            ]
+          },
+          {
+            "criterio": "3.4 - Completitud del Contexto",
+            "constructo": "Integridad Contextual",
+            "penalizacion": 25,
+            "atomos_activados": [
+              {
+                "atomo": "variables",
+                "frecuencia": 2,
+                "severidad": 12.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fase4",
+        "nombre": "Transparencia Retórica",
+        "puntaje": 50,
+        "infracciones": [
+          {
+            "criterio": "4.1 - Representación Justa (Steelman)",
+            "constructo": "Alteridad Cognitiva",
+            "penalizacion": 25,
+            "atomos_activados": [
+              {
+                "atomo": "argumento",
+                "frecuencia": 1,
+                "severidad": 12.5
+              },
+              {
+                "atomo": "contrario",
+                "frecuencia": 1,
+                "severidad": 12.5
+              }
+            ]
+          },
+          {
+            "criterio": "4.3 - Despersonalización del Debate",
+            "constructo": "Separación Identidad-Argumento",
+            "penalizacion": 25,
+            "atomos_activados": [
+              {
+                "atomo": "identidad",
+                "frecuencia": 4,
+                "severidad": 12.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fase5",
+        "nombre": "Pertinencia Deliberativa",
+        "puntaje": 50,
+        "infracciones": [
+          {
+            "criterio": "5.2 - Responsabilidad Constructiva",
+            "constructo": "Aportación Propositiva",
+            "penalizacion": 25,
+            "atomos_activados": [
+              {
+                "atomo": "critica",
+                "frecuencia": 1,
+                "severidad": 12.5
+              },
+              {
+                "atomo": "propuesta",
+                "frecuencia": 1,
+                "severidad": 12.5
+              }
+            ]
+          },
+          {
+            "criterio": "5.3 - Universalidad (Simetría)",
+            "constructo": "Equidad Epistémica",
+            "penalizacion": 25,
+            "atomos_activados": [
+              {
+                "atomo": "prueba",
+                "frecuencia": 2,
+                "severidad": 12.5
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "evidencias": [
+      {
+        "atomo": "excluyentes",
+        "fragmento": "Los ciudadanos tienen derecho a exigir mayor seguridad, pero una deliberación responsable debe distinguir entre la legítima preocupación social y la evaluación objetiva de las medidas disponibles.",
+        "criterio": "1.1"
+      },
+      {
+        "atomo": "hecho",
+        "fragmento": "La pregunta relevante no es solamente qué medidas generan apoyo popular, sino cuáles presentan evidencia suficiente de efectividad, bajo qué condiciones funcionan y cuáles son sus posibles costos sociales.",
+        "criterio": "3.3"
+      }
+    ],
+    "puntajes_fase": {
+      "fase1": 63,
+      "fase2": 88,
+      "fase3": 38,
+      "fase4": 50,
+      "fase5": 50
+    },
+    "IRD_global": 58,
+    "riesgo": "Riesgo Extremo"
+  },
+  "ird": 58,
+  "risk": "Riesgo Extremo",
+  "llm_review": null
+}
