@@ -1475,6 +1475,7 @@ const SOPHIA = {
           const pick = (obj, keys, fallback) => {
             for (const k of keys) {
               if (obj && obj[k] !== undefined && obj[k] !== null && obj[k] !== '') return obj[k];
+              if (obj && obj.revision_semantica && obj.revision_semantica[k] !== undefined && obj.revision_semantica[k] !== null && obj.revision_semantica[k] !== '') return obj.revision_semantica[k];
             }
             return fallback;
           };
@@ -1578,4 +1579,3 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('✅ El motor está encendido');
   SOPHIA.init();
 });
-
