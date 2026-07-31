@@ -11,7 +11,6 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 const { connect } = require("./modules/database");
 const { evaluate } = require("./modules/sophiaEvaluationPipeline");
 const { mergeGuestProfileIntoUser } = require("./modules/reyFilosofoService");
-const reyFilosofoRoutes = require("./routes/reyFilosofoRoutes");
 
 const PROTOCOL = {
   version: "4.0"
@@ -45,14 +44,12 @@ app.use((req, res, next) => {
   next();
 });
 
+// ─── Proxy Middleware ─────────────────────────────────
 app.use(
   "/api/reyfilosofo/microtests",
   createProxyMiddleware({
     target: "http://localhost:5000",
-    changeOrigin: true,
-    pathRewrite: (path) => {
-      return "/api/reyfilosofo/microtests" + path;
-    }
+    changeOrigin: true
   })
 );
 
