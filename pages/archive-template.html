@@ -146,21 +146,30 @@ href="/assets/css/archive.css">
 
 <script src="/assets/js/mobile-menu.js"></script>
 
-<script src="/assets/js/archive.js?v=3"></script>
+<script src="/assets/js/archive.js?v=4"></script>
 
 <!-- CONECTOR REY FILÓSOFO / FÁBRICA -->
 <script src="/CognitiveSessionFactory.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+  window.addEventListener("load", () => {
     const btn = document.querySelector(".philosopher-btn");
     if (btn) {
       btn.addEventListener("click", () => {
+        console.log("CLICK EN BOTÓN REY FILÓSOFO CAPTURADO");
+        
         const asset = window.Academy && typeof window.Academy.getCurrentCognitiveAsset === 'function'
           ? window.Academy.getCurrentCognitiveAsset()
           : null;
 
+        console.log("ACTIVO COGNITIVO OBTENIDO:", asset);
+
         if (!asset) {
           alert("Por favor, selecciona un documento de la Academia primero.");
+          return;
+        }
+
+        if (typeof CognitiveSessionFactory === 'undefined') {
+          console.error("CognitiveSessionFactory no está disponible.");
           return;
         }
 
@@ -172,6 +181,8 @@ href="/assets/css/archive.css">
           console.error("ReyFilosofoChat no está disponible.");
         }
       });
+    } else {
+      console.warn("No se encontró el botón .philosopher-btn");
     }
   });
 </script>
