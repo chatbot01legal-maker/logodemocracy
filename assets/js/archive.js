@@ -2,6 +2,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const content = document.getElementById("content");
 
+  // Activo cognitivo inicial por defecto (intro.md) para que el Rey Filósofo lo tenga desde el segundo uno
+  let currentCognitiveAsset = {
+    type: "academy_document",
+    version: "1.0",
+    content: {
+      id: "intro.md",
+      title: "intro.md",
+      markdown: "Platón soñó con reyes filósofos. Nosotros exploramos otra posibilidad. Que cualquier ciudadano pueda aprender a pensar como uno. Bienvenido a la Academia.",
+      loadedAt: new Date().toISOString()
+    }
+  };
+
   /* =========================
      LOAD MARKDOWN DOCUMENT
   ========================= */
@@ -24,7 +36,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const md = await res.text();
 
-      // 3. render markdown
+      // 3. Actualizar el activo cognitivo con el documento real cargado
+      currentCognitiveAsset = {
+        type: "academy_document",
+        version: "1.0",
+        content: {
+          id: name,
+          title: name,
+          markdown: md,
+          loadedAt: new Date().toISOString()
+        }
+      };
+
+      // 4. render markdown
       content.innerHTML = marked.parse(md);
 
     } catch (err) {
@@ -46,8 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!treeContainer) return;
     
-console.log("TREE RAW DATA:", tree);
-console.log("TREE CONTAINER:", treeContainer);
+    console.log("TREE RAW DATA:", tree);
+    console.log("TREE CONTAINER:", treeContainer);
     
     treeContainer.innerHTML = Object.entries(tree)
       .map(([folder, files]) => `
@@ -72,6 +96,14 @@ console.log("TREE CONTAINER:", treeContainer);
       });
     });
   }
+
+  /* =========================
+     EXPOSICIÓN DE API PÚBLICA DE ACADEMIA
+  ========================= */
+  window.Academy = window.Academy || {};
+  window.Academy.getCurrentCognitiveAsset = function () {
+    return currentCognitiveAsset;
+  };
 
   /* =========================
      AUTO LOAD INICIAL
