@@ -147,8 +147,36 @@ href="/assets/css/archive.css">
 <script src="/assets/js/mobile-menu.js"></script>
 
 <script src="/assets/js/archive.js?v=3"></script>
+
+<!-- CONECTOR REY FILÓSOFO / FÁBRICA -->
+<script src="/CognitiveSessionFactory.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.querySelector(".philosopher-btn");
+    if (btn) {
+      btn.addEventListener("click", () => {
+        const asset = window.Academy && typeof window.Academy.getCurrentCognitiveAsset === 'function'
+          ? window.Academy.getCurrentCognitiveAsset()
+          : null;
+
+        if (!asset) {
+          alert("Por favor, selecciona un documento de la Academia primero.");
+          return;
+        }
+
+        const session = CognitiveSessionFactory.fromAcademy(asset);
+        
+        if (typeof ReyFilosofoChat !== 'undefined' && typeof ReyFilosofoChat.open === 'function') {
+          ReyFilosofoChat.open(session);
+        } else {
+          console.error("ReyFilosofoChat no está disponible.");
+        }
+      });
+    }
+  });
+</script>
   
 </body>
   
 </html>
-
+  
