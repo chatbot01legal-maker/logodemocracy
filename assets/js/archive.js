@@ -70,9 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!treeContainer) return;
     
-    console.log("TREE RAW DATA:", tree);
-    console.log("TREE CONTAINER:", treeContainer);
-    
     treeContainer.innerHTML = Object.entries(tree)
       .map(([folder, files]) => `
         <div class="folder">📁 ${folder}</div>
@@ -98,12 +95,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =========================
-     EXPOSICIÓN DE API PÚBLICA DE ACADEMIA
+     VINCULACIÓN BOTÓN PROFUNDIZAR
   ========================= */
-  window.Academy = window.Academy || {};
-  window.Academy.getCurrentCognitiveAsset = function () {
-    return currentCognitiveAsset;
-  };
+  const philBtn = document.querySelector(".philosopher-btn");
+  if (philBtn) {
+    philBtn.addEventListener("click", () => {
+      // Guardamos el activo actual en localStorage para que el Rey Filósofo lo reciba
+      localStorage.setItem("current_cognitive_asset", JSON.stringify(currentCognitiveAsset));
+      // Redirigimos a la vista del Rey Filósofo
+      window.location.href = "/pages/rey-filosofo.html";
+    });
+  }
 
   /* =========================
      AUTO LOAD INICIAL
