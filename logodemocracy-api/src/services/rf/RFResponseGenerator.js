@@ -3,27 +3,36 @@ const { askVertex } = require('../../../../modules/vertexClient');
 const RFResponseGenerator = {
 
   async generate({ content, scaffold, context }) {
+    // 1. Log estructurado para confirmar qué payload está recibiendo la función
+    console.log("=== PAYLOAD RECIBIDO EN RFResponseGenerator ===");
+    console.log(JSON.stringify({ content, context }, null, 2));
+    console.log("===============================================");
+
+    // Extracción segura para evitar errores si algo viene undefined
+    const fsmState = context?.session?.fsm_state || 'No definido';
+    const scaffoldType = scaffold?.scaffold_type || 'ninguno';
+    const adaptedContent = scaffold?.adapted_content || '';
+    const sophiaData = context?.sophiaAudit ? JSON.stringify(context.sophiaAudit, null, 2) : 'Sin auditoría previa';
 
     const prompt = `
-Actúa como un tutor cognitivo.
-
-Tu respuesta debe respetar la estrategia pedagógica ya calculada por el motor.
+Actúa estrictamente basándote en los parámetros de la auditoría y el estado cognitivo.
 
 Estado cognitivo:
-${context.session.fsm_state}
+${fsmState}
 
 Tipo de andamiaje:
-${scaffold.scaffold_type}
+${scaffoldType}
 
-Instrucción pedagógica:
-${scaffold.adapted_content}
+Auditoría de Sofía (Contexto analítico):
+${sophiaData}
+
+Instrucción pedagógica / Resultado esperado:
+${adaptedContent}
 
 Mensaje original del usuario:
 ${content}
 
-Genera una respuesta breve, clara y socrática.
-No cambies la estrategia.
-No entregues respuestas automáticas si corresponde guiar mediante preguntas.
+Genera tu respuesta respetando el tipo de andamiaje. Si el andamiaje es "ninguno" o si el resultado de Sofía exige una respuesta directa, responde directamente a la solicitud sin utilizar un estilo socrático ni hacer preguntas de vuelta. No cambies la estrategia.
 `;
 
     return await askVertex(prompt);
@@ -32,3 +41,5 @@ No entregues respuestas automáticas si corresponde guiar mediante preguntas.
 };
 
 module.exports = RFResponseGenerator;
+
+
