@@ -32,10 +32,11 @@ const RFKernel = {
     // 5. Aplicación de andamiaje sobre el contenido técnico
     const scaffold = ScaffoldEngine.apply(content, strategy, analogy, ctx.session.fsm_state);
     const tutorResponse = await RFResponseGenerator.generate({
-  content,
-  scaffold,
-  context: ctx
-});
+      content,
+      scaffold,
+      context: ctx
+    });
+    
     // 6. Actualización de competencias en LearningMap
     if (metadata?.competence) {
       await CompetencyTracker.update(ctx.learningMap, metadata.competence, user_response, transfer.score);
@@ -48,13 +49,15 @@ const RFKernel = {
     // 7. Persistencia atómica de las memorias
     await ContextAssembler.persist(ctx);
 
-    // Contrato de salida canónico
+    // Contrato de salida canónico compatible con el widget
     return {
-  adapted_content: tutorResponse,
-  fsm_state: ctx.session.fsm_state,
-  scaffold_type: scaffold.scaffold_type,
-  transfer_detected: transfer.detected
-};
+      content: tutorResponse,
+      reply: tutorResponse,
+      adapted_content: tutorResponse,
+      fsm_state: ctx.session.fsm_state,
+      scaffold_type: scaffold.scaffold_type,
+      transfer_detected: transfer.detected
+    };
   }
 };
 
