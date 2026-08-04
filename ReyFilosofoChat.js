@@ -31,16 +31,12 @@
   // ─── Configuración ──────────────────────────────────
   const CONTRACT_VERSION = '1.0';
 
-  // ⚠️ AJUSTAR a la ruta real que expone el backend para este motor.
-  // El proxy existente en app.js monta "/api/reyfilosofo" — este es el
-  // endpoint de mensajería del Motor Cognitivo v1.0 dentro de ese espacio.
+  // Endpoint de mensajería del Motor Cognitivo v1.0
   const ENDPOINT = '/api/reyfilosofo/message';
 
   const SESSION_STORAGE_KEY = 'reyFilosofoSessionId';
 
   // ─── Estado interno ─────────────────────────────────
-  // Vive únicamente acá. Ningún módulo externo debe tocarlo directamente:
-  // solo a través de la API pública (open / close).
   const state = {
     sessionId: null,
     activeAsset: null,   // el Activo Cognitivo recibido del módulo origen
@@ -52,21 +48,19 @@
   let container = null; // nodo DOM raíz del widget (botón + panel)
 
   // ─── Contrato de entrada: normalización tolerante ───
-  // El motor nunca debe romperse si un módulo manda un activo incompleto,
-  // ni debe interpretar su contenido. Solo garantiza la forma mínima del
-  // contrato antes de transportarlo intacto al backend.
-  //
-  // Forma esperada:
-  // { source, contractVersion, objective, asset, conversation, metadata }
   function normalizeCognitiveAsset(raw) {
     if (!raw || typeof raw !== 'object') {
       throw new Error('Se requiere un Activo Cognitivo válido: { source, objective, asset, ... }');
     }
-    if (!raw.source) {
-      throw new Error('El Activo Cognitivo requiere "source" (módulo de origen).');
+    
+    // Soporta 'source' directo o 'metadata.originModule' generado por CognitiveSessionFactory
+    const source = raw.source || (raw.metadata && raw.metadata.originModule);
+    if (!source) {
+      throw new Error('El Activo Cognitivo requiere "source" o "metadata.originModule" (módulo de origen).');
     }
+
     return {
-      source: raw.source,
+      source: source,
       contractVersion: raw.contractVersion || CONTRACT_VERSION,
       objective: raw.objective || null,
       asset: raw.asset !== undefined ? raw.asset : null,
@@ -87,7 +81,6 @@
         localStorage.setItem(SESSION_STORAGE_KEY, sid);
       }
     } catch (e) {
-      // localStorage puede no estar disponible (navegación privada, etc.)
       sid = 'rf-' + Date.now() + '-' + Math.random().toString(16).slice(2);
     }
     state.sessionId = sid;
@@ -95,11 +88,6 @@
   }
 
   // ─── Envío de mensajes ──────────────────────────────
-  // El payload contiene únicamente lo que especifica el contrato:
-  // { sessionId, content, provider_module, activeAsset }.
-  // El frontend nunca construye el prompt — eso es responsabilidad
-  // exclusiva del backend, que combina Prompt Base + Contrato +
-  // Activo Cognitivo + Conversación.
   async function sendMessage(rawText) {
     const text = (rawText || '').trim();
     if (!text || state.isSending) return;
@@ -133,7 +121,6 @@
       }
 
       const data = await response.json();
-      // Tolerante al nombre exacto del campo de respuesta del backend.
       const reply = (data && (data.content || data.reply || data.message)) || null;
 
       state.conversation.push({
@@ -156,11 +143,6 @@
   }
 
   // ─── Render ──────────────────────────────────────────
-  // Interfaz deliberadamente mínima: historial, caja de texto, enviar,
-  // cerrar. Nada de Home, Microtests, Currículum, ZDP ni Metacognición —
-  // eso pertenece a la futura aplicación completa del Rey Filósofo, que
-  // se construirá como capas adicionales sobre este mismo motor.
-
   function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str == null ? '' : String(str);
@@ -261,14 +243,8 @@
   }
 
   // ─── API pública ─────────────────────────────────────
-  // Único punto de contacto entre este motor y el resto del ecosistema.
-  // Cualquier módulo (presente o futuro) solo debe conocer estos tres
-  // métodos y el contrato del Activo Cognitivo — nunca la implementación
-  // interna de este archivo.
   const ReyFilosofoChat = {
 
-    // Monta el botón flotante. Se auto-invoca al cargar el script;
-    // no hace falta llamarlo manualmente en el caso normal.
     init() {
       if (container) return;
       container = document.createElement('div');
@@ -277,10 +253,6 @@
       renderLauncher();
     },
 
-    // Punto de entrada para cualquier módulo: entrega un Activo Cognitivo
-    // y el Rey Filósofo se abre listo para conversar sobre él.
-    // El motor no sabe ni le importa si "cognitiveAsset" viene de SOPHIA,
-    // de Academia o de un módulo que todavía no existe.
     open(cognitiveAsset) {
       let normalized;
       try {
@@ -295,22 +267,6 @@
       getSessionId();
       if (!container) this.init();
       renderPanel();
-
-      // ← TEMPORAL: diagnóstico sin DevTools, borrar después de confirmar la causa
-      setTimeout(() => {
-        const rfRoot = document.getElementById('rey-filosofo-root');
-        const cs = rfRoot ? window.getComputedStyle(rfRoot) : null;
-        const panelEl = document.getElementById('rf-panel');
-        alert(
-          "DIAGNÓSTICO 5:\n" +
-          "container existe: " + (!!rfRoot) + "\n" +
-          "display: " + (cs ? cs.display : 'N/A') + "\n" +
-          "visibility: " + (cs ? cs.visibility : 'N/A') + "\n" +
-          "z-index: " + (cs ? cs.zIndex : 'N/A') + "\n" +
-          "innerHTML length: " + (rfRoot ? rfRoot.innerHTML.length : 'N/A') + "\n" +
-          "#rf-panel existe: " + (!!panelEl)
-        );
-      }, 100);
     },
 
     close() {
@@ -318,8 +274,6 @@
       renderLauncher();
     },
 
-    // Solo para depuración/tests — ningún módulo externo debería
-    // depender de esto en producción.
     _getState() {
       return {
         sessionId: state.sessionId,
@@ -340,4 +294,3 @@
   }
 
 })();
-     

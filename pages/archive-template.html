@@ -5,12 +5,9 @@
   <title>Academia | Logodemocracy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link rel="stylesheet"
-href="/assets/css/base-layout.css">
-
-<link rel="stylesheet"
-href="/assets/css/archive.css">
-
+  <link rel="stylesheet" href="/assets/css/base-layout.css">
+  <link rel="stylesheet" href="/assets/css/archive.css">
+</head>
 <body>
 
 <div class="page">
@@ -21,48 +18,27 @@ href="/assets/css/archive.css">
     LOGODEMOCRACY
   </a>
 
-
   <nav class="module-nav">
-
     <a href="/pages/archive-template.html" class="module-link active">
       Academia
     </a>
-
     <a href="/pages/rey-filosofo.html" class="module-link">
       Rey Filósofo
     </a>
-
     <a href="/pages/sophia.html" class="module-link">
       Sophia
     </a>
-
   </nav>
 
-
-  <button
-      class="mobile-menu-btn"
-      id="mobileMenuBtn"
-      aria-label="Abrir menú">
-
-    <svg width="22"
-         height="22"
-         viewBox="0 0 24 24"
-         fill="none"
-         stroke="currentColor"
-         stroke-width="2"
-         stroke-linecap="round">
-
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
       <path d="M4 6H20"/>
       <path d="M4 12H20"/>
       <path d="M4 18H20"/>
-
     </svg>
-
   </button>
 
-
   <div class="topbar-right"></div>
-
 
 </header>
 
@@ -70,7 +46,6 @@ href="/assets/css/archive.css">
 
     <aside class="sidebar">
 
-      <!-- Contenido del sidebar -->
       <div class="sidebar-content">
 
         <div class="tree" id="tree"></div>
@@ -97,13 +72,10 @@ href="/assets/css/archive.css">
 
       </div>
 
-      <!-- Columna exclusiva para el botón -->
       <div class="sidebar-rail">
-
         <div class="sidebar-toggle">
           ◂
         </div>
-
       </div>
 
     </aside>
@@ -115,16 +87,10 @@ href="/assets/css/archive.css">
       </div>
 
       <div class="document-content">
+        <div class="content" id="content"></div>
+      </div>
 
-        
-
-<div class="content" id="content">
-
-</div>
-
-</div>
-
-</main>
+    </main>
 
 </div>
 
@@ -138,14 +104,8 @@ href="/assets/css/archive.css">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <!-- TU LÓGICA -->
-<script>
-  console.log("ARCHIVE TEMPLATE JS ESTÁ CORRIENDO");
-</script>
-  
 <script src="/assets/js/layout.js"></script>
-
 <script src="/assets/js/mobile-menu.js"></script>
-
 <script src="/assets/js/archive.js?v=6"></script>
 
 <!-- CONECTOR REY FILÓSOFO / FÁBRICA -->
@@ -156,14 +116,9 @@ href="/assets/css/archive.css">
     const btn = document.querySelector(".philosopher-btn");
     if (btn) {
       btn.addEventListener("click", () => {
-        alert("DIAGNÓSTICO 1: CLICK DETECTADO"); // ← TEMPORAL, borrar después
-        console.log("CLICK EN BOTÓN REY FILÓSOFO CAPTURADO");
-        
         const asset = window.Academy && typeof window.Academy.getCurrentCognitiveAsset === 'function'
           ? window.Academy.getCurrentCognitiveAsset()
           : null;
-
-        console.log("ACTIVO COGNITIVO OBTENIDO:", asset);
 
         if (!asset) {
           alert("Por favor, selecciona un documento de la Academia primero.");
@@ -171,7 +126,6 @@ href="/assets/css/archive.css">
         }
 
         if (typeof CognitiveSessionFactory === 'undefined') {
-          alert("DIAGNÓSTICO 2: CognitiveSessionFactory no disponible"); // ← TEMPORAL, borrar después
           console.error("CognitiveSessionFactory no está disponible.");
           return;
         }
@@ -179,20 +133,14 @@ href="/assets/css/archive.css">
         const session = CognitiveSessionFactory.fromAcademy(asset);
         
         if (typeof ReyFilosofoChat !== 'undefined' && typeof ReyFilosofoChat.open === 'function') {
-          alert("DIAGNÓSTICO 3: ABRIENDO REYFILOSOFOCHAT"); // ← TEMPORAL, borrar después
           ReyFilosofoChat.open(session);
         } else {
-          alert("DIAGNÓSTICO 4: ReyFilosofoChat NO disponible"); // ← TEMPORAL, borrar después
           console.error("ReyFilosofoChat no está disponible.");
         }
       });
-    } else {
-      alert("DIAGNÓSTICO 0: NO SE ENCONTRÓ EL BOTÓN .philosopher-btn"); // ← TEMPORAL, borrar después
-      console.warn("No se encontró el botón .philosopher-btn");
     }
   });
 </script>
-  
+
 </body>
-  
 </html>
