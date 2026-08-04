@@ -146,15 +146,17 @@ href="/assets/css/archive.css">
 
 <script src="/assets/js/mobile-menu.js"></script>
 
-<script src="/assets/js/archive.js?v=4"></script>
+<script src="/assets/js/archive.js?v=5"></script>
 
 <!-- CONECTOR REY FILÓSOFO / FÁBRICA -->
-<script src="/CognitiveSessionFactory.js"></script>
+<script src="/CognitiveSessionFactory.js?v=5"></script>
+<script src="/ReyFilosofoChat.js?v=5"></script>
 <script>
   window.addEventListener("load", () => {
     const btn = document.querySelector(".philosopher-btn");
     if (btn) {
       btn.addEventListener("click", () => {
+        alert("DIAGNÓSTICO 1: CLICK DETECTADO"); // ← TEMPORAL, borrar después
         console.log("CLICK EN BOTÓN REY FILÓSOFO CAPTURADO");
         
         const asset = window.Academy && typeof window.Academy.getCurrentCognitiveAsset === 'function'
@@ -169,6 +171,7 @@ href="/assets/css/archive.css">
         }
 
         if (typeof CognitiveSessionFactory === 'undefined') {
+          alert("DIAGNÓSTICO 2: CognitiveSessionFactory no disponible"); // ← TEMPORAL, borrar después
           console.error("CognitiveSessionFactory no está disponible.");
           return;
         }
@@ -176,12 +179,15 @@ href="/assets/css/archive.css">
         const session = CognitiveSessionFactory.fromAcademy(asset);
         
         if (typeof ReyFilosofoChat !== 'undefined' && typeof ReyFilosofoChat.open === 'function') {
+          alert("DIAGNÓSTICO 3: ABRIENDO REYFILOSOFOCHAT"); // ← TEMPORAL, borrar después
           ReyFilosofoChat.open(session);
         } else {
+          alert("DIAGNÓSTICO 4: ReyFilosofoChat NO disponible"); // ← TEMPORAL, borrar después
           console.error("ReyFilosofoChat no está disponible.");
         }
       });
     } else {
+      alert("DIAGNÓSTICO 0: NO SE ENCONTRÓ EL BOTÓN .philosopher-btn"); // ← TEMPORAL, borrar después
       console.warn("No se encontró el botón .philosopher-btn");
     }
   });
@@ -190,3 +196,4 @@ href="/assets/css/archive.css">
 </body>
   
 </html>
+
