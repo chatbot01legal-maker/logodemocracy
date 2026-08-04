@@ -943,6 +943,11 @@ const VIEWS = {
 // ─── SPA ROUTER ────────────────────────────────────────
 const SOPHIA = {
   current: 'inicio',
+  _lastEvaluationData: null, // Nuevo estado para el Motor Cognitivo
+
+  getLastEvaluation() {      // Expone los datos para el Rey Filósofo
+    return this._lastEvaluationData;
+  },
 
   navigate(viewId) {
     try {
@@ -1057,7 +1062,7 @@ const SOPHIA = {
     }
   },
 
-    _bindFileUpload() {
+  _bindFileUpload() {
     try {
       const uploadArea = document.getElementById('uploadArea');
       const fileInput = document.getElementById('fileInput');
@@ -1094,9 +1099,6 @@ const SOPHIA = {
         preview.style.display = 'block';
 
         if (ext === 'txt' || ext === 'md' || ext === 'rtf') {
-          // .rtf se lee como texto plano (incluirá los códigos de control RTF,
-          // pero es suficiente para el análisis; para una extracción limpia
-          // se podría integrar una librería específica de RTF más adelante).
           const reader = new FileReader();
           reader.onload = (e) => { evalInput.value = e.target.result; };
           reader.onerror = () => alert('No se pudo leer el archivo.');
@@ -1160,7 +1162,6 @@ const SOPHIA = {
         if (e.target.files.length > 0) handleFile(e.target.files[0]);
       });
 
-      // Eventos de arrastrar y soltar
       uploadArea.addEventListener('dragover', (e) => {
         e.preventDefault();
         uploadArea.style.borderColor = 'var(--accent)';
@@ -1187,7 +1188,6 @@ const SOPHIA = {
 
       if (!btn) return;
 
-      // Usamos un listener único para evitar duplicación
       btn.onclick = async () => {
         const text = input ? input.value.trim() : '';
         if (!text) {
@@ -1212,7 +1212,6 @@ const SOPHIA = {
 
             if (response.ok) {
               const resultado = await response.json();
-              // Normalización: preserva tanto el análisis local como la revisión de Gemini
               data = normalizeSophiaResult(resultado);
               if (data && data.metadata && data.metadata.module_versions && data.metadata.module_versions.protocol) {
                 SOPHIA_BACKEND_VERSION = data.metadata.module_versions.protocol;
@@ -1225,11 +1224,17 @@ const SOPHIA = {
             console.warn('⚠️ No se pudo contactar /api/sophia/evaluate, usando motor local:', networkError.message);
           }
 
-          // Si el backend no respondió o no devolvió datos estructurados, recurrimos al motor local
           if (!data || typeof data.IRD_global === 'undefined') {
             console.log("⚙️ Ejecutando fallback local (evaluateText)...");
             data = normalizeSophiaResult(evaluateWithBestAvailableEngine(text));
           }
+
+          // Guardar estado para el widget Rey Filósofo (Multiorigen)
+          this._lastEvaluationData = {
+            text: text,
+            evaluation: data,
+            timestamp: new Date().toISOString()
+          };
 
           this._renderEvaluation(data, out);
 
@@ -1250,7 +1255,6 @@ const SOPHIA = {
         return;
       }
 
-      // Protección contra valores indefinidos en la visualización
       const irdGlobal = data.IRD_global !== undefined ? data.IRD_global : 0;
       const nivelRiesgo = data.riesgo || "Normal";
 
@@ -1408,8 +1412,6 @@ const SOPHIA = {
 
         ${data.confiabilidad_factual ? (() => {
           const cf = data.confiabilidad_factual;
-          // Extrae texto legible de un claim tolerando distintas formas del objeto
-          // (nunca imprime el objeto crudo, nunca deja "undefined" o "null" visibles).
           const claimText = (c) => {
             if (c === null || c === undefined) return '(afirmación sin texto)';
             if (typeof c === 'string') return c;
@@ -1470,8 +1472,6 @@ const SOPHIA = {
 
         ${data.semantic_review ? (() => {
           const items = Array.isArray(data.semantic_review) ? data.semantic_review : [];
-          // Toma un campo probando varias claves posibles (tolera variaciones del backend
-          // sin depender de un único nombre exacto), nunca vuelca el objeto crudo.
           const pick = (obj, keys, fallback) => {
             for (const k of keys) {
               if (obj && obj[k] !== undefined && obj[k] !== null && obj[k] !== '') return obj[k];
@@ -1557,8 +1557,7 @@ const SOPHIA = {
     }
   },
 
-   
-      init() {
+  init() {
     try {
       console.log('🚀 Inicializando SOPHIA...');
       const buttons = document.querySelectorAll('button.snav-item');
@@ -1579,3 +1578,6 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('✅ El motor está encendido');
   SOPHIA.init();
 });
+
+// Exponer explícitamente para el consumo del Motor Cognitivo (Rey Filósofo)
+window.SOPHIA = SOPHIA;
