@@ -1,63 +1,75 @@
 /* ═══════════════════════════════════════════════════════
-REYFILOSOFOCHAT.JS — Motor Cognitivo v1.0
-Rey Filósofo — Servicio Cognitivo Transversal
-═══════════════════════════════════════════════════════
+   REYFILOSOFOCHAT.JS — Motor Cognitivo v1.0
+   Rey Filósofo — Servicio Cognitivo Transversal
+   ═══════════════════════════════════════════════════════
 
-Esta implementación NO es la aplicación definitiva del Rey Filósofo.
-Es el Motor Cognitivo v1.0: el núcleo mínimo y reutilizable que
-cualquier módulo del ecosistema LogoDemocracy invocará.
+   Esta implementación NO es la aplicación definitiva del Rey Filósofo.
+   Es el Motor Cognitivo v1.0: el núcleo mínimo y reutilizable que
+   cualquier módulo del ecosistema LogoDemocracy (SOPHIA, Academia, y
+   los que vengan después) puede invocar para que el Rey Filósofo
+   acompañe al usuario sobre un Activo Cognitivo.
 
-Principios de diseño arquitectónico:
+   Principios de diseño (no negociables en esta versión):
+   1. Servicio cognitivo: el Rey Filósofo no pertenece a ningún módulo.
+   2. Desacoplamiento: este archivo nunca debe conocer la lógica
+      interna de SOPHIA, Academia, ni de ningún módulo futuro.
+      Solo conoce el contrato de datos definido más abajo.
+   3. Toda la inteligencia pedagógica vive en el backend. Este archivo
+      no interpreta el activo, no arma prompts, no aplica reglas
+      pedagógicas — solo recibe, muestra, envía y transporta.
 
-1. Agnosticismo de Infraestructura: Este motor NO conoce HTTP, 
-   no tiene endpoints, ni dependencias de red. Toda comunicación 
-   con el backend se delega al adaptador inyectado en `onSendMessage`.
-
-2. Servicio cognitivo: El Rey Filósofo no pertenece a ningún módulo.
-   Se alimenta de una Sesión Cognitiva (Cognitive Session) que incluye
-   el activo, el objetivo pedagógico y sus políticas.
-
-3. Frontend Anémico: Toda la inteligencia vive en el backend. 
-   El motor jamás interpreta el activo, ni la policy, ni arma prompts.
-   Solo recibe, muestra, envía y transporta.
-
-═══════════════════════════════════════════════════════ */
+   La arquitectura de estado/API está separada de la de render
+   deliberadamente, para que la futura aplicación completa (con
+   autenticación, ZDP, perfil de aprendizaje, memoria pedagógica,
+   etc.) pueda añadirse como capas nuevas sobre este mismo núcleo,
+   sin reescribirlo.
+   ═══════════════════════════════════════════════════════ */
 
 (function () {
   'use strict';
 
   // ─── Configuración ──────────────────────────────────
   const CONTRACT_VERSION = '1.0';
+
+  // ⚠️ AJUSTAR a la ruta real que expone el backend para este motor.
+  // El proxy existente en app.js monta "/api/reyfilosofo" — este es el
+  // endpoint de mensajería del Motor Cognitivo v1.0 dentro de ese espacio.
+  const ENDPOINT = '/api/reyfilosofo/message';
+
   const SESSION_STORAGE_KEY = 'reyFilosofoSessionId';
 
   // ─── Estado interno ─────────────────────────────────
-  // Vive únicamente acá. Ningún módulo externo debe tocarlo directamente.
+  // Vive únicamente acá. Ningún módulo externo debe tocarlo directamente:
+  // solo a través de la API pública (open / close).
   const state = {
     sessionId: null,
-    cognitiveSession: null, // Reemplaza al antiguo 'activeAsset'
-    conversation: [],       // Historial de la sesión actual en memoria
+    activeAsset: null,   // el Activo Cognitivo recibido del módulo origen
+    conversation: [],    // historial de la sesión actual (en memoria)
     isOpen: false,
     isSending: false
   };
 
-  let container = null; // Nodo DOM raíz del widget
+  let container = null; // nodo DOM raíz del widget (botón + panel)
 
   // ─── Contrato de entrada: normalización tolerante ───
-  // Solo garantiza la forma mínima del contrato antes de transportarlo
-  // intacto al backend. Incorpora "policy" para directrices pedagógicas.
-  function normalizeCognitiveSession(raw) {
+  // El motor nunca debe romperse si un módulo manda un activo incompleto,
+  // ni debe interpretar su contenido. Solo garantiza la forma mínima del
+  // contrato antes de transportarlo intacto al backend.
+  //
+  // Forma esperada:
+  // { source, contractVersion, objective, asset, conversation, metadata }
+  function normalizeCognitiveAsset(raw) {
     if (!raw || typeof raw !== 'object') {
-      throw new Error('Se requiere una Sesión Cognitiva válida: { source, objective, asset, ... }');
+      throw new Error('Se requiere un Activo Cognitivo válido: { source, objective, asset, ... }');
     }
     if (!raw.source) {
-      throw new Error('La Sesión Cognitiva requiere "source" (módulo de origen).');
+      throw new Error('El Activo Cognitivo requiere "source" (módulo de origen).');
     }
     return {
       source: raw.source,
       contractVersion: raw.contractVersion || CONTRACT_VERSION,
       objective: raw.objective || null,
       asset: raw.asset !== undefined ? raw.asset : null,
-      policy: (raw.policy && typeof raw.policy === 'object') ? raw.policy : {},
       conversation: Array.isArray(raw.conversation) ? raw.conversation.slice() : [],
       metadata: (raw.metadata && typeof raw.metadata === 'object') ? raw.metadata : {}
     };
@@ -75,6 +87,7 @@ Principios de diseño arquitectónico:
         localStorage.setItem(SESSION_STORAGE_KEY, sid);
       }
     } catch (e) {
+      // localStorage puede no estar disponible (navegación privada, etc.)
       sid = 'rf-' + Date.now() + '-' + Math.random().toString(16).slice(2);
     }
     state.sessionId = sid;
@@ -82,19 +95,17 @@ Principios de diseño arquitectónico:
   }
 
   // ─── Envío de mensajes ──────────────────────────────
-  // El payload transporta la sesión completa al backend a través
-  // del adaptador inyectado (onSendMessage).
+  // El payload contiene únicamente lo que especifica el contrato:
+  // { sessionId, content, provider_module, activeAsset }.
+  // El frontend nunca construye el prompt — eso es responsabilidad
+  // exclusiva del backend, que combina Prompt Base + Contrato +
+  // Activo Cognitivo + Conversación.
   async function sendMessage(rawText) {
     const text = (rawText || '').trim();
     if (!text || state.isSending) return;
 
-    if (!state.cognitiveSession) {
-      console.error('❌ ReyFilosofoChat: no hay Sesión Cognitiva activa. Llamar a .open() primero.');
-      return;
-    }
-
-    if (typeof ReyFilosofoChat.onSendMessage !== 'function') {
-      console.error('❌ ReyFilosofoChat: Adaptador de red no configurado. Debes definir ReyFilosofoChat.onSendMessage.');
+    if (!state.activeAsset) {
+      console.error('❌ ReyFilosofoChat: no hay Activo Cognitivo activo. Llamar a .open() primero.');
       return;
     }
 
@@ -106,15 +117,25 @@ Principios de diseño arquitectónico:
     const payload = {
       sessionId: getSessionId(),
       content: userMessage.content,
-      provider_module: state.cognitiveSession.source,
-      cognitiveSession: state.cognitiveSession // Transporta activo, política, objetivo, etc.
+      provider_module: state.activeAsset.source,
+      activeAsset: state.activeAsset
     };
 
     try {
-      // El motor delega la llamada HTTP/WebSocket al adaptador externo.
-      // Espera que el adaptador devuelva un string con la respuesta.
-      const reply = await ReyFilosofoChat.onSendMessage(payload);
-      
+      const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`El servidor respondió ${response.status}`);
+      }
+
+      const data = await response.json();
+      // Tolerante al nombre exacto del campo de respuesta del backend.
+      const reply = (data && (data.content || data.reply || data.message)) || null;
+
       state.conversation.push({
         role: 'assistant',
         content: reply || 'No se recibió una respuesta legible del Rey Filósofo.',
@@ -135,6 +156,11 @@ Principios de diseño arquitectónico:
   }
 
   // ─── Render ──────────────────────────────────────────
+  // Interfaz deliberadamente mínima: historial, caja de texto, enviar,
+  // cerrar. Nada de Home, Microtests, Currículum, ZDP ni Metacognición —
+  // eso pertenece a la futura aplicación completa del Rey Filósofo, que
+  // se construirá como capas adicionales sobre este mismo motor.
+
   function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str == null ? '' : String(str);
@@ -143,12 +169,20 @@ Principios de diseño arquitectónico:
 
   function renderLauncher() {
     if (!container) return;
-    container.innerHTML = `<button id="rf-launcher-btn" title="Rey Filósofo" style="   position:fixed; bottom:24px; right:24px; z-index:9998;   width:56px; height:56px; border-radius:50%;   background:#111827; border:1px solid rgba(59,130,246,.4);   color:#e5e7eb; font-size:1.4rem; cursor:pointer;   box-shadow:0 4px 14px rgba(0,0,0,.4);   ">🏛</button>`;
+    container.innerHTML = `
+      <button id="rf-launcher-btn" title="Rey Filósofo" style="
+        position:fixed; bottom:24px; right:24px; z-index:9998;
+        width:56px; height:56px; border-radius:50%;
+        background:#111827; border:1px solid rgba(59,130,246,.4);
+        color:#e5e7eb; font-size:1.4rem; cursor:pointer;
+        box-shadow:0 4px 14px rgba(0,0,0,.4);
+      ">🏛</button>
+    `;
     const btn = document.getElementById('rf-launcher-btn');
     if (btn) {
       btn.onclick = () => {
-        if (!state.cognitiveSession) {
-          console.warn('⚠️ Rey Filósofo no tiene una Sesión Cognitiva activa todavía.');
+        if (!state.activeAsset) {
+          console.warn('⚠️ Rey Filósofo no tiene un Activo Cognitivo activo todavía.');
           return;
         }
         state.isOpen = true;
@@ -227,11 +261,14 @@ Principios de diseño arquitectónico:
   }
 
   // ─── API pública ─────────────────────────────────────
+  // Único punto de contacto entre este motor y el resto del ecosistema.
+  // Cualquier módulo (presente o futuro) solo debe conocer estos tres
+  // métodos y el contrato del Activo Cognitivo — nunca la implementación
+  // interna de este archivo.
   const ReyFilosofoChat = {
-    // ⚠️ IMPORTANTE: El módulo que integre este chat debe definir esta función
-    // y devolver una Promesa que resuelva con el texto de la respuesta.
-    onSendMessage: null, 
 
+    // Monta el botón flotante. Se auto-invoca al cargar el script;
+    // no hace falta llamarlo manualmente en el caso normal.
     init() {
       if (container) return;
       container = document.createElement('div');
@@ -240,20 +277,40 @@ Principios de diseño arquitectónico:
       renderLauncher();
     },
 
-    open(sessionData) {
+    // Punto de entrada para cualquier módulo: entrega un Activo Cognitivo
+    // y el Rey Filósofo se abre listo para conversar sobre él.
+    // El motor no sabe ni le importa si "cognitiveAsset" viene de SOPHIA,
+    // de Academia o de un módulo que todavía no existe.
+    open(cognitiveAsset) {
       let normalized;
       try {
-        normalized = normalizeCognitiveSession(sessionData);
+        normalized = normalizeCognitiveAsset(cognitiveAsset);
       } catch (e) {
         console.error('❌ ReyFilosofoChat.open():', e.message);
         return;
       }
-      state.cognitiveSession = normalized;
+      state.activeAsset = normalized;
       state.conversation = normalized.conversation.slice();
       state.isOpen = true;
       getSessionId();
       if (!container) this.init();
       renderPanel();
+
+      // ← TEMPORAL: diagnóstico sin DevTools, borrar después de confirmar la causa
+      setTimeout(() => {
+        const rfRoot = document.getElementById('rey-filosofo-root');
+        const cs = rfRoot ? window.getComputedStyle(rfRoot) : null;
+        const panelEl = document.getElementById('rf-panel');
+        alert(
+          "DIAGNÓSTICO 5:\n" +
+          "container existe: " + (!!rfRoot) + "\n" +
+          "display: " + (cs ? cs.display : 'N/A') + "\n" +
+          "visibility: " + (cs ? cs.visibility : 'N/A') + "\n" +
+          "z-index: " + (cs ? cs.zIndex : 'N/A') + "\n" +
+          "innerHTML length: " + (rfRoot ? rfRoot.innerHTML.length : 'N/A') + "\n" +
+          "#rf-panel existe: " + (!!panelEl)
+        );
+      }, 100);
     },
 
     close() {
@@ -261,10 +318,12 @@ Principios de diseño arquitectónico:
       renderLauncher();
     },
 
+    // Solo para depuración/tests — ningún módulo externo debería
+    // depender de esto en producción.
     _getState() {
       return {
         sessionId: state.sessionId,
-        cognitiveSession: state.cognitiveSession,
+        activeAsset: state.activeAsset,
         conversation: state.conversation.slice(),
         isOpen: state.isOpen,
         isSending: state.isSending
@@ -281,3 +340,4 @@ Principios de diseño arquitectónico:
   }
 
 })();
+     
