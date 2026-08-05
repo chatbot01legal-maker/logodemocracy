@@ -17,14 +17,16 @@ const rfController = {
       console.log("[RF BODY]", JSON.stringify(req.body, null, 2));
 
 
-      // Extraer campos del body
+      // Extraer campos del body (Abriendo el sobre)
       const {
         sessionId,
         provider_module,
         content,
         message,
         user_response,
-        metadata
+        metadata,
+        cognitiveSession,
+        context
       } = req.body;
 
 
@@ -86,8 +88,7 @@ const rfController = {
 
 
 
-      // 3. Invocar kernel
-
+      // 3. Invocar kernel pasando el sobre externo
       const result = await RFKernel.process({
 
         userId,
@@ -101,7 +102,9 @@ const rfController = {
 
         user_response,
 
-        metadata
+        metadata,
+        
+        externalContext: context || cognitiveSession
 
       });
 
@@ -180,3 +183,4 @@ const rfController = {
 
 
 module.exports = rfController;
+
