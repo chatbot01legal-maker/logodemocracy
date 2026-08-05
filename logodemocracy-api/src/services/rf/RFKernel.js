@@ -10,10 +10,17 @@ const PersistenceManager = require('./PersistenceManager');
 const RFResponseGenerator = require('./RFResponseGenerator');
 
 const RFKernel = {
-  async process({ userId, sessionId, provider_module, content, user_response, metadata }) {
+  async process({ userId, sessionId, provider_module, content, user_response, metadata, externalContext }) {
     // 1. Ensamblaje de memorias (Autocreador en frío)
     const ctx = await ContextAssembler.assemble(userId, sessionId, provider_module);
     
+    // --- INYECCIÓN DEL SOBRE (SOPHIA) ---
+    if (externalContext) {
+      if (externalContext.sophiaAudit) ctx.sophiaAudit = externalContext.sophiaAudit;
+      if (externalContext.cognitiveAsset) ctx.cognitiveAsset = externalContext.cognitiveAsset;
+    }
+    // ------------------------------------
+
     // 2. Evaluación de transferencia cognitiva
     const transfer = TransferDetector.analyze(user_response, metadata?.concept);
     
