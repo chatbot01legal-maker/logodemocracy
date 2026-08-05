@@ -10,10 +10,13 @@ const RFResponseGenerator = {
     const fsmState = context?.session?.fsm_state || 'No definido';
     const scaffoldType = scaffold?.scaffold_type || 'ninguno';
     const adaptedContent = scaffold?.adapted_content || '';
+    
+    // Extracción tolerante: leemos tanto la auditoría como el activo núcleo
     const sophiaData = context?.sophiaAudit ? JSON.stringify(context.sophiaAudit, null, 2) : 'Sin auditoría previa';
+    const assetData = context?.cognitiveAsset ? JSON.stringify(context.cognitiveAsset, null, 2) : 'Sin activo cognitivo';
 
     const prompt = `
-Actúa estrictamente basándote en los parámetros de la auditoría y el estado cognitivo.
+Actúa estrictamente basándote en los parámetros de la auditoría, el activo cognitivo y el estado cognitivo.
 
 Estado cognitivo:
 ${fsmState}
@@ -21,8 +24,11 @@ ${fsmState}
 Tipo de andamiaje:
 ${scaffoldType}
 
-Auditoría de Sofía (Contexto analítico):
+Auditoría de Sofía (Metadata/Contexto analítico):
 ${sophiaData}
+
+Activo Cognitivo (Resultado de la evaluación o datos núcleo):
+${assetData}
 
 Instrucción pedagógica / Resultado esperado:
 ${adaptedContent}
@@ -47,3 +53,4 @@ Genera tu respuesta respetando el tipo de andamiaje. Si el andamiaje es "ninguno
 };
 
 module.exports = RFResponseGenerator;
+
