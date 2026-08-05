@@ -15,9 +15,12 @@ const RFKernel = {
     const ctx = await ContextAssembler.assemble(userId, sessionId, provider_module);
     
     // --- INYECCIÓN DEL SOBRE (SOPHIA) ---
+    console.log("[RF KERNEL] Abriendo sobre externo:", JSON.stringify(externalContext, null, 2));
+
     if (externalContext) {
-      if (externalContext.sophiaAudit) ctx.sophiaAudit = externalContext.sophiaAudit;
-      if (externalContext.cognitiveAsset) ctx.cognitiveAsset = externalContext.cognitiveAsset;
+      // Hacemos un fallback: si no existe la llave específica, asumimos que el objeto completo ES la auditoría.
+      ctx.sophiaAudit = externalContext.sophiaAudit || externalContext.audit || externalContext;
+      ctx.cognitiveAsset = externalContext.cognitiveAsset || externalContext.asset || null;
     }
     // ------------------------------------
 
@@ -69,3 +72,4 @@ const RFKernel = {
 };
 
 module.exports = RFKernel;
+
