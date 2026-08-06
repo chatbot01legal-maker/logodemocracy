@@ -132,12 +132,10 @@ async function askVertexWithSearch(prompt, model = "gemini-2.5-flash", timeoutMs
   const client = getVertex();
 
   // La búsqueda con Google requiere el namespace "preview" del SDK.
-  const gm = client.preview.getGenerativeModel({ model });
+  const gm = client.getGenerativeModel({ model });
 
-  const googleSearchRetrievalTool = {
-    googleSearchRetrieval: {
-      disableAttribution: false
-    }
+  const googleSearchTool = {
+    googleSearch: {}
   };
 
   const timeoutPromise = new Promise((_, reject) =>
@@ -149,7 +147,7 @@ async function askVertexWithSearch(prompt, model = "gemini-2.5-flash", timeoutMs
 
   const requestPromise = gm.generateContent({
     contents: [{ role: "user", parts: [{ text: prompt }] }],
-    tools: [googleSearchRetrievalTool]
+    tools: [googleSearchTool]
   });
 
   let response;
@@ -159,7 +157,7 @@ async function askVertexWithSearch(prompt, model = "gemini-2.5-flash", timeoutMs
     console.dir(response, { depth: 10 });
   } catch (err) {
     console.error(`[SOPHIA-VERTEX] Error en llamada con búsqueda:`, err.message);
-    console.error(`[SOPHIA-VERTEX] Si el error menciona "tool" o "googleSearchRetrieval" no reconocido, es señal de que hay que migrar a la librería nueva @google/genai — avisar para revisar.`);
+    console.error(`[SOPHIA-VERTEX] Si el error persiste mencionando "tool" o "google_search" no reconocido, es señal de que hay que migrar a la librería nueva @google/genai — avisar para revisar.`);
     throw err;
   }
 
