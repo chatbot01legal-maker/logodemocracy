@@ -204,4 +204,3 @@ async function askVertexWithSearch(prompt, model = "gemini-2.5-flash", timeoutMs
 }
 
 module.exports = { getVertex, askVertex, askVertexWithSearch };
-  
