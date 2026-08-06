@@ -62,9 +62,12 @@ async function verifyClaims(claims) {
     claims_evidencia_insuficiente: []
   };
 
-  for (const claim of claims) {
+  // ─── PARALELIZACIÓN DE BÚSQUEDAS ────────────────────────────
+  // Mapeamos cada claim a una Promesa independiente para que Vertex
+  // procese todas las búsquedas de Google de forma simultánea.
+  const evaluationPromises = claims.map(async (claim) => {
     console.log(`   🔎 Verificando con búsqueda real (Vertex grounding): "${claim.canonical_text.substring(0, 80)}..."`);
-
+    
     let evaluation;
     try {
       evaluation = await evaluateClaim(claim);
@@ -73,15 +76,21 @@ async function verifyClaims(claims) {
       evaluation = { estado: "evidencia_insuficiente", fuentes_relevantes: [] };
     }
 
-    const entry = {
+    return {
       claim_id: claim.claim_id,
       canonical_text: claim.canonical_text,
       original_texts: claim.original_texts,
       estado: evaluation.estado,
       fuentes: evaluation.fuentes_relevantes || []
     };
+  });
 
-    switch (evaluation.estado) {
+  // Esperamos a que todas las verificaciones terminen al mismo tiempo
+  const evaluatedClaims = await Promise.all(evaluationPromises);
+
+  // Clasificamos los resultados en el objeto final
+  for (const entry of evaluatedClaims) {
+    switch (entry.estado) {
       case 'verificado':
         results.claims_verificados.push(entry);
         break;
