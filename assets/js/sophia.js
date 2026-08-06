@@ -587,7 +587,7 @@ const VIEWS = {
               <p>Es, en esencia, un <strong>sistema inmunológico cognitivo</strong> para el espacio público.</p>
             </div>
             <div class="view-section">
-              <div class="view-section-title">Las 5 Fases del Protocolo</div>
+              <div class="view-section-title">Las 5 Fases del Protocolo (Capa 1 · Motor Determinista)</div>
               <div class="card-grid">
                 ${PROTOCOL.fases.map(f => `
                   <div class="s-card">
@@ -595,6 +595,32 @@ const VIEWS = {
                     <div class="s-card-body">${f.descripcion}</div>
                   </div>
                 `).join('')}
+              </div>
+            </div>
+            <div class="view-section">
+              <div class="view-section-title">Las 4 Capas del Pipeline SOPHIA</div>
+              <p style="font-size:.82rem; color:rgba(229,231,235,.65); margin-bottom:14px; line-height:1.5;">
+                El motor determinista de arriba es solo la primera de cuatro capas independientes.
+                Cada una responde una pregunta distinta, y ninguna modifica el resultado de las demás
+                — el Índice de Robustez Deliberativa (IRD) siempre proviene únicamente de la Capa 1.
+              </p>
+              <div class="card-grid">
+                <div class="s-card">
+                  <div class="s-card-title">Capa 1 · Motor Determinista</div>
+                  <div class="s-card-body">Aplica las 5 fases y sus criterios mediante reglas públicas, sin IA. Produce el IRD, el nivel de riesgo y las infracciones detectadas. Es el único resultado que nunca se modifica.</div>
+                </div>
+                <div class="s-card">
+                  <div class="s-card-title">Capa 2 · Auditoría Factual</div>
+                  <div class="s-card-body">Extrae afirmaciones verificables del texto y clasifica cada una: verificada, refutada, en conflicto o con evidencia insuficiente. No altera el IRD — evalúa la confiabilidad de los hechos citados, no la calidad del razonamiento.</div>
+                </div>
+                <div class="s-card">
+                  <div class="s-card-title">Capa 3 · Revisión de Falsos Positivos</div>
+                  <div class="s-card-body">Una IA revisa exclusivamente el resultado de la Capa 1 — no el documento desde cero — para detectar activaciones cuestionables: negaciones, ironía, citas, hipótesis o usos metalingüísticos que el motor determinista pudo malinterpretar. Solo produce observaciones; nunca cambia los puntajes.</div>
+                </div>
+                <div class="s-card">
+                  <div class="s-card-title">Capa 4 · Interpretación Semántica Integral</div>
+                  <div class="s-card-body">Con el resultado de las tres capas anteriores como contexto obligatorio, una IA construye una interpretación global: qué significa el puntaje, cómo interactúan forma y contenido, y qué preguntas reflexivas propone. Es la única capa narrativa — el resto del pipeline es estructural.</div>
+                </div>
               </div>
             </div>
             <div class="view-section">
@@ -947,6 +973,29 @@ const SOPHIA = {
 
   getLastEvaluation() {      // Expone los datos para el Rey Filósofo
     return this._lastEvaluationData;
+  },
+
+  // Punto de entrada único para abrir el Rey Filósofo desde SOPHIA.
+  // Usa CognitiveSessionFactory (única fuente de verdad de sesiones) con
+  // el resultado real de la última evaluación — nunca un texto fijo.
+  openReyFilosofo() {
+    const evaluation = this.getLastEvaluation();
+
+    if (!evaluation) {
+      alert('Primero evaluá un documento en Análisis Sophia para que el Rey Filósofo tenga algo sobre qué conversar.');
+      return;
+    }
+    if (typeof CognitiveSessionFactory === 'undefined') {
+      console.error('CognitiveSessionFactory no está disponible.');
+      return;
+    }
+    if (typeof ReyFilosofoChat === 'undefined' || typeof ReyFilosofoChat.open !== 'function') {
+      console.error('ReyFilosofoChat no está disponible.');
+      return;
+    }
+
+    const session = CognitiveSessionFactory.fromSophia(evaluation);
+    ReyFilosofoChat.open(session);
   },
 
   navigate(viewId) {
