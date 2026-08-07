@@ -1,49 +1,22 @@
-{
-  "Nuevo paradigma": {
-    "ahora_o_nunca.md": "ahora_o_nunca.md",
-    "tecnologia_y_democracia.md": "tecnologia_y_democracia.md",
-    "crisis_del_mundo_moderno.md": "crisis_del_mundo_moderno.md"
+[
+  {
+    "title": "Introducción a la Academia",
+    "file": "intro.md",
+    "tags": ["Logodemocracia", "Fundamentos"]
   },
-  "Educación cívica": {
-    "el_mapa_no_es_el_territorio.md": "el_mapa_no_es_el_territorio.md",
-    "nuevo_paradigma_educativo.md": "nuevo_paradigma_educativo.md",
-    "ciudadano_epistemico.md": "ciudadano_epistemico.md"
+  {
+    "title": "Motor Ciudadano: Bases",
+    "file": "motor-ciudadano.md",
+    "tags": ["Civismo", "Desarrollo"]
   },
-  "Logodemocracia": {
-    "que_es_logodemocracia.md": "que_es_logodemocracia.md",
-    "representantes_mandatados.md": "representantes_mandatados.md",
-    "congreso_virtual.md": "congreso_virtual.md",
-    "panel_de_expertos.md": "panel_de_expertos.md",
-    "votacion_cuadratica.md": "votacion_cuadratica.md",
-        "capital_deliberativo.md": "capital_deliberativo.md",
-    "filtro_epistemico.md": "filtro_epistemico.md"
+  {
+    "title": "¿Sabe mi gato escolar de Gregory Bateson?",
+    "file": "gato-bateson.md",
+    "tags": ["Filosofía", "Epistemología"]
   },
-  "Implementación": {
-    "ley_click.md": "ley_click.md",
-    "proyecto_de_ley.md": "proyecto_de_ley.md",
-    "comunidades_virtuales.md": "comunidades_virtuales.md"
-  },
-  "Contexto histórico": {
-    "grecia.md": "grecia.md",
-    "imprenta.md": "imprenta.md",
-    "internet.md": "internet.md",
-    "democracia_como_tecnologia.md": "democracia_como_tecnologia.md"
-  },
-  "Desafíos globales": {
-    "cambio_climatico.md": "cambio_climatico.md",
-    "ia_y_trabajo.md": "ia_y_trabajo.md",
-    "guerras.md": "guerras.md",
-    "crisis_migratoria.md": "crisis_migratoria.md"
-  },
-
-  "Fundamentos del sistema": {
-    "bienvenida.md": "bienvenida.md",
-    "manifiesto.md": "manifiesto.md",
-    "introduccion.md": "introduccion.md",
-    "logodemocracy_arquitectura.md": "logodemocracy_arquitectura.md",
-    "rey_filosofo_definicion.md": "rey_filosofo_definicion.md",
-    "sophia_definicion.md": "sophia_definicion.md",
-    "logos_definicion.md": "logos_definicion.md"
-
+  {
+    "title": "Desarrollo con Inteligencia Artificial",
+    "file": "curso-ia.md",
+    "tags": ["Tecnología", "IA"]
   }
-}
+]
