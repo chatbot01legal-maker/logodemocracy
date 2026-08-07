@@ -587,7 +587,7 @@ const VIEWS = {
               <p>Es, en esencia, un <strong>sistema inmunológico cognitivo</strong> para el espacio público.</p>
             </div>
             <div class="view-section">
-              <div class="view-section-title">Las 5 Fases del Protocolo</div>
+              <div class="view-section-title">Las 5 Fases del Protocolo (Capa 1 · Motor Determinista)</div>
               <div class="card-grid">
                 ${PROTOCOL.fases.map(f => `
                   <div class="s-card">
@@ -595,6 +595,32 @@ const VIEWS = {
                     <div class="s-card-body">${f.descripcion}</div>
                   </div>
                 `).join('')}
+              </div>
+            </div>
+            <div class="view-section">
+              <div class="view-section-title">Las 4 Capas del Pipeline SOPHIA</div>
+              <p style="font-size:.82rem; color:rgba(229,231,235,.65); margin-bottom:14px; line-height:1.5;">
+                El motor determinista de arriba es solo la primera de cuatro capas independientes.
+                Cada una responde una pregunta distinta, y ninguna modifica el resultado de las demás
+                — el Índice de Robustez Deliberativa (IRD) siempre proviene únicamente de la Capa 1.
+              </p>
+              <div class="card-grid">
+                <div class="s-card">
+                  <div class="s-card-title">Capa 1 · Motor Determinista</div>
+                  <div class="s-card-body">Aplica las 5 fases y sus criterios mediante reglas públicas, sin IA. Produce el IRD, el nivel de riesgo y las infracciones detectadas. Es el único resultado que nunca se modifica.</div>
+                </div>
+                <div class="s-card">
+                  <div class="s-card-title">Capa 2 · Auditoría Factual</div>
+                  <div class="s-card-body">Extrae afirmaciones verificables del texto y clasifica cada una: verificada, refutada, en conflicto o con evidencia insuficiente. No altera el IRD — evalúa la confiabilidad de los hechos citados, no la calidad del razonamiento.</div>
+                </div>
+                <div class="s-card">
+                  <div class="s-card-title">Capa 3 · Revisión de Falsos Positivos</div>
+                  <div class="s-card-body">Una IA revisa exclusivamente el resultado de la Capa 1 — no el documento desde cero — para detectar activaciones cuestionables: negaciones, ironía, citas, hipótesis o usos metalingüísticos que el motor determinista pudo malinterpretar. Solo produce observaciones; nunca cambia los puntajes.</div>
+                </div>
+                <div class="s-card">
+                  <div class="s-card-title">Capa 4 · Interpretación Semántica Integral</div>
+                  <div class="s-card-body">Con el resultado de las tres capas anteriores como contexto obligatorio, una IA construye una interpretación global: qué significa el puntaje, cómo interactúan forma y contenido, y qué preguntas reflexivas propone. Es la única capa narrativa — el resto del pipeline es estructural.</div>
+                </div>
               </div>
             </div>
             <div class="view-section">
@@ -949,6 +975,29 @@ const SOPHIA = {
     return this._lastEvaluationData;
   },
 
+  // Punto de entrada único para abrir el Rey Filósofo desde SOPHIA.
+  // Usa CognitiveSessionFactory (única fuente de verdad de sesiones) con
+  // el resultado real de la última evaluación — nunca un texto fijo.
+  openReyFilosofo() {
+    const evaluation = this.getLastEvaluation();
+
+    if (!evaluation) {
+      alert('Primero evaluá un documento en Análisis Sophia para que el Rey Filósofo tenga algo sobre qué conversar.');
+      return;
+    }
+    if (typeof CognitiveSessionFactory === 'undefined') {
+      console.error('CognitiveSessionFactory no está disponible.');
+      return;
+    }
+    if (typeof ReyFilosofoChat === 'undefined' || typeof ReyFilosofoChat.open !== 'function') {
+      console.error('ReyFilosofoChat no está disponible.');
+      return;
+    }
+
+    const session = CognitiveSessionFactory.fromSophia(evaluation);
+    ReyFilosofoChat.open(session);
+  },
+
   navigate(viewId) {
     try {
       const contentArea = document.getElementById('viewContent');
@@ -1255,6 +1304,16 @@ const SOPHIA = {
         return;
       }
 
+      // Helper robusto para evitar [object Object] al inyectar en el DOM
+      const safeText = (val) => {
+        if (val === null || val === undefined) return '';
+        if (typeof val === 'string') return val;
+        if (typeof val === 'object') {
+          return val.html || val.text || val.texto || val.descripcion || val.valor || val.value || JSON.stringify(val);
+        }
+        return String(val);
+      };
+
       const irdGlobal = data.IRD_global !== undefined ? data.IRD_global : 0;
       const nivelRiesgo = data.riesgo || "Normal";
 
@@ -1368,38 +1427,38 @@ const SOPHIA = {
           <div class="view-section">
             <div class="view-section-title">Revisión semántica (Gemini)</div>
             <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
-              ${data.llm.overall_comment ? `<p style="font-size:.82rem; color:#e5e7eb; margin:0 0 12px 0; line-height:1.5;">${data.llm.overall_comment}</p>` : ''}
+              ${data.llm.overall_comment ? `<p style="font-size:.82rem; color:#e5e7eb; margin:0 0 12px 0; line-height:1.5;">${safeText(data.llm.overall_comment)}</p>` : ''}
               <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:10px; margin-bottom:12px;">
                 ${data.llm.evidence_quality ? `
                   <div>
                     <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase;">Calidad de evidencia</div>
-                    <div style="font-size:.85rem; color:var(--accent);">${data.llm.evidence_quality}</div>
+                    <div style="font-size:.85rem; color:var(--accent);">${safeText(data.llm.evidence_quality)}</div>
                   </div>` : ''}
                 ${data.llm.tone_proportionality ? `
                   <div>
                     <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase;">Proporcionalidad del tono</div>
-                    <div style="font-size:.85rem; color:var(--accent);">${data.llm.tone_proportionality}</div>
+                    <div style="font-size:.85rem; color:var(--accent);">${safeText(data.llm.tone_proportionality)}</div>
                   </div>` : ''}
               </div>
               ${(data.llm.additional_fallacies && data.llm.additional_fallacies.length > 0) ? `
                 <div style="margin-bottom:10px;">
                   <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Falacias adicionales detectadas</div>
                   <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
-                    ${data.llm.additional_fallacies.map(f => `<li>${f}</li>`).join('')}
+                    ${data.llm.additional_fallacies.map(f => `<li>${safeText(f)}</li>`).join('')}
                   </ul>
                 </div>` : ''}
               ${(data.llm.bias_detected && data.llm.bias_detected.length > 0) ? `
                 <div style="margin-bottom:10px;">
                   <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Sesgos detectados</div>
                   <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
-                    ${data.llm.bias_detected.map(b => `<li>${b}</li>`).join('')}
+                    ${data.llm.bias_detected.map(b => `<li>${safeText(b)}</li>`).join('')}
                   </ul>
                 </div>` : ''}
               ${(data.llm.rhetorical_devices && data.llm.rhetorical_devices.length > 0) ? `
                 <div>
                   <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Recursos retóricos identificados</div>
                   <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
-                    ${data.llm.rhetorical_devices.map(r => `<li>${r}</li>`).join('')}
+                    ${data.llm.rhetorical_devices.map(r => `<li>${safeText(r)}</li>`).join('')}
                   </ul>
                 </div>` : ''}
             </div>
@@ -1483,12 +1542,12 @@ const SOPHIA = {
             if (item === null || typeof item !== 'object') {
               return `<div style="font-size:.78rem; color:rgba(229,231,235,.75); padding:8px 0;">${item}</div>`;
             }
-            const atomo = pick(item, ['atomo', 'atom', 'ATOMO_CAUSALIDAD'], null);
-            const criterio = pick(item, ['criterio', 'criterion'], null);
-            const categoria = pick(item, ['categoria', 'category', 'tipo'], null);
-            const confianza = pick(item, ['confianza', 'confidence'], null);
-            const resultado = pick(item, ['resultado', 'result', 'veredicto'], null);
-            const razon = pick(item, ['razon', 'reason', 'observacion', 'descripcion', 'explicacion'], null);
+            const atomo = safeText(pick(item, ['atomo', 'atom', 'ATOMO_CAUSALIDAD'], null));
+            const criterio = safeText(pick(item, ['criterio', 'criterion'], null));
+            const categoria = safeText(pick(item, ['categoria', 'category', 'tipo'], null));
+            const confianza = safeText(pick(item, ['confianza', 'confidence'], null));
+            const resultado = safeText(pick(item, ['resultado', 'result', 'veredicto'], null));
+            const razon = safeText(pick(item, ['razon', 'reason', 'observacion', 'descripcion', 'explicacion'], null));
 
             const badgeColor = (resultado || '').toString().toLowerCase().includes('falso')
               ? '#ef4444'
@@ -1526,23 +1585,23 @@ const SOPHIA = {
               ${data.gemini_review.interpretacion ? `
                 <div style="margin-bottom:12px;">
                   <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Interpretación</div>
-                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.interpretacion}</div>
+                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${safeText(data.gemini_review.interpretacion)}</div>
                 </div>` : ''}
               ${data.gemini_review.contexto ? `
                 <div style="margin-bottom:12px;">
                   <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Contexto</div>
-                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.contexto}</div>
+                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${safeText(data.gemini_review.contexto)}</div>
                 </div>` : ''}
               ${data.gemini_review.observaciones ? `
                 <div style="margin-bottom:12px;">
                   <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Observaciones</div>
-                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.observaciones}</div>
+                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${safeText(data.gemini_review.observaciones)}</div>
                 </div>` : ''}
               ${(data.gemini_review.preguntas_reflexivas && Array.isArray(data.gemini_review.preguntas_reflexivas) && data.gemini_review.preguntas_reflexivas.length > 0) ? `
                 <div>
                   <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Preguntas reflexivas</div>
                   <ul style="margin:0; padding-left:18px; font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
-                    ${data.gemini_review.preguntas_reflexivas.map(p => `<li>${p}</li>`).join('')}
+                    ${data.gemini_review.preguntas_reflexivas.map(p => `<li>${safeText(p)}</li>`).join('')}
                   </ul>
                 </div>` : ''}
             </div>
