@@ -1,21 +1,21 @@
 [
   {
-    "title": "Introducción a la Academia",
+    "title": "Logodemocracia",
     "file": "intro.md",
     "tags": ["Logodemocracia", "Fundamentos"]
   },
   {
-    "title": "Motor Ciudadano: Bases",
+    "title": "Todo Ciudadano Sabe",
     "file": "motor-ciudadano.md",
     "tags": ["Civismo", "Desarrollo"]
   },
   {
-    "title": "¿Sabe mi gato escolar de Gregory Bateson?",
-    "file": "gato-bateson.md",
+    "title": "Joe Pino",
+    "file": "Hipótesis del Relato.md",
     "tags": ["Filosofía", "Epistemología"]
   },
   {
-    "title": "Desarrollo con Inteligencia Artificial",
+    "title": "Alfabetización Digital: La pulenta",
     "file": "curso-ia.md",
     "tags": ["Tecnología", "IA"]
   }
