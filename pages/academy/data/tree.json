@@ -1,21 +1,29 @@
 [
   {
-    "title": "Introducción a la Academia",
+    "library": "Logodemocracia",
+    "folder": "Conceptos Fundamentales",
+    "title": "Introducción",
     "file": "intro.md",
     "tags": ["Logodemocracia", "Fundamentos"]
   },
   {
-    "title": "Motor Ciudadano: Bases",
+    "library": "Todo Ciudadano Sabe",
+    "folder": "",
+    "title": "Motor Ciudadano",
     "file": "motor-ciudadano.md",
     "tags": ["Civismo", "Desarrollo"]
   },
   {
-    "title": "¿Sabe mi gato escolar de Gregory Bateson?",
-    "file": "gato-bateson.md",
+    "library": "Joe Pino",
+    "folder": "Ensayos",
+    "title": "Hipótesis del Relato",
+    "file": "Hipótesis del Relato.md",
     "tags": ["Filosofía", "Epistemología"]
   },
   {
-    "title": "Desarrollo con Inteligencia Artificial",
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "",
+    "title": "Inteligencia Artificial Básica",
     "file": "curso-ia.md",
     "tags": ["Tecnología", "IA"]
   }
