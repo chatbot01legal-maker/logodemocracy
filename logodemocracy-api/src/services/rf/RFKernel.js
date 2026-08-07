@@ -10,10 +10,21 @@ const PersistenceManager = require('./PersistenceManager');
 const RFResponseGenerator = require('./RFResponseGenerator');
 
 const RFKernel = {
-  async process({ userId, sessionId, provider_module, content, user_response, metadata }) {
-    // 1. Ensamblaje de memorias (Autocreador en frío)
+  async process({ userId, sessionId, provider_module, content, user_response, metadata, externalContext }) {
+    // 1. Ensamblaje de memorias
     const ctx = await ContextAssembler.assemble(userId, sessionId, provider_module);
     
+    // --- INYECCIÓN DEL SOBRE (SOPHIA) ---
+    console.log("[RF KERNEL] Abriendo sobre (activeAsset):", JSON.stringify(externalContext, null, 2));
+
+    if (externalContext) {
+      // Extraemos la auditoría desde la metadata (o volcamos el objeto completo si no está estructurado así)
+      ctx.sophiaAudit = externalContext.metadata?.sophiaAudit || externalContext.metadata || externalContext;
+      // Extraemos el activo cognitivo puro
+      ctx.cognitiveAsset = externalContext.asset || externalContext;
+    }
+    // ------------------------------------
+
     // 2. Evaluación de transferencia cognitiva
     const transfer = TransferDetector.analyze(user_response, metadata?.concept);
     
@@ -29,7 +40,7 @@ const RFKernel = {
     const strategy = ZDPResolver.resolve(ctx.profile, ctx.session.fsm_state);
     const analogy = await AnalogyEngine.select(metadata?.concept, ctx.profile, ctx.learningMap);
     
-    // 5. Aplicación de andamiaje sobre el contenido técnico
+    // 5. Aplicación de andamiaje
     const scaffold = ScaffoldEngine.apply(content, strategy, analogy, ctx.session.fsm_state);
     const tutorResponse = await RFResponseGenerator.generate({
       content,
@@ -37,7 +48,7 @@ const RFKernel = {
       context: ctx
     });
     
-    // 6. Actualización de competencias en LearningMap
+    // 6. Actualización de competencias
     if (metadata?.competence) {
       await CompetencyTracker.update(ctx.learningMap, metadata.competence, user_response, transfer.score);
     } else if (Array.isArray(metadata?.competencies)) {
@@ -46,10 +57,9 @@ const RFKernel = {
       }
     }
     
-    // 7. Persistencia atómica de las memorias
+    // 7. Persistencia
     await ContextAssembler.persist(ctx);
 
-    // Contrato de salida canónico compatible con el widget
     return {
       content: tutorResponse,
       reply: tutorResponse,

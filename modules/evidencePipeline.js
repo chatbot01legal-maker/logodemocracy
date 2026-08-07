@@ -1,54 +1,57 @@
 // modules/evidencePipeline.js
 // Pipeline de verificación de afirmaciones.
-// Gemini nunca verifica hechos. Gemini interpreta evidencia recuperada por el sistema.
+// Gemini nunca verifica hechos de memoria. Gemini interpreta evidencia
+// recuperada por búsqueda real de Google (grounding de Vertex AI).
 //
-// En V1: búsqueda simulada (sin API externa configurada).
-// En V2: integración con APIs de búsqueda reales.
+// V1 (anterior): búsqueda simulada — searchWeb() siempre devolvía [].
+// V2 (esta versión): askVertexWithSearch() activa la búsqueda real de
+// Google directamente en la misma llamada — ya no hace falta un paso
+// de búsqueda separado.
 
-const { askVertex } = require("./vertexClient");
-
-/**
- * Search Provider (V1 - simulado)
- * En producción, reemplazar por llamada a Google Custom Search, SerpAPI, etc.
- */
-async function searchWeb(query) {
-  // V1: sin búsqueda real, devolvemos array vacío.
-  // Esto fuerza a que todos los claims queden como "evidencia_insuficiente".
-  console.log(`   🔍 [Search] Buscando: "${query.substring(0, 80)}..." (simulado V1)`);
-  return [];
-}
+const { askVertexWithSearch } = require("./vertexClient");
 
 /**
- * Evalúa un claim contra los resultados de búsqueda usando Gemini como intérprete.
- * Gemini solo interpreta, no decide el estado si no hay fuentes.
+ * Evalúa un claim usando búsqueda real de Google (vía Vertex grounding).
+ * Gemini solo interpreta lo que la búsqueda real encontró — nunca decide
+ * el estado a partir de su conocimiento entrenado.
  */
-async function evaluateClaim(claim, searchResults) {
+async function evaluateClaim(claim) {
   const prompt = `
-Eres un evaluador de evidencia del sistema SOPHIA. Tu función es analizar si los resultados de búsqueda respaldan o refutan una afirmación.
+Eres un evaluador de evidencia del sistema SOPHIA. Verifica la siguiente afirmación
+usando búsqueda de información actual y real, no tu conocimiento entrenado.
 
 Claim: "${claim.canonical_text}"
 Tipo: ${claim.tipo}
 
-Resultados de búsqueda encontrados:
-${searchResults.length === 0 ? '(No se encontraron resultados de búsqueda)' : JSON.stringify(searchResults, null, 2)}
-
 REGLAS ABSOLUTAS:
-- Si NO hay resultados de búsqueda (array vacío), el estado es OBLIGATORIAMENTE "evidencia_insuficiente".
-- NUNCA inventes fuentes ni verificaciones sin datos reales.
-- Solo asigna "verificado" si hay fuentes concretas que respaldan el claim.
-- Solo asigna "refutado" si hay fuentes concretas que contradicen el claim.
-- Asigna "evidencia_en_conflicto" si hay fuentes contradictorias entre sí.
-- Si hay resultados pero no son concluyentes, asigna "evidencia_insuficiente".
+- Basate únicamente en los resultados de búsqueda reales que obtengas en este momento.
+- Si la búsqueda no arroja información concluyente, el estado es OBLIGATORIAMENTE "evidencia_insuficiente".
+- NUNCA inventes fuentes ni verificaciones sin datos reales de búsqueda.
+- Solo asigna "verificado" si encontraste fuentes concretas que respaldan el claim.
+- Solo asigna "refutado" si encontraste fuentes concretas que contradicen el claim.
+- Asigna "evidencia_en_conflicto" si las fuentes encontradas se contradicen entre sí.
 
-Devuelve EXCLUSIVAMENTE un JSON:
+Devuelve EXCLUSIVAMENTE un JSON, sin texto adicional, sin comillas de markdown:
 {
   "estado": "verificado|refutado|evidencia_en_conflicto|evidencia_insuficiente",
-  "fuentes_relevantes": []
+  "justificacion": "breve explicación de por qué, basada en lo que encontraste en la búsqueda"
 }`;
 
-  const response = await askVertex(prompt);
-  let cleaned = response.replace(/```json\s?/g, '').replace(/```\s?/g, '').trim();
-  return JSON.parse(cleaned);
+  const { text, sources } = await askVertexWithSearch(prompt);
+
+  let cleaned = text.replace(/```json\s?/g, '').replace(/```\s?/g, '').trim();
+  let evaluation;
+  try {
+    evaluation = JSON.parse(cleaned);
+  } catch (err) {
+    console.error(`   ⚠️ No se pudo parsear la respuesta de evaluación como JSON. Se marca como evidencia insuficiente. Respuesta cruda: ${cleaned.substring(0, 200)}`);
+    evaluation = { estado: "evidencia_insuficiente", justificacion: "Error al interpretar la respuesta del evaluador." };
+  }
+
+  // Las fuentes son las reales que devolvió la búsqueda de Google — nunca
+  // las inventa Gemini, y solo se adjuntan si efectivamente hubo búsqueda.
+  evaluation.fuentes_relevantes = sources;
+  return evaluation;
 }
 
 async function verifyClaims(claims) {
@@ -59,28 +62,35 @@ async function verifyClaims(claims) {
     claims_evidencia_insuficiente: []
   };
 
-  for (const claim of claims) {
-    console.log(`   🔎 Verificando: "${claim.canonical_text.substring(0, 80)}..."`);
+  // ─── PARALELIZACIÓN DE BÚSQUEDAS ────────────────────────────
+  // Mapeamos cada claim a una Promesa independiente para que Vertex
+  // procese todas las búsquedas de Google de forma simultánea.
+  const evaluationPromises = claims.map(async (claim) => {
+    console.log(`   🔎 Verificando con búsqueda real (Vertex grounding): "${claim.canonical_text.substring(0, 80)}..."`);
+    
+    let evaluation;
+    try {
+      evaluation = await evaluateClaim(claim);
+    } catch (err) {
+      console.error(`   ❌ Error al verificar claim ${claim.claim_id}:`, err.message);
+      evaluation = { estado: "evidencia_insuficiente", fuentes_relevantes: [] };
+    }
 
-    // 1. Construir query (sin Gemini)
-    const query = `${claim.canonical_text} ${claim.tipo === 'estadístico' ? 'estadísticas datos' : ''}`;
-
-    // 2. Buscar
-    const searchResults = await searchWeb(query);
-
-    // 3. Evaluar con Gemini
-    const evaluation = await evaluateClaim(claim, searchResults);
-
-    // 4. Clasificar
-    const entry = {
+    return {
       claim_id: claim.claim_id,
       canonical_text: claim.canonical_text,
       original_texts: claim.original_texts,
       estado: evaluation.estado,
       fuentes: evaluation.fuentes_relevantes || []
     };
+  });
 
-    switch (evaluation.estado) {
+  // Esperamos a que todas las verificaciones terminen al mismo tiempo
+  const evaluatedClaims = await Promise.all(evaluationPromises);
+
+  // Clasificamos los resultados en el objeto final
+  for (const entry of evaluatedClaims) {
+    switch (entry.estado) {
       case 'verificado':
         results.claims_verificados.push(entry);
         break;

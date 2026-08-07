@@ -46,47 +46,54 @@ async function evaluate({ text }) {
   }
   console.log(`✅ Evaluación local completada. IRD: ${localResult.IRD_global}, evidencias: ${localResult.evidencias?.length || 0}`);
 
-  // ─── PIPELINE STEP 2: Semantic Review (Contexto) ────────
-  console.log("🔍 PIPELINE STEP 2: Revisión Semántica de penalizaciones...");
-  let semanticReview = [];
-  if (localResult.evidencias && localResult.evidencias.length > 0) {
-    try {
-      semanticReview = await procesarPenalizaciones(localResult.evidencias, text);
-      const falsosPositivos = semanticReview.filter(e => e.revision_semantica?.falso_positivo === true);
-      console.log(`✅ Revisión Semántica completada. ${falsosPositivos.length} falsos positivos detectados.`);
-    } catch (semanticError) {
-      console.error("❌ Error en Revisión Semántica:", semanticError);
+  // ─── PIPELINE STEPS 2 & 3: Ejecución en Paralelo ────────
+  console.log("🔍 PIPELINE STEPS 2 & 3: Iniciando Revisión Semántica y Auditoría Factual en paralelo...");
+  
+  const semanticTask = (async () => {
+    if (localResult.evidencias && localResult.evidencias.length > 0) {
+      try {
+        const review = await procesarPenalizaciones(localResult.evidencias, text);
+        const falsosPositivos = review.filter(e => e.revision_semantica?.falso_positivo === true);
+        console.log(`✅ Revisión Semántica completada. ${falsosPositivos.length} falsos positivos detectados.`);
+        return review;
+      } catch (semanticError) {
+        console.error("❌ Error en Revisión Semántica:", semanticError);
+        return [];
+      }
+    } else {
+      console.log("⏩ No hay penalizaciones para revisar.");
+      return [];
     }
-  } else {
-    console.log("⏩ No hay penalizaciones para revisar.");
-  }
+  })();
 
-  // ─── PIPELINE STEP 3: Fact Checker (Factualidad) ────────
-  console.log("🔎 PIPELINE STEP 3: Auditoría Factual...");
-  let confiabilidadFactual = null;
-  try {
-    const rawClaims = await extractClaims(text);
-    const normalizedClaims = await normalizeClaims(rawClaims);
-    const verificables = normalizedClaims.filter(c => c.verificable);
-    const noAplicables = normalizedClaims.filter(c => !c.verificable);
-    
-    confiabilidadFactual = await verifyClaims(verificables);
-    confiabilidadFactual.claims_no_aplicables = noAplicables;
-    console.log(`✅ Verificación completada. Verificados: ${confiabilidadFactual.claims_verificados?.length || 0}`);
-  } catch (factualError) {
-    console.error("❌ Error en verificación factual:", factualError);
-    confiabilidadFactual = {
-      error: "La verificación factual no está disponible en este momento.",
-      claims_verificados: [],
-      claims_refutados: [],
-      claims_en_conflicto: [],
-      claims_evidencia_insuficiente: [],
-      claims_no_aplicables: []
-    };
-  }
+  const factualTask = (async () => {
+    try {
+      const rawClaims = await extractClaims(text);
+      const normalizedClaims = await normalizeClaims(rawClaims);
+      const verificables = normalizedClaims.filter(c => c.verificable);
+      const noAplicables = normalizedClaims.filter(c => !c.verificable);
+      
+      const confiabilidad = await verifyClaims(verificables);
+      confiabilidad.claims_no_aplicables = noAplicables;
+      console.log(`✅ Verificación factual completada. Verificados: ${confiabilidad.claims_verificados?.length || 0}`);
+      return confiabilidad;
+    } catch (factualError) {
+      console.error("❌ Error en verificación factual:", factualError);
+      return {
+        error: "La verificación factual no está disponible en este momento.",
+        claims_verificados: [],
+        claims_refutados: [],
+        claims_en_conflicto: [],
+        claims_evidencia_insuficiente: [],
+        claims_no_aplicables: []
+      };
+    }
+  })();
+
+  // Esperamos que ambas tareas concurrentes terminen
+  const [semanticReview, confiabilidadFactual] = await Promise.all([semanticTask, factualTask]);
 
   // ─── PIPELINE STEP 4: Gemini Review (Interpretación) ────
-  // Ejecución garantizada: Siempre evalúa en Capa 4 para asegurar auditoría completa.
   console.log("🤖 PIPELINE STEP 4: Revisión de Gemini...");
   let geminiReview = null;
   try {
@@ -103,13 +110,11 @@ async function evaluate({ text }) {
     protocol_version: VERSIONS.protocol,
     evaluated_at: new Date().toISOString(),
     
-    // Capas Cognitivas Independientes
     local: localResult,
     semantic_review: semanticReview,
     confiabilidad_factual: confiabilidadFactual,
     gemini_review: geminiReview,
     
-    // Trazabilidad y Metadatos
     metadata: {
       module_versions: VERSIONS,
       evidence_density: localResult.evidencias
@@ -123,3 +128,4 @@ async function evaluate({ text }) {
 }
 
 module.exports = { evaluate };
+
