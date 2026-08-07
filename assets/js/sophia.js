@@ -1304,16 +1304,6 @@ const SOPHIA = {
         return;
       }
 
-      // Helper robusto para evitar [object Object] al inyectar en el DOM
-      const safeText = (val) => {
-        if (val === null || val === undefined) return '';
-        if (typeof val === 'string') return val;
-        if (typeof val === 'object') {
-          return val.html || val.text || val.texto || val.descripcion || val.valor || val.value || JSON.stringify(val);
-        }
-        return String(val);
-      };
-
       const irdGlobal = data.IRD_global !== undefined ? data.IRD_global : 0;
       const nivelRiesgo = data.riesgo || "Normal";
 
@@ -1427,38 +1417,38 @@ const SOPHIA = {
           <div class="view-section">
             <div class="view-section-title">Revisión semántica (Gemini)</div>
             <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
-              ${data.llm.overall_comment ? `<p style="font-size:.82rem; color:#e5e7eb; margin:0 0 12px 0; line-height:1.5;">${safeText(data.llm.overall_comment)}</p>` : ''}
+              ${data.llm.overall_comment ? `<p style="font-size:.82rem; color:#e5e7eb; margin:0 0 12px 0; line-height:1.5;">${data.llm.overall_comment}</p>` : ''}
               <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:10px; margin-bottom:12px;">
                 ${data.llm.evidence_quality ? `
                   <div>
                     <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase;">Calidad de evidencia</div>
-                    <div style="font-size:.85rem; color:var(--accent);">${safeText(data.llm.evidence_quality)}</div>
+                    <div style="font-size:.85rem; color:var(--accent);">${data.llm.evidence_quality}</div>
                   </div>` : ''}
                 ${data.llm.tone_proportionality ? `
                   <div>
                     <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase;">Proporcionalidad del tono</div>
-                    <div style="font-size:.85rem; color:var(--accent);">${safeText(data.llm.tone_proportionality)}</div>
+                    <div style="font-size:.85rem; color:var(--accent);">${data.llm.tone_proportionality}</div>
                   </div>` : ''}
               </div>
               ${(data.llm.additional_fallacies && data.llm.additional_fallacies.length > 0) ? `
                 <div style="margin-bottom:10px;">
                   <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Falacias adicionales detectadas</div>
                   <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
-                    ${data.llm.additional_fallacies.map(f => `<li>${safeText(f)}</li>`).join('')}
+                    ${data.llm.additional_fallacies.map(f => `<li>${f}</li>`).join('')}
                   </ul>
                 </div>` : ''}
               ${(data.llm.bias_detected && data.llm.bias_detected.length > 0) ? `
                 <div style="margin-bottom:10px;">
                   <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Sesgos detectados</div>
                   <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
-                    ${data.llm.bias_detected.map(b => `<li>${safeText(b)}</li>`).join('')}
+                    ${data.llm.bias_detected.map(b => `<li>${b}</li>`).join('')}
                   </ul>
                 </div>` : ''}
               ${(data.llm.rhetorical_devices && data.llm.rhetorical_devices.length > 0) ? `
                 <div>
                   <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Recursos retóricos identificados</div>
                   <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
-                    ${data.llm.rhetorical_devices.map(r => `<li>${safeText(r)}</li>`).join('')}
+                    ${data.llm.rhetorical_devices.map(r => `<li>${r}</li>`).join('')}
                   </ul>
                 </div>` : ''}
             </div>
@@ -1488,18 +1478,34 @@ const SOPHIA = {
             const f = c.fuentes || c.sources || [];
             return Array.isArray(f) ? f.filter(Boolean) : [];
           };
+          // Normaliza cada fuente a { texto, uri } sin importar si viene como
+          // string simple (formato viejo) o como objeto {uri, title} (formato
+          // nuevo de la búsqueda real con Vertex grounding).
+          const sourceDisplay = (s) => {
+            if (typeof s === 'string') return { texto: s, uri: null };
+            if (s && typeof s === 'object') {
+              const texto = s.title || s.uri || '(fuente sin nombre)';
+              const uri = s.uri || null;
+              return { texto, uri };
+            }
+            return { texto: String(s), uri: null };
+          };
           const renderGroup = (titulo, claims, color) => {
             if (!Array.isArray(claims) || claims.length === 0) return '';
             return `
               <div style="margin-bottom:14px;">
                 <div style="font-size:.75rem; color:${color}; text-transform:uppercase; margin-bottom:6px;">${titulo} (${claims.length})</div>
                 ${claims.map(c => {
-                  const fuentes = claimSources(c);
+                  const fuentes = claimSources(c).map(sourceDisplay);
                   return `
                     <div style="background:rgba(255,255,255,.03); border-left:2px solid ${color}; padding:10px 14px; margin-bottom:8px;">
                       <div style="font-size:.78rem; color:#e5e7eb; line-height:1.4;">${claimText(c)}</div>
                       ${fuentes.length > 0
-                        ? `<div style="font-size:.68rem; color:rgba(229,231,235,.45); margin-top:4px;">Fuentes: ${fuentes.join(', ')}</div>`
+                        ? `<div style="font-size:.68rem; color:rgba(229,231,235,.45); margin-top:4px;">Fuentes: ${fuentes.map(f =>
+                            f.uri
+                              ? `<a href="${f.uri}" target="_blank" rel="noopener noreferrer" style="color:${color}; text-decoration:underline;">${f.texto}</a>`
+                              : f.texto
+                          ).join(', ')}</div>`
                         : `<div style="font-size:.68rem; color:rgba(229,231,235,.3); margin-top:4px;">Sin fuentes registradas</div>`}
                     </div>`;
                 }).join('')}
@@ -1542,12 +1548,12 @@ const SOPHIA = {
             if (item === null || typeof item !== 'object') {
               return `<div style="font-size:.78rem; color:rgba(229,231,235,.75); padding:8px 0;">${item}</div>`;
             }
-            const atomo = safeText(pick(item, ['atomo', 'atom', 'ATOMO_CAUSALIDAD'], null));
-            const criterio = safeText(pick(item, ['criterio', 'criterion'], null));
-            const categoria = safeText(pick(item, ['categoria', 'category', 'tipo'], null));
-            const confianza = safeText(pick(item, ['confianza', 'confidence'], null));
-            const resultado = safeText(pick(item, ['resultado', 'result', 'veredicto'], null));
-            const razon = safeText(pick(item, ['razon', 'reason', 'observacion', 'descripcion', 'explicacion'], null));
+            const atomo = pick(item, ['atomo', 'atom', 'ATOMO_CAUSALIDAD'], null);
+            const criterio = pick(item, ['criterio', 'criterion'], null);
+            const categoria = pick(item, ['categoria', 'category', 'tipo'], null);
+            const confianza = pick(item, ['confianza', 'confidence'], null);
+            const resultado = pick(item, ['resultado', 'result', 'veredicto'], null);
+            const razon = pick(item, ['razon', 'reason', 'observacion', 'descripcion', 'explicacion'], null);
 
             const badgeColor = (resultado || '').toString().toLowerCase().includes('falso')
               ? '#ef4444'
@@ -1585,23 +1591,23 @@ const SOPHIA = {
               ${data.gemini_review.interpretacion ? `
                 <div style="margin-bottom:12px;">
                   <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Interpretación</div>
-                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${safeText(data.gemini_review.interpretacion)}</div>
+                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.interpretacion}</div>
                 </div>` : ''}
               ${data.gemini_review.contexto ? `
                 <div style="margin-bottom:12px;">
                   <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Contexto</div>
-                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${safeText(data.gemini_review.contexto)}</div>
+                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.contexto}</div>
                 </div>` : ''}
               ${data.gemini_review.observaciones ? `
                 <div style="margin-bottom:12px;">
                   <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Observaciones</div>
-                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${safeText(data.gemini_review.observaciones)}</div>
+                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.observaciones}</div>
                 </div>` : ''}
               ${(data.gemini_review.preguntas_reflexivas && Array.isArray(data.gemini_review.preguntas_reflexivas) && data.gemini_review.preguntas_reflexivas.length > 0) ? `
                 <div>
                   <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Preguntas reflexivas</div>
                   <ul style="margin:0; padding-left:18px; font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
-                    ${data.gemini_review.preguntas_reflexivas.map(p => `<li>${safeText(p)}</li>`).join('')}
+                    ${data.gemini_review.preguntas_reflexivas.map(p => `<li>${p}</li>`).join('')}
                   </ul>
                 </div>` : ''}
             </div>
