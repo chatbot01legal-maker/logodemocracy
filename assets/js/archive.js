@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (irdEl) irdEl.innerHTML = `${meta.ird}<span style="font-size: 0.85rem; color: rgba(229,231,235,0.4);">/100</span>`;
       if (riskEl) riskEl.textContent = meta.risk;
 
-      // 3. Reconstruir el Activo Cognitivo para ReyFilosofoChat
+      // 3. Reconstruir el Activo Cognitivo para ReyFilosofoChat (AHORA CON EL CONTENIDO)
       currentActiveAsset = {
         source: "Academia",
         contractVersion: "1.0",
@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         asset: {
           title: meta.title,
           file: name,
+          content: body, // <-- Se inyecta el contenido real del documento
           sophia: { ird: meta.ird, risk: meta.risk }
         },
         metadata: { originModule: "Academia" }
