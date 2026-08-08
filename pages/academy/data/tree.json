@@ -1,6 +1,19 @@
 [
   {
     "library": "Logodemocracia",
+    "folder": "Plataforma Tecnológica",
+    "title": "¿Qué es SOPHIA y cuál es su función?",
+    "file": "que-es-sophia.md",
+    "tags": [
+      "sophia",
+      "inteligencia-artificial",
+      "deliberación",
+      "epistemología",
+      "democracia-aumentada"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
     "folder": "Conceptos Fundamentales",
     "title": "Introducción",
     "file": "intro.md",
