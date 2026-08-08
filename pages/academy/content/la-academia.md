@@ -914,10 +914,15 @@ Su función no consiste simplemente en almacenar documentos.
 Consiste en construir un entorno donde:
 
 el conocimiento pueda ser aprendido;
+
 el aprendizaje pueda ser personalizado;
+
 los argumentos puedan ser examinados;
+
 las ideas puedan ser propuestas;
+
 el conocimiento pueda ser producido colectivamente;
+
 y la participación pueda convertirse en una experiencia de aprendizaje democrático.
 
 SOPHIA aporta la auditoría.
@@ -938,4 +943,4 @@ Debe entenderse como su infraestructura de aprendizaje ciudadano.
 
 Y su principio rector puede expresarse en una sola frase:
 
-«La plataforma no aprende democracia hablando sobre democracia. Aprende democracia practicándola.»
+«Un ciudadano no aprende democracia hablando sobre democracia. Aprende democracia practicándola.»
