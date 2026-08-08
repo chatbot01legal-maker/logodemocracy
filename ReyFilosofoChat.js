@@ -132,7 +132,7 @@
       console.error('❌ ReyFilosofoChat.sendMessage:', error.message);
       state.conversation.push({
         role: 'assistant',
-        content: 'No pude conectar con el Rey Filósofo en este momento. Intentá nuevamente en unos segundos.',
+        content: 'No pude conectar con el Rey Filósofo en este momento. Intenta nuevamente en unos segundos.',
         timestamp: new Date().toISOString(),
         isError: true
       });
@@ -180,7 +180,7 @@
       return;
     }
 
-    const messagesHtml = state.conversation.length > 0
+    let messagesHtml = state.conversation.length > 0
       ? state.conversation.map(m => `
           <div style="margin-bottom:10px; display:flex; justify-content:${m.role === 'user' ? 'flex-end' : 'flex-start'};">
             <div style="
@@ -191,7 +191,28 @@
             ">${escapeHtml(m.content)}</div>
           </div>
         `).join('')
-      : `<p style="color:rgba(229,231,235,.4); font-size:.8rem;">Contale al Rey Filósofo qué te gustaría entender mejor sobre esto.</p>`;
+      : `<p style="color:rgba(229,231,235,.4); font-size:.8rem;">Cuéntale al Rey Filósofo qué te gustaría entender mejor sobre este documento.</p>`;
+
+    // === CAMBIO MÍNIMO: INDICADOR DE PENSANDO ===
+    if (state.isSending) {
+      messagesHtml += `
+        <div style="margin-bottom:10px; display:flex; justify-content:flex-start; animation: pulse 1.5s infinite;">
+          <div style="
+            max-width:80%; padding:8px 12px; border-radius:10px;
+            font-size:.82rem; background:#1f2937; color:#9ca3af; font-style:italic; display:flex; gap:4px; align-items:center;
+          ">
+            <span>Reflexionando...</span>
+          </div>
+        </div>
+        <style>
+          @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+          }
+        </style>
+      `;
+    }
 
     container.innerHTML = `
       <div id="rf-panel" style="
@@ -209,7 +230,7 @@
         <div id="rf-messages" style="flex:1; overflow-y:auto; padding:14px;">${messagesHtml}</div>
         <div style="padding:10px; border-top:1px solid rgba(255,255,255,.08); display:flex; gap:8px;">
           <textarea id="rf-input"
-            placeholder="${state.isSending ? 'Esperando respuesta...' : 'Escribí tu pregunta...'}"
+            placeholder="${state.isSending ? 'Esperando respuesta...' : 'Escribe tu pregunta...'}"
             ${state.isSending ? 'disabled' : ''}
             style="flex:1; resize:none; height:38px; background:#111827; border:1px solid rgba(255,255,255,.1); border-radius:6px; color:#e5e7eb; font-size:.8rem; padding:8px 10px;"
           ></textarea>
