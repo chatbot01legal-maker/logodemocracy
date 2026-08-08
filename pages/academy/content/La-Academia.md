@@ -152,36 +152,120 @@ Incluye contenidos sobre:
 
 4.2. Todo Ciudadano Sabe
 
-Construye un mapa de conceptos fundamentales para comprender el mundo contemporáneo.
+Todo Ciudadano Sabe es la biblioteca destinada a construir un mapa de conceptos fundamentales que permitan a una persona comprender el mundo natural, social, tecnológico y político que la rodea.
 
-No pretende ser una enciclopedia.
+La biblioteca está inspirada en el enfoque desarrollado por Gregory Bateson en Todo escolar sabe, particularmente en su preocupación por identificar los conceptos y patrones de pensamiento que una persona necesita comprender para construir modelos adecuados de la realidad.
 
-Busca identificar conceptos con alto poder explicativo, conectivo o instrumental.
+La propuesta de LogoDemocracy toma esta preocupación como punto de partida y la extiende hacia una pregunta específicamente ciudadana:
 
-Entre ellos pueden encontrarse:
+«¿Qué debería comprender una persona, independientemente del país en cuyo sistema educativo haya sido formada, para poder interpretar razonablemente el mundo en el que vive y participar de manera autónoma en la vida pública?»
 
-- causalidad;
-- probabilidad;
-- incertidumbre;
-- inferencia;
-- distribución normal;
-- teorema de Bayes;
-- ley de Pareto;
-- entropía;
-- información;
-- sistemas;
-- evolución;
-- incentivos;
-- instituciones;
-- economía;
-- percepción;
-- sesgos cognitivos;
+Un currículo universal
+
+Todo Ciudadano Sabe aspira a funcionar como una suerte de currículum cognitivo universal.
+
+No pretende reemplazar los sistemas educativos nacionales ni establecer un programa escolar alternativo.
+
+Su propósito es diferente.
+
+Los sistemas educativos de cada país poseen:
+
+- programas oficiales;
+- objetivos curriculares;
+- tradiciones pedagógicas;
+- prioridades culturales;
+- estructuras institucionales;
+- distintos niveles y modalidades de enseñanza.
+
+La Academia propone explorar aquello que puede encontrarse por debajo de esas diferencias: un conjunto de conceptos y herramientas intelectuales cuya comprensión resulta potencialmente relevante para cualquier persona que necesite orientarse en el mundo contemporáneo.
+
+Por ello, Todo Ciudadano Sabe no pregunta:
+
+««¿Qué contenidos debe enseñar determinado sistema escolar?»»
+
+Pregunta:
+
+««¿Qué conocimientos y conceptos debería poder comprender cualquier ciudadano para construir modelos suficientemente adecuados del mundo que habita?»»
+
+El proyecto debe entenderse, por tanto, como una investigación abierta sobre los mínimos cognitivos de una ciudadanía contemporánea.
+
+No es una enciclopedia
+
+Todo Ciudadano Sabe no pretende acumular información.
+
+Su objetivo es identificar conceptos con un elevado:
+
+- poder explicativo;
+- poder conectivo;
+- poder predictivo, cuando corresponda;
+- poder instrumental;
+- valor para el razonamiento;
+- valor para la comprensión de fenómenos colectivos.
+
+Un concepto merece formar parte de esta biblioteca no simplemente porque sea importante dentro de una disciplina, sino porque permite comprender múltiples fenómenos y establecer conexiones entre áreas diferentes del conocimiento.
+
+Por ejemplo, conceptos como causalidad, probabilidad, incertidumbre, inferencia, sistemas, retroalimentación, información, evolución o incentivos pueden aparecer en contextos muy diferentes y, precisamente por ello, poseen un elevado potencial de transferencia.
+
+Del mismo modo, conceptos como la distribución normal, el teorema de Bayes, la ley de Pareto, la entropía, la estadística, los sesgos cognitivos o determinados principios de la inteligencia artificial pueden proporcionar herramientas específicas para interpretar fenómenos que forman parte de la vida contemporánea.
+
+La lista inicial no es cerrada.
+
+La biblioteca deberá crecer mediante criterios explícitos de inclusión y no mediante acumulación arbitraria.
+
+De la educación disciplinaria a una red conceptual
+
+Las disciplinas académicas organizan el conocimiento de acuerdo con campos especializados.
+
+Todo Ciudadano Sabe busca realizar una operación complementaria: identificar conceptos capaces de atravesar las fronteras entre disciplinas.
+
+Así, un ciudadano puede encontrar el concepto de probabilidad en:
+
+- matemáticas;
 - estadística;
-- inteligencia artificial.
+- ciencias naturales;
+- economía;
+- medicina;
+- ciencias sociales;
+- análisis de riesgos;
+- inteligencia artificial;
+- toma de decisiones.
 
-La pregunta orientadora es:
+La finalidad es que el usuario no aprenda solamente una definición, sino que pueda reconocer el mismo patrón conceptual cuando aparece en contextos diferentes.
 
-«¿Qué conceptos aumentan la capacidad de una persona para construir modelos adecuados del mundo que la rodea?»
+Esto permite pasar de una educación basada exclusivamente en la acumulación de contenidos a una educación orientada hacia la construcción de modelos transferibles.
+
+Un currículo abierto y evolutivo
+
+El carácter universal de Todo Ciudadano Sabe no significa que su contenido sea definitivo.
+
+Por el contrario, la biblioteca debe considerarse un proyecto abierto.
+
+Nuevos conocimientos científicos, transformaciones tecnológicas y cambios sociales pueden hacer que determinados conceptos adquieran nueva relevancia o que aparezcan otros que deban incorporarse.
+
+Por ello, el currículo universal de LogoDemocracy no debe entenderse como una lista definitiva de «cosas que todos deben saber».
+
+Debe entenderse como una hipótesis revisable acerca de los conocimientos que aumentan la autonomía cognitiva de una persona.
+
+Esta característica es particularmente importante para LogoDemocracy:
+
+«El currículo no debe estar cerrado a la revisión; debe ser capaz de aprender.»
+
+La pregunta orientadora
+
+Todo Ciudadano Sabe queda, por tanto, orientado por una pregunta fundamental:
+
+«¿Qué conceptos aumentan la capacidad de una persona para construir modelos adecuados del mundo que la rodea y participar autónomamente en él?»
+
+La respuesta no será determinada exclusivamente por una autoridad curricular.
+
+Deberá construirse progresivamente mediante conocimiento científico, análisis pedagógico, deliberación, revisión epistemológica y experiencia de aprendizaje.
+
+En este sentido, Todo Ciudadano Sabe constituye simultáneamente:
+
+un mapa conceptual,
+un proyecto pedagógico,
+una hipótesis sobre los mínimos cognitivos de la ciudadanía
+y un experimento abierto de construcción de un currículo universal.
 
 ---
 
