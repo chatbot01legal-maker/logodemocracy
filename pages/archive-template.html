@@ -13,45 +13,34 @@
 <div class="page">
 
 <header class="topbar">
-  <a href="/" class="brand">
-    LOGODEMOCRACY
-  </a>
-
+  <a href="/" class="brand">LOGODEMOCRACY</a>
   <nav class="module-nav">
-    <a href="/pages/archive-template.html" class="module-link active">
-      Academia
-    </a>
-    <a href="/pages/sophia.html" class="module-link">
-      Sophia
-    </a>
+    <a href="/pages/archive-template.html" class="module-link active">Academia</a>
+    <a href="/pages/sophia.html" class="module-link">Sophia</a>
   </nav>
-
   <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <path d="M4 6H20"/>
-      <path d="M4 12H20"/>
-      <path d="M4 18H20"/>
+      <path d="M4 6H20"/><path d="M4 12H20"/><path d="M4 18H20"/>
     </svg>
   </button>
-
   <div class="topbar-right"></div>
 </header>
 
   <div class="layout">
-
     <aside class="sidebar">
-      <!-- Contenido del sidebar -->
       <div class="sidebar-content">
-
         <div class="tree" id="tree"></div>
 
-        <!-- BLOQUE EPISTÉMICO MODIFICADO: SOPHIA IRD -->
+        <!-- BLOQUE EPISTÉMICO SIMPLIFICADO -->
         <div class="epistemic" id="sophia-score-block">
-          <div class="epistemic-title" style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">Auditoría SOPHIA v4.0</div>
+          <div class="epistemic-title" style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <span>Auditoría SOPHIA</span>
+            <span onclick="window.openSophiaModal()" style="font-size: 0.65rem; color: #60a5fa; cursor: pointer; text-decoration: underline;">Análisis Sophia ↗</span>
+          </div>
           
           <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 12px; border: 1px solid var(--s-border);">
             <div>
-              <div style="font-size: 0.65rem; color: rgba(229,231,235,0.5); text-transform: uppercase; margin-bottom: 2px;">Índice de Robustez</div>
+              <div style="font-size: 0.65rem; color: rgba(229,231,235,0.5); text-transform: uppercase; margin-bottom: 2px;">Índice IRD</div>
               <div style="font-size: 1.6rem; font-weight: 600; color: #e5e7eb;" id="sophia-ird">--<span style="font-size: 0.85rem; color: rgba(229,231,235,0.4);">/100</span></div>
             </div>
             <div style="text-align: right;">
@@ -59,105 +48,61 @@
               <div style="font-size: 0.9rem; font-weight: 600; color: rgba(229,231,235,0.4);" id="sophia-risk">ND</div>
             </div>
           </div>
-          
-          <div style="font-size: 0.7rem; color: rgba(229,231,235,0.4); margin-top: 10px; line-height: 1.4;">
-            Evaluación estructural del motor determinista. Mide la integridad lógica y la transparencia retórica del documento.
-          </div>
         </div>
 
         <div class="philosopher">
           <div class="philosopher-title">🏛 Rey Filósofo</div>
-          <div class="philosopher-text">
-            ¿Quieres profundizar en esta idea?
-          </div>
-          <button class="philosopher-btn">
-            Profundizar
-          </button>
+          <div class="philosopher-text">¿Quieres profundizar en esta idea?</div>
+          <button class="philosopher-btn">Profundizar</button>
         </div>
-
       </div>
 
-      <!-- Columna exclusiva para el botón -->
       <div class="sidebar-rail">
-        <div class="sidebar-toggle">
-          ◂
-        </div>
+        <div class="sidebar-toggle">◂</div>
       </div>
-
     </aside>
 
     <main class="document">
       <div class="document-header">
         Platón soñó con reyes filósofos. Nosotros exploramos otra posibilidad. Que cualquier ciudadano pueda aprender a pensar como uno. Bienvenido a la Academia.
       </div>
-
       <div class="document-content">
-        <div class="content" id="content">
-        </div>
+        <div class="content" id="content"></div>
       </div>
     </main>
-
   </div>
 
   <footer class="footer">
     LogoDemocracy · Academia
   </footer>
-
 </div>
 
-<!-- LIBRERÍA MARKED (Markdown parser) -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-<!-- TU LÓGICA -->
-<script>
-  console.log("ARCHIVE TEMPLATE JS ESTÁ CORRIENDO");
-</script>
-  
 <script src="/assets/js/layout.js"></script>
 <script src="/assets/js/mobile-menu.js"></script>
-<script src="/assets/js/archive.js?v=6"></script>
-
-<!-- CONECTOR REY FILÓSOFO / FÁBRICA -->
+<script src="/assets/js/archive.js?v=7"></script>
 <script src="/CognitiveSessionFactory.js?v=6"></script>
 <script src="/ReyFilosofoChat.js?v=6"></script>
+
 <script>
   window.addEventListener("load", () => {
     const btn = document.querySelector(".philosopher-btn");
     if (btn) {
       btn.addEventListener("click", () => {
-        alert("DIAGNÓSTICO 1: CLICK DETECTADO"); // ← TEMPORAL, borrar después
-        console.log("CLICK EN BOTÓN REY FILÓSOFO CAPTURADO");
-        
         const asset = window.Academy && typeof window.Academy.getCurrentCognitiveAsset === 'function'
           ? window.Academy.getCurrentCognitiveAsset()
           : null;
 
-        console.log("ACTIVO COGNITIVO OBTENIDO:", asset);
+        if (!asset) return;
 
-        if (!asset) {
-          alert("Por favor, selecciona un documento de la Academia primero.");
-          return;
-        }
-
-        if (typeof CognitiveSessionFactory === 'undefined') {
-          alert("DIAGNÓSTICO 2: CognitiveSessionFactory no disponible"); // ← TEMPORAL, borrar después
-          console.error("CognitiveSessionFactory no está disponible.");
+        if (typeof CognitiveSessionFactory === 'undefined' || typeof ReyFilosofoChat === 'undefined') {
+          console.error("Módulos cognitivos no disponibles.");
           return;
         }
 
         const session = CognitiveSessionFactory.fromAcademy(asset);
-        
-        if (typeof ReyFilosofoChat !== 'undefined' && typeof ReyFilosofoChat.open === 'function') {
-          alert("DIAGNÓSTICO 3: ABRIENDO REYFILOSOFOCHAT"); // ← TEMPORAL, borrar después
-          ReyFilosofoChat.open(session);
-        } else {
-          alert("DIAGNÓSTICO 4: ReyFilosofoChat NO disponible"); // ← TEMPORAL, borrar después
-          console.error("ReyFilosofoChat no está disponible.");
-        }
+        ReyFilosofoChat.open(session);
       });
-    } else {
-      alert("DIAGNÓSTICO 0: NO SE ENCONTRÓ EL BOTÓN .philosopher-btn"); // ← TEMPORAL, borrar después
-      console.warn("No se encontró el botón .philosopher-btn");
     }
   });
 </script>
