@@ -2,6 +2,24 @@
   {
     "library": "Logodemocracia",
     "folder": "Plataforma Tecnológica",
+    "title": "¿Qué es la Academia y cuál es su función en LogoDemocracy?",
+    "file": "la-academia.md",
+    "tags": [
+      "academia",
+      "educacion-civica",
+      "aprendizaje",
+      "conocimiento",
+      "deliberacion",
+      "inteligencia-colectiva",
+      "rey-filosofo",
+      "sophia",
+      "votacion-cuadratica",
+      "democracia-aumentada"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
+    "folder": "Plataforma Tecnológica",
     "title": "¿Qué es SOPHIA y cuál es su función?",
     "file": "que-es-sophia.md",
     "tags": [
