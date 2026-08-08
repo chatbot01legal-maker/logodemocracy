@@ -2,6 +2,28 @@
   {
     "library": "Logodemocracia",
     "folder": "Plataforma Tecnológica",
+    "title": "¿Qué es LogoDemocracy? Arquitectura de la plataforma tecnológica",
+    "file": "Logodemocracia.md",
+    "tags": [
+      "logodemocracia",
+      "arquitectura",
+      "democracia-aumentada",
+      "inteligencia-artificial",
+      "academia",
+      "sophia",
+      "rey-filosofo",
+      "logos",
+      "aletheia",
+      "agora",
+      "mythos",
+      "deliberacion",
+      "inteligencia-colectiva",
+      "produccion-comunitaria"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
+    "folder": "Plataforma Tecnológica",
     "title": "¿Qué es la Academia y cuál es su función en LogoDemocracy?",
     "file": "la-academia.md",
     "tags": [
