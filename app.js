@@ -183,6 +183,32 @@ app.post("/api/sophia/evaluate", async (req, res) => {
 });
 
 // ─── Rey Filósofo Kernel ZDP ─────────────────────────
+// ─── Feedback de usuarios sobre evaluaciones de SOPHIA ────────────────
+app.post("/api/sophia/feedback", async (req, res) => {
+  try {
+    const { comentario, texto_evaluado, ird_global, userId, timestamp } = req.body;
+    if (!comentario || !comentario.trim()) {
+      return res.status(400).json({ error: "Comentario requerido" });
+    }
+
+    const db = await connect();
+    await db.collection("feedback").insertOne({
+      comentario,
+      texto_evaluado: texto_evaluado || null,
+      ird_global: ird_global !== undefined ? ird_global : null,
+      userId: userId || null,
+      timestamp: timestamp || new Date().toISOString(),
+      created_at: new Date()
+    });
+
+    console.log("📝 Feedback de SOPHIA guardado en MongoDB");
+    res.json({ message: "Comentario recibido correctamente" });
+  } catch (error) {
+    console.error("❌ Error en /api/sophia/feedback:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
 const rfRoutes = require("./logodemocracy-api/src/routes/rfRoutes");
 app.use("/api/reyfilosofo", rfRoutes);
 
