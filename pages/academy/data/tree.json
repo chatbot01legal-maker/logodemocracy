@@ -74,27 +74,56 @@
     "folder": "Conceptos Fundamentales",
     "title": "Introducción",
     "file": "intro.md",
-    "tags": ["Logodemocracia", "Fundamentos"]
+    "tags": [
+      "Logodemocracia",
+      "Fundamentos"
+    ]
+  },
+  {
+    "library": "Todo Ciudadano Sabe",
+    "folder": "01-Todo-Ciudadano-Sabe",
+    "title": "Todo Ciudadano Sabe: un currículum universal para comprender el mundo",
+    "file": "todo-ciudadano-sabe.md",
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "pensamiento-critico",
+      "modelos-mentales",
+      "alfabetizacion-epistemica",
+      "educacion-civica",
+      "academia",
+      "conocimiento"
+    ]
   },
   {
     "library": "Todo Ciudadano Sabe",
     "folder": "",
     "title": "Motor Ciudadano",
     "file": "motor-ciudadano.md",
-    "tags": ["Civismo", "Desarrollo"]
+    "tags": [
+      "Civismo",
+      "Desarrollo"
+    ]
   },
   {
     "library": "Joe Pino",
     "folder": "Ensayos",
     "title": "Hipótesis del Relato",
     "file": "Hipótesis del Relato.md",
-    "tags": ["Filosofía", "Epistemología"]
+    "tags": [
+      "Filosofía",
+      "Epistemología"
+    ]
   },
   {
     "library": "Alfabetización Digital para humanistas",
     "folder": "",
     "title": "Inteligencia Artificial Básica",
     "file": "curso-ia.md",
-    "tags": ["Tecnología", "IA"]
+    "tags": [
+      "Tecnología",
+      "IA"
+    ]
   }
 ]
