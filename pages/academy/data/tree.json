@@ -98,12 +98,18 @@
   },
   {
     "library": "Todo Ciudadano Sabe",
-    "folder": "",
-    "title": "Motor Ciudadano",
-    "file": "motor-ciudadano.md",
+    "folder": "02-Todo-Ciudadano-Sabe",
+    "title": "La pauta que conecta",
+    "file": "la-pauta-que-conecta.md",
     "tags": [
-      "Civismo",
-      "Desarrollo"
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "epistemologia",
+      "patrones",
+      "relaciones",
+      "aprendizaje",
+      "complejidad"
     ]
   },
   {
