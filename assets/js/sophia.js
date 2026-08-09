@@ -530,6 +530,43 @@ function renderFase(faseId) {
 }
 
 // ─── VISTAS ────────────────────────────────────────────
+// ─── FRASES "¿SABÍAS QUE...?" PARA LA ESPERA DEL ANÁLISIS ─────
+// Se muestran rotando mientras corre la evaluación (1-2 minutos), para que
+// la espera se sienta informativa en vez de vacía. Todas describen el
+// instrumento real — nada inventado ni genérico.
+const SOPHIA_LOADING_FACTS = [
+  "¿Sabías que? SOPHIA evalúa tu texto en 5 fases: Estructura Lógica, Inferencia, Calibración Epistémica, Transparencia Retórica y Pertinencia Deliberativa.",
+  "¿Sabías que? El Índice de Robustez Deliberativa (IRD) parte de 100 puntos y se descuenta por cada infracción real detectada — nunca se suma por opinión.",
+  "¿Sabías que? La Capa 1 de SOPHIA (el motor determinista) no usa IA — son reglas públicas y auditables, siempre las mismas para todos.",
+  "¿Sabías que? Después del motor determinista, una IA revisa ese mismo resultado buscando falsos positivos: negaciones, ironía, citas o hipótesis mal interpretadas.",
+  "¿Sabías que? SOPHIA distingue entre 'cómo' argumentás (robustez deliberativa) y 'qué' afirmás (confiabilidad factual) — son dos evaluaciones independientes.",
+  "¿Sabías que? Para verificar hechos, SOPHIA hace búsquedas reales en internet y solo marca un dato como verificado si encuentra una fuente real que lo respalde.",
+  "¿Sabías que? Si SOPHIA no encuentra evidencia suficiente sobre una afirmación, lo dice explícitamente — nunca inventa una fuente para parecer más segura.",
+  "¿Sabías que? La fase de Estructura Lógica revisa si tu argumento se contradice a sí mismo o cae en falsas dicotomías (elegir solo entre dos opciones cuando hay más).",
+  "¿Sabías que? La fase de Inferencia detecta si confundís correlación con causalidad, o si generalizás a partir de un solo ejemplo.",
+  "¿Sabías que? La fase de Calibración Epistémica evalúa si tu nivel de certeza ('creo que' vs. 'es un hecho que') es proporcional a la evidencia que presentás.",
+  "¿Sabías que? La fase de Transparencia Retórica busca lenguaje cargado emocionalmente que reemplace argumentos en vez de acompañarlos.",
+  "¿Sabías que? La fase de Pertinencia Deliberativa mide si tu texto representa de forma justa a quienes piensan distinto (el llamado 'steelmaning').",
+  "¿Sabías que? Todo el proceso de SOPHIA queda registrado por capas — podés ver exactamente qué detectó cada una, no solo el puntaje final.",
+  "¿Sabías que? Un IRD alto no garantiza que los datos citados sean ciertos — por eso SOPHIA siempre muestra ambas cosas por separado.",
+  "¿Sabías que? La interpretación final que arma SOPHIA usa como contexto obligatorio los resultados de las tres capas anteriores, nunca analiza el texto desde cero.",
+  "¿Sabías que? SOPHIA es parte de LogoDemocracy, un ecosistema que busca mejorar la calidad de la deliberación pública con herramientas abiertas.",
+  "¿Sabías que? Las 'meta-reglas' de SOPHIA pueden mitigar una penalización si otra fase ya demostró suficiente rigor — el sistema no evalúa cada criterio de forma aislada.",
+  "¿Sabías que? Cada infracción que detecta SOPHIA cita el fragmento exacto de tu texto que la originó — nada queda sin evidencia mostrable.",
+  "¿Sabías que? SOPHIA fue diseñada para señalar problemas de razonamiento, no para decirte si tu opinión es correcta o incorrecta.",
+  "¿Sabías que? Un texto puede tener errores factuales y aun así una estructura argumentativa impecable — SOPHIA te muestra esa tensión en vez de esconderla.",
+  "¿Sabías que? El protocolo de SOPHIA es público: cualquiera puede revisar exactamente qué reglas se aplican y por qué.",
+  "¿Sabías que? SOPHIA busca ayudarte a pulir una idea antes de publicarla o defenderla, no solo calificarla después de escrita.",
+  "¿Sabías que? La ambigüedad léxica (usar palabras que admiten muchas interpretaciones, como 'bueno' o 'justo' sin definirlas) es una de las infracciones más comunes que detecta SOPHIA.",
+  "¿Sabías que? SOPHIA revisa si tu conclusión es proporcional al tamaño real de tus premisas, o si estás sacando una conclusión más grande de lo que tu evidencia sostiene.",
+  "¿Sabías que? El sistema de verificación de SOPHIA nunca decide si algo es verdadero basándose en su propio conocimiento — siempre busca una fuente externa primero.",
+  "¿Sabías que? SOPHIA todavía está en etapa beta — cada evaluación que hacés ayuda a mejorar el instrumento.",
+  "¿Sabías que? Podés ver el detalle completo de cada fase, no solo el puntaje total, para entender exactamente dónde mejorar tu argumento.",
+  "¿Sabías que? La revisión de falsos positivos existe porque ninguna regla automática es perfecta — por eso una IA vuelve a mirar cada activación antes del resultado final.",
+  "¿Sabías que? SOPHIA separa claramente sus observaciones: unas evalúan tu razonamiento, otras evalúan tus datos, y nunca se mezclan en un solo puntaje.",
+  "¿Sabías que? El objetivo de SOPHIA no es que tu texto 'apruebe', sino que vos entiendas mejor cómo se construye un argumento sólido."
+];
+
 const VIEWS = {
   analisis: {
     title: 'Análisis Sophia',
@@ -537,11 +574,13 @@ const VIEWS = {
       try {
         return `
           <div class="view">
-            <div class="view-eyebrow">Motor de Evaluación</div>
-            <h1 class="view-title">Análisis Sophia</h1>
+            <div class="view-eyebrow">Desarrollá tus ideas con más precisión</div>
+            <h1 class="view-title">Análisis Sophia <span style="font-size:.6rem; font-weight:600; color:#eab308; border:1px solid #eab308; border-radius:4px; padding:2px 6px; vertical-align:middle; margin-left:8px;">BETA</span></h1>
             <div class="view-body">
-              <p>Carga un documento o pega directamente un texto para estimar su <strong>Índice de Robustez Deliberativa (IRD)</strong> según el protocolo SOPHIA v${getSophiaVersion()}.</p>
+              <p>SOPHIA te ayuda a encontrar los puntos débiles de un argumento antes de publicarlo o defenderlo: dónde falta evidencia, dónde la lógica se quiebra, dónde una idea todavía no está madura. Pegá un texto o subí un documento y vas a ver, capa por capa, cómo mejorarlo.</p>
+              <p style="font-size:.75rem; color:rgba(229,231,235,.45);">SOPHIA está en etapa <strong>beta</strong>: seguimos ajustando el instrumento, y tus comentarios sobre cada análisis nos ayudan a calibrarlo mejor.</p>
               <p>Formatos aceptados: <strong>.txt, .pdf, .docx, .md, .rtf</strong>.</p>
+              <p style="font-size:.72rem; color:rgba(229,231,235,.4);">Técnicamente, esto se hace calculando tu <strong>Índice de Robustez Deliberativa (IRD)</strong> según el protocolo SOPHIA v${getSophiaVersion()}.</p>
             </div>
             <div class="eval-tool">
               <div class="upload-area" id="uploadArea" style="border:2px dashed rgba(59,130,246,.3); padding:20px; text-align:center; cursor:pointer; border-radius:4px; transition: border-color .2s;">
@@ -1238,13 +1277,36 @@ const SOPHIA = {
       if (!btn) return;
 
       btn.onclick = async () => {
+        // Bloqueo de doble ejecución: si ya está corriendo un análisis, no
+        // hace nada. El botón queda deshabilitado mientras dura el proceso.
+        if (btn.disabled) return;
+
         const text = input ? input.value.trim() : '';
         if (!text) {
           out.innerHTML = `<p style="color:#ef4444;">El texto es requerido.</p>`;
           return;
         }
 
-        out.innerHTML = `<p style="color:rgba(229,231,235,.5); font-size:.8rem; margin-top:12px;">Analizando documento con SOPHIA (Motor Local + IA)...</p>`;
+        btn.disabled = true;
+        const originalBtnText = btn.textContent;
+        btn.textContent = 'Analizando…';
+        btn.style.opacity = '0.6';
+        btn.style.cursor = 'not-allowed';
+
+        // Frases "¿Sabías que...?" rotando mientras dura el análisis (1-2 min),
+        // para que la espera se sienta informativa en vez de un simple spinner.
+        const shuffled = [...SOPHIA_LOADING_FACTS].sort(() => Math.random() - 0.5);
+        let factIndex = 0;
+        const renderLoading = () => {
+          out.innerHTML = `
+            <div style="margin-top:16px; padding:16px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px;">
+              <p style="color:var(--accent); font-size:.8rem; margin:0 0 8px 0;">Analizando documento con SOPHIA (Motor Determinista + IA)…</p>
+              <p style="color:rgba(229,231,235,.65); font-size:.78rem; line-height:1.5; margin:0;">${shuffled[factIndex % shuffled.length]}</p>
+            </div>`;
+          factIndex++;
+        };
+        renderLoading();
+        const factInterval = setInterval(renderLoading, 4000);
 
         try {
           let data = null;
@@ -1286,14 +1348,89 @@ const SOPHIA = {
           };
 
           this._renderEvaluation(data, out);
+          this._bindFeedback(out, text, data);
 
         } catch (error) {
           console.error('❌ Error en evaluación:', error);
           out.innerHTML = `<p style="color:#ef4444;">Error: ${error.message}</p>`;
+        } finally {
+          clearInterval(factInterval);
+          btn.disabled = false;
+          btn.textContent = originalBtnText;
+          btn.style.opacity = '';
+          btn.style.cursor = '';
         }
       };
     } catch (e) {
       showDebug(`❌ Error en _bindEval: ${e.message}`, true);
+    }
+  },
+
+  // Agrega, debajo del resultado de una evaluación, un espacio simple para
+  // que la persona cuente qué le pareció el análisis que hizo SOPHIA. Es el
+  // mecanismo de retroalimentación para calibrar el instrumento — nunca
+  // modifica el resultado ya mostrado, solo se envía al servidor.
+  _bindFeedback(out, originalText, evaluationData) {
+    try {
+      const wrapper = document.createElement('div');
+      wrapper.style.cssText = 'margin-top:20px; padding:16px; background:var(--s-panel); border:1px dashed rgba(255,255,255,.15); border-radius:4px;';
+      wrapper.innerHTML = `
+        <div style="font-size:.75rem; color:rgba(229,231,235,.5); text-transform:uppercase; margin-bottom:8px;">¿Qué te pareció este análisis?</div>
+        <p style="font-size:.72rem; color:rgba(229,231,235,.4); margin:0 0 10px 0;">SOPHIA está en beta — contanos si algo te pareció injusto, incorrecto o poco claro. Nos ayuda a calibrar el instrumento.</p>
+        <textarea id="sophiaFeedbackInput" placeholder="Ej: la penalización en Transparencia Retórica no me pareció justificada..." style="width:100%; min-height:60px; background:#0a0a0a; border:1px solid rgba(255,255,255,.1); border-radius:4px; color:#e5e7eb; font-size:.78rem; padding:8px; box-sizing:border-box; resize:vertical;"></textarea>
+        <div style="display:flex; justify-content:flex-end; align-items:center; gap:10px; margin-top:8px;">
+          <span id="sophiaFeedbackStatus" style="font-size:.72rem; color:rgba(229,231,235,.4);"></span>
+          <button id="sophiaFeedbackBtn" class="btn-primary" style="font-size:.78rem; padding:6px 14px;">Enviar comentario</button>
+        </div>
+      `;
+      out.appendChild(wrapper);
+
+      const feedbackBtn = wrapper.querySelector('#sophiaFeedbackBtn');
+      const feedbackInput = wrapper.querySelector('#sophiaFeedbackInput');
+      const feedbackStatus = wrapper.querySelector('#sophiaFeedbackStatus');
+
+      feedbackBtn.onclick = async () => {
+        const comentario = feedbackInput.value.trim();
+        if (!comentario) {
+          feedbackStatus.textContent = 'Escribí algo antes de enviar.';
+          feedbackStatus.style.color = '#ef4444';
+          return;
+        }
+
+        feedbackBtn.disabled = true;
+        feedbackStatus.textContent = 'Enviando…';
+        feedbackStatus.style.color = 'rgba(229,231,235,.4)';
+
+        try {
+          const response = await fetch('/api/sophia/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              comentario,
+              texto_evaluado: originalText,
+              ird_global: evaluationData ? evaluationData.IRD_global : null,
+              userId: localStorage.getItem('userId') || null,
+              timestamp: new Date().toISOString()
+            })
+          });
+
+          if (response.ok) {
+            feedbackStatus.textContent = '¡Gracias! Tu comentario fue enviado.';
+            feedbackStatus.style.color = '#22c55e';
+            feedbackInput.value = '';
+          } else {
+            throw new Error(`El servidor respondió ${response.status}`);
+          }
+        } catch (err) {
+          console.warn('⚠️ No se pudo enviar el feedback:', err.message);
+          feedbackStatus.textContent = 'No se pudo enviar. Probá de nuevo más tarde.';
+          feedbackStatus.style.color = '#ef4444';
+        } finally {
+          feedbackBtn.disabled = false;
+        }
+      };
+    } catch (e) {
+      showDebug(`❌ Error en _bindFeedback: ${e.message}`, true);
     }
   },
 
