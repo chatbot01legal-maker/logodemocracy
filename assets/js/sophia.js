@@ -597,7 +597,7 @@ const VIEWS = {
               <p style="text-align:center; color:rgba(229,231,235,.3); font-size:.75rem; margin:14px 0;">— o pega el texto directamente —</p>
               <textarea class="sophia-input" id="evalInput" placeholder="Pega aquí el texto a analizar, o el contenido del archivo cargado aparecerá aquí..." style="height:150px;"></textarea>
               <div class="eval-actions">
-                <button class="btn-primary" id="evalBtn">Auditar Documento →</button>
+                <button class="btn-primary" id="evalBtn">Piensa con Sophia →</button>
                 <span class="eval-note">El algoritmo es determinista y basado en reglas públicas.</span>
               </div>
             </div>
@@ -1306,7 +1306,7 @@ const SOPHIA = {
           factIndex++;
         };
         renderLoading();
-        const factInterval = setInterval(renderLoading, 4000);
+        const factInterval = setInterval(renderLoading, 20000);
 
         try {
           let data = null;
