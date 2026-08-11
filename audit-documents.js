@@ -1,24 +1,28 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
+require("dotenv").config();
 
-// VERSIÓN ACTUAL DEL PROTOCOLO SOPHIA
-// (Incrementa este número cuando cambies las reglas/prompts de SOPHIA para reevaluar todo)
-const SOPHIA_PROTOCOL_VERSION = "4.0";
+const { connect } = require("./modules/database");
+const { evaluate } = require("./modules/sophiaEvaluationPipeline");
 
+const PROTOCOL = { version: "4.0" };
 const CONTENT_DIR = path.join(__dirname, 'pages/academy/content');
-const CACHE_DIR = path.join(__dirname, 'cache/sophia'); // Ajusta la ruta a tu carpeta de caché si es distinta
-
-// Asegurar que existe la carpeta de caché
-if (!fs.existsSync(CACHE_DIR)) {
-  fs.mkdirSync(CACHE_DIR, { recursive: true });
-}
 
 async function auditAllDocuments() {
-  console.log(`\n🔍 Iniciando auditoría incremental SOPHIA (Versión del protocolo: v${SOPHIA_PROTOCOL_VERSION})...\n`);
+  console.log(`\n🔍 Iniciando auditoría incremental SOPHIA en MongoDB (Protocolo: v${PROTOCOL.version})...\n`);
 
   if (!fs.existsSync(CONTENT_DIR)) {
     console.error(`❌ No se encontró la carpeta de contenido en: ${CONTENT_DIR}`);
-    return;
+    process.exit(1);
+  }
+
+  let db;
+  try {
+    db = await connect();
+  } catch (err) {
+    console.error("❌ Error conectando a MongoDB:", err.message);
+    process.exit(1);
   }
 
   const files = fs.readdirSync(CONTENT_DIR).filter(f => f.endsWith('.md'));
@@ -26,45 +30,43 @@ async function auditAllDocuments() {
   let skippedCount = 0;
 
   for (const file of files) {
-    const cacheFilePath = path.join(CACHE_DIR, `${file}.json`);
-    let needsEvaluation = true;
+    const filePath = path.join(CONTENT_DIR, file);
+    const textContent = fs.readFileSync(filePath, 'utf8');
+    const contentHash = crypto.createHash("sha256").update(textContent).digest("hex");
 
-    // Verificar si existe en caché
-    if (fs.existsSync(cacheFilePath)) {
-      try {
-        const cachedData = JSON.parse(fs.readFileSync(cacheFilePath, 'utf8'));
-        // Si ya existe y la versión coincide, se omite
-        if (cachedData.protocol_version === SOPHIA_PROTOCOL_VERSION) {
-          needsEvaluation = false;
-        }
-      } catch (e) {
-        needsEvaluation = true;
-      }
-    }
+    // Verificar presencia en la colección de caché de MongoDB
+    const cached = await db.collection("sophia_document_cache").findOne({
+      docId: file,
+      content_hash: contentHash,
+      protocol_version: PROTOCOL.version
+    });
 
-    if (!needsEvaluation) {
-      console.log(`⏩ [OMITIDO - CACHÉ VÁLIDA] ${file}`);
+    if (cached) {
+      console.log(`⏩ [CACHE HIT - OMITIDO] ${file}`);
       skippedCount++;
       continue;
     }
 
-    // Si requiere evaluación:
-    console.log(`⚡ [EVALUANDO TOKEN DE IA] ${file}...`);
-    const textContent = fs.readFileSync(path.join(CONTENT_DIR, file), 'utf8');
-
+    // Si el documento es nuevo o cambió su contenido/protocolo:
+    console.log(`⚡ [EVALUANDO CON IA] ${file}...`);
     try {
-      // AQUÍ SE CONECTA CON TU LÓGICA / BACKEND DE EVALUACIÓN
-      // Simulamos la estructura guardada con la versión de protocolo asignada:
-      const evaluationResult = {
-        docId: file,
-        protocol_version: SOPHIA_PROTOCOL_VERSION,
-        evaluated_at: new Date().toISOString(),
-        IRD_global: 85, // Ejemplo
-        riesgo: "Bajo"
-      };
+      const report = await evaluate({ text: textContent });
 
-      fs.writeFileSync(cacheFilePath, JSON.stringify(evaluationResult, null, 2));
-      console.log(`✅ [GUARDADO EN CACHÉ] ${file}`);
+      await db.collection("sophia_document_cache").updateOne(
+        { docId: file },
+        {
+          $set: {
+            docId: file,
+            content_hash: contentHash,
+            protocol_version: PROTOCOL.version,
+            result: report,
+            evaluated_at: new Date()
+          }
+        },
+        { upsert: true }
+      );
+
+      console.log(`✅ [GUARDADO EN MONGODB] ${file}`);
       processedCount++;
     } catch (err) {
       console.error(`❌ Error evaluando ${file}:`, err.message);
@@ -72,8 +74,10 @@ async function auditAllDocuments() {
   }
 
   console.log(`\n🎉 Auditoría finalizada.`);
-  console.log(`    Documentos evaluados con IA: ${processedCount}`);
+  console.log(`    Documentos evaluados e indexados en MongoDB: ${processedCount}`);
   console.log(`    Documentos reutilizados desde caché: ${skippedCount}\n`);
+
+  process.exit(0);
 }
 
 auditAllDocuments();
