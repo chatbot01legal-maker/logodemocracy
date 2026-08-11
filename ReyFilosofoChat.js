@@ -47,6 +47,13 @@
 
   let container = null; // nodo DOM raíz del widget (botón + panel)
 
+  // Función opcional que cada página puede registrar con
+  // setDefaultSessionProvider(). El motor la llama únicamente cuando el
+  // botón flotante se toca sin que haya una sesión activa todavía — el
+  // motor sigue sin saber nada de Academia, SOPHIA ni ningún módulo
+  // específico, solo invoca lo que la página le haya registrado.
+  let defaultSessionProvider = null;
+
   // ─── Contrato de entrada: normalización tolerante ───
   function normalizeCognitiveAsset(raw) {
     if (!raw || typeof raw !== 'object') {
@@ -163,12 +170,24 @@
     const btn = document.getElementById('rf-launcher-btn');
     if (btn) {
       btn.onclick = () => {
-        if (!state.activeAsset) {
-          console.warn('⚠️ Rey Filósofo no tiene un Activo Cognitivo activo todavía.');
+        if (state.activeAsset) {
+          state.isOpen = true;
+          renderPanel();
           return;
         }
-        state.isOpen = true;
-        renderPanel();
+        // Todavía no hay sesión abierta (nadie tocó "Profundizar" antes).
+        // Si la página registró un proveedor por defecto, lo usamos para
+        // construir la sesión al vuelo con el contexto actual — así el
+        // botón flotante también funciona como primer punto de entrada,
+        // no solo como reabridor de una sesión ya iniciada.
+        if (typeof defaultSessionProvider === 'function') {
+          const autoSession = defaultSessionProvider();
+          if (autoSession) {
+            ReyFilosofoChat.open(autoSession);
+            return;
+          }
+        }
+        console.warn('⚠️ Rey Filósofo no tiene un Activo Cognitivo activo todavía.');
       };
     }
   }
@@ -293,6 +312,18 @@
     close() {
       state.isOpen = false;
       renderLauncher();
+    },
+
+    // Cada página llama a esto UNA VEZ al cargar, para decirle al motor
+    // cómo construir una sesión "de emergencia" si el usuario toca el
+    // botón flotante sin haber abierto ninguna sesión todavía.
+    // fn debe ser una función sin argumentos que devuelva una
+    // CognitiveSession (por ejemplo, vía CognitiveSessionFactory) o null
+    // si en este momento no hay nada disponible para mostrar.
+    setDefaultSessionProvider(fn) {
+      if (typeof fn === 'function') {
+        defaultSessionProvider = fn;
+      }
     },
 
     _getState() {
