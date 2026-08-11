@@ -62,35 +62,31 @@ async function verifyClaims(claims) {
     claims_evidencia_insuficiente: []
   };
 
-  // ─── PARALELIZACIÓN DE BÚSQUEDAS ────────────────────────────
-  // Mapeamos cada claim a una Promesa independiente para que Vertex
-  // procese todas las búsquedas de Google de forma simultánea.
-  const evaluationPromises = claims.map(async (claim) => {
-    console.log(`   🔎 Verificando con búsqueda real (Vertex grounding): "${claim.canonical_text.substring(0, 80)}..."`);
-    
-    let evaluation;
-    try {
-      evaluation = await evaluateClaim(claim);
-    } catch (err) {
-      console.error(`   ❌ Error al verificar claim ${claim.claim_id}:`, err.message);
-      evaluation = { estado: "evidencia_insuficiente", fuentes_relevantes: [] };
-    }
+  // Todas las afirmaciones se verifican EN PARALELO (no una por una),
+  // para que el tiempo total sea el de la más lenta, no la suma de todas.
+  const evaluaciones = await Promise.all(
+    claims.map(async (claim) => {
+      console.log(`   🔎 Verificando con búsqueda real (Vertex grounding): "${claim.canonical_text.substring(0, 80)}..."`);
+      try {
+        const evaluation = await evaluateClaim(claim);
+        return { claim, evaluation };
+      } catch (err) {
+        console.error(`   ❌ Error al verificar claim ${claim.claim_id}:`, err.message);
+        return { claim, evaluation: { estado: "evidencia_insuficiente", fuentes_relevantes: [] } };
+      }
+    })
+  );
 
-    return {
+  for (const { claim, evaluation } of evaluaciones) {
+    const entry = {
       claim_id: claim.claim_id,
       canonical_text: claim.canonical_text,
       original_texts: claim.original_texts,
       estado: evaluation.estado,
       fuentes: evaluation.fuentes_relevantes || []
     };
-  });
 
-  // Esperamos a que todas las verificaciones terminen al mismo tiempo
-  const evaluatedClaims = await Promise.all(evaluationPromises);
-
-  // Clasificamos los resultados en el objeto final
-  for (const entry of evaluatedClaims) {
-    switch (entry.estado) {
+    switch (evaluation.estado) {
       case 'verificado':
         results.claims_verificados.push(entry);
         break;

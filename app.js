@@ -183,6 +183,85 @@ app.post("/api/sophia/evaluate", async (req, res) => {
 });
 
 // ─── Rey Filósofo Kernel ZDP ─────────────────────────
+// ─── Feedback de usuarios sobre evaluaciones de SOPHIA ────────────────
+app.post("/api/sophia/feedback", async (req, res) => {
+  try {
+    const { comentario, texto_evaluado, ird_global, userId, timestamp } = req.body;
+    if (!comentario || !comentario.trim()) {
+      return res.status(400).json({ error: "Comentario requerido" });
+    }
+
+    const db = await connect();
+    await db.collection("feedback").insertOne({
+      comentario,
+      texto_evaluado: texto_evaluado || null,
+      ird_global: ird_global !== undefined ? ird_global : null,
+      userId: userId || null,
+      timestamp: timestamp || new Date().toISOString(),
+      created_at: new Date()
+    });
+
+    console.log("📝 Feedback de SOPHIA guardado en MongoDB");
+    res.json({ message: "Comentario recibido correctamente" });
+  } catch (error) {
+    console.error("❌ Error en /api/sophia/feedback:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
+// ─── Evaluación SOPHIA con caché por documento ─────────
+// A diferencia de /api/sophia/evaluate (que siempre llama a la IA), esta
+// ruta evalúa un documento UNA SOLA VEZ y reutiliza el resultado guardado
+// en MongoDB en cada visita posterior — hasta que el texto cambie o el
+// protocolo de SOPHIA se actualice (protocol_version), momento en el que
+// se vuelve a evaluar automáticamente.
+app.post("/api/sophia/evaluate-cached", async (req, res) => {
+  try {
+    const { text, docId } = req.body;
+    if (!text || !text.trim() || !docId) {
+      return res.status(400).json({ error: "text y docId son requeridos" });
+    }
+
+    const contentHash = crypto.createHash("sha256").update(text).digest("hex");
+    const db = await connect();
+
+    const cached = await db.collection("sophia_document_cache").findOne({
+      docId,
+      content_hash: contentHash,
+      protocol_version: PROTOCOL.version
+    });
+
+    if (cached) {
+      console.log(`♻️ [Cache HIT] ${docId} — protocolo ${PROTOCOL.version}, sin llamar a la IA`);
+      return res.json(cached.result);
+    }
+
+    console.log(`🧠 [Cache MISS] ${docId} — evaluando de cero (protocolo ${PROTOCOL.version})`);
+    const report = await evaluate({ text });
+
+    await db.collection("sophia_document_cache").updateOne(
+      { docId },
+      {
+        $set: {
+          docId,
+          content_hash: contentHash,
+          protocol_version: PROTOCOL.version,
+          result: report,
+          evaluated_at: new Date()
+        }
+      },
+      { upsert: true }
+    );
+    console.log(`✅ [Cache SAVE] ${docId} guardado`);
+
+    res.json(report);
+  } catch (error) {
+    console.error("❌ Error en /api/sophia/evaluate-cached:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
+
 const rfRoutes = require("./logodemocracy-api/src/routes/rfRoutes");
 app.use("/api/reyfilosofo", rfRoutes);
 
