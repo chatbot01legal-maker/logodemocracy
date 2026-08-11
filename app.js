@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs"); // <-- AGREGADO para leer los .md
 const cors = require("cors");
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
@@ -53,6 +54,63 @@ app.use(
   })
 );
 
+// ─── Función de Auditoría en Segundo Plano (AGREGADO) ──
+async function runBackgroundAudit() {
+  console.log("🔍 [Background Audit] Verificando documentos de la Academia...");
+  const contentDir = path.join(__dirname, "pages/academy/content");
+  if (!fs.existsSync(contentDir)) {
+    console.log("⚠️ [Background Audit] Carpeta de contenidos no encontrada.");
+    return { audited: 0, skipped: 0 };
+  }
+
+  const files = fs.readdirSync(contentDir).filter(f => f.endsWith(".md"));
+  const db = await connect();
+  let audited = 0;
+  let skipped = 0;
+
+  for (const file of files) {
+    const filePath = path.join(contentDir, file);
+    const textContent = fs.readFileSync(filePath, "utf8");
+    const contentHash = crypto.createHash("sha256").update(textContent).digest("hex");
+
+    const cached = await db.collection("sophia_document_cache").findOne({
+      docId: file,
+      content_hash: contentHash,
+      protocol_version: PROTOCOL.version
+    });
+
+    if (cached) {
+      skipped++;
+      continue;
+    }
+
+    console.log(`⚡ [Background Audit] Evaluando con IA en Render: ${file}...`);
+    try {
+      const report = await evaluate({ text: textContent });
+      await db.collection("sophia_document_cache").updateOne(
+        { docId: file },
+        {
+          $set: {
+            docId: file,
+            content_hash: contentHash,
+            protocol_version: PROTOCOL.version,
+            result: report,
+            evaluated_at: new Date()
+          }
+        },
+        { upsert: true }
+      );
+      console.log(`✅ [Background Audit] Guardado en MongoDB: ${file}`);
+      audited++;
+    } catch (err) {
+      console.error(`❌ [Background Audit] Error evaluando ${file}:`, err.message);
+    }
+  }
+
+  console.log(`🎉 [Background Audit] Finalizada. Evaluados: ${audited}, En caché: ${skipped}`);
+  return { audited, skipped, totalFiles: files.length };
+}
+
 // ─── Ruta principal ────────────────────────────────────
 app.get("/", (req, res) => {
   console.log("📄 Sirviendo index.html");
@@ -67,6 +125,17 @@ app.get("/api/health", (req, res) => {
     version: "SOPHIA v4.0",
     protocol_version: PROTOCOL.version || "desconocida"
   });
+});
+
+// ─── Endpoint de Administración (AGREGADO) ────────────
+app.post("/api/admin/audit-all", async (req, res) => {
+  try {
+    const result = await runBackgroundAudit();
+    res.json({ message: "Auditoría en servidor completada", result });
+  } catch (error) {
+    console.error("❌ Error en /api/admin/audit-all:", error);
+    res.status(500).json({ error: "Error procesando la auditoría" });
+  }
 });
 
 // ─── Autenticación ────────────────────────────────────
@@ -273,4 +342,9 @@ app.get("/api/profile", authenticate, (req, res) => {
 // ─── Iniciar servidor ─────────────────────────────────
 app.listen(PORT, () => {
   console.log(`🚀 Servidor SOPHIA ejecutándose en http://localhost:${PORT}`);
+  
+  // Auditoría automática en segundo plano (AGREGADO)
+  setTimeout(() => {
+    runBackgroundAudit().catch(err => console.error("❌ Error en auditoría inicial:", err));
+  }, 5000);
 });
