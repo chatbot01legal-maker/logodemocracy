@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let allDocuments = [];
   let currentActiveAsset = null;
   let tagSearchQuery = "";
-  let currentDocumentAnalysis = null; // Se inicializa para evitar errores de referencia
+  let currentDocumentAnalysis = null; 
 
   // 1. Exponer el Activo Cognitivo para el Rey Filósofo
   window.Academy = window.Academy || {};
@@ -32,9 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =========================
-     MODAL POP-UP SOPHIA
+     MODAL POP-UP SOPHIA (ESTRATEGIA B: BAJO DEMANDA)
   ========================= */
-  window.openSophiaModal = function() {
+  window.openSophiaModal = async function() {
     let modal = document.getElementById("sophia-modal");
     if (!modal) {
       modal = document.createElement("div");
@@ -54,26 +54,47 @@ document.addEventListener("DOMContentLoaded", () => {
     
     modal.style.display = "flex";
     const contentDiv = document.getElementById("sophia-modal-content");
-    
-    // Inyección de caché o fallback a los datos del frontmatter
-    if (typeof currentDocumentAnalysis !== 'undefined' && currentDocumentAnalysis) {
-      if (window.SOPHIA && typeof window.SOPHIA._renderEvaluation === 'function') {
-        contentDiv.innerHTML = "";
-        window.SOPHIA._renderEvaluation(currentDocumentAnalysis, contentDiv);
-      } else {
-        contentDiv.innerHTML = "<p>Error: El renderizador visual de SOPHIA no está cargado en esta vista.</p>";
-      }
+    const asset = currentActiveAsset ? currentActiveAsset.asset : null;
+
+    if (!asset) {
+      contentDiv.innerHTML = "<p>No hay ningún documento activo para analizar.</p>";
+      return;
+    }
+
+    // 1. Si el análisis ya está en memoria para ESTE documento, lo mostramos directo
+    if (currentDocumentAnalysis && currentDocumentAnalysis.docId === asset.file) {
+      renderAnalysis(contentDiv, asset);
+      return;
+    }
+
+    // 2. Si no, lo solicitamos al servidor bajo demanda (reutiliza caché existente o evalúa)
+    contentDiv.innerHTML = `<p style="color:#60a5fa;">Recuperando reporte de auditoría SOPHIA...</p>`;
+    await evaluateDocumentCached(asset.file, asset.content);
+
+    if (currentDocumentAnalysis) {
+      renderAnalysis(contentDiv, asset);
     } else {
-      const asset = currentActiveAsset ? currentActiveAsset.asset : null;
       contentDiv.innerHTML = `
-        <p><strong>Documento:</strong> ${asset ? asset.title : 'N/A'}</p>
-        <p><strong>Índice de Robustez (IRD):</strong> <span style="color:#60a5fa; font-weight:bold;">${asset && asset.sophia ? asset.sophia.ird : '--'}/100</span></p>
-        <p><strong>Riesgo Epistémico:</strong> ${asset && asset.sophia ? asset.sophia.risk : 'ND'}</p>
-        <p style="margin-top:15px; color:#aaa;">Evaluación estructural del motor determinista. Mide la integridad lógica y la transparencia retórica del documento en base a los parámetros de la Academia.</p>
-        <p style="margin-top:15px; color:#fbbf24; font-size:0.8rem;">(Análisis completo no disponible en caché. Ejecute evaluateDocumentCached para cargar reporte detallado).</p>
+        <p><strong>Documento:</strong> ${asset.title}</p>
+        <p><strong>IRD:</strong> ${asset.sophia.ird}/100</p>
+        <p><strong>Riesgo:</strong> ${asset.sophia.risk}</p>
+        <p style="margin-top:15px; color:#ef4444; font-size:0.8rem;">No se pudo conectar con el servicio de auditoría.</p>
       `;
     }
   };
+
+  function renderAnalysis(container, asset) {
+    if (window.SOPHIA && typeof window.SOPHIA._renderEvaluation === 'function') {
+      container.innerHTML = "";
+      window.SOPHIA._renderEvaluation(currentDocumentAnalysis, container);
+    } else {
+      container.innerHTML = `
+        <p><strong>Documento:</strong> ${asset.title}</p>
+        <p><strong>Índice de Robustez (IRD):</strong> <span style="color:#60a5fa; font-weight:bold;">${currentDocumentAnalysis.IRD_global ?? '--'}/100</span></p>
+        <p><strong>Riesgo Epistémico:</strong> ${currentDocumentAnalysis.riesgo ?? 'ND'}</p>
+      `;
+    }
+  }
 
   /* =========================
      EVALUAR DOCUMENTO CON CACHÉ
@@ -93,9 +114,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const raw = await res.json();
       const normalized = typeof normalizeSophiaResult === 'function'
         ? normalizeSophiaResult(raw)
-        : raw; // fallback defensivo si sophia.js no cargó
+        : raw;
 
+      normalized.docId = name;
       currentDocumentAnalysis = normalized;
+
       if (currentActiveAsset) {
         currentActiveAsset.asset.sophia = {
           ird: normalized.IRD_global,
@@ -128,13 +151,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const { meta, body } = parseFrontmatter(rawText);
       content.innerHTML = marked.parse(body);
 
-      // 2. Actualizar UI de Sophia
+      // Limpiamos caché del documento anterior al cambiar de archivo
+      if (currentDocumentAnalysis && currentDocumentAnalysis.docId !== name) {
+        currentDocumentAnalysis = null;
+      }
+
+      // 2. Actualizar UI inicial con la metadata del frontmatter
       const irdEl = document.getElementById("sophia-ird");
       const riskEl = document.getElementById("sophia-risk");
       if (irdEl) irdEl.innerHTML = `${meta.ird}<span style="font-size: 0.85rem; color: rgba(229,231,235,0.4);">/100</span>`;
       if (riskEl) riskEl.textContent = meta.risk;
 
-      // 3. Reconstruir el Activo Cognitivo para ReyFilosofoChat (AHORA CON EL CONTENIDO)
+      // 3. Reconstruir el Activo Cognitivo
       currentActiveAsset = {
         source: "Academia",
         contractVersion: "1.0",
@@ -142,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
         asset: {
           title: meta.title,
           file: name,
-          content: body, // <-- Se inyecta el contenido real del documento
+          content: body,
           sophia: { ird: meta.ird, risk: meta.risk }
         },
         metadata: { originModule: "Academia" }
@@ -173,7 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const query = tagSearchQuery.toLowerCase().trim();
     
-    // Filtrar por tags
     const filteredDocs = query === "" ? allDocuments : allDocuments.filter(doc => {
       return doc.tags && doc.tags.some(tag => tag.toLowerCase().includes(query));
     });
@@ -187,7 +214,6 @@ document.addEventListener("DOMContentLoaded", () => {
       grouped[lib][folder].push(doc);
     });
 
-    // 4. Input de Búsqueda por Tags
     let html = `
       <div style="margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
         <label style="font-size:0.75rem; color:#aaa; margin-bottom:5px; display:block;">Buscar por Tags</label>
@@ -219,7 +245,6 @@ document.addEventListener("DOMContentLoaded", () => {
     html += `</div>`;
     treeContainer.innerHTML = html;
 
-    // Reconectar eventos del input y los archivos
     const inputEl = document.getElementById("tag-input");
     if (inputEl) {
       inputEl.addEventListener("input", (e) => {
