@@ -61,6 +61,48 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = "flex";
   };
 
+
+  /* =========================
+     EVALUAR DOCUMENTO CON CACHÉ
+     Llama al backend, que evalúa una sola vez por documento y
+     reutiliza el resultado guardado — no repite la llamada a la IA
+     en cada visita, salvo que el texto o el protocolo cambien.
+  ========================= */
+  async function evaluateDocumentCached(name, text) {
+    const irdEl = document.getElementById("sophia-ird");
+    if (irdEl) irdEl.innerHTML = `…`;
+
+    try {
+      const res = await fetch("/api/sophia/evaluate-cached", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, docId: name })
+      });
+      if (!res.ok) throw new Error(`El servidor respondió ${res.status}`);
+
+      const raw = await res.json();
+      const normalized = typeof normalizeSophiaResult === 'function'
+        ? normalizeSophiaResult(raw)
+        : raw; // fallback defensivo si sophia.js no cargó
+
+      currentDocumentAnalysis = normalized;
+      if (currentActiveAsset) {
+        currentActiveAsset.asset.sophia = {
+          ird: normalized.IRD_global,
+          risk: normalized.riesgo
+        };
+      }
+
+      if (irdEl) {
+        irdEl.innerHTML = `${normalized.IRD_global ?? '--'}<span style="font-size: 0.65rem; color: rgba(229,231,235,0.4);">/100</span>`;
+      }
+    } catch (err) {
+      console.error("❌ Error evaluando documento con SOPHIA:", err);
+      currentDocumentAnalysis = null;
+      if (irdEl) irdEl.innerHTML = `--<span style="font-size: 0.65rem; color: rgba(229,231,235,0.4);">/100</span>`;
+    }
+  }
+  
   /* =========================
      LOAD MARKDOWN DOCUMENT
   ========================= */
