@@ -70,14 +70,20 @@ Devuelve ÚNICAMENTE un objeto JSON válido con la siguiente estructura exacta (
 
   try {
     const rawResponse = await askVertex(prompt);
+    
     // Limpiamos la respuesta en caso de que Vertex devuelva el JSON envuelto en markdown
-    const cleanJson = rawResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+    let cleanJson = rawResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+    
+    // PARCHE DE ARQUITECTURA: Sanitizador determinista
+    // Detecta y corrige comas faltantes entre propiedades (ej. antes de "contexto": o "observaciones":)
+    cleanJson = cleanJson.replace(/([}\]"])\s+(?="[a-zA-Z0-9_]+":)/g, '$1,');
+    
     return JSON.parse(cleanJson);
   } catch (error) {
     console.error("[SOPHIA-GEMINI-REVIEW] Error procesando la revisión:", error);
     return {
       interpretacion: "No se pudo generar la interpretación semántica.",
-      contexto: "Error de conexión o timeout con la capa cognitiva.",
+      contexto: "Error de conexión, timeout o formato irrecuperable con la capa cognitiva.",
       observaciones: "Requiere revisión manual.",
       preguntas_reflexivas: []
     };
