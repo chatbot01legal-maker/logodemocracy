@@ -13,8 +13,6 @@ tags:
 - democracia-aumentada
 - robustez-deliberativa
 - inteligencia-ciudadana
-  sophia_ird: 95
-  sophia_risk: "Normal"
 
 ---
 
