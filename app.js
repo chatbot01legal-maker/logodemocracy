@@ -25,14 +25,18 @@ console.log("🚀 Iniciando servidor SOPHIA...");
 console.log(`📁 Directorio actual: ${__dirname}`);
 console.log(`📦 Protocolo cargado: ${PROTOCOL.version}`);
 
-// ─── LEVANTAR PUERTO INMEDIATAMENTE (Evita el Timeout de Render) ───
+// Variables de control para ejecución única
+let hasRunAudit = false;
+let isAuditRunning = false;
+
+// ─── LEVANTAR PUERTO INMEDIATAMENTE (Evita Timeout) ───
 app.listen(PORT, () => {
   console.log(`🚀 Servidor SOPHIA ejecutándose y escuchando en el puerto ${PORT}`);
   
-  // Auditoría automática en segundo plano (arranca segura tras abrir puerto)
+  // Auditoría automática automatizada que se ejecuta una única vez al arrancar
   setTimeout(() => {
-    runBackgroundAudit().catch(err => console.error("❌ Error en auditoría inicial:", err));
-  }, 5000);
+    runAutomaticAuditOnce();
+  }, 3000);
 });
 
 // ─── Middleware ────────────────────────────────────────
@@ -69,9 +73,9 @@ function normalizeTextForHash(text) {
   return text.replace(/\r\n/g, "\n").trim();
 }
 
-// ─── Función de Auditoría en Segundo Plano (Optimizada) ──
+// ─── Función de Auditoría Interna ─────────────────────
 async function runBackgroundAudit() {
-  console.log("🔍 [Background Audit] Iniciando auditoría optimizada...");
+  console.log("🔍 [Audit] Iniciando auditoría de documentos...");
   const contentDir = path.join(__dirname, "pages/academy/content");
   if (!fs.existsSync(contentDir)) return { audited: 0, skipped: 0 };
 
@@ -93,7 +97,7 @@ async function runBackgroundAudit() {
 
       if (cached) return { file, status: "skipped" };
 
-      console.log(`⚡ [Background Audit] Evaluando: ${file}...`);
+      console.log(`⚡ [Audit] Evaluando nuevo contenido: ${file}...`);
       const report = await evaluate({ text: textContent });
       
       await db.collection("sophia_document_cache").updateOne(
@@ -111,7 +115,7 @@ async function runBackgroundAudit() {
       );
       return { file, status: "audited" };
     } catch (err) {
-      console.error(`❌ [Background Audit] Error en ${file}:`, err.message);
+      console.error(`❌ [Audit] Error en ${file}:`, err.message);
       return { file, status: "error" };
     }
   });
@@ -120,8 +124,24 @@ async function runBackgroundAudit() {
   const audited = results.filter(r => r.status === "audited").length;
   const skipped = results.filter(r => r.status === "skipped").length;
 
-  console.log(`🎉 [Background Audit] Finalizada. Evaluados: ${audited}, En caché: ${skipped}`);
+  console.log(`🎉 [Audit] Finalizada. Evaluados: ${audited}, En caché: ${skipped}`);
   return { audited, skipped };
+}
+
+// ─── Ejecutor único automático ────────────────────────
+async function runAutomaticAuditOnce() {
+  if (hasRunAudit || isAuditRunning) return;
+  isAuditRunning = true;
+  try {
+    console.log("🤖 [Sophia Auto-Audit] Ejecutando proceso automático por única vez...");
+    await runBackgroundAudit();
+    hasRunAudit = true;
+    console.log("✅ [Sophia Auto-Audit] Proceso completado y marcado como ejecutado.");
+  } catch (err) {
+    console.error("❌ [Sophia Auto-Audit] Error en ejecución automática:", err);
+  } finally {
+    isAuditRunning = false;
+  }
 }
 
 // ─── Ruta principal ────────────────────────────────────
@@ -144,7 +164,7 @@ app.get("/api/health", (req, res) => {
 app.post("/api/admin/audit-all", async (req, res) => {
   try {
     const result = await runBackgroundAudit();
-    res.json({ message: "Auditoría en servidor completada", result });
+    res.json({ message: "Auditoría completada", result });
   } catch (error) {
     console.error("❌ Error en /api/admin/audit-all:", error);
     res.status(500).json({ error: "Error procesando la auditoría" });
