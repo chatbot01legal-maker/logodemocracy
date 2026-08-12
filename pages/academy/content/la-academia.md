@@ -15,8 +15,6 @@ tags:
 - sophia
 - votacion-cuadratica
 - democracia-aumentada
-  sophia_ird: 95
-  sophia_risk: "Normal"
 
 ---
 
