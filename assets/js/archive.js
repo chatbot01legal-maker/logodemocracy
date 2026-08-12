@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ========================= */
   async function evaluateDocumentCached(name, text) {
     const irdEl = document.getElementById("sophia-ird");
-    if (irdEl) irdEl.innerHTML = `…`;
+    // Eliminado el texto de "Cargando..." para que la consulta silenciosa en background no cause un parpadeo visual.
 
     try {
       const res = await fetch("/api/sophia/evaluate-cached", {
@@ -122,7 +122,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (currentActiveAsset) {
         currentActiveAsset.asset.sophia = {
           ird: normalized.IRD_global,
-          risk: normalized.riesgo
+          risk: normalized.riesgo,
+          fullAnalysis: normalized // <-- AQUÍ INYECTAMOS EL REPORTE COMPLETO AL ASSET
         };
       }
 
@@ -171,10 +172,13 @@ document.addEventListener("DOMContentLoaded", () => {
           title: meta.title,
           file: name,
           content: body,
-          sophia: { ird: meta.ird, risk: meta.risk }
+          sophia: { ird: meta.ird, risk: meta.risk } // Carga inicial estática
         },
         metadata: { originModule: "Academia" }
       };
+
+      // 4. Evaluar silenciosamente en segundo plano para alimentar al Rey Filósofo y actualizar HUD 
+      evaluateDocumentCached(name, body).catch(e => console.warn("Evaluación en segundo plano falló:", e));
 
     } catch (err) {
       console.error(err);
