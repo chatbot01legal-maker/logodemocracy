@@ -13,8 +13,6 @@ tags:
 - relaciones
 - aprendizaje
 - complejidad
-  sophia_ird: 95
-  sophia_risk: "Normal"
 
 ---
 
