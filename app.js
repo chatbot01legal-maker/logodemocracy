@@ -23,7 +23,17 @@ const PORT = process.env.PORT || 3000;
 // ─── LOGS de inicio ──────────────────────────────────
 console.log("🚀 Iniciando servidor SOPHIA...");
 console.log(`📁 Directorio actual: ${__dirname}`);
-console.log(`📦 Protocolo cargado: ${PROTOCOL.version || "desconocido"}`);
+console.log(`📦 Protocolo cargado: ${PROTOCOL.version}`);
+
+// ─── LEVANTAR PUERTO INMEDIATAMENTE (Evita el Timeout de Render) ───
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor SOPHIA ejecutándose y escuchando en el puerto ${PORT}`);
+  
+  // Auditoría automática en segundo plano (arranca segura tras abrir puerto)
+  setTimeout(() => {
+    runBackgroundAudit().catch(err => console.error("❌ Error en auditoría inicial:", err));
+  }, 5000);
+});
 
 // ─── Middleware ────────────────────────────────────────
 app.use(cors());
@@ -54,46 +64,38 @@ app.use(
   })
 );
 
-// ─── Utilidad para normalizar texto (AGREGADO) ────────
-// Esto resuelve el desfase entre lo que lee el servidor y lo que envía el navegador
+// ─── Utilidad para normalizar texto ───────────────────
 function normalizeTextForHash(text) {
   return text.replace(/\r\n/g, "\n").trim();
 }
 
-// ─── Función de Auditoría en Segundo Plano ────────────
+// ─── Función de Auditoría en Segundo Plano (Optimizada) ──
 async function runBackgroundAudit() {
-  console.log("🔍 [Background Audit] Verificando documentos de la Academia...");
+  console.log("🔍 [Background Audit] Iniciando auditoría optimizada...");
   const contentDir = path.join(__dirname, "pages/academy/content");
-  if (!fs.existsSync(contentDir)) {
-    console.log("⚠️ [Background Audit] Carpeta de contenidos no encontrada.");
-    return { audited: 0, skipped: 0 };
-  }
+  if (!fs.existsSync(contentDir)) return { audited: 0, skipped: 0 };
 
   const files = fs.readdirSync(contentDir).filter(f => f.endsWith(".md"));
   const db = await connect();
-  let audited = 0;
-  let skipped = 0;
-
-  for (const file of files) {
-    const filePath = path.join(contentDir, file);
-    const rawText = fs.readFileSync(filePath, "utf8");
-    const textContent = normalizeTextForHash(rawText); // Normalización inyectada
-    const contentHash = crypto.createHash("sha256").update(textContent).digest("hex");
-
-    const cached = await db.collection("sophia_document_cache").findOne({
-      docId: file,
-      content_hash: contentHash,
-      protocol_version: PROTOCOL.version
-    });
-
-    if (cached) {
-      skipped++;
-      continue;
-    }
-
-    console.log(`⚡ [Background Audit] Evaluando con IA en Render: ${file}...`);
+  
+  const auditTasks = files.map(async (file) => {
     try {
+      const filePath = path.join(contentDir, file);
+      const rawText = fs.readFileSync(filePath, "utf8");
+      const textContent = normalizeTextForHash(rawText);
+      const contentHash = crypto.createHash("sha256").update(textContent).digest("hex");
+
+      const cached = await db.collection("sophia_document_cache").findOne({
+        docId: file,
+        content_hash: contentHash,
+        protocol_version: PROTOCOL.version
+      });
+
+      if (cached) return { file, status: "skipped" };
+
+      console.log(`⚡ [Background Audit] Evaluando: ${file}...`);
       const report = await evaluate({ text: textContent });
+      
       await db.collection("sophia_document_cache").updateOne(
         { docId: file },
         {
@@ -107,15 +109,19 @@ async function runBackgroundAudit() {
         },
         { upsert: true }
       );
-      console.log(`✅ [Background Audit] Guardado en MongoDB: ${file}`);
-      audited++;
+      return { file, status: "audited" };
     } catch (err) {
-      console.error(`❌ [Background Audit] Error evaluando ${file}:`, err.message);
+      console.error(`❌ [Background Audit] Error en ${file}:`, err.message);
+      return { file, status: "error" };
     }
-  }
+  });
+
+  const results = await Promise.all(auditTasks);
+  const audited = results.filter(r => r.status === "audited").length;
+  const skipped = results.filter(r => r.status === "skipped").length;
 
   console.log(`🎉 [Background Audit] Finalizada. Evaluados: ${audited}, En caché: ${skipped}`);
-  return { audited, skipped, totalFiles: files.length };
+  return { audited, skipped };
 }
 
 // ─── Ruta principal ────────────────────────────────────
@@ -290,7 +296,7 @@ app.post("/api/sophia/evaluate-cached", async (req, res) => {
       return res.status(400).json({ error: "text y docId son requeridos" });
     }
 
-    const normalizedText = normalizeTextForHash(text); // Normalización inyectada
+    const normalizedText = normalizeTextForHash(text);
     const contentHash = crypto.createHash("sha256").update(normalizedText).digest("hex");
     const db = await connect();
 
@@ -330,21 +336,10 @@ app.post("/api/sophia/evaluate-cached", async (req, res) => {
   }
 });
 
-
 const rfRoutes = require("./logodemocracy-api/src/routes/rfRoutes");
 app.use("/api/reyfilosofo", rfRoutes);
 
 // ─── Endpoint protegido (ejemplo) ────────────────────
 app.get("/api/profile", authenticate, (req, res) => {
   res.json({ user: req.user });
-});
-
-// ─── Iniciar servidor ─────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor SOPHIA ejecutándose en http://localhost:${PORT}`);
-  
-  // Auditoría automática en segundo plano
-  setTimeout(() => {
-    runBackgroundAudit().catch(err => console.error("❌ Error en auditoría inicial:", err));
-  }, 5000);
 });
