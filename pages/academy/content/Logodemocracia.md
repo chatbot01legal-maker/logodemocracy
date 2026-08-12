@@ -20,8 +20,6 @@ tags:
 - inteligencia-colectiva
 - memoria-colectiva
 - produccion-comunitaria
-  sophia_ird: 95
-  sophia_risk: "Normal"
 
 ---
 
