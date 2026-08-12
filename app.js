@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const fs = require("fs"); // <-- AGREGADO para leer los .md
+const fs = require("fs");
 const cors = require("cors");
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
@@ -54,7 +54,13 @@ app.use(
   })
 );
 
-// ─── Función de Auditoría en Segundo Plano (AGREGADO) ──
+// ─── Utilidad para normalizar texto (AGREGADO) ────────
+// Esto resuelve el desfase entre lo que lee el servidor y lo que envía el navegador
+function normalizeTextForHash(text) {
+  return text.replace(/\r\n/g, "\n").trim();
+}
+
+// ─── Función de Auditoría en Segundo Plano ────────────
 async function runBackgroundAudit() {
   console.log("🔍 [Background Audit] Verificando documentos de la Academia...");
   const contentDir = path.join(__dirname, "pages/academy/content");
@@ -70,7 +76,8 @@ async function runBackgroundAudit() {
 
   for (const file of files) {
     const filePath = path.join(contentDir, file);
-    const textContent = fs.readFileSync(filePath, "utf8");
+    const rawText = fs.readFileSync(filePath, "utf8");
+    const textContent = normalizeTextForHash(rawText); // Normalización inyectada
     const contentHash = crypto.createHash("sha256").update(textContent).digest("hex");
 
     const cached = await db.collection("sophia_document_cache").findOne({
@@ -127,7 +134,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// ─── Endpoint de Administración (AGREGADO) ────────────
+// ─── Endpoint de Administración ───────────────────────
 app.post("/api/admin/audit-all", async (req, res) => {
   try {
     const result = await runBackgroundAudit();
@@ -219,11 +226,9 @@ app.post("/api/sophia/evaluate", async (req, res) => {
       return res.status(400).json({ error: "Texto requerido" });
     }
     
-    // El pipeline solo genera conocimiento
     const report = await evaluate({ text });
     console.log("🔎 JSON FINAL AL FRONTEND:", JSON.stringify(report, null, 2));
 
-    // La capa de infraestructura guarda los datos
     if (userId) {
       console.log("💾 Guardando evaluación en MongoDB...");
       try {
@@ -251,7 +256,6 @@ app.post("/api/sophia/evaluate", async (req, res) => {
   }
 });
 
-// ─── Rey Filósofo Kernel ZDP ─────────────────────────
 // ─── Feedback de usuarios sobre evaluaciones de SOPHIA ────────────────
 app.post("/api/sophia/feedback", async (req, res) => {
   try {
@@ -279,11 +283,6 @@ app.post("/api/sophia/feedback", async (req, res) => {
 });
 
 // ─── Evaluación SOPHIA con caché por documento ─────────
-// A diferencia de /api/sophia/evaluate (que siempre llama a la IA), esta
-// ruta evalúa un documento UNA SOLA VEZ y reutiliza el resultado guardado
-// en MongoDB en cada visita posterior — hasta que el texto cambie o el
-// protocolo de SOPHIA se actualice (protocol_version), momento en el que
-// se vuelve a evaluar automáticamente.
 app.post("/api/sophia/evaluate-cached", async (req, res) => {
   try {
     const { text, docId } = req.body;
@@ -291,7 +290,8 @@ app.post("/api/sophia/evaluate-cached", async (req, res) => {
       return res.status(400).json({ error: "text y docId son requeridos" });
     }
 
-    const contentHash = crypto.createHash("sha256").update(text).digest("hex");
+    const normalizedText = normalizeTextForHash(text); // Normalización inyectada
+    const contentHash = crypto.createHash("sha256").update(normalizedText).digest("hex");
     const db = await connect();
 
     const cached = await db.collection("sophia_document_cache").findOne({
@@ -306,7 +306,7 @@ app.post("/api/sophia/evaluate-cached", async (req, res) => {
     }
 
     console.log(`🧠 [Cache MISS] ${docId} — evaluando de cero (protocolo ${PROTOCOL.version})`);
-    const report = await evaluate({ text });
+    const report = await evaluate({ text: normalizedText });
 
     await db.collection("sophia_document_cache").updateOne(
       { docId },
@@ -343,7 +343,7 @@ app.get("/api/profile", authenticate, (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Servidor SOPHIA ejecutándose en http://localhost:${PORT}`);
   
-  // Auditoría automática en segundo plano (AGREGADO)
+  // Auditoría automática en segundo plano
   setTimeout(() => {
     runBackgroundAudit().catch(err => console.error("❌ Error en auditoría inicial:", err));
   }, 5000);
