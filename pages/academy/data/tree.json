@@ -129,6 +129,38 @@
     ]
   },
   {
+    "library": "Todo Ciudadano Sabe",
+    "folder": "01-Todo-Ciudadano-Sabe",
+    "title": "El mapa no es el territorio",
+    "file": "el-mapa-no-es-el-territorio.md",
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "epistemologia",
+      "modelos-mentales",
+      "representacion",
+      "percepcion",
+      "pensamiento-critico"
+    ]
+  },
+  {
+    "library": "Todo Ciudadano Sabe",
+    "folder": "01-Todo-Ciudadano-Sabe",
+    "title": "Causalidad y retroalimentación",
+    "file": "causalidad-y-retroalimentacion.md",
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "causalidad",
+      "retroalimentacion",
+      "sistemas",
+      "complejidad",
+      "aprendizaje"
+    ]
+  },
+  {
     "library": "Joe Pino",
     "folder": "Ensayos",
     "title": "Hipótesis del Relato",
@@ -149,4 +181,3 @@
     ]
   }
 ]
-
