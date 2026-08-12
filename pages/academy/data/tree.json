@@ -161,6 +161,39 @@
     ]
   },
   {
+    "library": "Todo Ciudadano Sabe",
+    "folder": "01-Todo-Ciudadano-Sabe",
+    "title": "Tipos lógicos y niveles de abstracción",
+    "file": "tipos-logicos-y-niveles-de-abstraccion.md",
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "epistemologia",
+      "tipos-logicos",
+      "niveles-de-abstraccion",
+      "metacognicion",
+      "aprendizaje"
+    ]
+  },
+  {
+    "library": "Todo Ciudadano Sabe",
+    "folder": "01-Todo-Ciudadano-Sabe",
+    "title": "Evolución, aprendizaje y cambio",
+    "file": "evolucion-aprendizaje-y-cambio.md",
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "evolucion",
+      "aprendizaje",
+      "cambio",
+      "adaptacion",
+      "estocasticidad",
+      "complejidad"
+    ]
+  },
+  {
     "library": "Joe Pino",
     "folder": "Ensayos",
     "title": "Hipótesis del Relato",
