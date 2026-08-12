@@ -1,93 +1,167 @@
-:root{
-  --accent:#22c55e;
-
-  --header-color:#22c55e;
-
-  --header-border:rgba(34,197,94,.25);
+:root {
+  --accent: #22c55e;
+  --header-color: #22c55e;
+  --header-border: rgba(34, 197, 94, .25);
 }
 
 .tree,
 .epistemic,
 .philosopher {
-
   border: 1px solid #22c55e22;
   padding: 10px;
   background: #050a12;
-
   box-sizing: border-box;
 }
 
 .tree {
-
   flex: 1;
-
   overflow-y: auto;
 }
 
 .folder {
-
   font-weight: bold;
   margin-top: 10px;
 }
 
 .file {
-
   margin-left: 10px;
   opacity: .8;
   cursor: pointer;
 }
 
 .epistemic {
-
   font-size: 12px;
 }
 
 .epistemic-title {
-
   color: #22c55e;
   margin-bottom: 8px;
 }
 
 .epistemic-options {
-
   opacity: .8;
 }
 
-.philosopher {
+/* =========================
+   TARJETA COMPACTA SOPHIA (HUD)
+========================= */
+.sophia-score-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.06) 0%, rgba(5, 10, 18, 0.9) 100%);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.22s ease-in-out;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  user-select: none;
+}
 
+.sophia-score-card:hover {
+  border-color: rgba(34, 197, 94, 0.7);
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.14) 0%, rgba(5, 10, 18, 0.98) 100%);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.25);
+  transform: translateY(-1px);
+}
+
+.sophia-score-card:active {
+  transform: translateY(0);
+}
+
+.sophia-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sophia-card-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #22c55e;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sophia-status-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #22c55e;
+  animation: sophiaPulse 2s infinite ease-in-out;
+}
+
+@keyframes sophiaPulse {
+  0% { opacity: 0.4; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 0.4; transform: scale(0.95); }
+}
+
+.sophia-card-action {
+  font-size: 0.72rem;
+  color: rgba(229, 231, 235, 0.65);
+  transition: color 0.2s ease;
+}
+
+.sophia-score-card:hover .sophia-card-action {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.sophia-card-score {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.sophia-score-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #22c55e;
+  font-family: monospace, monospace;
+}
+
+.sophia-score-max {
+  font-size: 0.65rem;
+  color: rgba(229, 231, 235, 0.4);
+}
+
+/* =========================
+   REY FILÓSOFO
+========================= */
+.philosopher {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   min-height: 120px;
 }
 
 .philosopher-title {
-
   color: #22c55e;
   margin-bottom: 6px;
 }
 
 .philosopher-text {
-
   text-align: center;
 }
 
 .philosopher-btn {
-
   margin-top: 8px;
   width: 100%;
 }
 
-
-
-
 /* =========================
    CITAS / BLOCKQUOTES
-   Estilo para citas tipo Kant, Platón o frases destacadas
-   en la Academia (Markdown > blockquote)
 ========================= */
-
 blockquote {
   text-align: center;
   font-style: italic;
@@ -98,12 +172,9 @@ blockquote {
   max-width: 720px;
 }
 
-
 /* =========================
-   CITAS EN NEGRITA (Markdown **text**)
-   Estilo centrado tipo Academia (ligero, no invasivo)
+   CITAS EN NEGRITA
 ========================= */
-
 .content strong {
   display: block;
   text-align: center;
@@ -121,12 +192,6 @@ blockquote {
   text-align: left;
 }
 
-/* =========================
-   AUTOR DE CITAS (SOLUCIÓN SEGURA ACTUAL)
-   ⚠️ Esto aplica SOLO al último párrafo del documento
-   (hack temporal mientras no usamos bloques semánticos)
-========================= */
-
 .content p:last-of-type {
   text-align: right;
   font-size: 0.95em;
@@ -135,18 +200,15 @@ blockquote {
   margin: 0 auto 20px auto;
 }
 
-.content{
-
-white-space:pre-wrap;
-
+.content {
+  white-space: pre-wrap;
 }
 
-.meta{
-
-margin-bottom:24px;
-
+.meta {
+  margin-bottom: 24px;
 }
 
 .topbar {
   --header-color: var(--accent);
 }
+
