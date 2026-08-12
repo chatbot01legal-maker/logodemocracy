@@ -31,10 +31,19 @@
       <div class="sidebar-content">
         <div class="tree" id="tree"></div>
 
-        <!-- BLOQUE SOPHIA COMPACTO: solo IRD, clickeable para ver el análisis completo -->
-        <div class="epistemic" id="sophia-score-block" onclick="window.openSophiaModal()" style="cursor:pointer; display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:rgba(0,0,0,0.2); border:1px solid var(--s-border); margin-bottom: 12px;">
-          <span style="font-size:0.68rem; color:rgba(229,231,235,0.5); text-transform:uppercase; letter-spacing:0.03em;">SOPHIA · Ver análisis ↗</span>
-          <span id="sophia-ird" style="font-size:1rem; font-weight:600; color:#e5e7eb;">--<span style="font-size: 0.65rem; color: rgba(229,231,235,0.4);">/100</span></span>
+        <!-- TARJETA SOPHIA: HUD compacto e interactivo -->
+        <div class="sophia-score-card" id="sophia-score-block" onclick="window.openSophiaModal()" role="button" tabindex="0" title="Ver evaluación completa de Sophia">
+          <div class="sophia-card-info">
+            <div class="sophia-card-tag">
+              <span class="sophia-status-dot"></span>
+              <span>SOPHIA</span>
+            </div>
+            <span class="sophia-card-action">Ver análisis ↗</span>
+          </div>
+          <div class="sophia-card-score">
+            <span id="sophia-ird" class="sophia-score-value">--</span>
+            <span class="sophia-score-max">/100</span>
+          </div>
         </div>
 
         <div class="philosopher">
@@ -70,16 +79,10 @@
 <script src="/assets/js/archive.js?v=8"></script>
 <script src="/CognitiveSessionFactory.js?v=6"></script>
 <script src="/ReyFilosofoChat.js?v=6"></script>
-<!-- Se carga sophia.js para reutilizar su motor de render (SOPHIA._renderEvaluation)
-     en el modal de Academia — así el análisis se ve idéntico al de la pantalla de SOPHIA. -->
 <script src="/assets/js/sophia.js?v=20260806"></script>
 
 <script>
   window.addEventListener("load", () => {
-    // Le decimos al Rey Filósofo cómo armar una sesión con el documento
-    // actual si tocan el ícono flotante sin haber pasado antes por
-    // "Profundizar". El motor no sabe nada de Academia — solo llama a
-    // esta función cuando la necesita.
     if (typeof ReyFilosofoChat !== 'undefined' && typeof ReyFilosofoChat.setDefaultSessionProvider === 'function') {
       ReyFilosofoChat.setDefaultSessionProvider(() => {
         const asset = window.Academy && typeof window.Academy.getCurrentCognitiveAsset === 'function'
