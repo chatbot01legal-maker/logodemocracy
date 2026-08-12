@@ -14,8 +14,6 @@ tags:
 - educacion-civica
 - academia
 - conocimiento
-  sophia_ird: 95
-  sophia_risk: "Normal"
 
 ---
 
