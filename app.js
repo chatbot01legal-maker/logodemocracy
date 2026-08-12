@@ -33,7 +33,7 @@ let isAuditRunning = false;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor SOPHIA ejecutándose y escuchando en el puerto ${PORT}`);
   
-  // Auditoría automática automatizada que se ejecuta una única vez al arrancar
+  // Auditoría automática que se ejecuta una única vez al arrancar
   setTimeout(() => {
     runAutomaticAuditOnce();
   }, 3000);
@@ -87,6 +87,13 @@ async function runBackgroundAudit() {
       const filePath = path.join(contentDir, file);
       const rawText = fs.readFileSync(filePath, "utf8");
       const textContent = normalizeTextForHash(rawText);
+      
+      // PREVENCIÓN: Ignorar archivos vacíos o plantillas sin contenido sustancial
+      if (textContent.length < 50) {
+        console.log(`⚠️ [Audit] Omitiendo ${file} (texto demasiado corto o vacío)`);
+        return { file, status: "skipped" };
+      }
+
       const contentHash = crypto.createHash("sha256").update(textContent).digest("hex");
 
       const cached = await db.collection("sophia_document_cache").findOne({
@@ -124,7 +131,7 @@ async function runBackgroundAudit() {
   const audited = results.filter(r => r.status === "audited").length;
   const skipped = results.filter(r => r.status === "skipped").length;
 
-  console.log(`🎉 [Audit] Finalizada. Evaluados: ${audited}, En caché: ${skipped}`);
+  console.log(`🎉 [Audit] Finalizada. Evaluados: ${audited}, En caché/Omitidos: ${skipped}`);
   return { audited, skipped };
 }
 
@@ -244,7 +251,82 @@ function authenticate(req, res, next) {
   }
 }
 
-// ─── Evaluación con SOPHIA ─────────────────────────────
+// ─── LECTURA PURA DE CACHÉ (NUEVO ENDPOINT) ────────────
+app.get("/api/sophia/analysis/:docId", async (req, res) => {
+  try {
+    const docId = req.params.docId;
+    const db = await connect();
+    const cached = await db.collection("sophia_document_cache").findOne({
+      docId: docId,
+      protocol_version: PROTOCOL.version
+    });
+
+    if (cached) {
+      console.log(`♻️ [Read-Only Cache HIT] Entregando análisis pre-calculado de ${docId}`);
+      return res.json(cached.result);
+    } else {
+      console.log(`⚠️ [Read-Only Cache MISS] Análisis de ${docId} no encontrado en base de datos`);
+      return res.status(404).json({ error: "Análisis aún no disponible para este documento." });
+    }
+  } catch (error) {
+    console.error("❌ Error en /api/sophia/analysis/:docId:", error);
+    res.status(500).json({ error: "Error interno del servidor al buscar el análisis." });
+  }
+});
+
+// ─── Evaluación SOPHIA con caché robusto por documento ─
+app.post("/api/sophia/evaluate-cached", async (req, res) => {
+  try {
+    const { text, docId } = req.body;
+    if (!text || !text.trim() || !docId) {
+      return res.status(400).json({ error: "text y docId son requeridos" });
+    }
+
+    const db = await connect();
+
+    // NUEVA LÓGICA ARQUITECTÓNICA: Buscar SOLO por docId y versión.
+    // Ignoramos el content_hash que viene del frontend porque suele diferir por espacios/saltos de línea.
+    // Confiamos en que la auditoría de fondo ya analizó el archivo correcto.
+    const cached = await db.collection("sophia_document_cache").findOne({
+      docId,
+      protocol_version: PROTOCOL.version
+    });
+
+    if (cached) {
+      console.log(`♻️ [Cache HIT Robusto] ${docId} — Entregando análisis central, 0 tokens gastados`);
+      return res.json(cached.result);
+    }
+
+    // Si por alguna razón el documento NO estaba en la base de datos, lo evaluamos como fallback.
+    console.log(`🧠 [Cache MISS] ${docId} no estaba en BD — forzando evaluación a Vertex`);
+    const normalizedText = normalizeTextForHash(text);
+    const contentHash = crypto.createHash("sha256").update(normalizedText).digest("hex");
+    
+    const report = await evaluate({ text: normalizedText });
+
+    await db.collection("sophia_document_cache").updateOne(
+      { docId },
+      {
+        $set: {
+          docId,
+          content_hash: contentHash, // Guardamos el hash de todas formas
+          protocol_version: PROTOCOL.version,
+          result: report,
+          evaluated_at: new Date()
+        }
+      },
+      { upsert: true }
+    );
+    console.log(`✅ [Cache SAVE Fallback] ${docId} analizado por acción del usuario y guardado`);
+
+    res.json(report);
+  } catch (error) {
+    console.error("❌ Error en /api/sophia/evaluate-cached:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
+// ─── Evaluación con SOPHIA (Sin Caché - Evaluador Libre)
 app.post("/api/sophia/evaluate", async (req, res) => {
   try {
     const { text, userId } = req.body;
@@ -253,10 +335,8 @@ app.post("/api/sophia/evaluate", async (req, res) => {
     }
     
     const report = await evaluate({ text });
-    console.log("🔎 JSON FINAL AL FRONTEND:", JSON.stringify(report, null, 2));
 
     if (userId) {
-      console.log("💾 Guardando evaluación en MongoDB...");
       try {
         const db = await connect();
         const textHash = crypto.createHash("sha256").update(text).digest("hex");
@@ -269,7 +349,6 @@ app.post("/api/sophia/evaluate", async (req, res) => {
           evaluated_at: new Date(),
           result: report
         });
-        console.log("✅ Evaluación guardada en MongoDB");
       } catch (dbError) {
         console.error("❌ Error al guardar en DB:", dbError);
       }
@@ -304,54 +383,6 @@ app.post("/api/sophia/feedback", async (req, res) => {
     res.json({ message: "Comentario recibido correctamente" });
   } catch (error) {
     console.error("❌ Error en /api/sophia/feedback:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
-  }
-});
-
-// ─── Evaluación SOPHIA con caché por documento ─────────
-app.post("/api/sophia/evaluate-cached", async (req, res) => {
-  try {
-    const { text, docId } = req.body;
-    if (!text || !text.trim() || !docId) {
-      return res.status(400).json({ error: "text y docId son requeridos" });
-    }
-
-    const normalizedText = normalizeTextForHash(text);
-    const contentHash = crypto.createHash("sha256").update(normalizedText).digest("hex");
-    const db = await connect();
-
-    const cached = await db.collection("sophia_document_cache").findOne({
-      docId,
-      content_hash: contentHash,
-      protocol_version: PROTOCOL.version
-    });
-
-    if (cached) {
-      console.log(`♻️ [Cache HIT] ${docId} — protocolo ${PROTOCOL.version}, sin llamar a la IA`);
-      return res.json(cached.result);
-    }
-
-    console.log(`🧠 [Cache MISS] ${docId} — evaluando de cero (protocolo ${PROTOCOL.version})`);
-    const report = await evaluate({ text: normalizedText });
-
-    await db.collection("sophia_document_cache").updateOne(
-      { docId },
-      {
-        $set: {
-          docId,
-          content_hash: contentHash,
-          protocol_version: PROTOCOL.version,
-          result: report,
-          evaluated_at: new Date()
-        }
-      },
-      { upsert: true }
-    );
-    console.log(`✅ [Cache SAVE] ${docId} guardado`);
-
-    res.json(report);
-  } catch (error) {
-    console.error("❌ Error en /api/sophia/evaluate-cached:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
