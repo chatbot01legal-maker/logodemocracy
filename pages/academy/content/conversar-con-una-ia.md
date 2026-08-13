@@ -1,4 +1,8 @@
-library: "Alfabetización Digital para humanistas" folder: "Curso Inicial" title: "Conversar con una IA: del prompt a la colaboración" tags:
+--
+
+library: "Alfabetización Digital para humanistas" folder: "Curso Inicial" title: "Conversar con una IA: del prompt a la colaboración" 
+tags:
+
 alfabetizacion-digital
 inteligencia-artificial
 prompts
@@ -6,8 +10,13 @@ colaboracion
 pensamiento-critico
 modelos-de-lenguaje
 aprendizaje
-humanidades-digitales sophia_ird: 95 sophia_risk: "Normal"
+humanidades
+
+--
+
+
 Conversar con una IA: del prompt a la colaboración
+
 Pregunta central
 ¿Cómo podemos pasar de simplemente hacer preguntas a una inteligencia artificial a trabajar con ella como una herramienta de pensamiento, aprendizaje y construcción?
 Idea central

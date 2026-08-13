@@ -13,8 +13,7 @@ tags:
 - sistemas
 - aprendizaje
 - pensamiento-critico
-  sophia_ird: 95
-  sophia_risk: "Normal"
+  
 
 ---
 
