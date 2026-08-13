@@ -298,7 +298,26 @@
       "humanidades-digitales"
     ]
   },
+
   {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
+    "title": "6. Desarrollo con un equipo de inteligencias artificiales",
+    "file": "desarrollo-con-un-equipo-de-inteligencias-artificiales.md",
+    "order": 6,
+    "tags": [
+      "alfabetizacion-digital",
+      "desarrollo",
+      "inteligencia-artificial",
+      "agentes",
+      "roles",
+      "arquitectura-de-colaboracion",
+      "contratos",
+      "auditoria",
+      "humanidades-digitales"
+    ]
+  },
+    {
     "library": "Alfabetización Digital para humanistas",
     "folder": "Curso Inicial",
     "title": "7. Crear tu primer proyecto con inteligencia artificial",
@@ -319,24 +338,6 @@
       "google-cloud",
       "cli",
       "copiloto",
-      "humanidades-digitales"
-    ]
-  },
-  {
-    "library": "Alfabetización Digital para humanistas",
-    "folder": "Curso Inicial",
-    "title": "6. Desarrollo con un equipo de inteligencias artificiales",
-    "file": "desarrollo-con-un-equipo-de-inteligencias-artificiales.md",
-    "order": 6,
-    "tags": [
-      "alfabetizacion-digital",
-      "desarrollo",
-      "inteligencia-artificial",
-      "agentes",
-      "roles",
-      "arquitectura-de-colaboracion",
-      "contratos",
-      "auditoria",
       "humanidades-digitales"
     ]
   }
