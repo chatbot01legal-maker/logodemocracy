@@ -1,6 +1,8 @@
 --
 
-library: "Alfabetización Digital para humanistas" folder: "Curso Inicial" title: "Conversar con una IA: del prompt a la colaboración" tags:
+library: "Alfabetización Digital para humanistas" folder: "Curso Inicial" title: "Conversar con una IA: del prompt a la colaboración" 
+tags:
+
 alfabetizacion-digital
 inteligencia-artificial
 prompts
