@@ -212,5 +212,39 @@
       "Tecnología",
       "IA"
     ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
+    "title": "Inteligencia artificial: qué es y qué no es",
+    "file": "inteligencia-artificial-que-es-y-que-no-es.md",
+    "tags": [
+      "alfabetizacion-digital",
+      "inteligencia-artificial",
+      "humanidades",
+      "modelos-de-lenguaje",
+      "pensamiento-critico",
+      "tecnologia",
+      "epistemologia",
+      "ia-generativa",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
+    "title": "Herramientas de Desarrollo",
+    "file": "herramientas-de-desarrollo.md",
+    "tags": [
+      "alfabetizacion-digital",
+      "desarrollo",
+      "terminal",
+      "termux",
+      "github",
+      "render",
+      "cli",
+      "herramientas",
+      "humanidades-digitales"
+    ]
   }
 ]
