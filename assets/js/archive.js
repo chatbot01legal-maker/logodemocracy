@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+Document.addEventListener("DOMContentLoaded", () => {
   const content = document.getElementById("content");
   let allDocuments = [];
   let currentActiveAsset = null;
@@ -233,7 +233,8 @@ document.addEventListener("DOMContentLoaded", () => {
       
       for (const [folder, files] of Object.entries(folders)) {
         if (folder) {
-          html += `<details open style="margin-bottom: 5px;">
+          // Nota: Se elimina el atributo 'open' para que las carpetas inicien cerradas
+          html += `<details style="margin-bottom: 5px;">
                     <summary style="cursor: pointer; font-size: 0.85rem; margin-bottom: 5px; color: #aaa; user-select: none;">📁 ${folder}</summary>
                     <div style="padding-left: 15px;">`;
         }
@@ -272,4 +273,3 @@ document.addEventListener("DOMContentLoaded", () => {
   loadTree();
   loadDocument("intro.md");
 });
-
