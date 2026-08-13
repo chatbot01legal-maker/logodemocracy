@@ -10,8 +10,8 @@ tags:
   - tecnologia
   - epistemologia
   - ia-generativa
-sophia_ird: 95
-sophia_risk: "Normal"
+
+
 
 Inteligencia artificial: qué es y qué no es
 Pregunta central
