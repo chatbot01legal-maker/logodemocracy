@@ -1,7 +1,7 @@
 ---
 library: "Alfabetización Digital para humanistas"
 folder: "Curso Inicial"
-title: "Verificar, contrastar y auditar a una IA"
+title: "Desarrollo con un equipo de Inteligencias Artificiales"
 tags:
   - alfabetizacion-digital
   - inteligencia-artificial
@@ -15,8 +15,7 @@ tags:
   - contexto
   - documentacion
   - humanidades-digitales
-sophia_ird: 95
-sophia_risk: "Normal"
+  - 
 ---
 
 # Verificar, contrastar y auditar a una IA
