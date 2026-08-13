@@ -193,8 +193,6 @@
       "complejidad"
     ]
   },
-
-
   {
     "library": "Joe Pino",
     "folder": "",
@@ -243,6 +241,95 @@
       "render",
       "cli",
       "herramientas",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
+    "title": "Conversar con una IA: del prompt a la colaboración",
+    "file": "conversar-con-una-ia.md",
+    "tags": [
+      "alfabetizacion-digital",
+      "inteligencia-artificial",
+      "prompts",
+      "colaboracion",
+      "dialogo",
+      "instrucciones",
+      "contexto",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
+    "title": "Crear tu primer proyecto con inteligencia artificial",
+    "file": "crea-tu-primer-proyecto-con-ia.md",
+    "tags": [
+      "alfabetizacion-digital",
+      "desarrollo",
+      "inteligencia-artificial",
+      "desarrollo-web",
+      "html",
+      "css",
+      "javascript",
+      "termux",
+      "github",
+      "render",
+      "api",
+      "google-cloud",
+      "cli",
+      "copiloto",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
+    "title": "Crear con IA: del texto al proyecto",
+    "file": "crear-con-ia.md",
+    "tags": [
+      "alfabetizacion-digital",
+      "desarrollo",
+      "inteligencia-artificial",
+      "programacion",
+      "codigo",
+      "algoritmos",
+      "proyectos",
+      "colaboracion",
+      "documentacion",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
+    "title": "Desarrollo con un equipo de inteligencias artificiales",
+    "file": "desarrollo-con-un-equipo-de-inteligencias-artificiales.md",
+    "tags": [
+      "alfabetizacion-digital",
+      "desarrollo",
+      "inteligencia-artificial",
+      "agentes",
+      "roles",
+      "arquitectura-de-colaboracion",
+      "contratos",
+      "auditoria",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
+    "title": "Pensar con IA sin dejar que la IA piense por ti",
+    "file": "pensar-con-ia-sin-dejar-que-la-ia-piense-por-ti.md",
+    "tags": [
+      "alfabetizacion-digital",
+      "inteligencia-artificial",
+      "pensamiento-critico",
+      "criterio",
+      "metacognicion",
+      "autonomia",
       "humanidades-digitales"
     ]
   }
