@@ -194,25 +194,9 @@
     ]
   },
   {
-    "library": "Joe Pino",
-    "folder": "Ensayos",
-    "title": "Hipótesis del Relato",
-    "file": "Hipótesis del Relato.md",
-    "tags": [
-      "Filosofía",
-      "Epistemología"
-    ]
+    "library": "Joe Pino"
   },
-  {
-    "library": "Alfabetización Digital para humanistas",
-    "folder": "",
-    "title": "Inteligencia Artificial Básica",
-    "file": "curso-ia.md",
-    "tags": [
-      "Tecnología",
-      "IA"
-    ]
-  },
+  
   {
     "library": "Alfabetización Digital para humanistas",
     "folder": "Curso Inicial",
