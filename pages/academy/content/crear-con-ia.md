@@ -13,8 +13,7 @@ tags:
   - colaboracion
   - documentacion
   - humanidades-digitales
-sophia_ird: 95
-sophia_risk: "Normal"
+
 ---
 
 # Crear con IA: del texto al proyecto
