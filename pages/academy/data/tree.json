@@ -230,17 +230,15 @@
   {
     "library": "Alfabetización Digital para humanistas",
     "folder": "Curso Inicial",
-    "title": "Herramientas de Desarrollo",
-    "file": "herramientas-de-desarrollo.md",
+    "title": "Pensar con IA sin dejar que la IA piense por ti",
+    "file": "pensar-con-ia-sin-dejar-que-la-ia-piense-por-ti.md",
     "tags": [
       "alfabetizacion-digital",
-      "desarrollo",
-      "terminal",
-      "termux",
-      "github",
-      "render",
-      "cli",
-      "herramientas",
+      "inteligencia-artificial",
+      "pensamiento-critico",
+      "criterio",
+      "metacognicion",
+      "autonomia",
       "humanidades-digitales"
     ]
   },
@@ -257,29 +255,6 @@
       "dialogo",
       "instrucciones",
       "contexto",
-      "humanidades-digitales"
-    ]
-  },
-  {
-    "library": "Alfabetización Digital para humanistas",
-    "folder": "Curso Inicial",
-    "title": "Crear tu primer proyecto con inteligencia artificial",
-    "file": "crea-tu-primer-proyecto-con-ia.md",
-    "tags": [
-      "alfabetizacion-digital",
-      "desarrollo",
-      "inteligencia-artificial",
-      "desarrollo-web",
-      "html",
-      "css",
-      "javascript",
-      "termux",
-      "github",
-      "render",
-      "api",
-      "google-cloud",
-      "cli",
-      "copiloto",
       "humanidades-digitales"
     ]
   },
@@ -304,6 +279,23 @@
   {
     "library": "Alfabetización Digital para humanistas",
     "folder": "Curso Inicial",
+    "title": "Herramientas de Desarrollo",
+    "file": "herramientas-de-desarrollo.md",
+    "tags": [
+      "alfabetizacion-digital",
+      "desarrollo",
+      "terminal",
+      "termux",
+      "github",
+      "render",
+      "cli",
+      "herramientas",
+      "humanidades-digitales"
+    ]
+  },
+ {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
     "title": "Desarrollo con un equipo de inteligencias artificiales",
     "file": "desarrollo-con-un-equipo-de-inteligencias-artificiales.md",
     "tags": [
@@ -317,20 +309,29 @@
       "auditoria",
       "humanidades-digitales"
     ]
-  },
+ },
   {
     "library": "Alfabetización Digital para humanistas",
     "folder": "Curso Inicial",
-    "title": "Pensar con IA sin dejar que la IA piense por ti",
-    "file": "pensar-con-ia-sin-dejar-que-la-ia-piense-por-ti.md",
+    "title": "Crear tu primer proyecto con inteligencia artificial",
+    "file": "crea-tu-primer-proyecto-con-ia.md",
     "tags": [
       "alfabetizacion-digital",
+      "desarrollo",
       "inteligencia-artificial",
-      "pensamiento-critico",
-      "criterio",
-      "metacognicion",
-      "autonomia",
+      "desarrollo-web",
+      "html",
+      "css",
+      "javascript",
+      "termux",
+      "github",
+      "render",
+      "api",
+      "google-cloud",
+      "cli",
+      "copiloto",
       "humanidades-digitales"
     ]
-  }
+  },
 ]
+
