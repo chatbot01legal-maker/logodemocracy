@@ -11,8 +11,7 @@ tags:
   - colaboracion
   - epistemologia
   - humanidades-digitales
-sophia_ird: 95
-sophia_risk: "Normal"
+    
 ---
 
 # Pensar con IA sin dejar que la IA piense por ti
