@@ -1,4 +1,4 @@
-Document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const content = document.getElementById("content");
   let allDocuments = [];
   let currentActiveAsset = null;
@@ -61,13 +61,11 @@ Document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 1. Si el análisis ya está en memoria para ESTE documento, lo mostramos directo
     if (currentDocumentAnalysis && currentDocumentAnalysis.docId === asset.file) {
       renderAnalysis(contentDiv, asset);
       return;
     }
 
-    // 2. Si no, lo solicitamos al servidor bajo demanda (reutiliza caché existente o evalúa)
     contentDiv.innerHTML = `<p style="color:#60a5fa;">Recuperando reporte de auditoría SOPHIA...</p>`;
     await evaluateDocumentCached(asset.file, asset.content);
 
@@ -101,7 +99,6 @@ Document.addEventListener("DOMContentLoaded", () => {
   ========================= */
   async function evaluateDocumentCached(name, text) {
     const irdEl = document.getElementById("sophia-ird");
-    // Eliminado el texto de "Cargando..." para que la consulta silenciosa en background no cause un parpadeo visual.
 
     try {
       const res = await fetch("/api/sophia/evaluate-cached", {
@@ -123,7 +120,7 @@ Document.addEventListener("DOMContentLoaded", () => {
         currentActiveAsset.asset.sophia = {
           ird: normalized.IRD_global,
           risk: normalized.riesgo,
-          fullAnalysis: normalized // <-- AQUÍ INYECTAMOS EL REPORTE COMPLETO AL ASSET
+          fullAnalysis: normalized
         };
       }
 
@@ -152,18 +149,15 @@ Document.addEventListener("DOMContentLoaded", () => {
       const { meta, body } = parseFrontmatter(rawText);
       content.innerHTML = marked.parse(body);
 
-      // Limpiamos caché del documento anterior al cambiar de archivo
       if (currentDocumentAnalysis && currentDocumentAnalysis.docId !== name) {
         currentDocumentAnalysis = null;
       }
 
-      // 2. Actualizar UI inicial con la metadata del frontmatter
       const irdEl = document.getElementById("sophia-ird");
       const riskEl = document.getElementById("sophia-risk");
       if (irdEl) irdEl.innerHTML = `${meta.ird}<span style="font-size: 0.85rem; color: rgba(229,231,235,0.4);">/100</span>`;
       if (riskEl) riskEl.textContent = meta.risk;
 
-      // 3. Reconstruir el Activo Cognitivo
       currentActiveAsset = {
         source: "Academia",
         contractVersion: "1.0",
@@ -172,12 +166,11 @@ Document.addEventListener("DOMContentLoaded", () => {
           title: meta.title,
           file: name,
           content: body,
-          sophia: { ird: meta.ird, risk: meta.risk } // Carga inicial estática
+          sophia: { ird: meta.ird, risk: meta.risk }
         },
         metadata: { originModule: "Academia" }
       };
 
-      // 4. Evaluar silenciosamente en segundo plano para alimentar al Rey Filósofo y actualizar HUD 
       evaluateDocumentCached(name, body).catch(e => console.warn("Evaluación en segundo plano falló:", e));
 
     } catch (err) {
@@ -233,7 +226,6 @@ Document.addEventListener("DOMContentLoaded", () => {
       
       for (const [folder, files] of Object.entries(folders)) {
         if (folder) {
-          // Nota: Se elimina el atributo 'open' para que las carpetas inicien cerradas
           html += `<details style="margin-bottom: 5px;">
                     <summary style="cursor: pointer; font-size: 0.85rem; margin-bottom: 5px; color: #aaa; user-select: none;">📁 ${folder}</summary>
                     <div style="padding-left: 15px;">`;
