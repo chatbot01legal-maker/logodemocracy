@@ -1,7 +1,7 @@
 ---
 library: "Alfabetización Digital para humanistas"
 folder: "Curso Inicial"
-title: "Desarrollo-con-un-equipo-de-inteligencias-artificial"
+title: "Desarrollo con un equipo de Inteligencias Artificiales"
 tags:
   - alfabetizacion-digital
   - inteligencia-artificial
