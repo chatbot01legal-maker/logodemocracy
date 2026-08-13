@@ -195,7 +195,7 @@
   },
   {
     "library": "Joe Pino",
-    "folder": "",
+    "folder": "Hipótesis",
     "title": "hipótesis del Relato",
     "file": "hipotesis-del-relato.md",
     "tags": [
@@ -301,9 +301,9 @@
   {
     "library": "Alfabetización Digital para humanistas",
     "folder": "Curso Inicial",
-    "title": "6. Crear tu primer proyecto con inteligencia artificial",
+    "title": "7. Crear tu primer proyecto con inteligencia artificial",
     "file": "crea-tu-primer-proyecto-con-ia.md",
-    "order": 6,
+    "order": 7,
     "tags": [
       "alfabetizacion-digital",
       "desarrollo",
@@ -325,9 +325,9 @@
   {
     "library": "Alfabetización Digital para humanistas",
     "folder": "Curso Inicial",
-    "title": "7. Desarrollo con un equipo de inteligencias artificiales",
+    "title": "6. Desarrollo con un equipo de inteligencias artificiales",
     "file": "desarrollo-con-un-equipo-de-inteligencias-artificiales.md",
-    "order": 7,
+    "order": 6,
     "tags": [
       "alfabetizacion-digital",
       "desarrollo",
