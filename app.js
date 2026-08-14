@@ -382,6 +382,25 @@ app.post("/api/sophia/feedback", async (req, res) => {
   }
 });
 
+// ─── Comparación con LOGOS (Modalidad A: Comparar Posiciones) ────────
+const { compare: compareWithLogos } = require("./modules/logosEvaluationPipeline");
+
+app.post("/api/logos/compare", async (req, res) => {
+  try {
+    const { posicionA, posicionB } = req.body;
+    if (!posicionA || !posicionA.trim() || !posicionB || !posicionB.trim()) {
+      return res.status(400).json({ error: "posicionA y posicionB son requeridos" });
+    }
+
+    const resultado = await compareWithLogos({ posicionA, posicionB });
+    res.json(resultado);
+  } catch (error) {
+    console.error("❌ Error en /api/logos/compare:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
+
 const rfRoutes = require("./logodemocracy-api/src/routes/rfRoutes");
 app.use("/api/reyfilosofo", rfRoutes);
 
