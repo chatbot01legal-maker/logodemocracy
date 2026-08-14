@@ -8,9 +8,19 @@ router.post("/compare", async (req, res) => {
     console.log("🔍 [Logos] Payload recibido en /compare:", JSON.stringify(req.body));
 
     const body = req.body || {};
+<<<<<<< HEAD
     let primaryText = body.text1 || body.content || body.text || body.input || body.code;
     let comparisonText = body.text2 || body.baseline || body.comparison;
 
+=======
+
+    // 1. Intentar nombres estándar
+    let primaryText = body.text1 || body.content || body.text || body.input || body.code;
+    let comparisonText = body.text2 || body.baseline || body.comparison;
+
+    // 2. Extracción ultra flexible: si no calza con los nombres anteriores, 
+    // toma automáticamente cualquier texto disponible en el objeto recibido.
+>>>>>>> 4ebec16f4b63726a238fe6aa3b47545bec62336e
     if (!primaryText && typeof body === 'object') {
       const stringValues = Object.values(body).filter(v => typeof v === 'string' && v.trim().length > 0);
       if (stringValues.length > 0) {
