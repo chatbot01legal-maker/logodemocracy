@@ -95,6 +95,29 @@ Principios Arquitectónicos (v1.0):
         asset: result,
         policy: { ...defaultPolicy, ...customPolicy }
       });
+    },
+
+    /**
+     * Construye una sesión cognitiva para el módulo Logos.
+     * @param {Object} comparison - { posicionA, posicionB, resultado, timestamp }
+     *   producido por LOGOS.getLastComparison() en logos.js.
+     * @param {Object} [customPolicy] - Política pedagógica inyectable opcional.
+     * @returns {Object} CognitiveSession
+     */
+    fromLogos(comparison, customPolicy = {}) {
+      const defaultPolicy = {
+        pedagogicalMode: 'dialectic', // el Rey Filósofo puede ayudar a examinar la síntesis, nunca imponerla (Logos §2: "la síntesis pertenece a las personas")
+        allowFreeQuestions: false,
+        canModifyComparison: false,
+        canModifyAsset: false
+      };
+
+      return _buildSession({
+        originModule: 'logos',
+        objective: 'interpret_comparison',
+        asset: comparison,
+        policy: { ...defaultPolicy, ...customPolicy }
+      });
     }
 
   };
