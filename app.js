@@ -88,7 +88,6 @@ async function runBackgroundAudit() {
       const rawText = fs.readFileSync(filePath, "utf8");
       const textContent = normalizeTextForHash(rawText);
       
-      // PREVENCIÓN: Ignorar archivos vacíos o plantillas sin contenido sustancial
       if (textContent.length < 50) {
         console.log(`⚠️ [Audit] Omitiendo ${file} (texto demasiado corto o vacío)`);
         return { file, status: "skipped" };
@@ -251,7 +250,7 @@ function authenticate(req, res, next) {
   }
 }
 
-// ─── LECTURA PURA DE CACHÉ (NUEVO ENDPOINT) ────────────
+// ─── LECTURA PURA DE CACHÉ ─────────────────────────────
 app.get("/api/sophia/analysis/:docId", async (req, res) => {
   try {
     const docId = req.params.docId;
@@ -274,7 +273,7 @@ app.get("/api/sophia/analysis/:docId", async (req, res) => {
   }
 });
 
-// ─── Evaluación SOPHIA con caché robusto por documento ─
+// ─── Evaluación SOPHIA con caché robusto ──────────────
 app.post("/api/sophia/evaluate-cached", async (req, res) => {
   try {
     const { text, docId } = req.body;
@@ -284,9 +283,6 @@ app.post("/api/sophia/evaluate-cached", async (req, res) => {
 
     const db = await connect();
 
-    // NUEVA LÓGICA ARQUITECTÓNICA: Buscar SOLO por docId y versión.
-    // Ignoramos el content_hash que viene del frontend porque suele diferir por espacios/saltos de línea.
-    // Confiamos en que la auditoría de fondo ya analizó el archivo correcto.
     const cached = await db.collection("sophia_document_cache").findOne({
       docId,
       protocol_version: PROTOCOL.version
@@ -297,7 +293,6 @@ app.post("/api/sophia/evaluate-cached", async (req, res) => {
       return res.json(cached.result);
     }
 
-    // Si por alguna razón el documento NO estaba en la base de datos, lo evaluamos como fallback.
     console.log(`🧠 [Cache MISS] ${docId} no estaba en BD — forzando evaluación a Vertex`);
     const normalizedText = normalizeTextForHash(text);
     const contentHash = crypto.createHash("sha256").update(normalizedText).digest("hex");
@@ -309,7 +304,7 @@ app.post("/api/sophia/evaluate-cached", async (req, res) => {
       {
         $set: {
           docId,
-          content_hash: contentHash, // Guardamos el hash de todas formas
+          content_hash: contentHash,
           protocol_version: PROTOCOL.version,
           result: report,
           evaluated_at: new Date()
@@ -326,7 +321,7 @@ app.post("/api/sophia/evaluate-cached", async (req, res) => {
   }
 });
 
-// ─── Evaluación con SOPHIA (Sin Caché - Evaluador Libre)
+// ─── Evaluación con SOPHIA (Sin Caché) ─────────────────
 app.post("/api/sophia/evaluate", async (req, res) => {
   try {
     const { text, userId } = req.body;
@@ -361,7 +356,7 @@ app.post("/api/sophia/evaluate", async (req, res) => {
   }
 });
 
-// ─── Feedback de usuarios sobre evaluaciones de SOPHIA ────────────────
+// ─── Feedback de usuarios sobre evaluaciones ───────────
 app.post("/api/sophia/feedback", async (req, res) => {
   try {
     const { comentario, texto_evaluado, ird_global, userId, timestamp } = req.body;
@@ -390,7 +385,10 @@ app.post("/api/sophia/feedback", async (req, res) => {
 const rfRoutes = require("./logodemocracy-api/src/routes/rfRoutes");
 app.use("/api/reyfilosofo", rfRoutes);
 
-// ─── Endpoint protegido (ejemplo) ────────────────────
+const logosRoutes = require("./routes/logosRoutes");
+app.use("/api/logos", logosRoutes);
+
+// ─── Endpoint protegido ────────────────────────────────
 app.get("/api/profile", authenticate, (req, res) => {
   res.json({ user: req.user });
 });
