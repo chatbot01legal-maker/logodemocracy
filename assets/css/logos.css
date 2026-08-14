@@ -1,17 +1,38 @@
 /* logos.css
-   Redefine el color de acento para que Logos sea consistente pero distinguible.
+   Forzamos el celeste cian en Logos de manera agresiva,
+   cubriendo tanto variables globales como clases de utilidad rígidas.
 */
-:root {
-  --c-logos: #06b6d4; /* Celeste cian de Logos */
-  /* Forzamos el color celeste en las variables globales para pisar otros colores del layout principal */
+:root,
+body,
+body.logos-page {
+  --c-logos: #06b6d4; /* Celeste cian */
+  
+  /* Sobrescribir variables conocidas de módulos */
   --accent: var(--c-logos) !important;
   --c-sophia: var(--c-logos) !important; 
   --brand-color: var(--c-logos) !important;
+  --primary: var(--c-logos) !important;
+  --c-blue: var(--c-logos) !important;
+  
+  /* Sobrescribir variables de base-layout.css (Menú, título y bordes) */
+  --header-color: var(--c-logos) !important;
+  --header-border: var(--c-logos) !important;
 }
 
-/* Regla redundante de seguridad para el body */
-body, body.logos-page {
-  --accent: var(--c-logos) !important;
+/* ─── INTERCEPTAR CLASES UTILITARIAS RÍGIDAS ─── */
+/* Fuerza el texto, íconos del menú y títulos que usen clases azules */
+body.logos-page [class*="text-blue-"] {
+  color: var(--c-logos) !important;
+}
+
+/* Fuerza fondos y barras */
+body.logos-page [class*="bg-blue-"] {
+  background-color: var(--c-logos) !important;
+}
+
+/* Fuerza bordes y separadores */
+body.logos-page [class*="border-blue-"] {
+  border-color: var(--c-logos) !important;
 }
 
 /* ─── ANIMACIÓN DE CARGA (TRES PUNTITOS) ─── */
