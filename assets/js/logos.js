@@ -187,27 +187,35 @@
   });
 
   // ─── Envío al backend (Modalidad A: Comparar) ─────────
-  // Contrato esperado del endpoint (todavía no implementado en el backend):
-  //
-  // POST /api/logos/compare
-  // body: { posicionA: string, posicionB: string }
-  //
-  // response esperada (form a definir junto al equipo de backend, alineada
-  // a la Especificación Funcional §5 "Entidades funcionales" y al output
-  // mínimo del Protocolo §24):
-  // {
-  //   sintesis_descriptiva: { a: string, b: string },
-  //   comprension_cruzada: { a_sobre_b: string, b_sobre_a: string },
-  //   acuerdos: string[],
-  //   desacuerdos: [{ texto: string, tipo: string[] }],
-  //   supuestos_compartidos: string[],
-  //   convergencias: [{ texto: string, estado: "encontrada"|"posible" }],
-  //   sintesis_relacional: string,
-  //   sintesis_generativa: [{ tipo: "solucion"|"problema", texto: string }],
-  //   preguntas_deliberativas: string[]
-  // }
   async function compareWithLogos(posicionA, posicionB, outEl) {
-    outEl.innerHTML = `<p style="color:rgba(229,231,235,.5); font-size:.82rem;">Reconstruyendo y relacionando ambas posiciones…</p>`;
+    const loadingPhrases = [
+      "Reconstruyendo posiciones desde sus propios términos",
+      "Mapeando acuerdos implícitos y explícitos",
+      "Clasificando la naturaleza de los desacuerdos",
+      "Explorando puntos de convergencia relacional",
+      "Buscando posibilidades de síntesis generativa"
+    ];
+    let phraseIndex = 0;
+
+    const renderLoading = () => `
+      <div style="background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px; padding:24px; text-align:center; margin-top: 16px;">
+        <p style="color:var(--accent); font-size:.95rem; font-weight:500; margin:0;">
+          ${loadingPhrases[phraseIndex]}<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
+        </p>
+        <p style="color:rgba(229,231,235,.5); font-size:.78rem; margin-top:12px;">
+          Este proceso toma su tiempo. Logos no está fabricando un consenso artificial, está analizando estructuras dialécticas.
+        </p>
+      </div>
+    `;
+
+    outEl.innerHTML = renderLoading();
+    
+    // Rotar frase cada 20 segundos
+    const loadingInterval = setInterval(() => {
+      phraseIndex = (phraseIndex + 1) % loadingPhrases.length;
+      outEl.innerHTML = renderLoading();
+    }, 20000);
+
     try {
       const res = await fetch('/api/logos/compare', {
         method: 'POST',
@@ -221,10 +229,12 @@
     } catch (err) {
       console.error('❌ Error en compareWithLogos:', err);
       outEl.innerHTML = `
-        <div style="background:var(--s-panel); border:1px dashed rgba(255,255,255,.15); border-radius:4px; padding:16px;">
+        <div style="background:var(--s-panel); border:1px dashed rgba(255,255,255,.15); border-radius:4px; padding:16px; margin-top: 16px;">
           <p style="color:#eab308; font-size:.82rem; margin:0 0 6px 0;">El motor de comparación todavía no está disponible.</p>
           <p style="color:rgba(229,231,235,.5); font-size:.78rem; margin:0;">La interfaz está lista — falta construir <code>POST /api/logos/compare</code> en el backend, el que reconstruye, relaciona y sintetiza las dos posiciones. (Detalle técnico: ${err.message})</p>
         </div>`;
+    } finally {
+      clearInterval(loadingInterval);
     }
   }
 
@@ -369,4 +379,3 @@
   }
 
 })();
-         
