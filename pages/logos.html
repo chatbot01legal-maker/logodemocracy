@@ -8,108 +8,207 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/base-layout.css">
+  <!-- Se reutiliza sophia.css tal cual: define el sidebar, las tarjetas,
+       las vistas y toda la estructura visual que Logos comparte con SOPHIA. -->
+  <link rel="stylesheet" href="/assets/css/sophia.css">
+  <!-- Único archivo propio de Logos: redefine el color de acento -->
   <link rel="stylesheet" href="/assets/css/logos.css">
 </head>
-<body>
+<body class="logos-page">
 <div class="page">
 
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <a href="/" class="brand">LOGODEMOCRACY</a>
-    <nav class="module-nav">
-      <a href="/pages/archive-template.html" class="module-link">Academia</a>
-      <a href="/pages/aletheia.html"         class="module-link">Aletheia</a>
-      <a href="/pages/logos.html"            class="module-link active">Logos</a>
-      <a href="/pages/rey-filosofo.html"     class="module-link">Rey Filósofo</a>
-      <a href="/pages/sophia.html"           class="module-link">Sophia</a>
-    </nav>
-    <button class="mobile-menu-btn" id="mobileMenuBtn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M4 6H20"/><path d="M4 12H20"/><path d="M4 18H20"/>
-      </svg>
-    </button>
-    <div class="topbar-right">
-      <a href="#" class="user-menu" id="userLabel">⌂ Invitado</a>
-      <a href="#" class="auth-btn"  id="authButton">Log in</a>
-      <div class="lang">ES | EN</div>
-    </div>
-  </header>
+<header class="topbar">
 
-  <!-- LAYOUT -->
+  <a href="/" class="brand">
+    LOGODEMOCRACY
+  </a>
+
+  <nav class="module-nav">
+
+    <a href="/pages/archive-template.html" class="module-link">
+      Academia
+    </a>
+
+    <a href="/pages/rey-filosofo.html" class="module-link">
+      Rey Filósofo
+    </a>
+
+    <a href="/pages/sophia.html" class="module-link">
+      Sophia
+    </a>
+
+    <a href="/pages/logos.html" class="module-link active">
+      Logos
+    </a>
+
+  </nav>
+
+
+  <button
+      class="mobile-menu-btn"
+      id="mobileMenuBtn"
+      aria-label="Abrir menú">
+
+    <svg width="22"
+         height="22"
+         viewBox="0 0 24 24"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="2"
+         stroke-linecap="round">
+
+      <path d="M4 6H20"/>
+      <path d="M4 12H20"/>
+      <path d="M4 18H20"/>
+
+    </svg>
+
+  </button>
+
+
+  <div class="topbar-right"></div>
+
+
+</header>
+
   <div class="layout">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
+
       <div class="sidebar-content">
 
-        <!-- Módulo Label -->
-        <div class="logos-module-label">
-          <span class="module-badge">LO</span>
-          <span class="module-name">LOGOS / DIALÉCTICA</span>
-          <span class="module-version">v1.0</span>
+        <div class="sophia-module-label">
+          <span class="module-badge">L</span>
+          <span class="module-name">LOGOS</span>
+          <span class="module-version">v0.1.1</span>
         </div>
 
-        <!-- Nav Tree -->
-        <nav class="logos-nav tree">
-          <div class="logos-nav-section">
-            <button class="logos-nav-item active" data-view="evaluacion">
-              <span class="logos-nav-icon">📊</span> Evaluar Discurso
+        <nav class="sophia-nav tree">
+
+          <div class="snav-section">
+            <button class="snav-item active" data-view="comparar">
+              <span class="snav-icon">◉</span> Comparar Posiciones
             </button>
           </div>
-          <div class="logos-nav-section">
-            <button class="logos-nav-item" data-view="debate">
-              <span class="logos-nav-icon">⇅</span> Mapeo de Debates
+
+          <div class="snav-section">
+            <button class="snav-item" data-view="inicio">
+              <span class="snav-icon">◈</span> Protocolo Logos
             </button>
           </div>
-          <div class="logos-nav-section">
-            <button class="logos-nav-item" data-view="opensource">
-              <span class="logos-nav-icon">⚙</span> Open Source Cognitivo
+
+          <div class="snav-section">
+            <button class="snav-item" data-view="sintesis">
+              <span class="snav-icon">◇</span> Tipos de Síntesis
             </button>
           </div>
-          <div class="logos-nav-section">
-            <button class="logos-nav-item" data-view="reportes">
-              <span class="logos-nav-icon">📁</span> Informes Emitidos
+
+          <div class="snav-section">
+            <button class="snav-item" data-view="desacuerdos">
+              <span class="snav-icon">◈</span> Naturaleza del Desacuerdo
             </button>
           </div>
+
+          <div class="snav-section snav-section--group">
+
+            <div class="snav-group-label">
+              Fases Cognitivas
+            </div>
+
+            <button class="snav-item snav-item--sub" data-view="fase1">Reconstrucción</button>
+            <button class="snav-item snav-item--sub" data-view="fase2">Comprensión Mutua</button>
+            <button class="snav-item snav-item--sub" data-view="fase3">Acuerdos y Diferencias</button>
+            <button class="snav-item snav-item--sub" data-view="fase4">Convergencias</button>
+            <button class="snav-item snav-item--sub" data-view="fase5">Síntesis</button>
+
+          </div>
+
+          <div class="snav-section">
+            <button class="snav-item" data-view="indicadores">
+              <span class="snav-icon">∑</span>
+              Indicadores
+            </button>
+          </div>
+
+          <div class="snav-section">
+            <button class="snav-item" data-view="relaciones">
+              <span class="snav-icon">◈</span>
+              Ecosistema Deliberativo
+            </button>
+          </div>
+
         </nav>
 
-        <!-- Estado del Motor Lógico -->
         <div class="epistemic sidebar-status">
-          <div class="epistemic-title">Auditoría Lógica</div>
-          <div class="status-row">
-            <span class="status-dot status-dot--on"></span>
-            <span>Motor: Razonamiento Formal Activo</span>
+
+          <div class="philosopher sidebar-philosopher" id="rfSidebarTrigger" style="cursor: pointer;" onclick="LOGOS.openReyFilosofo();">
+
+            <div class="phil-icon">🏛</div>
+
+            <div>
+              <div class="phil-name">
+                Rey Filósofo
+              </div>
+
+              <div class="phil-msg">
+                ¿Dudas sobre cómo interpretar esta comparación?
+              </div>
+            </div>
+
           </div>
-          <div class="status-row">
-            <span class="status-dot status-dot--on"></span>
-            <span>Consistencia de Paths: OK</span>
-          </div>
+
         </div>
 
       </div>
+
       <div class="sidebar-rail">
         <div class="sidebar-toggle">◂</div>
       </div>
+
     </aside>
 
-    <!-- CONTENT AREA -->
     <main class="document">
+
       <div class="document-header" id="viewTitle">
-        Logos — Evaluación Estructural del Discurso
+        Logos — Infraestructura Dialéctica y Gimnasio Deliberativo
       </div>
 
       <div class="document-content" id="viewContent">
-        <!-- Inyección SPA dinámica -->
       </div>
+
     </main>
 
   </div>
 
-  <footer class="footer">LogoDemocracy · Logos · Análisis Sintáctico, Semántico y Descomposición Argumental de Mociones</footer>
+  <footer class="footer">
+    LogoDemocracy · Logos · Protocolo Abierto de Encuentro Dialéctico
+  </footer>
+
 </div>
 
-<script src="/assets/js/layout.js"></script>
+<script src="/CognitiveSessionFactory.js"></script>
+<script src="/ReyFilosofoChat.js"></script>
+<script src="/assets/js/logos.js?v=1"></script>
 <script src="/assets/js/mobile-menu.js"></script>
-<script src="/assets/js/logos.js"></script>
+<script src="/assets/js/layout.js"></script>
+
+<script>
+  window.addEventListener("load", () => {
+    if (typeof ReyFilosofoChat !== 'undefined' && typeof ReyFilosofoChat.setDefaultSessionProvider === 'function') {
+      ReyFilosofoChat.setDefaultSessionProvider(() => {
+        const comparison = (typeof LOGOS !== 'undefined' && typeof LOGOS.getLastComparison === 'function')
+          ? LOGOS.getLastComparison()
+          : null;
+        if (!comparison || typeof CognitiveSessionFactory === 'undefined') return null;
+        // fromLogos() debe agregarse a CognitiveSessionFactory.js — ver nota en logos.js
+        return typeof CognitiveSessionFactory.fromLogos === 'function'
+          ? CognitiveSessionFactory.fromLogos(comparison)
+          : null;
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
+
