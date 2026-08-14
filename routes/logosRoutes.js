@@ -5,24 +5,45 @@ const { evaluate } = require("../modules/sophiaEvaluationPipeline");
 // ─── Endpoint de comparación de Logos ───────────────────
 router.post("/compare", async (req, res) => {
   try {
-    const { text1, text2, content, baseline } = req.body;
-    
-    // Soporta múltiples formatos de payload enviados por el cliente
-    const primaryText = text1 || content;
-    const comparisonText = text2 || baseline;
+    console.log("🔍 [Logos] Payload recibido en /compare:", JSON.stringify(req.body));
 
-    if (!primaryText) {
-      return res.status(400).json({ error: "Se requiere al menos un texto o contenido para procesar la comparación." });
+    const body = req.body || {};
+    let primaryText = body.text1 || body.content || body.text || body.input || body.code;
+    let comparisonText = body.text2 || body.baseline || body.comparison;
+
+    if (!primaryText && typeof body === 'object') {
+      const stringValues = Object.values(body).filter(v => typeof v === 'string' && v.trim().length > 0);
+      if (stringValues.length > 0) {
+        stringValues.sort((a, b) => b.length - a.length);
+        primaryText = stringValues[0];
+        if (stringValues.length > 1) {
+          comparisonText = stringValues[1];
+        }
+      }
     }
 
-    console.log("🔍 [Logos] Procesando comparación en /api/logos/compare...");
+    if (!primaryText || typeof primaryText !== 'string' || primaryText.trim().length === 0) {
+      console.warn("⚠️ [Logos] No se encontró texto válido. Claves recibidas:", Object.keys(body));
+      return res.status(400).json({ 
+        error: "Se requiere al menos un texto o contenido para procesar la comparación.",
+        receivedKeys: Object.keys(body)
+      });
+    }
 
-    // Ejecuta la evaluación analítica sobre el texto principal
+    console.log("🧠 [Logos] Procesando evaluación analítica...");
     const evaluationResult = await evaluate({ text: primaryText });
+
+    // Estructura segura de reconstructions para evitar errores en el frontend
+    const reconstructionsData = evaluationResult.reconstructions || {
+      a: primaryText,
+      b: comparisonText || "",
+      analysis: evaluationResult
+    };
 
     res.json({
       success: true,
       message: "Comparación de Logos realizada exitosamente",
+      reconstructions: reconstructionsData, // <-- Propiedad clave esperada por el cliente
       comparison: {
         primaryLength: primaryText.length,
         comparisonLength: comparisonText ? comparisonText.length : 0,
