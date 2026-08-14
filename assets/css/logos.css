@@ -2,8 +2,8 @@
    Redefine el color de acento para que Logos sea consistente pero distinguible.
 */
 :root {
-  --c-logos: #a855f7; /* Lila de Logos */
-  /* Forzamos el color lila en las variables globales para pisar el azul de SOPHIA o del layout principal */
+  --c-logos: #06b6d4; /* Celeste cian de Logos */
+  /* Forzamos el color celeste en las variables globales para pisar otros colores del layout principal */
   --accent: var(--c-logos) !important;
   --c-sophia: var(--c-logos) !important; 
   --brand-color: var(--c-logos) !important;
