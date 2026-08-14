@@ -193,13 +193,11 @@
       "complejidad"
     ]
   },
-
-
   {
     "library": "Joe Pino",
-    "folder": "",
-    "title": "hipótesis del Relato",
-    "file": "hipotesis-del-relato.md",
+    "folder": "Hipótesis",
+    "title": "La Hipótesis del Relato",
+    "file": "la-hipotesis-del-relato.md",
     "tags": [
       "todo-ciudadano-sabe",
       "gregory-bateson",
@@ -215,8 +213,9 @@
   {
     "library": "Alfabetización Digital para humanistas",
     "folder": "Curso Inicial",
-    "title": "Inteligencia artificial: qué es y qué no es",
+    "title": "1. Inteligencia artificial: qué es y qué no es",
     "file": "inteligencia-artificial-que-es-y-que-no-es.md",
+    "order": 1,
     "tags": [
       "alfabetizacion-digital",
       "inteligencia-artificial",
@@ -232,8 +231,61 @@
   {
     "library": "Alfabetización Digital para humanistas",
     "folder": "Curso Inicial",
-    "title": "Herramientas de Desarrollo",
+    "title": "2. Pensar con IA sin dejar que la IA piense por ti",
+    "file": "pensar-con-ia-sin-dejar-que-la-ia-piense-por-ti.md",
+    "order": 2,
+    "tags": [
+      "alfabetizacion-digital",
+      "inteligencia-artificial",
+      "pensamiento-critico",
+      "criterio",
+      "metacognicion",
+      "autonomia",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
+    "title": "3. Conversar con una IA: del prompt a la colaboración",
+    "file": "conversar-con-una-ia.md",
+    "order": 3,
+    "tags": [
+      "alfabetizacion-digital",
+      "inteligencia-artificial",
+      "prompts",
+      "colaboracion",
+      "dialogo",
+      "instrucciones",
+      "contexto",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
+    "title": "4. Crear con IA: del texto al proyecto",
+    "file": "crear-con-ia.md",
+    "order": 4,
+    "tags": [
+      "alfabetizacion-digital",
+      "desarrollo",
+      "inteligencia-artificial",
+      "programacion",
+      "codigo",
+      "algoritmos",
+      "proyectos",
+      "colaboracion",
+      "documentacion",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
+    "title": "5. Herramientas de Desarrollo",
     "file": "herramientas-de-desarrollo.md",
+    "order": 5,
     "tags": [
       "alfabetizacion-digital",
       "desarrollo",
@@ -243,6 +295,49 @@
       "render",
       "cli",
       "herramientas",
+      "humanidades-digitales"
+    ]
+  },
+
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
+    "title": "6. Desarrollo con un equipo de inteligencias artificiales",
+    "file": "desarrollo-con-un-equipo-de-inteligencias-artificiales.md",
+    "order": 6,
+    "tags": [
+      "alfabetizacion-digital",
+      "desarrollo",
+      "inteligencia-artificial",
+      "agentes",
+      "roles",
+      "arquitectura-de-colaboracion",
+      "contratos",
+      "auditoria",
+      "humanidades-digitales"
+    ]
+  },
+    {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Curso Inicial",
+    "title": "7. Crear tu primer proyecto con inteligencia artificial",
+    "file": "crea-tu-primer-proyecto-con-ia.md",
+    "order": 7,
+    "tags": [
+      "alfabetizacion-digital",
+      "desarrollo",
+      "inteligencia-artificial",
+      "desarrollo-web",
+      "html",
+      "css",
+      "javascript",
+      "termux",
+      "github",
+      "render",
+      "api",
+      "google-cloud",
+      "cli",
+      "copiloto",
       "humanidades-digitales"
     ]
   }
