@@ -1,25 +1,23 @@
 /* logos.css
-   No define estructura ni componentes propios — todo eso ya existe en
-   sophia.css y se reutiliza tal cual (mismo sidebar, mismas tarjetas,
-   misma tipografía). Este archivo solo redefine el color de acento para
-   que Logos se vea consistente con Academia y SOPHIA, pero distinguible.
-
-   Si tu proyecto ya define --c-logos en base-layout.css (como hace con
-   --c-sophia y --c-rey), esta regla es redundante y no molesta — solo
-   confirma el valor. Si no existe todavía, esta la define acá.
+   Redefine el color de acento para que Logos sea consistente pero distinguible.
 */
 :root {
-  --c-logos: #a855f7; /* violeta — distinto del azul de SOPHIA */
+  --c-logos: #a855f7; /* Lila de Logos */
+  /* Forzamos el color lila en las variables globales para pisar el azul de SOPHIA o del layout principal */
+  --accent: var(--c-logos) !important;
+  --c-sophia: var(--c-logos) !important; 
+  --brand-color: var(--c-logos) !important;
 }
 
-body.logos-page {
-  --accent: var(--c-logos);
+/* Regla redundante de seguridad para el body */
+body, body.logos-page {
+  --accent: var(--c-logos) !important;
 }
 
 /* ─── ANIMACIÓN DE CARGA (TRES PUNTITOS) ─── */
 .loading-dots span {
   animation: blinkDots 1.4s infinite both;
-  font-weight: 500;
+  font-weight: 600;
   margin-left: 1px;
 }
 .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
