@@ -189,22 +189,22 @@
   // ─── Envío al backend (Modalidad A: Comparar) ─────────
   async function compareWithLogos(posicionA, posicionB, outEl) {
     const loadingPhrases = [
-      "Reconstruyendo posiciones desde sus propios términos",
-      "Mapeando acuerdos implícitos y explícitos",
-      "Clasificando la naturaleza de los desacuerdos",
-      "Explorando puntos de convergencia relacional",
-      "Buscando posibilidades de síntesis generativa"
+      "<b>¿Sabías que...?</b> Logos no decide quién tiene la razón, sino que cartografía la estructura del desacuerdo.",
+      "<b>¿Sabías que...?</b> Un desacuerdo bien descrito es, muchas veces, un resultado más valioso que un consenso forzado.",
+      "<b>¿Sabías que...?</b> La síntesis generativa ocurre cuando ambas partes descubren que el problema tenía dimensiones ocultas.",
+      "<b>¿Sabías que...?</b> El 'Steelman' dialéctico consiste en reconstruir el argumento del otro en su versión más fuerte.",
+      "<b>¿Sabías que...?</b> Identificar los supuestos que ambas posiciones comparten es el primer paso para destrabar el debate."
     ];
     let phraseIndex = 0;
 
     const renderLoading = () => `
-      <div style="background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px; padding:24px; text-align:center; margin-top: 16px;">
-        <p style="color:var(--accent); font-size:.95rem; font-weight:500; margin:0;">
-          ${loadingPhrases[phraseIndex]}<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
-        </p>
-        <p style="color:rgba(229,231,235,.5); font-size:.78rem; margin-top:12px;">
-          Este proceso toma su tiempo. Logos no está fabricando un consenso artificial, está analizando estructuras dialécticas.
-        </p>
+      <div class="s-card" style="margin-top: 20px; border-left: 3px solid var(--accent);">
+        <div style="color:var(--accent); font-size:.75rem; text-transform:uppercase; font-weight:600; letter-spacing:0.05em; margin-bottom:10px; display:flex; align-items:center;">
+          PROCESANDO SÍNTESIS <span class="loading-dots" style="font-size:1.1rem; margin-left:4px; line-height:0;"><span>.</span><span>.</span><span>.</span></span>
+        </div>
+        <div style="color:#e5e7eb; font-size:.85rem; line-height:1.6;">
+          ${loadingPhrases[phraseIndex]}
+        </div>
       </div>
     `;
 
@@ -363,6 +363,10 @@
     },
 
     init() {
+      // Inyectamos la clase en el body de manera determinista para asegurar que 
+      // todo el marco del sistema (header, menú) absorba el color Logos.
+      document.body.classList.add('logos-page');
+
       document.querySelectorAll('.snav-item[data-view]').forEach(btn => {
         btn.addEventListener('click', () => this.navigate(btn.dataset.view));
       });
