@@ -5,19 +5,36 @@ const { evaluate } = require("../modules/sophiaEvaluationPipeline");
 // ─── Endpoint de comparación de Logos ───────────────────
 router.post("/compare", async (req, res) => {
   try {
-    const { text1, text2, content, baseline } = req.body;
-    
-    // Soporta múltiples formatos de payload enviados por el cliente
-    const primaryText = text1 || content;
-    const comparisonText = text2 || baseline;
+    console.log("🔍 [Logos] Payload recibido en /compare:", JSON.stringify(req.body));
 
-    if (!primaryText) {
-      return res.status(400).json({ error: "Se requiere al menos un texto o contenido para procesar la comparación." });
+    const body = req.body || {};
+
+    // 1. Intentar nombres estándar
+    let primaryText = body.text1 || body.content || body.text || body.input || body.code;
+    let comparisonText = body.text2 || body.baseline || body.comparison;
+
+    // 2. Extracción ultra flexible: si no calza con los nombres anteriores, 
+    // toma automáticamente cualquier texto disponible en el objeto recibido.
+    if (!primaryText && typeof body === 'object') {
+      const stringValues = Object.values(body).filter(v => typeof v === 'string' && v.trim().length > 0);
+      if (stringValues.length > 0) {
+        stringValues.sort((a, b) => b.length - a.length);
+        primaryText = stringValues[0];
+        if (stringValues.length > 1) {
+          comparisonText = stringValues[1];
+        }
+      }
     }
 
-    console.log("🔍 [Logos] Procesando comparación en /api/logos/compare...");
+    if (!primaryText || typeof primaryText !== 'string' || primaryText.trim().length === 0) {
+      console.warn("⚠️ [Logos] No se encontró texto válido. Claves recibidas:", Object.keys(body));
+      return res.status(400).json({ 
+        error: "Se requiere al menos un texto o contenido para procesar la comparación.",
+        receivedKeys: Object.keys(body)
+      });
+    }
 
-    // Ejecuta la evaluación analítica sobre el texto principal
+    console.log("🧠 [Logos] Procesando evaluación analítica...");
     const evaluationResult = await evaluate({ text: primaryText });
 
     res.json({
