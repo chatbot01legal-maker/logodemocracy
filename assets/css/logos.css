@@ -15,3 +15,18 @@
 body.logos-page {
   --accent: var(--c-logos);
 }
+
+/* ─── ANIMACIÓN DE CARGA (TRES PUNTITOS) ─── */
+.loading-dots span {
+  animation: blinkDots 1.4s infinite both;
+  font-weight: 500;
+  margin-left: 1px;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes blinkDots {
+  0% { opacity: 0.2; transform: scale(0.9); }
+  20% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0.2; transform: scale(0.9); }
+}
