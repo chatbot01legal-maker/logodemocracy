@@ -1,8 +1,10 @@
 
 ---
+
 library: "Logodemocracia"
 folder: "06-LogoDemocracy"
 title: "¿Qué es LogoDemocracy? Arquitectura de la plataforma tecnológica"
+
 tags:
 - logodemocracia
 - arquitectura
@@ -19,6 +21,7 @@ tags:
 - inteligencia-colectiva
 - memoria-colectiva
 - produccion-comunitaria
+
 ---
 
 ## ¿Qué es LogoDemocracy?
