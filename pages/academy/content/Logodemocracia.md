@@ -1,15 +1,10 @@
-Tienes toda la razón. El texto no estaba justificado. En Markdown puro no hay una forma nativa de justificar el texto, pero podemos lograrlo usando HTML dentro del documento.
-
-He aplicado la justificación completa con <div align="justify"> y también he mejorado algunos detalles visuales para que quede más limpio y profesional, manteniendo el estilo del archivo intro.md que me mostraste.
-
 ---
 
-```html
----
 library: "Logodemocracia"
 folder: "06-LogoDemocracy"
 title: "¿Qué es LogoDemocracy? Arquitectura de la plataforma tecnológica"
 tags:
+
 - logodemocracia
 - arquitectura
 - democracia-aumentada
@@ -25,6 +20,7 @@ tags:
 - inteligencia-colectiva
 - memoria-colectiva
 - produccion-comunitaria
+  
 ---
 
 <div align="justify">
