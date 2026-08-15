@@ -202,7 +202,7 @@ body {
   font-weight: 300;
   color: var(--c-muted);
   line-height: 1.7;
-  max-width: 560px;
+  max-width: 620px;
 }
 
 .hero-cta {
@@ -758,7 +758,59 @@ body {
   box-shadow: 0 0 6px var(--c-lab);
 }
 
-/* ─── S6b HIPÓTESIS EN INVESTIGACIÓN ─────────────────── */
+/* ─── S6b RED SOCIAL COGNITIVA (NUEVO BLOQUE CONVOCANTE) ── */
+.redsocial-section {
+  background: linear-gradient(180deg, var(--c-bg), rgba(59,130,246,0.03) 50%, var(--c-bg));
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.redsocial-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.redsocial-content p {
+  color: var(--c-muted);
+  margin-bottom: var(--space-sm);
+  line-height: 1.8;
+}
+
+.redsocial-content p strong {
+  color: var(--c-text);
+}
+
+.redsocial-card {
+  border: 1px solid rgba(59,130,246,0.25);
+  border-radius: 1px;
+  padding: var(--space-lg);
+  background: rgba(59,130,246,0.04);
+  position: relative;
+}
+
+.redsocial-card::before {
+  content: "✦ GENKIDAMA COGNITIVA";
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  color: var(--c-sophia);
+  background: var(--c-bg);
+  padding: 0 8px;
+}
+
+.redsocial-card p {
+  font-family: var(--f-mono);
+  font-size: 0.88rem;
+  color: var(--c-text);
+  line-height: 1.7;
+}
+
+/* ─── S6c HIPÓTESIS EN INVESTIGACIÓN ─────────────────── */
 .hipotesis-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1147,6 +1199,7 @@ body {
   .agentes-grid        { grid-template-columns: 1fr; }
   .academia-layout     { grid-template-columns: 1fr; }
   .laboratorio-layout  { grid-template-columns: 1fr; }
+  .redsocial-grid      { grid-template-columns: 1fr; }
   .hipotesis-grid      { grid-template-columns: 1fr; }
   .cuadratica-layout   { grid-template-columns: 1fr; }
   .modelo-variables    { grid-template-columns: 1fr; }
@@ -1254,17 +1307,17 @@ body {
   ══════════════════════════════════════════════════════════ -->
   <section class="hero" id="inicio">
     <div class="hero-inner">
-      <span class="badge reveal-line" style="--delay:0ms">Democracia Aumentada</span>
+      <span class="badge reveal-line" style="--delay:0ms">La Genkidama de la Atención Ciudadana</span>
       <h1 class="hero-title">
         <span class="reveal-line" style="--delay:150ms">La democracia es un proceso</span>
         <span class="reveal-line" style="--delay:300ms">de pensamiento colectivo.</span>
       </h1>
       <p class="hero-sub reveal-line" style="--delay:500ms">
-        Tecnología e Inteligencia artificial al servicio de la deliberación,<br class="br-desk" />
-        la educación y la ciudadanía.
+        No te pedimos que votes sin sentido. Te invitamos a pausar, leer al menos 5 minutos,<br class="br-desk" />
+        pensar con rigor y enfocar nuestra voluntad cognitiva para iluminar los grandes problemas públicos.
       </p>
       <a href="#concepto" class="hero-cta reveal-line" style="--delay:700ms">
-        Explorar el ecosistema <span class="cta-arrow">↓</span>
+        Explora nuestro ecosistema y empieza a pensar <span class="cta-arrow">↓</span>
       </a>
     </div>
   </section>
@@ -1387,7 +1440,7 @@ body {
             <span class="agent-id"></span>
             <span class="agent-tag">Protocolo de comunicación</span>
           </div>
-          <span style="display:inline-block; font-size:.62rem; letter-spacing:.04em; text-transform:uppercase; color:var(--c-sophia); border:1px solid var(--c-sophia); border-radius:3px; padding:2px 6px; margin-bottom:8px;">Disponible</span>
+          <span style="display:inline-block; font-size:.62rem; letter-spacing:.04em; text-transform:uppercase; color:var(--c-sophia); border:1px solid var(--c-sophia); border-radius:3px; padding:2px 6px; margin-bottom:8px;">Beta</span>
           <h3 class="agent-name">Sophia</h3>
           <p class="agent-desc">Filtro epistémico de calidad argumentativa. Evalúa la coherencia, claridad, evidencia y honestidad intelectual de los documentos ciudadanos antes de su incorporación al conocimiento colectivo de la Academia.</p>
           <ul class="agent-capabilities">
@@ -1446,6 +1499,31 @@ body {
             <div class="panel-line panel-line--comment"># Rey Filósofo activado para lectura</div>
             <div class="panel-line panel-line--cursor"><span class="p-violet">_</span></div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       S4.5 — RED SOCIAL COGNITIVA (NUEVO BLOQUE VISUAL)
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section redsocial-section" id="redsocial">
+    <div class="container">
+      <div class="redsocial-grid">
+        <div class="redsocial-content">
+          <span class="section-label" style="--label-color: var(--c-sophia)">Próxima Frontera</span>
+          <h2 class="section-title">Una red social diseñada<br />para pensar y pausar</h2>
+          <p>Las redes sociales tradicionales premian la inmediatez, el ruido y la polarización rápida. <strong>LogoDemocracy nace para ser radicalmente distinta</strong>.</p>
+          <p>Imaginamos un espacio donde la interacción social exige un compromiso cognitivo previo: te invitamos a dedicar <strong>al menos 5 minutos a leer un documento con profundidad</strong>, asimilar sus premisas y estructurar tus ideas antes de emitir una opinión o debatir.</p>
+          <p>Es el antídoto contra la superficialidad digital: una red social pensada para cultivar el ejercicio del pensamiento colectivo y la deliberación genuina.</p>
+        </div>
+        <div class="redsocial-card">
+          <p>
+            "La atención humana es un recurso limitado. Pero cuando miles de mentes enfocan su voluntad cognitiva sobre un problema público —asistidas por IA y guiadas por el rigor ético—, ese problema se ilumina.<br><br>
+            Eso es la Genkidama de la atención ciudadana: transformar el debate digital en un motor de inteligencia colectiva."
+          </p>
         </div>
       </div>
     </div>
@@ -1570,27 +1648,8 @@ body {
   </section>
 
   <!-- ═══════════════════════════════════════════════════════
-       S6b HIPÓTESIS EN INVESTIGACIÓN ─────────────────── -->
-  <section class="section">
-    <div class="container">
-      <div class="hipotesis-grid">
-        <article class="hipotesis-card">
-          <span class="hipotesis-status">En estudio</span>
-          <p class="hipotesis-text">¿La pre-evaluación con el filtro Sophia reduce la polarización afectiva en los debates posteriores?</p>
-          <span class="hipotesis-modulo">Módulo: Sophia + Logos</span>
-        </article>
-        <article class="hipotesis-card">
-          <span class="hipotesis-status">En estudio</span>
-          <p class="hipotesis-text">¿El andamiaje metacognitivo del Rey Filósofo aumenta la retención a largo plazo de conceptos constitucionales?</p>
-          <span class="hipotesis-modulo">Módulo: Academia + Rey Filósofo</span>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════════════════
        S7 — VOTACIÓN CUADRÁTICA
-  ══════════════════════════════════════════════════════════ -->
+  ═══════════════════════════════════════════════════════ -->
   <section class="section cuadratica" id="cuadratica">
     <div class="container">
       <div class="cuadratica-layout">
@@ -1725,7 +1784,7 @@ body {
   'use strict';
 
   /* ─── INTERSECTION OBSERVER — GENERIC REVEALS ──────── */
-  const revealEls = document.querySelectorAll('.section-header, .concepto-grid, .formula-concepto, .agent-card, .academia-layout, .laboratorio-layout, .hipotesis-card, .cuadratica-layout, .formula-wrapper, .modelo-variables, .cierre-quote');
+  const revealEls = document.querySelectorAll('.section-header, .concepto-grid, .formula-concepto, .agent-card, .academia-layout, .laboratorio-layout, .redsocial-card, .hipotesis-card, .cuadratica-layout, .formula-wrapper, .modelo-variables, .cierre-quote');
 
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -1802,7 +1861,6 @@ body {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         navLinks.forEach((l) => l.style.opacity = '0.5');
-        // just dim all — active state is subtle
       }
     });
   }, { threshold: 0.4 });
