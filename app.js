@@ -400,10 +400,6 @@ app.post("/api/logos/compare", async (req, res) => {
   }
 });
 
-
-const rfRoutes = require("./logodemocracy-api/src/routes/rfRoutes");
-app.use("/api/reyfilosofo", rfRoutes);
-
 const logosRoutes = require("./routes/logosRoutes");
 app.use("/api/logos", logosRoutes);
 
