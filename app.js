@@ -400,8 +400,6 @@ app.post("/api/logos/compare", async (req, res) => {
   }
 });
 
-const logosRoutes = require("./routes/logosRoutes");
-app.use("/api/logos", logosRoutes);
 
 // ─── Endpoint protegido ────────────────────────────────
 app.get("/api/profile", authenticate, (req, res) => {
