@@ -238,6 +238,12 @@
     }
   }
 
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
   function renderComparison(data, outEl) {
     outEl.innerHTML = `
       ${data.sintesis_descriptiva ? `
@@ -246,6 +252,46 @@
           <div class="card-grid">
             <div class="s-card"><div class="s-card-title">Posición A</div><div class="s-card-body">${data.sintesis_descriptiva.a || ''}</div></div>
             <div class="s-card"><div class="s-card-title">Posición B</div><div class="s-card-body">${data.sintesis_descriptiva.b || ''}</div></div>
+          </div>
+        </div>` : ''}
+
+      <!-- Prueba de Reconstrucción (protocolo §13): la persona confirma,
+           rechaza o precisa la reconstrucción antes de seguir avanzando. -->
+      <div class="view-section" id="logos-validacion-section">
+        <div class="view-section-title">¿Logos entendió bien tu posición?</div>
+        <p style="font-size:.75rem; color:rgba(229,231,235,.45); margin-bottom:12px;">Antes de seguir, confirmá si las reconstrucciones de arriba representan fielmente lo que cada posición sostiene.</p>
+        <div class="card-grid">
+          ${['a', 'b'].map(lado => `
+            <div class="s-card" id="logos-valid-${lado}">
+              <div class="s-card-title">Posición ${lado.toUpperCase()}</div>
+              <div style="display:flex; gap:8px; margin-top:8px;">
+                <button class="btn-primary logos-valid-btn" data-lado="${lado}" data-valor="confirmada" style="font-size:.75rem; padding:5px 12px;">Sí, es fiel</button>
+                <button class="logos-valid-btn" data-lado="${lado}" data-valor="rechazada" style="font-size:.75rem; padding:5px 12px; background:none; border:1px solid rgba(255,255,255,.2); color:#e5e7eb; border-radius:4px; cursor:pointer;">No, hay algo mal</button>
+              </div>
+              <div id="logos-valid-${lado}-nota" style="display:none; margin-top:8px;">
+                <textarea placeholder="¿Qué está mal en la reconstrucción?" style="width:100%; min-height:50px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px; color:#e5e7eb; font-size:.78rem; padding:6px; box-sizing:border-box;"></textarea>
+              </div>
+              <div id="logos-valid-${lado}-status" style="font-size:.72rem; margin-top:6px; color:rgba(229,231,235,.4);"></div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      ${data.comprension_cruzada ? `
+        <div class="view-section">
+          <div class="view-section-title">Comprensión mutua</div>
+          <div class="card-grid">
+            <div class="s-card"><div class="s-card-title">Cómo entiende A a B</div><div class="s-card-body">${data.comprension_cruzada.a_sobre_b || ''}</div></div>
+            <div class="s-card"><div class="s-card-title">Cómo entiende B a A</div><div class="s-card-body">${data.comprension_cruzada.b_sobre_a || ''}</div></div>
+          </div>
+        </div>` : ''}
+
+      ${data.steelman ? `
+        <div class="view-section">
+          <div class="view-section-title">Steelman dialéctico <span style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:none;">(la mejor versión posible de cada posición)</span></div>
+          <div class="card-grid">
+            <div class="s-card"><div class="s-card-title">Mejor versión de A</div><div class="s-card-body">${data.steelman.a || ''}</div></div>
+            <div class="s-card"><div class="s-card-title">Mejor versión de B</div><div class="s-card-body">${data.steelman.b || ''}</div></div>
           </div>
         </div>` : ''}
 
@@ -262,6 +308,22 @@
             <div style="background:var(--s-panel); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:8px;">
               <div style="font-size:.68rem; color:var(--accent); text-transform:uppercase;">${(d.tipo || []).join(', ')}</div>
               <div style="font-size:.82rem; color:#e5e7eb;">${d.texto}</div>
+            </div>`).join('')}
+        </div>` : ''}
+
+      ${(data.supuestos_compartidos && data.supuestos_compartidos.length) ? `
+        <div class="view-section">
+          <div class="view-section-title">Supuestos compartidos</div>
+          <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${data.supuestos_compartidos.map(s => `<li>${s}</li>`).join('')}</ul>
+        </div>` : ''}
+
+      ${(data.convergencias && data.convergencias.length) ? `
+        <div class="view-section">
+          <div class="view-section-title">Convergencias</div>
+          ${data.convergencias.map(c => `
+            <div style="background:var(--s-panel); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:8px;">
+              <div style="font-size:.68rem; color:var(--accent); text-transform:uppercase;">${c.estado || ''}</div>
+              <div style="font-size:.82rem; color:#e5e7eb;">${c.texto}</div>
             </div>`).join('')}
         </div>` : ''}
 
@@ -287,6 +349,95 @@
           <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${data.preguntas_deliberativas.map(p => `<li>${p}</li>`).join('')}</ul>
         </div>` : ''}
     `;
+
+    _bindValidationButtons(outEl, data);
+    _bindLogosFeedback(outEl, data);
+  }
+
+  // ─── Validación de reconstrucción (protocolo §13) ─────
+  function _bindValidationButtons(outEl, data) {
+    if (!data._validacion) data._validacion = { a: null, b: null };
+
+    outEl.querySelectorAll('.logos-valid-btn').forEach(btn => {
+      btn.onclick = () => {
+        const lado = btn.dataset.lado;
+        const valor = btn.dataset.valor;
+        const notaEl = document.getElementById(`logos-valid-${lado}-nota`);
+        const statusEl = document.getElementById(`logos-valid-${lado}-status`);
+
+        if (valor === 'rechazada') {
+          notaEl.style.display = 'block';
+          const textarea = notaEl.querySelector('textarea');
+          statusEl.textContent = 'Contanos qué está mal — queda registrado junto al resultado.';
+          statusEl.style.color = '#eab308';
+          textarea.onblur = () => {
+            data._validacion[lado] = { estado: 'rechazada', nota: textarea.value.trim() };
+          };
+          data._validacion[lado] = { estado: 'rechazada', nota: '' };
+        } else {
+          notaEl.style.display = 'none';
+          statusEl.textContent = '✓ Confirmada como fiel.';
+          statusEl.style.color = '#22c55e';
+          data._validacion[lado] = { estado: 'confirmada', nota: '' };
+        }
+      };
+    });
+  }
+
+  // ─── Feedback del usuario sobre el uso de Logos ────────
+  function _bindLogosFeedback(outEl, data) {
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'margin-top:20px; padding:16px; background:var(--s-panel); border:1px dashed rgba(255,255,255,.15); border-radius:4px;';
+    wrapper.innerHTML = `
+      <div style="font-size:.75rem; color:rgba(229,231,235,.5); text-transform:uppercase; margin-bottom:8px;">¿Qué te pareció esta comparación?</div>
+      <p style="font-size:.72rem; color:rgba(229,231,235,.4); margin:0 0 10px 0;">Logos está en desarrollo activo — contanos qué te gustó, qué no, o qué mejorarías.</p>
+      <textarea id="logosFeedbackInput" placeholder="Ej: el steelman de la Posición B no reflejaba bien el argumento principal..." style="width:100%; min-height:60px; background:#0a0a0a; border:1px solid rgba(255,255,255,.1); border-radius:4px; color:#e5e7eb; font-size:.78rem; padding:8px; box-sizing:border-box; resize:vertical;"></textarea>
+      <div style="display:flex; justify-content:flex-end; align-items:center; gap:10px; margin-top:8px;">
+        <span id="logosFeedbackStatus" style="font-size:.72rem; color:rgba(229,231,235,.4);"></span>
+        <button id="logosFeedbackBtn" class="btn-primary" style="font-size:.78rem; padding:6px 14px;">Enviar comentario</button>
+      </div>
+    `;
+    outEl.appendChild(wrapper);
+
+    const feedbackBtn = wrapper.querySelector('#logosFeedbackBtn');
+    const feedbackInput = wrapper.querySelector('#logosFeedbackInput');
+    const feedbackStatus = wrapper.querySelector('#logosFeedbackStatus');
+
+    feedbackBtn.onclick = async () => {
+      const comentario = feedbackInput.value.trim();
+      if (!comentario) {
+        feedbackStatus.textContent = 'Escribí algo antes de enviar.';
+        feedbackStatus.style.color = '#ef4444';
+        return;
+      }
+      feedbackBtn.disabled = true;
+      feedbackStatus.textContent = 'Enviando…';
+      feedbackStatus.style.color = 'rgba(229,231,235,.4)';
+      try {
+        const response = await fetch('/api/logos/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            comentario,
+            validacion: data._validacion || null,
+            timestamp: new Date().toISOString()
+          })
+        });
+        if (response.ok) {
+          feedbackStatus.textContent = '¡Gracias! Tu comentario fue enviado.';
+          feedbackStatus.style.color = '#22c55e';
+          feedbackInput.value = '';
+        } else {
+          throw new Error(`El servidor respondió ${response.status}`);
+        }
+      } catch (err) {
+        console.warn('⚠️ No se pudo enviar el feedback de Logos:', err.message);
+        feedbackStatus.textContent = 'No se pudo enviar. Probá de nuevo más tarde.';
+        feedbackStatus.style.color = '#ef4444';
+      } finally {
+        feedbackBtn.disabled = false;
+      }
+    };
   }
 
   // ─── SPA router (mismo patrón que SOPHIA) ──────────────
