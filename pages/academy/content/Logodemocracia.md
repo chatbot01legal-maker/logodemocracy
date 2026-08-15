@@ -1,19 +1,4 @@
-Entendido. Veo que el archivo intro.md tiene un estilo más limpio, con títulos en negrita (usando ##), citas en cursiva y bloques de cita (>), y una estructura más legible.
 
-Aplicaré ese mismo criterio a Logodemocracia (2).md:
-
-· Títulos en negrita con ## (y ### para subtítulos).
-· Citas textuales con el formato >  (para que queden como bloques de cita).
-· Diagramas en bloques de código ( ``` ) para mantener el formato.
-· Listas con viñetas (-) y enumeradas (1.) donde corresponda.
-· Separadores (---) para dividir secciones.
-· Sin eliminar ni una palabra del contenido original.
-
-Este es el resultado:
-
----
-
-```markdown
 ---
 library: "Logodemocracia"
 folder: "06-LogoDemocracy"
