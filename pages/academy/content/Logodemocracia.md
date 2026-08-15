@@ -1,10 +1,8 @@
-
 ---
 
 library: "Logodemocracia"
 folder: "06-LogoDemocracy"
 title: "¿Qué es LogoDemocracy? Arquitectura de la plataforma tecnológica"
-
 tags:
 
 - logodemocracia
