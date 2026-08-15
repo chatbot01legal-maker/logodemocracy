@@ -400,6 +400,29 @@ app.post("/api/logos/compare", async (req, res) => {
   }
 });
 
+// ─── Feedback de usuarios sobre comparaciones de Logos ─────────────────
+app.post("/api/logos/feedback", async (req, res) => {
+  try {
+    const { comentario, validacion, timestamp } = req.body;
+    if (!comentario || !comentario.trim()) {
+      return res.status(400).json({ error: "Comentario requerido" });
+    }
+
+    const db = await connect();
+    await db.collection("logos_feedback").insertOne({
+      comentario,
+      validacion: validacion || null, // estado de la Prueba de Reconstrucción, si se completó
+      timestamp: timestamp || new Date().toISOString(),
+      created_at: new Date()
+    });
+
+    console.log("📝 Feedback de Logos guardado en MongoDB");
+    res.json({ message: "Comentario recibido correctamente" });
+  } catch (error) {
+    console.error("❌ Error en /api/logos/feedback:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
 
 // ─── Endpoint protegido ────────────────────────────────
 app.get("/api/profile", authenticate, (req, res) => {
