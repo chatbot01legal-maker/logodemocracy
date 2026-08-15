@@ -1,51 +1,34 @@
 /* logos.css
-   Forzamos el celeste cian en Logos de manera agresiva,
-   cubriendo tanto variables globales como clases de utilidad rígidas.
+   No define estructura ni componentes propios — todo eso ya existe en
+   sophia.css y se reutiliza tal cual (mismo sidebar, mismas tarjetas,
+   misma tipografía). Este archivo solo redefine el color de acento.
+
+   Esquema de color por módulo:
+     SOPHIA        -> azul    (--c-sophia)
+     Academia      -> verde   (--c-academia)
+     Rey Filósofo  -> naranjo (--c-rey)
+     Logos         -> celeste cian (--c-logos)  <- este archivo
 */
-:root,
-body,
+:root {
+  --c-logos: #22d3ee; /* celeste cian */
+}
+
+/* Redefine --accent para toda la página de Logos. Si algún componente
+   heredado de sophia.css usa un azul escrito directamente (no la
+   variable --accent), esa regla puntual necesita sobreescribirse acá
+   también -- ver notas al final de este archivo. */
 body.logos-page {
-  --c-logos: #06b6d4; /* Celeste cian */
-  
-  /* Sobrescribir variables conocidas de módulos */
-  --accent: var(--c-logos) !important;
-  --c-sophia: var(--c-logos) !important; 
-  --brand-color: var(--c-logos) !important;
-  --primary: var(--c-logos) !important;
-  --c-blue: var(--c-logos) !important;
-  
-  /* Sobrescribir variables de base-layout.css (Menú, título y bordes) */
-  --header-color: var(--c-logos) !important;
-  --header-border: var(--c-logos) !important;
+  --accent: var(--c-logos);
 }
 
-/* ─── INTERCEPTAR CLASES UTILITARIAS RÍGIDAS ─── */
-/* Fuerza el texto, íconos del menú y títulos que usen clases azules */
-body.logos-page [class*="text-blue-"] {
-  color: var(--c-logos) !important;
-}
+/* Overrides puntuales, por si sophia.css fija el azul de SOPHIA con
+   valores directos en vez de con la variable --accent. Quedan
+   comentados: activalos (quitando /* y */ ) solo si después de subir
+   este archivo seguís viendo azul en alguna pieza puntual, y decime
+   cuál para ajustar el selector exacto.
 
-/* Fuerza fondos y barras */
-body.logos-page [class*="bg-blue-"] {
-  background-color: var(--c-logos) !important;
-}
-
-/* Fuerza bordes y separadores */
-body.logos-page [class*="border-blue-"] {
-  border-color: var(--c-logos) !important;
-}
-
-/* ─── ANIMACIÓN DE CARGA (TRES PUNTITOS) ─── */
-.loading-dots span {
-  animation: blinkDots 1.4s infinite both;
-  font-weight: 600;
-  margin-left: 1px;
-}
-.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes blinkDots {
-  0% { opacity: 0.2; transform: scale(0.9); }
-  20% { opacity: 1; transform: scale(1.1); }
-  100% { opacity: 0.2; transform: scale(0.9); }
-}
+   body.logos-page .module-badge { background: var(--c-logos); }
+   body.logos-page .snav-item.active { border-color: var(--c-logos); color: var(--c-logos); }
+   body.logos-page .btn-primary { background: var(--c-logos); }
+   body.logos-page .s-card-title { color: var(--c-logos); }
+*/
