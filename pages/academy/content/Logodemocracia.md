@@ -1,11 +1,15 @@
-Aquí tienes el mismo documento con el formato mejorado. He aplicado tus indicaciones al pie de la letra:
+Entendido. Veo que el archivo intro.md tiene un estilo más limpio, con títulos en negrita (usando ##), citas en cursiva y bloques de cita (>), y una estructura más legible.
 
-· Títulos en negrita (usando ## y ### para jerarquía).
-· Textos entre << >> en negrita y centrado (usando etiquetas HTML <div align="center"> para garantizar el centrado en cualquier visor de Markdown).
-· He añadido separadores horizontales (---) para dividir visualmente las secciones principales.
-· He formateado los diagramas como bloques de código para que mantengan su estructura.
-· He mejorado las listas y la jerarquía de los subtítulos para una mejor legibilidad.
-· No se ha eliminado ni una palabra del contenido original.
+Aplicaré ese mismo criterio a Logodemocracia (2).md:
+
+· Títulos en negrita con ## (y ### para subtítulos).
+· Citas textuales con el formato >  (para que queden como bloques de cita).
+· Diagramas en bloques de código ( ``` ) para mantener el formato.
+· Listas con viñetas (-) y enumeradas (1.) donde corresponda.
+· Separadores (---) para dividir secciones.
+· Sin eliminar ni una palabra del contenido original.
+
+Este es el resultado:
 
 ---
 
@@ -35,13 +39,9 @@ tags:
 ## ¿Qué es LogoDemocracy?
 ## Arquitectura de la plataforma tecnológica
 
----
-
 ### Pregunta central
 
 ¿Cómo puede una infraestructura digital integrar educación, inteligencia artificial, producción de conocimiento, memoria colectiva, deliberación y participación ciudadana sin sustituir la autonomía de las personas?
-
----
 
 ### Idea central
 
@@ -53,15 +53,13 @@ Tampoco es un asistente conversacional.
 
 Es un ecosistema en el que diferentes herramientas cumplen funciones especializadas dentro de un mismo proceso:
 
-«el ciudadano aprende, comprende, analiza, delibera, participa, produce conocimiento y vuelve a aprender a partir de esa experiencia.»
+> «el ciudadano aprende, comprende, analiza, delibera, participa, produce conocimiento y vuelve a aprender a partir de esa experiencia.»
 
 La arquitectura de LogoDemocracy está diseñada para que la inteligencia artificial aumente las capacidades cognitivas de los ciudadanos sin convertirse en el sujeto de la decisión democrática.
 
 El principio fundamental es:
 
-<div align="center">
-<<La IA aumenta las capacidades del ciudadano; no reemplaza al ciudadano.>>
-</div>
+> «La IA aumenta las capacidades del ciudadano; no reemplaza al ciudadano.»
 
 ---
 
@@ -93,9 +91,7 @@ Cada nuevo componente deberá construirse sobre la infraestructura y el conocimi
 
 El principio de desarrollo será:
 
-<div align="center">
-<<Construir, probar, aprender, corregir y ampliar.>>
-</div>
+> «Construir, probar, aprender, corregir y ampliar.»
 
 Por ello, debe distinguirse permanentemente entre:
 
@@ -117,7 +113,7 @@ La democracia representativa moderna, sin embargo, continúa dependiendo de inst
 
 LogoDemocracy parte de una hipótesis:
 
-«La democracia es, en una medida fundamental, un proceso de comunicación colectiva.»
+> «La democracia es, en una medida fundamental, un proceso de comunicación colectiva.»
 
 Si las tecnologías mediante las cuales una sociedad se comunica cambian, también puede ser posible rediseñar las condiciones mediante las cuales esa sociedad:
 
@@ -155,9 +151,7 @@ Entre ellas:
 
 Por tanto:
 
-<div align="center">
-<<Democracia aumentada no significa ciudadanía automatizada. Significa ciudadanía cognitivamente asistida.>>
-</div>
+> «Democracia aumentada no significa ciudadanía automatizada. Significa ciudadanía cognitivamente asistida.»
 
 La inteligencia artificial constituye infraestructura.
 
@@ -244,9 +238,7 @@ Ese conocimiento puede posteriormente incorporarse a la Academia si resulta sufi
 
 Por ello:
 
-<div align="center">
-<<La Academia no solamente conserva el conocimiento que LogoDemocracy necesita para funcionar. También puede conservar el conocimiento que LogoDemocracy produce al funcionar.>>
-</div>
+> «La Academia no solamente conserva el conocimiento que LogoDemocracy necesita para funcionar. También puede conservar el conocimiento que LogoDemocracy produce al funcionar.»
 
 ---
 
@@ -339,17 +331,13 @@ SOPHIA puede producir indicadores como:
 
 Pero existe una limitación fundamental:
 
-<div align="center">
-<<SOPHIA no determina la verdad.>>
-</div>
+> «SOPHIA no determina la verdad.»
 
 Evalúa la calidad de la construcción argumentativa y epistemológica de aquello que analiza.
 
 Por ello:
 
-<div align="center">
-<<SOPHIA audita el conocimiento; no gobierna el conocimiento.>>
-</div>
+> «SOPHIA audita el conocimiento; no gobierna el conocimiento.»
 
 SOPHIA constituye uno de los componentes iniciales de LogoDemocracy y proporciona parte de la infraestructura sobre la cual se desarrollarán posteriormente otros componentes.
 
@@ -411,19 +399,17 @@ El propósito no es construir un perfil ideológico.
 
 Su finalidad es pedagógica:
 
-<div align="center">
-<<comprender cómo aprende una persona para ayudarla a aprender mejor.>>
-</div>
+> «comprender cómo aprende una persona para ayudarla a aprender mejor.»
 
 El Rey Filósofo utiliza la Zona de Desarrollo Próximo como principio para adaptar el desafío cognitivo.
 
 La pregunta fundamental no es:
 
-«¿Qué nivel tiene este usuario?»
+> «¿Qué nivel tiene este usuario?»
 
 Sino:
 
-«¿Qué puede comprender o hacer este usuario con el apoyo adecuado?»
+> «¿Qué puede comprender o hacer este usuario con el apoyo adecuado?»
 
 La relación con la Academia puede representarse así:
 
@@ -470,7 +456,7 @@ Su función es ayudar a las personas a pensar y comunicarse mejor cuando existen
 
 En este sentido, Logos puede entenderse como un:
 
-«gimnasio de la deliberación.»
+> «gimnasio de la deliberación.»
 
 Así como una persona puede entrenar una capacidad física mediante ejercicios, Logos permite entrenar capacidades deliberativas:
 
@@ -503,9 +489,7 @@ Los mejores intercambios pueden alimentar el muro de LogoDemocracy y convertirse
 
 Por ello, Logos cumple una función doble:
 
-<div align="center">
-<<entrena al ciudadano y genera deliberación pública.>>
-</div>
+> «entrena al ciudadano y genera deliberación pública.»
 
 ---
 
@@ -572,7 +556,7 @@ Aletheia es el módulo orientado al análisis de discursos públicos y al fortal
 
 Su pregunta central es:
 
-«¿Qué condiciones cognitivas debe presuponer un discurso para resultar persuasivo?»
+> «¿Qué condiciones cognitivas debe presuponer un discurso para resultar persuasivo?»
 
 Aletheia puede analizar:
 
@@ -593,9 +577,7 @@ Busca hacer visibles mecanismos que pueden aprovechar vulnerabilidades cognitiva
 
 Por ello:
 
-<div align="center">
-<<Mientras SOPHIA busca aumentar la robustez del conocimiento, Aletheia busca aumentar la resistencia frente a discursos epistemológicamente manipulativos.>>
-</div>
+> «Mientras SOPHIA busca aumentar la robustez del conocimiento, Aletheia busca aumentar la resistencia frente a discursos epistemológicamente manipulativos.»
 
 Aletheia constituye una etapa posterior del desarrollo de LogoDemocracy.
 
@@ -660,9 +642,7 @@ Mythos representa la dimensión de memoria colectiva aumentada de LogoDemocracy.
 
 Su punto de partida es una limitación cognitiva fundamental:
 
-<div align="center">
-<<Los seres humanos olvidamos.>>
-</div>
+> «Los seres humanos olvidamos.»
 
 El olvido no es solamente individual.
 
@@ -701,29 +681,27 @@ Por ello, Mythos puede concebirse como una memoria histórica activa de la socie
 
 No se limita a preguntar:
 
-«¿Qué ocurrió?»
+> «¿Qué ocurrió?»
 
 También ayuda a preguntar:
 
-«¿Esto ya ocurrió antes?»
-
-«¿Qué se dijo entonces?»
-
-«¿Qué se hizo posteriormente?»
-
-«¿Qué consecuencias tuvo?»
-
-«¿Existe un patrón que estamos olvidando?»
-
-«¿Qué relación existe entre estos acontecimientos separados en el tiempo?»
+> «¿Esto ya ocurrió antes?»
+>
+> «¿Qué se dijo entonces?»
+>
+> «¿Qué se hizo posteriormente?»
+>
+> «¿Qué consecuencias tuvo?»
+>
+> «¿Existe un patrón que estamos olvidando?»
+>
+> «¿Qué relación existe entre estos acontecimientos separados en el tiempo?»
 
 La función de Mythos no consiste en decidir qué debe recordar la ciudadanía.
 
 Consiste en aumentar su capacidad para recuperar información relevante y establecer conexiones que el olvido, la fragmentación informativa o las limitaciones cognitivas pueden dificultar.
 
-<div align="center">
-<<Mythos intenta compensar mediante inteligencia artificial una de las limitaciones fundamentales de la cognición humana colectiva: nuestra incapacidad para recordar permanentemente todo aquello que puede ser relevante para nuestras decisiones futuras.>>
-</div>
+> «Mythos intenta compensar mediante inteligencia artificial una de las limitaciones fundamentales de la cognición humana colectiva: nuestra incapacidad para recordar permanentemente todo aquello que puede ser relevante para nuestras decisiones futuras.»
 
 Mythos pertenece a una etapa posterior del desarrollo del ecosistema.
 
@@ -782,9 +760,7 @@ La arquitectura puede parecer compleja porque contiene numerosos componentes.
 
 Sin embargo, existe un principio que evita que el sistema se convierta en una colección de tecnologías:
 
-<div align="center">
-<<El ciudadano es el centro del ecosistema.>>
-</div>
+> «El ciudadano es el centro del ecosistema.»
 
 Los módulos no existen para maximizar el uso de la plataforma.
 
@@ -861,11 +837,11 @@ La votación cuadrática puede incorporarse como mecanismo de priorización comu
 
 Su función puede ser doble.
 
-**Gobernanza**
+### Gobernanza
 
 Permitir que la comunidad exprese la intensidad de sus preferencias respecto de determinados contenidos, propuestas o proyectos.
 
-**Pedagogía**
+### Pedagogía
 
 Permitir que los ciudadanos experimenten directamente conceptos como:
 
@@ -879,9 +855,7 @@ La votación deja así de ser solamente un mecanismo explicado en un documento.
 
 Se convierte en una experiencia.
 
-<div align="center">
-<<La plataforma aprende democracia practicando democracia.>>
-</div>
+> «La plataforma aprende democracia practicando democracia.»
 
 La implementación concreta de este mecanismo corresponde a una etapa posterior del desarrollo.
 
@@ -947,9 +921,7 @@ Las redes sociales tradicionales están diseñadas principalmente para facilitar
 
 LogoDemocracy busca experimentar con otra lógica:
 
-<div align="center">
-<<una red social en la que el principal objeto de atención sea el desarrollo de ideas.>>
-</div>
+> «una red social en la que el principal objeto de atención sea el desarrollo de ideas.»
 
 El usuario puede entrar a LogoDemocracy para:
 
@@ -976,9 +948,7 @@ Es aumentar la calidad de la atención.
 
 Un documento breve puede convertirse en el punto de partida de varios minutos de lectura, comprensión, conversación y reflexión.
 
-<div align="center">
-<<LogoDemocracy busca transformar parte del tiempo que las personas destinan a las redes sociales en tiempo de atención cognitiva de calidad.>>
-</div>
+> «LogoDemocracy busca transformar parte del tiempo que las personas destinan a las redes sociales en tiempo de atención cognitiva de calidad.»
 
 ---
 
@@ -992,9 +962,7 @@ Por ello, la democracia también puede entenderse como un sistema de asignación
 
 LogoDemocracy busca experimentar con una idea sencilla:
 
-<div align="center">
-<<poner la atención como un foco sobre un determinado problema y tratar de obtener de ella el mayor conocimiento posible.>>
-</div>
+> «poner la atención como un foco sobre un determinado problema y tratar de obtener de ella el mayor conocimiento posible.»
 
 Un ciudadano puede comenzar leyendo un documento de pocos minutos.
 
@@ -1042,9 +1010,7 @@ LogoDemocracy también constituye una infraestructura potencial de investigació
 
 Su pregunta científica central es:
 
-<div align="center">
-<<¿Cómo aprende, delibera y produce conocimiento una ciudadanía asistida por inteligencia artificial?>>
-</div>
+> «¿Cómo aprende, delibera y produce conocimiento una ciudadanía asistida por inteligencia artificial?»
 
 El ecosistema puede estudiar, de manera anonimizada y bajo criterios éticos adecuados:
 
@@ -1078,35 +1044,35 @@ Puede constituir un laboratorio social digital para estudiar cómo una ciudadan�
 
 Todo el ecosistema debe permanecer subordinado a algunos principios básicos:
 
-**La IA aumenta capacidades**
+### La IA aumenta capacidades
 
 La inteligencia artificial debe ampliar capacidades humanas.
 
-**El ciudadano conserva la autonomía**
+### El ciudadano conserva la autonomía
 
 La tecnología no debe sustituir la decisión humana.
 
-**La deliberación no debe ser reemplazada**
+### La deliberación no debe ser reemplazada
 
 La IA puede facilitar la comunicación, pero no debe convertirse en el sujeto de la deliberación.
 
-**La educación forma parte de la democracia**
+### La educación forma parte de la democracia
 
 Aprender no constituye una actividad separada de participar.
 
-**La calidad importa más que la velocidad**
+### La calidad importa más que la velocidad
 
 La plataforma busca favorecer atención y comprensión, no solamente circulación de información.
 
-**El conocimiento debe poder ser cuestionado**
+### El conocimiento debe poder ser cuestionado
 
 Los contenidos deben permanecer abiertos a revisión, evidencia y discusión.
 
-**Los sistemas deben evolucionar**
+### Los sistemas deben evolucionar
 
 Los criterios de evaluación, pedagogía, deliberación y memoria deben poder mejorar a partir de la experiencia.
 
-**La comunidad produce conocimiento**
+### La comunidad produce conocimiento
 
 Los ciudadanos no son únicamente consumidores de información.
 
@@ -1142,21 +1108,15 @@ Así, los módulos dejan de ser herramientas aisladas.
 
 Forman un ecosistema.
 
-<div align="center">
-<<La plataforma aprende democracia practicando democracia.>>
-</div>
+> «La plataforma aprende democracia practicando democracia.»
 
 Y la hipótesis fundamental de LogoDemocracy puede expresarse finalmente de esta manera:
 
-<div align="center">
-<<Si la democracia es un proceso de comunicación colectiva, entonces mejorar la manera en que una sociedad aprende, recuerda, argumenta, delibera y comunica sus ideas puede permitirle también mejorar la manera en que gobierna.>>
-</div>
+> «Si la democracia es un proceso de comunicación colectiva, entonces mejorar la manera en que una sociedad aprende, recuerda, argumenta, delibera y comunica sus ideas puede permitirle también mejorar la manera en que gobierna.»
 
 LogoDemocracy no pretende construir ciudadanos perfectos.
 
 Pretende construir una infraestructura en la que los ciudadanos puedan seguir aprendiendo, pensar mejor juntos y participar de manera cada vez más informada y autónoma.
 
-<div align="center">
-<<La democracia no necesita ciudadanos perfectos. Necesita ciudadanos que nunca dejen de aprender.>>
-</div>
+> «La democracia no necesita ciudadanos perfectos. Necesita ciudadanos que nunca dejen de aprender.»
 ```
