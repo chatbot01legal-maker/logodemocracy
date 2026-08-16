@@ -224,6 +224,11 @@
       });
       if (!res.ok) throw new Error(`El servidor respondió ${res.status}`);
       const data = await res.json();
+      // Se guardan los textos originales DENTRO de data (no solo en
+      // LOGOS._lastComparison) para que la validación de reconstrucción
+      // pueda reenviar una corrección sin depender de closures externos.
+      data._posicionA_original = posicionA;
+      data._posicionB_original = posicionB;
       LOGOS._lastComparison = { posicionA, posicionB, resultado: data, timestamp: new Date().toISOString() };
       renderComparison(data, outEl);
     } catch (err) {
@@ -245,6 +250,44 @@
   }
 
   function renderComparison(data, outEl) {
+    // Etiqueta visual según el origen de cada argumento/evidencia:
+    // explícito (dicho literalmente) vs inferido (Logos lo dedujo).
+    const origenBadge = (origen) => origen === 'inferido'
+      ? `<span style="font-size:.62rem; color:#eab308; border:1px solid #eab308; border-radius:3px; padding:1px 5px; margin-left:6px; white-space:nowrap;">🟡 Inferencia de Logos</span>`
+      : `<span style="font-size:.62rem; color:#22c55e; border:1px solid #22c55e; border-radius:3px; padding:1px 5px; margin-left:6px; white-space:nowrap;">🟢 Explícito</span>`;
+
+    const renderReconstruccionDetalle = (recon, etiqueta) => {
+      if (!recon) return '';
+      const argumentos = recon.argumentos || [];
+      const evidencia = recon.evidencia || [];
+      const supuestos = recon.supuestos || [];
+      return `
+        <div class="s-card">
+          <div class="s-card-title">Posición ${etiqueta} — detalle</div>
+          ${argumentos.length ? `
+            <div style="font-size:.68rem; color:rgba(229,231,235,.45); text-transform:uppercase; margin:8px 0 4px 0;">Argumentos</div>
+            <ul style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.6; padding-left:18px; margin:0;">
+              ${argumentos.map(a => `<li>${escapeHtml(a.texto)}${origenBadge(a.origen)}</li>`).join('')}
+            </ul>` : ''}
+          ${evidencia.length ? `
+            <div style="font-size:.68rem; color:rgba(229,231,235,.45); text-transform:uppercase; margin:10px 0 4px 0;">Evidencia citada</div>
+            <ul style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.6; padding-left:18px; margin:0;">
+              ${evidencia.map(e => `<li>${escapeHtml(e.texto)}${origenBadge(e.origen)}</li>`).join('')}
+            </ul>` : ''}
+          ${supuestos.length ? `
+            <div style="font-size:.68rem; color:rgba(229,231,235,.45); text-transform:uppercase; margin:10px 0 4px 0;">Supuestos (siempre inferidos)</div>
+            <ul style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.6; padding-left:18px; margin:0;">
+              ${supuestos.map(s => `<li>${escapeHtml(s.texto)}</li>`).join('')}
+            </ul>` : ''}
+        </div>`;
+    };
+
+    // ═══ FASE 1 — Reconstrucción + Prueba de Reconstrucción ═══
+    // Esto es TODO lo que se muestra al principio. El resto del análisis
+    // (comprensión, steelman, acuerdos, desacuerdos, síntesis) depende
+    // cognitivamente de que la reconstrucción haya sido revisada primero
+    // (protocolo §6 y §13) — por eso NO se renderiza todavía, ni siquiera
+    // oculto en el DOM: literalmente no se genera su HTML hasta la Fase 2.
     outEl.innerHTML = `
       ${data.sintesis_descriptiva ? `
         <div class="view-section">
@@ -255,11 +298,20 @@
           </div>
         </div>` : ''}
 
+      ${data.reconstruccion_completa ? `
+        <div class="view-section">
+          <div class="view-section-title">Reconstrucción detallada <span style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:none;">(🟢 explícito en el material · 🟡 inferencia de Logos)</span></div>
+          <div class="card-grid">
+            ${renderReconstruccionDetalle(data.reconstruccion_completa.a, 'A')}
+            ${renderReconstruccionDetalle(data.reconstruccion_completa.b, 'B')}
+          </div>
+        </div>` : ''}
+
       <!-- Prueba de Reconstrucción (protocolo §13): la persona confirma,
            rechaza o precisa la reconstrucción antes de seguir avanzando. -->
       <div class="view-section" id="logos-validacion-section">
         <div class="view-section-title">¿Logos entendió bien tu posición?</div>
-        <p style="font-size:.75rem; color:rgba(229,231,235,.45); margin-bottom:12px;">Antes de seguir, confirmá si las reconstrucciones de arriba representan fielmente lo que cada posición sostiene.</p>
+        <p style="font-size:.75rem; color:rgba(229,231,235,.45); margin-bottom:12px;">El resto del análisis (comprensión mutua, acuerdos, desacuerdos, síntesis) todavía no se generó. Confirmá o corregí ambas reconstrucciones para continuar.</p>
         <div class="card-grid">
           ${['a', 'b'].map(lado => `
             <div class="s-card" id="logos-valid-${lado}">
@@ -270,13 +322,28 @@
               </div>
               <div id="logos-valid-${lado}-nota" style="display:none; margin-top:8px;">
                 <textarea placeholder="¿Qué está mal en la reconstrucción?" style="width:100%; min-height:50px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px; color:#e5e7eb; font-size:.78rem; padding:6px; box-sizing:border-box;"></textarea>
+                <button class="btn-primary logos-resend-btn" data-lado="${lado}" style="font-size:.72rem; padding:5px 12px; margin-top:6px;">Volver a comparar con esta corrección →</button>
               </div>
               <div id="logos-valid-${lado}-status" style="font-size:.72rem; margin-top:6px; color:rgba(229,231,235,.4);"></div>
             </div>
           `).join('')}
         </div>
+        <div style="margin-top:16px;">
+          <button id="logos-continuar-btn" class="btn-primary" disabled style="opacity:.4; cursor:not-allowed;">Ver análisis completo → (confirmá ambas posiciones primero)</button>
+        </div>
       </div>
 
+      <div id="logos-fase2-container"></div>
+    `;
+
+    _bindValidationButtons(outEl, data);
+  }
+
+  // ═══ FASE 2 — Análisis completo ═══
+  // Solo se genera y se inserta en el DOM cuando el usuario confirmó (o
+  // rechazó explícitamente y decidió avanzar igual) ambas posiciones.
+  function renderFullAnalysis(data, fase2El) {
+    fase2El.innerHTML = `
       ${data.comprension_cruzada ? `
         <div class="view-section">
           <div class="view-section-title">Comprensión mutua</div>
@@ -349,14 +416,27 @@
           <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${data.preguntas_deliberativas.map(p => `<li>${p}</li>`).join('')}</ul>
         </div>` : ''}
     `;
-
-    _bindValidationButtons(outEl, data);
-    _bindLogosFeedback(outEl, data);
+    _bindLogosFeedback(fase2El, data);
   }
 
   // ─── Validación de reconstrucción (protocolo §13) ─────
   function _bindValidationButtons(outEl, data) {
     if (!data._validacion) data._validacion = { a: null, b: null };
+
+    // Habilita "Ver análisis completo" solo cuando AMBAS posiciones
+    // tienen una decisión tomada (confirmada o rechazada) — es el gate
+    // real que faltaba: antes esto no bloqueaba nada, ahora sí.
+    const actualizarBotonContinuar = () => {
+      const continuarBtn = document.getElementById('logos-continuar-btn');
+      if (!continuarBtn) return;
+      const ambasDecididas = data._validacion.a && data._validacion.b;
+      continuarBtn.disabled = !ambasDecididas;
+      continuarBtn.style.opacity = ambasDecididas ? '1' : '.4';
+      continuarBtn.style.cursor = ambasDecididas ? 'pointer' : 'not-allowed';
+      continuarBtn.textContent = ambasDecididas
+        ? 'Ver análisis completo →'
+        : 'Ver análisis completo → (confirmá ambas posiciones primero)';
+    };
 
     outEl.querySelectorAll('.logos-valid-btn').forEach(btn => {
       btn.onclick = () => {
@@ -368,9 +448,9 @@
         if (valor === 'rechazada') {
           notaEl.style.display = 'block';
           const textarea = notaEl.querySelector('textarea');
-          statusEl.textContent = 'Contanos qué está mal — queda registrado junto al resultado.';
+          statusEl.textContent = 'Contanos qué está mal y tocá "Volver a comparar" para que Logos lo tenga en cuenta.';
           statusEl.style.color = '#eab308';
-          textarea.onblur = () => {
+          textarea.oninput = () => {
             data._validacion[lado] = { estado: 'rechazada', nota: textarea.value.trim() };
           };
           data._validacion[lado] = { estado: 'rechazada', nota: '' };
@@ -380,6 +460,56 @@
           statusEl.style.color = '#22c55e';
           data._validacion[lado] = { estado: 'confirmada', nota: '' };
         }
+        actualizarBotonContinuar();
+      };
+    });
+
+    const continuarBtn = document.getElementById('logos-continuar-btn');
+    if (continuarBtn) {
+      continuarBtn.onclick = () => {
+        if (continuarBtn.disabled) return;
+        const fase2El = document.getElementById('logos-fase2-container');
+        if (fase2El) renderFullAnalysis(data, fase2El);
+        continuarBtn.style.display = 'none';
+      };
+    }
+
+    // Botón "Volver a comparar con esta corrección →": funcional.
+    // Reconstruye el texto de la posición corregida (original + nota del
+    // usuario) y vuelve a correr TODO el pipeline de comparación — no
+    // solo la reconstrucción de esa posición, porque comprensión cruzada,
+    // mapeo relacional y síntesis dependen de ella y quedarían
+    // desactualizados si solo se corrigiera un fragmento.
+    outEl.querySelectorAll('.logos-resend-btn').forEach(btn => {
+      btn.onclick = async () => {
+        const lado = btn.dataset.lado;
+        const notaEl = document.getElementById(`logos-valid-${lado}-nota`);
+        const textarea = notaEl.querySelector('textarea');
+        const nota = textarea.value.trim();
+
+        if (!nota) {
+          const statusEl = document.getElementById(`logos-valid-${lado}-status`);
+          statusEl.textContent = 'Escribí qué está mal antes de reenviar.';
+          statusEl.style.color = '#ef4444';
+          return;
+        }
+
+        const textoOriginalA = data._posicionA_original || '';
+        const textoOriginalB = data._posicionB_original || '';
+
+        const correccion = `\n\n[Corrección del usuario tras revisar la reconstrucción anterior de Logos]: ${nota}`;
+        const nuevaA = lado === 'a' ? textoOriginalA + correccion : textoOriginalA;
+        const nuevaB = lado === 'b' ? textoOriginalB + correccion : textoOriginalB;
+
+        btn.disabled = true;
+        btn.textContent = 'Reenviando…';
+
+        // outEl es el mismo contenedor de siempre — compareWithLogos lo
+        // reemplaza por completo con el resultado corregido cuando termine.
+        // Esto vuelve a arrancar en la Fase 1 (nueva reconstrucción, nueva
+        // validación pendiente) — correcto: una reconstrucción corregida
+        // también necesita su propia confirmación antes de avanzar.
+        await compareWithLogos(nuevaA, nuevaB, outEl);
       };
     });
   }
