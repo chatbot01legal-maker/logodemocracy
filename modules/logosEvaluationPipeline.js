@@ -31,6 +31,17 @@ function extractJson(rawText) {
 // ─── ETAPA 1 — Reconstrucción (síntesis descriptiva) ──────────────────
 // Descompone una posición en sus unidades de información (protocolo §10):
 // afirmación central, argumentos, evidencia y supuestos.
+//
+// DISCIPLINA EPISTÉMICA (crítica incorporada tras revisión externa del
+// protocolo): la reconstrucción distingue explícitamente entre lo que el
+// material DICE (Nivel 1) y lo que Logos INFIERE que probablemente
+// implica (Nivel 2). Nunca debe escalar a "Nivel 3" — atribuir a la
+// posición doctrinas, escuelas de pensamiento o argumentos típicos de
+// una tradición intelectual que el material no menciona, aunque el estilo
+// o vocabulario del material "suene" a esa tradición. Confundir esos dos
+// niveles fue el bug más importante detectado en la primera versión: con
+// solo una frase de entrada, Logos terminaba atribuyendo a la posición
+// diez páginas de doctrina económica que el usuario nunca escribió.
 async function reconstructPosition(texto, etiqueta) {
   console.log(`   🧩 [Logos] Reconstruyendo Posición ${etiqueta}...`);
 
@@ -45,23 +56,42 @@ Materiales de la Posición ${etiqueta}:
 ${texto}
 """
 
-Identifica, en las propias palabras del material (nunca inventes contenido
-que no esté presente ni implícito con claridad):
+REGLA ABSOLUTA — DISCIPLINA EPISTÉMICA:
+Debes distinguir en todo momento entre dos niveles, y NUNCA mezclarlos:
 
-- afirmacion_central: la formulación principal de la posición, en una frase.
-- argumentos: lista de razones mediante las cuales se sostiene la afirmación central.
-- evidencia: lista de datos, fuentes o ejemplos citados como respaldo (vacío si no hay).
-- supuestos: lista de premisas que el argumento necesita asumir para funcionar, aunque no estén declaradas explícitamente. Si infieres un supuesto no declarado, indícalo como tal.
+- NIVEL "explicito": algo que el material dice literalmente o casi literalmente.
+- NIVEL "inferido": algo que no está escrito, pero que se sigue con razonable
+  claridad de lo que sí está escrito (por ejemplo, un supuesto necesario
+  para que el argumento funcione).
+
+PROHIBIDO TERMINANTEMENTE: agregar doctrinas, escuelas de pensamiento,
+autores, tradiciones intelectuales, o argumentos que NO están en el
+material, solo porque el vocabulario o el estilo del material te recuerda
+a esa tradición. Si el material es muy breve (por ejemplo, una sola
+frase), tu reconstrucción también debe ser breve — NO debes "completar"
+la posición con contenido de la escuela de pensamiento que crees que el
+autor representa. Preferí una reconstrucción corta y fiel a una
+reconstrucción larga y especulativa.
+
+Identifica:
+
+- afirmacion_central: la formulación principal de la posición, en una frase, usando en lo posible las palabras del propio material.
+- argumentos: lista de razones mediante las cuales se sostiene la afirmación central. Cada argumento es un objeto { "texto": "...", "origen": "explicito" | "inferido" }.
+- evidencia: lista de datos, fuentes o ejemplos citados como respaldo (vacío si no hay). Mismo formato { "texto": "...", "origen": "explicito" | "inferido" }.
+- supuestos: lista de premisas que el argumento necesita asumir para funcionar, aunque no estén declaradas — estos son por definición "inferido". Formato { "texto": "..." } (el origen es siempre inferido, no hace falta repetirlo).
 
 Devuelve EXCLUSIVAMENTE un JSON, sin texto adicional:
 {
   "afirmacion_central": "...",
-  "argumentos": ["..."],
-  "evidencia": ["..."],
-  "supuestos": ["..."]
+  "argumentos": [{ "texto": "...", "origen": "explicito" }],
+  "evidencia": [{ "texto": "...", "origen": "explicito" }],
+  "supuestos": [{ "texto": "..." }]
 }`;
 
-  const raw = await askVertex(prompt);
+  // Temperatura baja: este paso debe ser una extracción fiel, no una
+  // elaboración creativa — buscamos que el mismo material produzca
+  // reconstrucciones consistentes entre corridas, no variaciones libres.
+  const raw = await askVertex(prompt, "gemini-2.5-flash", 50000, { temperature: 0.15 });
   return extractJson(raw);
 }
 
@@ -82,18 +112,32 @@ ${JSON.stringify(reconA, null, 2)}
 Posición B reconstruida:
 ${JSON.stringify(reconB, null, 2)}
 
+REGLA ABSOLUTA — DISCIPLINA EPISTÉMICA (aplica a ambas tareas de abajo):
+Trabajás EXCLUSIVAMENTE con lo que está en las reconstrucciones de arriba
+(sus campos "afirmacion_central", "argumentos", "evidencia", "supuestos").
+NUNCA agregues doctrinas, escuelas de pensamiento, autores o argumentos
+típicamente asociados con la tradición intelectual que la posición te
+recuerda, si esos elementos no están en la reconstrucción entregada. Si
+las reconstrucciones son breves, tu output también debe ser proporcionalmente
+breve — ampliar el contenido más allá de lo reconstruido es el error más
+grave que puedes cometer en este instrumento.
+
 Produce dos cosas, sin evaluar cuál posición es más correcta:
 
 1. Comprensión cruzada: cómo se relaciona cada posición con la otra desde
    la perspectiva de comprensión (no de acuerdo) — qué entendería A sobre
    B, y qué entendería B sobre A, si cada una leyera la reconstrucción de
-   la otra.
+   la otra. Basate solo en lo reconstruido.
 
-2. Steelman dialéctico: para cada posición, construye la MEJOR versión
-   posible de ella — la formulación más fuerte que la parte contraria
-   debería poder reconocer como justa, aunque siga en desacuerdo. Esto
-   NO es una evaluación de robustez (eso es SOPHIA); es una reconstrucción
-   caritativa y precisa.
+2. Steelman de la posición reconstruida: para cada posición, construye la
+   MEJOR versión posible de ella — la formulación más fuerte que la parte
+   contraria debería poder reconocer como justa, aunque siga en desacuerdo.
+   El steelman amplifica y organiza SOLO los argumentos presentes o
+   razonablemente implícitos en la reconstrucción entregada. NO incorpora
+   automáticamente doctrinas externas asociadas con la posición, aunque
+   sean plausibles o vengan a la mente. Esto NO es una evaluación de
+   robustez (eso es SOPHIA); es una reconstrucción caritativa y fiel,
+   nunca una ampliación.
 
 Devuelve EXCLUSIVAMENTE un JSON:
 {
@@ -107,7 +151,7 @@ Devuelve EXCLUSIVAMENTE un JSON:
   }
 }`;
 
-  const raw = await askVertex(prompt);
+  const raw = await askVertex(prompt, "gemini-2.5-flash", 50000, { temperature: 0.3 });
   return extractJson(raw);
 }
 
@@ -127,6 +171,11 @@ ${JSON.stringify(reconA, null, 2)}
 
 Posición B reconstruida:
 ${JSON.stringify(reconB, null, 2)}
+
+REGLA ABSOLUTA — DISCIPLINA EPISTÉMICA: trabajá exclusivamente con lo que
+está en las reconstrucciones de arriba. No agregues elementos de una
+tradición intelectual externa que las reconstrucciones no contienen, ni
+siquiera para "enriquecer" el mapeo de acuerdos y desacuerdos.
 
 Identifica:
 
@@ -156,7 +205,7 @@ Devuelve EXCLUSIVAMENTE un JSON:
   "convergencias": [{ "texto": "...", "estado": "encontrada" }]
 }`;
 
-  const raw = await askVertex(prompt);
+  const raw = await askVertex(prompt, "gemini-2.5-flash", 50000, { temperature: 0.2 });
   return extractJson(raw);
 }
 
@@ -181,6 +230,12 @@ desacuerdo legítimo permanece.
 Posición A: ${JSON.stringify(reconA, null, 2)}
 Posición B: ${JSON.stringify(reconB, null, 2)}
 Mapeo relacional: ${JSON.stringify(mapeo, null, 2)}
+
+DISCIPLINA EPISTÉMICA: la síntesis generativa SÍ puede proponer algo nuevo
+— es su función — pero esa novedad debe construirse combinando o
+trascendiendo lo que efectivamente está en las reconstrucciones y el
+mapeo de arriba, no agregando doctrina externa no relacionada con lo que
+las posiciones realmente dijeron.
 
 Produce:
 
@@ -208,7 +263,7 @@ Devuelve EXCLUSIVAMENTE un JSON:
   "preguntas_deliberativas": ["..."]
 }`;
 
-  const raw = await askVertex(prompt);
+  const raw = await askVertex(prompt, "gemini-2.5-flash", 50000, { temperature: 0.4 });
   return extractJson(raw);
 }
 
@@ -265,4 +320,3 @@ async function compare({ posicionA, posicionB }) {
 }
 
 module.exports = { compare };
-
