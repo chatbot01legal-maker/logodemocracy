@@ -59,8 +59,8 @@ if (credentials) {
  * @param {string} model
  * @param {number} timeoutMs
  */
-async function askVertex(prompt, model = "gemini-2.5-flash", timeoutMs = 50000) {
-  console.log(`[SOPHIA-VERTEX] Preparando llamada a Vertex (${model}) con timeout de ${timeoutMs}ms`);
+async function askVertex(prompt, model = "gemini-2.5-flash", timeoutMs = 50000, generationConfig = null) {
+  console.log(`[SOPHIA-VERTEX] Preparando llamada a Vertex (${model}) con timeout de ${timeoutMs}ms${generationConfig ? ` — generationConfig: ${JSON.stringify(generationConfig)}` : ''}`);
 
   const client = getVertex();
   const gm = client.getGenerativeModel({ model });
@@ -72,9 +72,19 @@ async function askVertex(prompt, model = "gemini-2.5-flash", timeoutMs = 50000) 
     )
   );
 
-  const requestPromise = gm.generateContent({
+  const requestPayload = {
     contents: [{ role: "user", parts: [{ text: prompt }] }],
-  });
+  };
+  // generationConfig es opcional — si no se pasa, el comportamiento es
+  // idéntico al de siempre (nadie que ya use askVertex() se ve afectado).
+  // Sirve principalmente para bajar la "temperatura" (creatividad) en
+  // pasos que necesitan ser más consistentes entre corridas, como la
+  // reconstrucción textual fiel de LOGOS.
+  if (generationConfig) {
+    requestPayload.generationConfig = generationConfig;
+  }
+
+  const requestPromise = gm.generateContent(requestPayload);
 
   let response;
   try {
