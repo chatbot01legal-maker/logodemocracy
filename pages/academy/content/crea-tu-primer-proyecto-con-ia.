@@ -1,21 +1,10 @@
-¡Perfecto! Aplicaré el mismo formato al documento crea-tu-primer-proyecto-con-ia (1).md:
-
-· Títulos en negrita con ## (y ### para subtítulos).
-· Citas y frases destacadas con > (bloques de cita).
-· Diagramas y representaciones en bloques de código ( ``` ).
-· Listas con viñetas (-) y enumeradas (1.).
-· Separadores (---) para dividir secciones.
-· Texto justificado con <div align="justify">.
-· Sin eliminar ni una palabra del contenido original.
-
 ---
 
-```html
----
 library: "Alfabetización Digital para humanistas"
 folder: "Curso Inicial"
 title: "Crear tu primer proyecto con inteligencia artificial"
 tags:
+
   - alfabetizacion-digital
   - desarrollo
   - inteligencia-artificial
@@ -31,6 +20,7 @@ tags:
   - cli
   - copiloto
   - humanidades-digitales
+
 ---
 
 <div align="justify">
