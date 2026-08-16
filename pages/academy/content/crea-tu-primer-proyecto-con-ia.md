@@ -1,21 +1,10 @@
-El problema ocurre porque en el último documento usé HTML (<div align="justify">) para justificar el texto, y algunos visores de Markdown en teléfonos no manejan bien el HTML, provocando que el texto se desborde horizontalmente.
-
-En el documento intro.md que adjuntaste, el formato es Markdown puro (sin HTML) y se adapta correctamente al ancho de la pantalla.
-
-La solución es simple: eliminar el <div align="justify"> y usar solo Markdown. La justificación no es estrictamente necesaria para la legibilidad en móviles.
-
 ---
 
-Aquí tienes el documento crea-tu-primer-proyecto-con-ia (1).md sin HTML, solo Markdown puro, para que se vea correctamente en cualquier dispositivo:
-
----
-
-```markdown
----
 library: "Alfabetización Digital para humanistas"
 folder: "Curso Inicial"
 title: "Crear tu primer proyecto con inteligencia artificial"
 tags:
+
   - alfabetizacion-digital
   - desarrollo
   - inteligencia-artificial
@@ -31,6 +20,7 @@ tags:
   - cli
   - copiloto
   - humanidades-digitales
+    
 ---
 
 ## Crear tu primer proyecto con inteligencia artificial
