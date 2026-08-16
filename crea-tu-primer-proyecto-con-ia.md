@@ -1,10 +1,21 @@
+El problema ocurre porque en el último documento usé HTML (<div align="justify">) para justificar el texto, y algunos visores de Markdown en teléfonos no manejan bien el HTML, provocando que el texto se desborde horizontalmente.
+
+En el documento intro.md que adjuntaste, el formato es Markdown puro (sin HTML) y se adapta correctamente al ancho de la pantalla.
+
+La solución es simple: eliminar el <div align="justify"> y usar solo Markdown. La justificación no es estrictamente necesaria para la legibilidad en móviles.
+
 ---
 
+Aquí tienes el documento crea-tu-primer-proyecto-con-ia (1).md sin HTML, solo Markdown puro, para que se vea correctamente en cualquier dispositivo:
+
+---
+
+```markdown
+---
 library: "Alfabetización Digital para humanistas"
 folder: "Curso Inicial"
 title: "Crear tu primer proyecto con inteligencia artificial"
 tags:
-
   - alfabetizacion-digital
   - desarrollo
   - inteligencia-artificial
@@ -20,10 +31,7 @@ tags:
   - cli
   - copiloto
   - humanidades-digitales
-
 ---
-
-<div align="justify">
 
 ## Crear tu primer proyecto con inteligencia artificial
 
@@ -99,27 +107,15 @@ No se trata solamente de probar una IA.
 
 Se trata de descubrir que puedes pasar de:
 
-```
-
-una idea
-
-```
+**una idea**
 
 a
 
-```
-
-un proyecto
-
-```
+**un proyecto**
 
 y finalmente a
 
-```
-
-una aplicación accesible por Internet
-
-```
+**una aplicación accesible por Internet.**
 
 ---
 
@@ -691,11 +687,11 @@ Ahora existe una diferencia fundamental.
 
 Ya no solamente tienes:
 
-> «una carpeta con archivos».
+«una carpeta con archivos».
 
 Tienes:
 
-> una aplicación que otras personas pueden visitar.
+una aplicación que otras personas pueden visitar.
 
 ### Prompt de aprendizaje
 
@@ -924,23 +920,14 @@ No quiero que simplemente escribas código.
 Quiero que me ayudes a desarrollar la funcionalidad siguiendo este proceso:
 
 1. comprender mi intención;
-
 2. convertirla en una especificación técnica;
-
 3. identificar qué archivos deben modificarse;
-
 4. explicar qué debería cambiar en cada archivo;
-
 5. proponer una implementación sencilla;
-
 6. escribir únicamente el código necesario;
-
 7. indicarme cómo probarlo;
-
 8. ayudarme a interpretar los errores;
-
 9. corregirlos si aparecen.
-
 
 Mantén el código modular, corto y fácil de revisar.
 
@@ -1147,7 +1134,7 @@ Un cambio pequeño es más fácil de:
 
 Por eso, cuando trabajes con una inteligencia artificial, evita pedirle:
 
-> «Reescribe todo mi proyecto y agrega estas veinte funcionalidades.»
+«Reescribe todo mi proyecto y agrega estas veinte funcionalidades.»
 
 Es preferible trabajar así:
 
@@ -1213,11 +1200,11 @@ Durante este ejercicio puedes descubrir una forma completamente diferente de apr
 
 En lugar de preguntar:
 
-> «¿Cómo aprendo programación?»
+«¿Cómo aprendo programación?»
 
 puedes comenzar preguntando:
 
-> «¿Qué necesito aprender para hacer esto?»
+«¿Qué necesito aprender para hacer esto?»
 
 La diferencia parece pequeña.
 
@@ -1239,7 +1226,7 @@ La inteligencia artificial puede ayudarte a:
 
 Pero tú sigues siendo quien decide:
 
-> qué quieres construir.
+qué quieres construir.
 
 ---
 
@@ -1249,7 +1236,7 @@ Cuando aparezcan palabras que no comprendes, no te detengas inmediatamente.
 
 Pregúntate:
 
-> ¿Necesito comprender esto ahora para continuar?
+¿Necesito comprender esto ahora para continuar?
 
 Si la respuesta es sí, aprende ese concepto.
 
@@ -1261,21 +1248,13 @@ No necesitas dominar todas simultáneamente.
 
 Puedes aprender:
 
-```
-
 lo necesario
 para el siguiente paso
 
-```
-
 Y después:
 
-```
-
 lo necesario
-para el paso siguiente
-
-```
+para el paso siguiente.
 
 Así se construye progresivamente una comprensión más profunda.
 
@@ -1319,11 +1298,11 @@ Puedes construir una aplicación.
 
 La distancia entre:
 
-> «utilizo una tecnología»
+«utilizo una tecnología»
 
 y
 
-> «puedo construir con esa tecnología»
+«puedo construir con esa tecnología»
 
 es mucho menor de lo que inicialmente parece.
 
@@ -1337,7 +1316,7 @@ El objetivo de este ejercicio no era convertirte en programador profesional.
 
 Era darte una experiencia diferente:
 
-> la experiencia de construir.
+la experiencia de construir.
 
 Comenzaste con una idea.
 
@@ -1369,7 +1348,7 @@ No importa.
 
 Ahora sabes algo que antes no sabías:
 
-> puedes entrar en un proceso de desarrollo tecnológico.
+puedes entrar en un proceso de desarrollo tecnológico.
 
 Y puedes hacerlo acompañado por inteligencia artificial.
 
@@ -1401,7 +1380,7 @@ Aprendes a trabajar con una inteligencia artificial.
 
 Y, mientras creías que estabas simplemente aprendiendo herramientas, estabas aprendiendo algo mucho más importante:
 
-> cómo convertir una idea en algo que funciona.
+cómo convertir una idea en algo que funciona.
 
 ---
 
@@ -1415,19 +1394,11 @@ Sino porque ya has atravesado la primera frontera.
 
 La frontera entre:
 
-```
-
 usar tecnología
-
-```
 
 y
 
-```
-
-construir con tecnología
-
-```
+construir con tecnología.
 
 A partir de aquí comienza un territorio mucho más amplio.
 
@@ -1455,9 +1426,7 @@ Ahora sabes cómo entrar.
 
 Y esa era la verdadera finalidad de este curso.
 
-> Aprender haciendo.
-> Construir para aprender.
-> Y aprender lo necesario para poder construir lo siguiente.
-
-</div>
+Aprender haciendo.
+Construir para aprender.
+Y aprender lo necesario para poder construir lo siguiente.
 ```
