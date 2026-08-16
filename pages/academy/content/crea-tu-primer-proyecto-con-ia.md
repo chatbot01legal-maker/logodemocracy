@@ -924,14 +924,23 @@ No quiero que simplemente escribas código.
 Quiero que me ayudes a desarrollar la funcionalidad siguiendo este proceso:
 
 1. comprender mi intención;
+
 2. convertirla en una especificación técnica;
+
 3. identificar qué archivos deben modificarse;
+
 4. explicar qué debería cambiar en cada archivo;
+
 5. proponer una implementación sencilla;
+
 6. escribir únicamente el código necesario;
+
 7. indicarme cómo probarlo;
+
 8. ayudarme a interpretar los errores;
+
 9. corregirlos si aparecen.
+
 
 Mantén el código modular, corto y fácil de revisar.
 
