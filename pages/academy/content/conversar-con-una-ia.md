@@ -1,21 +1,10 @@
-¡Perfecto! Aplicaré el mismo formato al documento conversar-con-una-ia (3).md:
-
-· Títulos en negrita con ## (y ### para subtítulos).
-· Citas y frases destacadas con > (bloques de cita).
-· Diagramas y representaciones en bloques de código ( ``` ).
-· Listas con viñetas (-) y enumeradas (1.).
-· Separadores (---) para dividir secciones.
-· Texto justificado con <div align="justify">.
-· Sin eliminar ni una palabra del contenido original.
-
 ---
 
-```html
----
 library: "Alfabetización Digital para humanistas"
 folder: "Curso Inicial"
 title: "Conversar con una IA: del prompt a la colaboración"
 tags:
+
 - alfabetizacion-digital
 - inteligencia-artificial
 - prompts
@@ -24,6 +13,7 @@ tags:
 - modelos-de-lenguaje
 - aprendizaje
 - humanidades
+- 
 ---
 
 <div align="justify">
