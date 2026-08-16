@@ -68,6 +68,10 @@ app.use(
   })
 );
 
+// ─── Rutas del Rey Filósofo (RESTORED) ────────────────
+const rfRoutes = require("./logodemocracy-api/src/routes/rfRoutes");
+app.use("/api/reyfilosofo", rfRoutes);
+
 // ─── Utilidad para normalizar texto ───────────────────
 function normalizeTextForHash(text) {
   return text.replace(/\r\n/g, "\n").trim();
