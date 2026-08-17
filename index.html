@@ -69,36 +69,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ─── BOOT SCREEN OVERLAY ───────────────────────────── */
-#boot-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background-color: var(--c-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-md);
-  transition: opacity 800ms ease, visibility 800ms ease;
-  cursor: pointer;
-}
-
-#boot-screen.fade-out {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-#boot-text {
-  font-family: var(--f-mono);
-  font-size: clamp(0.85rem, 1.8vw, 1.1rem);
-  color: var(--c-academia);
-  white-space: pre-wrap;
-  line-height: 1.8;
-  max-width: 600px;
-  text-align: center;
-}
-
 /* ─── CONTENEDOR ─────────────────────────────────────── */
 .container {
   width: 100%;
@@ -107,7 +77,15 @@ body {
   padding: 0 var(--space-md);
 }
 
+
 /* ─── DIVISOR ANIMADO ────────────────────────────────── */
+.divider-line {
+  position: relative;
+  height: 1px;
+  background: var(--c-border);
+  overflow: visible;
+}
+
 .divider-line {
   position: relative;
   height: 1px;
@@ -115,6 +93,7 @@ body {
   overflow: hidden;
 }
 
+/* “pulso ECG” */
 .divider-line::after {
   content: "";
   position: absolute;
@@ -135,6 +114,7 @@ body {
   opacity: 0.9;
 }
 
+/* micro “latido” de la línea base */
 .divider-line {
   animation: lineHeartbeat 2.2s ease-in-out infinite;
 }
@@ -146,6 +126,7 @@ body {
   100% { left: 110%; opacity: 0; }
 }
 
+/* leve vibración orgánica (sensación de vida) */
 @keyframes lineHeartbeat {
   0%, 100% { transform: scaleY(1); opacity: 0.9; }
   50%      { transform: scaleY(1.6); opacity: 1; }
@@ -172,6 +153,7 @@ body {
   gap: var(--space-md);
 }
 
+/* Reveal animation */
 .reveal-line {
   opacity: 0;
   animation: revealFade 800ms ease forwards;
@@ -537,6 +519,7 @@ body {
   border-radius: 50%;
 }
 
+/* Panel técnico */
 .academia-panel {
   border: 1px solid var(--c-border);
   border-radius: 1px;
@@ -738,6 +721,7 @@ body {
   flex-shrink: 0;
 }
 
+/* Panel: flujo de datos anonimizados (mock terminal, estilo academia-panel) */
 .lab-panel {
   border: 1px solid var(--c-border);
   border-radius: 1px;
@@ -1094,7 +1078,7 @@ body {
 
 .footer-logo {
   font-family: var(--f-mono);
-  font-size: 0.65rem;
+ font-size: 0.65rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   color: var(--c-faint);
@@ -1237,17 +1221,12 @@ body {
   .footer-inner { flex-direction: column; text-align: center; }
   .footer-nav { flex-wrap: wrap; justify-content: center; gap: var(--space-sm); }
 
-  .divider-dot { display: none; }
+  .divider-dot { display: none; } /* GPU cost on mobile */
 }
 
 </style>
 </head>
 <body>
-
-  <!-- Overlay Pantalla de Entrada (Cita Neruda) -->
-  <div id="boot-screen">
-    <pre id="boot-text"></pre>
-  </div>
 
   <!-- ═══════════════════════════════════════════════════════
        NAVEGACIÓN SUPERIOR
@@ -1258,6 +1237,7 @@ body {
 
   <nav class="module-nav">
     <a href="/pages/archive-template.html" class="module-link">Academia</a>
+    <a href="/pages/logos.html"           class="module-link">Logos</a>
     <a href="/pages/sophia.html"           class="module-link">Sophia</a>
   </nav>
 
@@ -1590,43 +1570,6 @@ body {
   </section>
 
   <!-- ═══════════════════════════════════════════════════════
-       S6b — HIPÓTESIS EN INVESTIGACIÓN
-  ══════════════════════════════════════════════════════════ -->
-  <section class="section hipotesis" id="hipotesis">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label" style="--label-color: var(--c-lab)">En curso</span>
-        <h2 class="section-title">Hipótesis en observación</h2>
-        <p class="section-sub">Algunas de las preguntas que este laboratorio busca responder con datos agregados, a medida que la comunidad crece.</p>
-      </div>
-      <div class="hipotesis-grid">
-        <div class="hipotesis-card">
-          <span class="hipotesis-status">Preliminar</span>
-          <p class="hipotesis-text">Los usuarios con pensamiento sistémico alto responden mejor a mapas causales que a explicaciones lineales.</p>
-          <span class="hipotesis-modulo">Rey Filósofo · perfil pedagógico</span>
-        </div>
-        <div class="hipotesis-card">
-          <span class="hipotesis-status">Preliminar</span>
-          <p class="hipotesis-text">Los usuarios de orientación concreta mejoran su comprensión más rápido cuando el contenido parte de analogías.</p>
-          <span class="hipotesis-modulo">Academia · trayectoria formativa</span>
-        </div>
-        <div class="hipotesis-card">
-          <span class="hipotesis-status">En observación</span>
-          <p class="hipotesis-text">La representación robusta del argumento contrario (steelman) incrementa el Índice de Robustez Deliberativa.</p>
-          <span class="hipotesis-modulo">Sophia · calidad argumentativa</span>
-        </div>
-        <div class="hipotesis-card">
-          <span class="hipotesis-status">En observación</span>
-          <p class="hipotesis-text">Los cierres metacognitivos explícitos aumentan la persistencia y el retorno a la plataforma.</p>
-          <span class="hipotesis-modulo">Rey Filósofo · bitácora metacognitiva</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
-
-  <!-- ═══════════════════════════════════════════════════════
        S7 — VOTACIÓN CUADRÁTICA
   ══════════════════════════════════════════════════════════ -->
   <section class="section cuadratica" id="cuadratica">
@@ -1753,10 +1696,10 @@ body {
     </div>
   </footer>
 
-  <script src="assets/js/home.js"></script>
   <script>
 /* ═══════════════════════════════════════════════════════
-   LOGODEMOCRACY — home.js (DOM reveals / interactions)
+   LOGODEMOCRACY — home.js
+   Scroll reveals, timeline, interactions
    ═══════════════════════════════════════════════════════ */
 
 (function () {
@@ -1787,6 +1730,7 @@ body {
       if (entry.isIntersecting) {
         const nodes = Array.from(timelineNodes);
         const idx = nodes.indexOf(entry.target);
+        // Stagger each node
         setTimeout(() => {
           entry.target.classList.add('is-visible');
         }, idx * 120);
@@ -1839,13 +1783,14 @@ body {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         navLinks.forEach((l) => l.style.opacity = '0.5');
+        // just dim all — active state is subtle
       }
     });
   }, { threshold: 0.4 });
 
   sections.forEach((s) => navObserver.observe(s));
 
-  /* ─── MOBILE MENU ─────────────────────────────────── */
+  /* ─── MOBILE MENU (base-layout compatible) ─────────── */
   const mobileBtn = document.getElementById('mobileMenuBtn');
   const moduleNav = document.querySelector('.module-nav');
   const topbarRight = document.querySelector('.topbar-right');
@@ -1855,6 +1800,24 @@ body {
       topbarRight?.classList.toggle('open');
     });
   }
+
+  /* ─── AUTH DEMO ──────────────────────────────────────── */
+  let isLoggedIn = false;
+  const userLabel = document.getElementById('userLabel');
+  const authButton = document.getElementById('authButton');
+  function renderAuth() {
+    if (!userLabel || !authButton) return;
+    userLabel.textContent = isLoggedIn ? '⌂ Usuario' : '⌂ Invitado';
+    authButton.textContent = isLoggedIn ? 'Log out' : 'Log in';
+  }
+  if (authButton) {
+    authButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      isLoggedIn = !isLoggedIn;
+      renderAuth();
+    });
+  }
+  renderAuth();
 
 })();
 </script>
