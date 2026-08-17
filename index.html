@@ -2022,7 +2022,7 @@ body {
     if (!bootScreen || bootScreen.classList.contains('fade-out')) return;
     bootScreen.classList.add('fade-out');
     document.body.style.overflow = '';
-    window.scrollTo(0, 0); // <-- FUERZA EL INICIO DE LA PÁGINA
+    window.scrollTo(0, 0);
     startHeroBackground();
   }
 
@@ -2046,7 +2046,7 @@ body {
       let ci = 0;
       function typeChar() {
         if (ci < line.text.length) {
-          span.textContent += line.text.charAt(ci);
+          span.innerHTML += line.text.charAt(ci);
           ci++;
           setTimeout(typeChar, 32);
         } else {
