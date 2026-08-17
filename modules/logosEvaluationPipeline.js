@@ -58,7 +58,7 @@ Devuelve EXCLUSIVAMENTE un JSON, sin texto adicional:
   "supuestos": [{ "texto": "..." }]
 }`;
 
-  const raw = await askVertex(prompt, "gemini-2.5-flash", 50000, { temperature: 0.15 });
+  const raw = await askVertex(prompt, "gemini-2.5-flash", 50000, { temperature: 0.15 }, `reconstruction_${etiqueta}`);
   return extractJson(raw);
 }
 
@@ -117,7 +117,7 @@ Devuelve EXCLUSIVAMENTE un JSON con esta estructura exacta:
   "convergencias": [{ "texto": "...", "estado": "encontrada" }]
 }`;
 
-  const raw = await askVertex(prompt, "gemini-2.5-flash", 50000, { temperature: 0.25 });
+  const raw = await askVertex(prompt, "gemini-2.5-flash", 50000, { temperature: 0.25 }, "relational_analysis");
   return extractJson(raw);
 }
 
@@ -154,7 +154,7 @@ Devuelve EXCLUSIVAMENTE un JSON:
   "preguntas_deliberativas": ["..."]
 }`;
 
-  const raw = await askVertex(prompt, "gemini-2.5-flash", 50000, { temperature: 0.4 });
+  const raw = await askVertex(prompt, "gemini-2.5-flash", 50000, { temperature: 0.4 }, "synthesis");
   return extractJson(raw);
 }
 
