@@ -38,6 +38,7 @@
   --c-sophia:   #3b82f6;
   --c-academia: #22c55e;
   --c-lab:      #94a3b8;
+  --c-hope:     #f2b544;
 
   /* Tipografía */
   --f-mono: 'IBM Plex Mono', monospace;
@@ -132,6 +133,90 @@ body {
   50%      { transform: scaleY(1.6); opacity: 1; }
 }
 
+/* ─── BOOT SCREEN — CITA DE APERTURA ─────────────────── */
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-bg);
+  cursor: pointer;
+  transition: opacity 900ms ease, visibility 900ms;
+}
+
+.boot-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.boot-inner {
+  max-width: 620px;
+  width: 100%;
+  padding: 0 var(--space-md);
+}
+
+.boot-text {
+  font-family: var(--f-mono);
+  font-weight: 300;
+  font-size: clamp(0.95rem, 2.3vw, 1.3rem);
+  line-height: 1.85;
+  color: var(--c-muted);
+  white-space: pre-wrap;
+  min-height: 15em;
+}
+
+.boot-text .boot-highlight {
+  color: var(--c-text);
+}
+
+.boot-text .boot-signature {
+  color: var(--c-hope);
+}
+
+.boot-cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  background: var(--c-hope);
+  margin-left: 1px;
+  vertical-align: -0.15em;
+  animation: blink 1s step-end infinite;
+}
+
+.boot-skip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: var(--space-md);
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-faint);
+  background: none;
+  border: 1px solid var(--c-border);
+  border-radius: 1px;
+  padding: 0.55em 1.1em;
+  cursor: pointer;
+  opacity: 0;
+  animation: revealFade 700ms ease forwards;
+  animation-delay: 1.4s;
+  transition: color 200ms, border-color 200ms;
+}
+
+.boot-skip:hover { color: var(--c-hope); border-color: var(--c-hope); }
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-screen { display: none; }
+}
+
+@media (max-width: 600px) {
+  .boot-text { font-size: 0.92rem; line-height: 1.75; }
+}
+
 /* ─── HERO ───────────────────────────────────────────── */
 .hero {
   position: relative;
@@ -142,6 +227,28 @@ body {
   text-align: center;
   padding: var(--space-xl) var(--space-md) var(--space-xl);
   overflow: hidden;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1800ms ease;
+}
+
+.hero-canvas.is-active { opacity: 0.5; }
+
+.hero-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(900px, 140vw);
+  height: min(900px, 140vw);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(242,181,68,0.09) 0%, rgba(139,92,246,0.05) 45%, transparent 72%);
+  pointer-events: none;
 }
 
 .hero-inner {
@@ -232,6 +339,93 @@ body {
 }
 
 .br-desk { display: inline; }
+
+/* ─── HERO QUICKSTART ────────────────────────────────── */
+.hero-quickstart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9em;
+  margin-top: var(--space-md);
+}
+
+.quickstart-label {
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-hope);
+}
+
+.quickstart-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75em;
+}
+
+.quickstart-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-family: var(--f-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  color: var(--c-text);
+  text-decoration: none;
+  border: 1px solid var(--c-border);
+  border-radius: 1px;
+  padding: 0.65em 1.2em;
+  background: var(--c-glass);
+  transition: border-color 200ms, background 200ms, transform 200ms;
+}
+
+.quickstart-chip span { transition: transform 200ms; opacity: 0.6; }
+.quickstart-chip:hover span { transform: translateX(3px); opacity: 1; }
+
+.quickstart-chip[data-accent="sophia"]:hover { border-color: var(--c-sophia); background: rgba(59,130,246,0.07); }
+.quickstart-chip[data-accent="rey"]:hover     { border-color: var(--c-rey); background: rgba(217,119,6,0.07); }
+
+.quickstart-chip:hover { transform: translateY(-2px); }
+
+/* Pulso sutil en módulos disponibles */
+@keyframes availPulse {
+  0%   { box-shadow: 0 0 0 0 currentColor; opacity: 1; }
+  70%  { box-shadow: 0 0 0 5px transparent; opacity: 0.4; }
+  100% { box-shadow: 0 0 0 5px transparent; opacity: 1; }
+}
+
+.agent-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  padding: 2px 8px;
+  margin-bottom: 8px;
+}
+
+.agent-status--soon {
+  color: rgba(229,231,235,0.4);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.agent-status--live {
+  border: 1px solid currentColor;
+}
+
+.agent-status--live::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
+  animation: availPulse 2.2s ease-in-out infinite;
+}
 
 /* ─── SECCIONES BASE ─────────────────────────────────── */
 .section {
@@ -1060,7 +1254,23 @@ body {
 }
 
 .cierre-line--light  { color: var(--c-text); }
-.cierre-line--accent { color: rgba(139,92,246,0.8); }
+.cierre-line--accent {
+  background: linear-gradient(90deg, var(--c-aletheia), var(--c-hope), var(--c-aletheia));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cierre-line--accent { animation: none; }
+}
 
 /* ─── FOOTER ─────────────────────────────────────────── */
 .footer {
@@ -1229,6 +1439,16 @@ body {
 <body>
 
   <!-- ═══════════════════════════════════════════════════════
+       BOOT — CITA DE APERTURA (Pablo Neruda)
+  ══════════════════════════════════════════════════════════ -->
+  <div class="boot-screen" id="boot-screen">
+    <div class="boot-inner">
+      <p class="boot-text" id="boot-text" aria-live="polite"></p>
+      <button class="boot-skip" id="boot-skip" type="button">Entrar ahora ↓</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
        NAVEGACIÓN SUPERIOR
   ══════════════════════════════════════════════════════════ -->
   <header class="topbar">
@@ -1253,6 +1473,8 @@ body {
        S1 — HERO
   ══════════════════════════════════════════════════════════ -->
   <section class="hero" id="inicio">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
     <div class="hero-inner">
       <span class="badge reveal-line" style="--delay:0ms">Democracia Aumentada</span>
       <h1 class="hero-title">
@@ -1266,6 +1488,13 @@ body {
       <a href="#concepto" class="hero-cta reveal-line" style="--delay:700ms">
         Explorar el ecosistema <span class="cta-arrow">↓</span>
       </a>
+      <div class="hero-quickstart reveal-line" style="--delay:950ms">
+        <span class="quickstart-label">Empieza ahora, sin esperar el resto</span>
+        <div class="quickstart-links">
+          <a href="/pages/sophia.html" class="quickstart-chip" data-accent="sophia">Poner a prueba un texto en Sophia <span>→</span></a>
+          <a href="/pages/archive-template.html" class="quickstart-chip" data-accent="rey">Conocer al Rey Filósofo en la Academia <span>→</span></a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1336,7 +1565,7 @@ body {
             <span class="agent-id"></span>
             <span class="agent-tag">Estúpidometro</span>
           </div>
-          <span style="display:inline-block; font-size:.62rem; letter-spacing:.04em; text-transform:uppercase; color:rgba(229,231,235,.4); border:1px solid rgba(255,255,255,.15); border-radius:3px; padding:2px 6px; margin-bottom:8px;">Próximamente</span>
+          <span class="agent-status agent-status--soon">Próximamente</span>
           <h3 class="agent-name">Aletheia</h3>
           <p class="agent-desc">Analiza discursos políticos y mediáticos. Evalúa el costo epistemológico de los argumentos, detecta patrones de manipulación y fortalece la alfabetización cívica mediante análisis crítico del lenguaje público.</p>
           <ul class="agent-capabilities">
@@ -1353,7 +1582,7 @@ body {
             <span class="agent-id"></span>
             <span class="agent-tag">Deliberación</span>
           </div>
-          <span style="display:inline-block; font-size:.62rem; letter-spacing:.04em; text-transform:uppercase; color:rgba(229,231,235,.4); border:1px solid rgba(255,255,255,.15); border-radius:3px; padding:2px 6px; margin-bottom:8px;">Próximamente</span>
+          <span class="agent-status agent-status--soon">Próximamente</span>
           <h3 class="agent-name">Logos</h3>
           <p class="agent-desc">Facilitador deliberativo. Ayuda a comprender desacuerdos profundos, detecta el origen de los conflictos argumentativos, sintetiza posiciones divergentes y orienta hacia zonas de posible consenso.</p>
           <ul class="agent-capabilities">
@@ -1370,7 +1599,7 @@ body {
             <span class="agent-id"></span>
             <span class="agent-tag">Aprendizaje</span>
           </div>
-          <span style="display:inline-block; font-size:.62rem; letter-spacing:.04em; text-transform:uppercase; color:var(--c-rey); border:1px solid var(--c-rey); border-radius:3px; padding:2px 6px; margin-bottom:8px;">Disponible</span>
+          <span class="agent-status agent-status--live" style="color:var(--c-rey);">Disponible</span>
           <h3 class="agent-name">Rey Filósofo</h3>
           <p class="agent-desc">Tutor cognitivo inspirado en la pedagogía de Vygotsky. Acompaña el proceso de aprendizaje individual, desarrolla la metacognición ciudadana y adapta los contenidos al nivel y contexto de cada usuario.</p>
           <ul class="agent-capabilities">
@@ -1387,7 +1616,7 @@ body {
             <span class="agent-id"></span>
             <span class="agent-tag">Protocolo de comunicación</span>
           </div>
-          <span style="display:inline-block; font-size:.62rem; letter-spacing:.04em; text-transform:uppercase; color:var(--c-sophia); border:1px solid var(--c-sophia); border-radius:3px; padding:2px 6px; margin-bottom:8px;">Disponible</span>
+          <span class="agent-status agent-status--live" style="color:var(--c-sophia);">Disponible</span>
           <h3 class="agent-name">Sophia</h3>
           <p class="agent-desc">Filtro epistémico de calidad argumentativa. Evalúa la coherencia, claridad, evidencia y honestidad intelectual de los documentos ciudadanos antes de su incorporación al conocimiento colectivo de la Academia.</p>
           <ul class="agent-capabilities">
@@ -1704,6 +1933,145 @@ body {
 
 (function () {
   'use strict';
+
+  /* ─── BOOT SCREEN — CITA DE APERTURA (Neruda) ──────── */
+  const bootScreen = document.getElementById('boot-screen');
+  const bootText = document.getElementById('boot-text');
+  const bootSkip = document.getElementById('boot-skip');
+  const heroCanvas = document.getElementById('hero-canvas');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const bootLines = [
+    { text: 'Salimos perdiendo… Salimos ganando…', pause: 550 },
+    { text: 'Se llevaron el oro y nos dejaron el oro…', pause: 550 },
+    { text: 'Se lo llevaron todo y nos dejaron todo…', pause: 700 },
+    { text: 'Nos dejaron las palabras.', pause: 900, cls: 'boot-highlight' },
+    { text: '', pause: 200 },
+    { text: '"Confieso que he vivido"', pause: 100, cls: 'boot-signature' },
+    { text: '— Pablo Neruda', pause: 0, cls: 'boot-signature' }
+  ];
+
+  let heroBgStarted = false;
+
+  function startHeroBackground() {
+    if (heroBgStarted || !heroCanvas || prefersReducedMotion) return;
+    heroBgStarted = true;
+
+    const ctx = heroCanvas.getContext('2d');
+    let w, h;
+
+    function resize() {
+      w = heroCanvas.width = heroCanvas.offsetWidth;
+      h = heroCanvas.height = heroCanvas.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const palette = ['242,181,68', '139,92,246', '34,197,94'];
+    const nodes = [];
+    const nodeCount = window.innerWidth < 700 ? 26 : 48;
+
+    for (let i = 0; i < nodeCount; i++) {
+      nodes.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.22,
+        vy: (Math.random() - 0.5) * 0.22,
+        c: palette[i % palette.length]
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 130) {
+            ctx.strokeStyle = `rgba(${nodes[i].c},${0.14 - dist / 1100})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      nodes.forEach((n) => {
+        ctx.fillStyle = `rgba(${n.c},0.65)`;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 1.6, 0, Math.PI * 2);
+        ctx.fill();
+
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1;
+        if (n.y < 0 || n.y > h) n.vy *= -1;
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+    requestAnimationFrame(() => heroCanvas.classList.add('is-active'));
+  }
+
+  function closeBoot() {
+    if (!bootScreen || bootScreen.classList.contains('fade-out')) return;
+    bootScreen.classList.add('fade-out');
+    document.body.style.overflow = '';
+    startHeroBackground();
+  }
+
+  function typeBoot() {
+    if (!bootText) { startHeroBackground(); return; }
+
+    let li = 0;
+
+    function typeLine() {
+      if (li >= bootLines.length) {
+        bootText.insertAdjacentHTML('beforeend', '<span class="boot-cursor"></span>');
+        setTimeout(closeBoot, 1600);
+        return;
+      }
+      const line = bootLines[li];
+      const span = document.createElement('span');
+      if (line.cls) span.className = line.cls;
+      bootText.appendChild(span);
+      if (li > 0) span.style.display = 'block';
+
+      let ci = 0;
+      function typeChar() {
+        if (ci < line.text.length) {
+          span.textContent += line.text.charAt(ci);
+          ci++;
+          setTimeout(typeChar, 32);
+        } else {
+          li++;
+          setTimeout(typeLine, line.pause);
+        }
+      }
+      typeChar();
+    }
+
+    typeLine();
+  }
+
+  if (bootScreen && bootText) {
+    if (prefersReducedMotion) {
+      closeBoot();
+    } else {
+      document.body.style.overflow = 'hidden';
+      setTimeout(typeBoot, 400);
+    }
+    bootScreen.addEventListener('click', closeBoot);
+    bootSkip?.addEventListener('click', (e) => { e.stopPropagation(); closeBoot(); });
+  } else {
+    startHeroBackground();
+  }
 
   /* ─── INTERSECTION OBSERVER — GENERIC REVEALS ──────── */
   const revealEls = document.querySelectorAll('.section-header, .concepto-grid, .formula-concepto, .agent-card, .academia-layout, .laboratorio-layout, .hipotesis-card, .cuadratica-layout, .formula-wrapper, .modelo-variables, .cierre-quote');
