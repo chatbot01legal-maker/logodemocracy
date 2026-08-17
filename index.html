@@ -163,17 +163,17 @@ body {
   font-weight: 300;
   font-size: clamp(0.95rem, 2.3vw, 1.3rem);
   line-height: 1.85;
-  color: var(--c-muted);
+  color: #ffffff;
   white-space: pre-wrap;
   min-height: 15em;
 }
 
 .boot-text .boot-highlight {
-  color: var(--c-text);
+  color: #ffffff;
 }
 
 .boot-text .boot-signature {
-  color: var(--c-hope);
+  color: #ffffff;
 }
 
 .boot-cursor {
@@ -2022,6 +2022,7 @@ body {
     if (!bootScreen || bootScreen.classList.contains('fade-out')) return;
     bootScreen.classList.add('fade-out');
     document.body.style.overflow = '';
+    window.scrollTo(0, 0); // <-- FUERZA EL INICIO DE LA PÁGINA
     startHeroBackground();
   }
 
