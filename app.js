@@ -32,7 +32,7 @@ let isAuditRunning = false;
 // ─── LEVANTAR PUERTO INMEDIATAMENTE (Evita Timeout) ───
 app.listen(PORT, () => {
   console.log(`🚀 Servidor SOPHIA ejecutándose y escuchando en el puerto ${PORT}`);
-  
+
   // Auditoría automática que se ejecuta una única vez al arrancar
   setTimeout(() => {
     runAutomaticAuditOnce();
@@ -47,15 +47,22 @@ app.use(express.static(__dirname));
 app.post("/api/debug-log", (req, res) => {
   const { level, message } = req.body;
   const ts = new Date().toISOString();
-  console.log(`📱 [REMOTE-${(level || "log").toUpperCase()}] ${ts} — ${message}`);
+  console.log(
+    `📱 [REMOTE-${(level || "log").toUpperCase()}] ${ts} — ${message}`
+  );
   res.sendStatus(204);
 });
 
 // ─── LOG de cada petición con ID ÚNICO ────────────────
 app.use((req, res, next) => {
-  req.headers['x-request-id'] = crypto.randomUUID();
-  console.log(`📥 [${req.headers['x-request-id']}] ${req.method} ${req.url}`);
-  res.setHeader('X-Request-ID', req.headers['x-request-id']);
+  req.headers["x-request-id"] = crypto.randomUUID();
+
+  console.log(
+    `📥 [${req.headers["x-request-id"]}] ${req.method} ${req.url}`
+  );
+
+  res.setHeader("X-Request-ID", req.headers["x-request-id"]);
+
   next();
 });
 
@@ -77,78 +84,233 @@ function normalizeTextForHash(text) {
   return text.replace(/\r\n/g, "\n").trim();
 }
 
-// ─── Función de Auditoría Interna ─────────────────────
-async function runBackgroundAudit() {
-  console.log("🔍 [Audit] Iniciando auditoría de documentos...");
-  const contentDir = path.join(__dirname, "pages/academy/content");
-  if (!fs.existsSync(contentDir)) return { audited: 0, skipped: 0 };
+// ═══════════════════════════════════════════════════════
+// AUDITORÍA INTERNA DE DOCUMENTOS SOPHIA
+// ═══════════════════════════════════════════════════════
 
-  const files = fs.readdirSync(contentDir).filter(f => f.endsWith(".md"));
+/**
+ * Ejecuta la auditoría de todos los documentos de la Academia.
+ *
+ * force = false
+ *   Respeta la caché existente.
+ *
+ * force = true
+ *   Reevalúa todos los documentos aunque ya exista
+ *   una entrada idéntica en sophia_document_cache.
+ *
+ * La auditoría forzada se utiliza desde:
+ *
+ *   POST /api/admin/audit-all
+ *
+ * Esto permite volver a evaluar los documentos después de
+ * cambios en Gemini, SOPHIA o el pipeline cognitivo.
+ */
+async function runBackgroundAudit({ force = false } = {}) {
+  console.log("🔍 [Audit] Iniciando auditoría de documentos...");
+
+  if (force) {
+    console.log(
+      "🔥 [Audit] MODO FORZADO: se ignorará la caché existente."
+    );
+  }
+
+  const contentDir = path.join(__dirname, "pages/academy/content");
+
+  if (!fs.existsSync(contentDir)) {
+    console.log(
+      `⚠️ [Audit] Directorio de contenido no encontrado: ${contentDir}`
+    );
+
+    return {
+      audited: 0,
+      skipped: 0,
+      errors: 0,
+      forced: force
+    };
+  }
+
+  const files = fs
+    .readdirSync(contentDir)
+    .filter((f) => f.endsWith(".md"));
+
+  console.log(`📚 [Audit] Documentos Markdown encontrados: ${files.length}`);
+
   const db = await connect();
-  
+
   const auditTasks = files.map(async (file) => {
     try {
       const filePath = path.join(contentDir, file);
+
       const rawText = fs.readFileSync(filePath, "utf8");
       const textContent = normalizeTextForHash(rawText);
-      
+
       if (textContent.length < 50) {
-        console.log(`⚠️ [Audit] Omitiendo ${file} (texto demasiado corto o vacío)`);
-        return { file, status: "skipped" };
+        console.log(
+          `⚠️ [Audit] Omitiendo ${file} (texto demasiado corto o vacío)`
+        );
+
+        return {
+          file,
+          status: "skipped"
+        };
       }
 
-      const contentHash = crypto.createHash("sha256").update(textContent).digest("hex");
+      const contentHash = crypto
+        .createHash("sha256")
+        .update(textContent)
+        .digest("hex");
 
-      const cached = await db.collection("sophia_document_cache").findOne({
-        docId: file,
-        content_hash: contentHash,
-        protocol_version: PROTOCOL.version
-      });
+      // ─────────────────────────────────────────────────
+      // CACHE
+      // ─────────────────────────────────────────────────
 
-      if (cached) return { file, status: "skipped" };
-
-      console.log(`⚡ [Audit] Evaluando nuevo contenido: ${file}...`);
-      const report = await evaluate({ text: textContent });
-      
-      await db.collection("sophia_document_cache").updateOne(
-        { docId: file },
-        {
-          $set: {
+      if (!force) {
+        const cached = await db
+          .collection("sophia_document_cache")
+          .findOne({
             docId: file,
             content_hash: contentHash,
-            protocol_version: PROTOCOL.version,
-            result: report,
-            evaluated_at: new Date()
-          }
-        },
-        { upsert: true }
+            protocol_version: PROTOCOL.version
+          });
+
+        if (cached) {
+          console.log(`♻️ [Audit] Caché válida: ${file}`);
+
+          return {
+            file,
+            status: "skipped"
+          };
+        }
+      } else {
+        console.log(
+          `🔥 [Audit] Forzando reevaluación: ${file}`
+        );
+      }
+
+      // ─────────────────────────────────────────────────
+      // EVALUACIÓN SOPHIA
+      // ─────────────────────────────────────────────────
+
+      console.log(
+        `⚡ [Audit] Evaluando contenido: ${file}...`
       );
-      return { file, status: "audited" };
+
+      const startedAt = Date.now();
+
+      const report = await evaluate({
+        text: textContent
+      });
+
+      const duration = Date.now() - startedAt;
+
+      console.log(
+        `✅ [Audit] Evaluación completada: ${file} (${duration}ms)`
+      );
+
+      // ─────────────────────────────────────────────────
+      // GUARDAR RESULTADO
+      // ─────────────────────────────────────────────────
+
+      await db
+        .collection("sophia_document_cache")
+        .updateOne(
+          {
+            docId: file
+          },
+          {
+            $set: {
+              docId: file,
+              content_hash: contentHash,
+              protocol_version: PROTOCOL.version,
+              result: report,
+              evaluated_at: new Date(),
+              audit_forced: force
+            }
+          },
+          {
+            upsert: true
+          }
+        );
+
+      console.log(
+        `💾 [Audit] Resultado guardado en caché: ${file}`
+      );
+
+      return {
+        file,
+        status: "audited"
+      };
     } catch (err) {
-      console.error(`❌ [Audit] Error en ${file}:`, err.message);
-      return { file, status: "error" };
+      console.error(
+        `❌ [Audit] Error en ${file}:`,
+        err.message
+      );
+
+      return {
+        file,
+        status: "error",
+        error: err.message
+      };
     }
   });
 
+  // Ejecutamos las auditorías en paralelo.
   const results = await Promise.all(auditTasks);
-  const audited = results.filter(r => r.status === "audited").length;
-  const skipped = results.filter(r => r.status === "skipped").length;
 
-  console.log(`🎉 [Audit] Finalizada. Evaluados: ${audited}, En caché/Omitidos: ${skipped}`);
-  return { audited, skipped };
+  const audited = results.filter(
+    (r) => r.status === "audited"
+  ).length;
+
+  const skipped = results.filter(
+    (r) => r.status === "skipped"
+  ).length;
+
+  const errors = results.filter(
+    (r) => r.status === "error"
+  ).length;
+
+  console.log(
+    `🎉 [Audit] Finalizada. Evaluados: ${audited}, ` +
+    `En caché/Omitidos: ${skipped}, ` +
+    `Errores: ${errors}`
+  );
+
+  return {
+    audited,
+    skipped,
+    errors,
+    forced: force
+  };
 }
 
 // ─── Ejecutor único automático ────────────────────────
 async function runAutomaticAuditOnce() {
-  if (hasRunAudit || isAuditRunning) return;
+  if (hasRunAudit || isAuditRunning) {
+    return;
+  }
+
   isAuditRunning = true;
+
   try {
-    console.log("🤖 [Sophia Auto-Audit] Ejecutando proceso automático por única vez...");
-    await runBackgroundAudit();
+    console.log(
+      "🤖 [Sophia Auto-Audit] Ejecutando proceso automático por única vez..."
+    );
+
+    // La auditoría automática NO fuerza reevaluación.
+    await runBackgroundAudit({
+      force: false
+    });
+
     hasRunAudit = true;
-    console.log("✅ [Sophia Auto-Audit] Proceso completado y marcado como ejecutado.");
+
+    console.log(
+      "✅ [Sophia Auto-Audit] Proceso completado y marcado como ejecutado."
+    );
   } catch (err) {
-    console.error("❌ [Sophia Auto-Audit] Error en ejecución automática:", err);
+    console.error(
+      "❌ [Sophia Auto-Audit] Error en ejecución automática:",
+      err
+    );
   } finally {
     isAuditRunning = false;
   }
@@ -163,6 +325,7 @@ app.get("/", (req, res) => {
 // ─── Health Check ─────────────────────────────────────
 app.get("/api/health", (req, res) => {
   console.log("💚 Health check");
+
   res.json({
     status: "OK",
     version: "SOPHIA v4.0",
@@ -173,262 +336,554 @@ app.get("/api/health", (req, res) => {
 // ─── Endpoint de Administración ───────────────────────
 app.post("/api/admin/audit-all", async (req, res) => {
   try {
-    const result = await runBackgroundAudit();
-    res.json({ message: "Auditoría completada", result });
+    console.log(
+      "🔥 [Admin Audit] Solicitud de auditoría forzada recibida."
+    );
+
+    const result = await runBackgroundAudit({
+      force: true
+    });
+
+    res.json({
+      message: "Auditoría forzada completada",
+      result
+    });
   } catch (error) {
-    console.error("❌ Error en /api/admin/audit-all:", error);
-    res.status(500).json({ error: "Error procesando la auditoría" });
+    console.error(
+      "❌ Error en /api/admin/audit-all:",
+      error
+    );
+
+    res.status(500).json({
+      error: "Error procesando la auditoría"
+    });
   }
 });
 
 // ─── Autenticación ────────────────────────────────────
 app.post("/api/register", async (req, res) => {
   console.log("📝 Registro de usuario:", req.body.email);
+
   try {
     const { email, password } = req.body;
+
     if (!email || !password) {
-      return res.status(400).json({ error: "Email y contraseña requeridos" });
+      return res.status(400).json({
+        error: "Email y contraseña requeridos"
+      });
     }
+
     const db = await connect();
-    const existing = await db.collection("users").findOne({ email });
+
+    const existing = await db
+      .collection("users")
+      .findOne({ email });
+
     if (existing) {
-      return res.status(400).json({ error: "El usuario ya existe" });
+      return res.status(400).json({
+        error: "El usuario ya existe"
+      });
     }
+
     const hashed = await bcrypt.hash(password, 10);
+
     await db.collection("users").insertOne({
       email,
       password: hashed,
       createdAt: new Date(),
       role: "citizen"
     });
+
     console.log("✅ Usuario registrado:", email);
-    res.json({ message: "Usuario registrado correctamente" });
+
+    res.json({
+      message: "Usuario registrado correctamente"
+    });
   } catch (error) {
-    console.error("❌ Error en /api/register:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    console.error(
+      "❌ Error en /api/register:",
+      error
+    );
+
+    res.status(500).json({
+      error: "Error interno del servidor"
+    });
   }
 });
 
 app.post("/api/login", async (req, res) => {
   console.log("🔑 Intento de login:", req.body.email);
+
   try {
-    const { email, password, sessionId } = req.body;
+    const {
+      email,
+      password,
+      sessionId
+    } = req.body;
+
     if (!email || !password) {
-      return res.status(400).json({ error: "Email y contraseña requeridos" });
+      return res.status(400).json({
+        error: "Email y contraseña requeridos"
+      });
     }
+
     const db = await connect();
-    const user = await db.collection("users").findOne({ email });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ error: "Credenciales inválidas" });
+
+    const user = await db
+      .collection("users")
+      .findOne({ email });
+
+    if (
+      !user ||
+      !(await bcrypt.compare(password, user.password))
+    ) {
+      return res.status(401).json({
+        error: "Credenciales inválidas"
+      });
     }
+
     const token = jwt.sign(
-      { userId: user._id, email: user.email, role: user.role || "citizen" },
+      {
+        userId: user._id,
+        email: user.email,
+        role: user.role || "citizen"
+      },
       process.env.JWT_SECRET || "secreto",
-      { expiresIn: "7d" }
+      {
+        expiresIn: "7d"
+      }
     );
-    console.log("✅ Login exitoso:", email);
+
+    console.log(
+      "✅ Login exitoso:",
+      email
+    );
 
     if (sessionId) {
       try {
-        await mergeGuestProfileIntoUser({ userId: user._id.toString(), sessionId });
+        await mergeGuestProfileIntoUser({
+          userId: user._id.toString(),
+          sessionId
+        });
       } catch (mergeError) {
-        console.error("⚠️ No se pudo fusionar perfil invitado:", mergeError.message);
+        console.error(
+          "⚠️ No se pudo fusionar perfil invitado:",
+          mergeError.message
+        );
       }
     }
 
-    res.json({ token, userId: user._id, email: user.email, role: user.role || "citizen" });
+    res.json({
+      token,
+      userId: user._id,
+      email: user.email,
+      role: user.role || "citizen"
+    });
   } catch (error) {
-    console.error("❌ Error en /api/login:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    console.error(
+      "❌ Error en /api/login:",
+      error
+    );
+
+    res.status(500).json({
+      error: "Error interno del servidor"
+    });
   }
 });
 
 function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ error: "Token no proporcionado" });
+
+  if (!authHeader) {
+    return res.status(401).json({
+      error: "Token no proporcionado"
+    });
+  }
+
   try {
-    req.user = jwt.verify(authHeader.split(" ")[1], process.env.JWT_SECRET || "secreto");
+    req.user = jwt.verify(
+      authHeader.split(" ")[1],
+      process.env.JWT_SECRET || "secreto"
+    );
+
     next();
   } catch (error) {
-    return res.status(401).json({ error: "Token inválido o expirado" });
+    return res.status(401).json({
+      error: "Token inválido o expirado"
+    });
   }
 }
 
 // ─── LECTURA PURA DE CACHÉ ─────────────────────────────
-app.get("/api/sophia/analysis/:docId", async (req, res) => {
-  try {
-    const docId = req.params.docId;
-    const db = await connect();
-    const cached = await db.collection("sophia_document_cache").findOne({
-      docId: docId,
-      protocol_version: PROTOCOL.version
-    });
+app.get(
+  "/api/sophia/analysis/:docId",
+  async (req, res) => {
+    try {
+      const docId = req.params.docId;
 
-    if (cached) {
-      console.log(`♻️ [Read-Only Cache HIT] Entregando análisis pre-calculado de ${docId}`);
-      return res.json(cached.result);
-    } else {
-      console.log(`⚠️ [Read-Only Cache MISS] Análisis de ${docId} no encontrado en base de datos`);
-      return res.status(404).json({ error: "Análisis aún no disponible para este documento." });
+      const db = await connect();
+
+      const cached = await db
+        .collection("sophia_document_cache")
+        .findOne({
+          docId: docId,
+          protocol_version: PROTOCOL.version
+        });
+
+      if (cached) {
+        console.log(
+          `♻️ [Read-Only Cache HIT] Entregando análisis pre-calculado de ${docId}`
+        );
+
+        return res.json(cached.result);
+      } else {
+        console.log(
+          `⚠️ [Read-Only Cache MISS] Análisis de ${docId} no encontrado en base de datos`
+        );
+
+        return res.status(404).json({
+          error:
+            "Análisis aún no disponible para este documento."
+        });
+      }
+    } catch (error) {
+      console.error(
+        "❌ Error en /api/sophia/analysis/:docId:",
+        error
+      );
+
+      res.status(500).json({
+        error:
+          "Error interno del servidor al buscar el análisis."
+      });
     }
-  } catch (error) {
-    console.error("❌ Error en /api/sophia/analysis/:docId:", error);
-    res.status(500).json({ error: "Error interno del servidor al buscar el análisis." });
   }
-});
+);
 
 // ─── Evaluación SOPHIA con caché robusto ──────────────
-app.post("/api/sophia/evaluate-cached", async (req, res) => {
-  try {
-    const { text, docId } = req.body;
-    if (!text || !text.trim() || !docId) {
-      return res.status(400).json({ error: "text y docId son requeridos" });
-    }
+app.post(
+  "/api/sophia/evaluate-cached",
+  async (req, res) => {
+    try {
+      const {
+        text,
+        docId
+      } = req.body;
 
-    const db = await connect();
+      if (
+        !text ||
+        !text.trim() ||
+        !docId
+      ) {
+        return res.status(400).json({
+          error: "text y docId son requeridos"
+        });
+      }
 
-    const cached = await db.collection("sophia_document_cache").findOne({
-      docId,
-      protocol_version: PROTOCOL.version
-    });
+      const db = await connect();
 
-    if (cached) {
-      console.log(`♻️ [Cache HIT Robusto] ${docId} — Entregando análisis central, 0 tokens gastados`);
-      return res.json(cached.result);
-    }
-
-    console.log(`🧠 [Cache MISS] ${docId} no estaba en BD — forzando evaluación a Vertex`);
-    const normalizedText = normalizeTextForHash(text);
-    const contentHash = crypto.createHash("sha256").update(normalizedText).digest("hex");
-    
-    const report = await evaluate({ text: normalizedText });
-
-    await db.collection("sophia_document_cache").updateOne(
-      { docId },
-      {
-        $set: {
+      const cached = await db
+        .collection("sophia_document_cache")
+        .findOne({
           docId,
-          content_hash: contentHash,
-          protocol_version: PROTOCOL.version,
-          result: report,
-          evaluated_at: new Date()
-        }
-      },
-      { upsert: true }
-    );
-    console.log(`✅ [Cache SAVE Fallback] ${docId} analizado por acción del usuario y guardado`);
+          protocol_version: PROTOCOL.version
+        });
 
-    res.json(report);
-  } catch (error) {
-    console.error("❌ Error en /api/sophia/evaluate-cached:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+      if (cached) {
+        console.log(
+          `♻️ [Cache HIT Robusto] ${docId} — Entregando análisis central, 0 tokens gastados`
+        );
+
+        return res.json(cached.result);
+      }
+
+      console.log(
+        `🧠 [Cache MISS] ${docId} no estaba en BD — forzando evaluación a Vertex`
+      );
+
+      const normalizedText =
+        normalizeTextForHash(text);
+
+      const contentHash = crypto
+        .createHash("sha256")
+        .update(normalizedText)
+        .digest("hex");
+
+      const report = await evaluate({
+        text: normalizedText
+      });
+
+      await db
+        .collection("sophia_document_cache")
+        .updateOne(
+          { docId },
+          {
+            $set: {
+              docId,
+              content_hash: contentHash,
+              protocol_version: PROTOCOL.version,
+              result: report,
+              evaluated_at: new Date()
+            }
+          },
+          { upsert: true }
+        );
+
+      console.log(
+        `✅ [Cache SAVE Fallback] ${docId} analizado por acción del usuario y guardado`
+      );
+
+      res.json(report);
+    } catch (error) {
+      console.error(
+        "❌ Error en /api/sophia/evaluate-cached:",
+        error
+      );
+
+      res.status(500).json({
+        error: "Error interno del servidor"
+      });
+    }
   }
-});
+);
 
 // ─── Evaluación con SOPHIA (Sin Caché) ─────────────────
-app.post("/api/sophia/evaluate", async (req, res) => {
-  try {
-    const { text, userId } = req.body;
-    if (!text || text.trim().length === 0) {
-      return res.status(400).json({ error: "Texto requerido" });
-    }
-    
-    const report = await evaluate({ text });
+app.post(
+  "/api/sophia/evaluate",
+  async (req, res) => {
+    try {
+      const {
+        text,
+        userId
+      } = req.body;
 
-    if (userId) {
-      try {
-        const db = await connect();
-        const textHash = crypto.createHash("sha256").update(text).digest("hex");
-        await db.collection("evaluations").insertOne({
-          userId,
-          text_hash: textHash,
-          text_preview: text.substring(0, 500),
-          protocol_version: PROTOCOL.version,
-          model_used: "gemini-2.5-flash",
-          evaluated_at: new Date(),
-          result: report
+      if (
+        !text ||
+        text.trim().length === 0
+      ) {
+        return res.status(400).json({
+          error: "Texto requerido"
         });
-      } catch (dbError) {
-        console.error("❌ Error al guardar en DB:", dbError);
       }
-    }
 
-    res.json(report);
-  } catch (error) {
-    console.error("❌ Error en /api/sophia/evaluate:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+      const report = await evaluate({
+        text
+      });
+
+      if (userId) {
+        try {
+          const db = await connect();
+
+          const textHash = crypto
+            .createHash("sha256")
+            .update(text)
+            .digest("hex");
+
+          await db
+            .collection("evaluations")
+            .insertOne({
+              userId,
+              text_hash: textHash,
+              text_preview: text.substring(0, 500),
+              protocol_version: PROTOCOL.version,
+              model_used: "gemini-2.5-flash",
+              evaluated_at: new Date(),
+              result: report
+            });
+        } catch (dbError) {
+          console.error(
+            "❌ Error al guardar en DB:",
+            dbError
+          );
+        }
+      }
+
+      res.json(report);
+    } catch (error) {
+      console.error(
+        "❌ Error en /api/sophia/evaluate:",
+        error
+      );
+
+      res.status(500).json({
+        error: "Error interno del servidor"
+      });
+    }
   }
-});
+);
 
 // ─── Feedback de usuarios sobre evaluaciones ───────────
-app.post("/api/sophia/feedback", async (req, res) => {
-  try {
-    const { comentario, texto_evaluado, ird_global, userId, timestamp } = req.body;
-    if (!comentario || !comentario.trim()) {
-      return res.status(400).json({ error: "Comentario requerido" });
+app.post(
+  "/api/sophia/feedback",
+  async (req, res) => {
+    try {
+      const {
+        comentario,
+        texto_evaluado,
+        ird_global,
+        userId,
+        timestamp
+      } = req.body;
+
+      if (
+        !comentario ||
+        !comentario.trim()
+      ) {
+        return res.status(400).json({
+          error: "Comentario requerido"
+        });
+      }
+
+      const db = await connect();
+
+      await db
+        .collection("feedback")
+        .insertOne({
+          comentario,
+          texto_evaluado:
+            texto_evaluado || null,
+          ird_global:
+            ird_global !== undefined
+              ? ird_global
+              : null,
+          userId: userId || null,
+          timestamp:
+            timestamp ||
+            new Date().toISOString(),
+          created_at: new Date()
+        });
+
+      console.log(
+        "📝 Feedback de SOPHIA guardado en MongoDB"
+      );
+
+      res.json({
+        message:
+          "Comentario recibido correctamente"
+      });
+    } catch (error) {
+      console.error(
+        "❌ Error en /api/sophia/feedback:",
+        error
+      );
+
+      res.status(500).json({
+        error: "Error interno del servidor"
+      });
     }
-
-    const db = await connect();
-    await db.collection("feedback").insertOne({
-      comentario,
-      texto_evaluado: texto_evaluado || null,
-      ird_global: ird_global !== undefined ? ird_global : null,
-      userId: userId || null,
-      timestamp: timestamp || new Date().toISOString(),
-      created_at: new Date()
-    });
-
-    console.log("📝 Feedback de SOPHIA guardado en MongoDB");
-    res.json({ message: "Comentario recibido correctamente" });
-  } catch (error) {
-    console.error("❌ Error en /api/sophia/feedback:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
   }
-});
+);
 
 // ─── Comparación con LOGOS (Modalidad A: Comparar Posiciones) ────────
-const { compare: compareWithLogos } = require("./modules/logosEvaluationPipeline");
+const {
+  compare: compareWithLogos
+} = require(
+  "./modules/logosEvaluationPipeline"
+);
 
-app.post("/api/logos/compare", async (req, res) => {
-  try {
-    const { posicionA, posicionB } = req.body;
-    if (!posicionA || !posicionA.trim() || !posicionB || !posicionB.trim()) {
-      return res.status(400).json({ error: "posicionA y posicionB son requeridos" });
+app.post(
+  "/api/logos/compare",
+  async (req, res) => {
+    try {
+      const {
+        posicionA,
+        posicionB
+      } = req.body;
+
+      if (
+        !posicionA ||
+        !posicionA.trim() ||
+        !posicionB ||
+        !posicionB.trim()
+      ) {
+        return res.status(400).json({
+          error:
+            "posicionA y posicionB son requeridos"
+        });
+      }
+
+      const resultado =
+        await compareWithLogos({
+          posicionA,
+          posicionB
+        });
+
+      res.json(resultado);
+    } catch (error) {
+      console.error(
+        "❌ Error en /api/logos/compare:",
+        error
+      );
+
+      res.status(500).json({
+        error: "Error interno del servidor"
+      });
     }
-
-    const resultado = await compareWithLogos({ posicionA, posicionB });
-    res.json(resultado);
-  } catch (error) {
-    console.error("❌ Error en /api/logos/compare:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
   }
-});
+);
 
 // ─── Feedback de usuarios sobre comparaciones de Logos ─────────────────
-app.post("/api/logos/feedback", async (req, res) => {
-  try {
-    const { comentario, validacion, timestamp } = req.body;
-    if (!comentario || !comentario.trim()) {
-      return res.status(400).json({ error: "Comentario requerido" });
+app.post(
+  "/api/logos/feedback",
+  async (req, res) => {
+    try {
+      const {
+        comentario,
+        validacion,
+        timestamp
+      } = req.body;
+
+      if (
+        !comentario ||
+        !comentario.trim()
+      ) {
+        return res.status(400).json({
+          error: "Comentario requerido"
+        });
+      }
+
+      const db = await connect();
+
+      await db
+        .collection("logos_feedback")
+        .insertOne({
+          comentario,
+          validacion:
+            validacion || null,
+          timestamp:
+            timestamp ||
+            new Date().toISOString(),
+          created_at: new Date()
+        });
+
+      console.log(
+        "📝 Feedback de Logos guardado en MongoDB"
+      );
+
+      res.json({
+        message:
+          "Comentario recibido correctamente"
+      });
+    } catch (error) {
+      console.error(
+        "❌ Error en /api/logos/feedback:",
+        error
+      );
+
+      res.status(500).json({
+        error: "Error interno del servidor"
+      });
     }
-
-    const db = await connect();
-    await db.collection("logos_feedback").insertOne({
-      comentario,
-      validacion: validacion || null, // estado de la Prueba de Reconstrucción, si se completó
-      timestamp: timestamp || new Date().toISOString(),
-      created_at: new Date()
-    });
-
-    console.log("📝 Feedback de Logos guardado en MongoDB");
-    res.json({ message: "Comentario recibido correctamente" });
-  } catch (error) {
-    console.error("❌ Error en /api/logos/feedback:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
   }
-});
+);
 
 // ─── Endpoint protegido ────────────────────────────────
-app.get("/api/profile", authenticate, (req, res) => {
-  res.json({ user: req.user });
-});
+app.get(
+  "/api/profile",
+  authenticate,
+  (req, res) => {
+    res.json({
+      user: req.user
+    });
+  }
+);
