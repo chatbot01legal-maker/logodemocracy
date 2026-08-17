@@ -5,49 +5,39 @@ let vertex = null;
 function getVertex() {
   if (vertex) return vertex;
 
-  // Corrección determinista: intercepta el cruce de variables de entorno
   const rawLocation = process.env.GOOGLE_CLOUD_LOCATION;
   const project = process.env.GOOGLE_CLOUD_PROJECT || 
                  (rawLocation === "logodemocracy-ai-2026" ? "logodemocracy-ai-2026" : "logodemocracy-ai-2026");
   const location = (rawLocation === "logodemocracy-ai-2026") ? "us-central1" : (rawLocation || "us-central1");
 
-let credentials = null;
+  let credentials = null;
 
-if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+  if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+    const b64 = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
+    credentials = JSON.parse(
+      Buffer.from(b64, 'base64').toString('utf8')
+    );
+  } else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    const fs = require('fs');
+    const keyPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+    console.log(
+      `[SOPHIA-VERTEX] Cargando credencial desde archivo: ${keyPath}`
+    );
+    credentials = JSON.parse(
+      fs.readFileSync(keyPath, 'utf8')
+    );
+  }
 
-  const b64 = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
-
-  credentials = JSON.parse(
-    Buffer.from(b64, 'base64').toString('utf8')
-  );
-
-}
-else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-
-  const fs = require('fs');
-
-  const keyPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-
-  console.log(
-    `[SOPHIA-VERTEX] Cargando credencial desde archivo: ${keyPath}`
-  );
-
-  credentials = JSON.parse(
-    fs.readFileSync(keyPath, 'utf8')
-  );
-}
-
-
-const config = {
-  project,
-  location
-};
-
-if (credentials) {
-  config.googleAuthOptions = {
-    credentials
+  const config = {
+    project,
+    location
   };
-}
+
+  if (credentials) {
+    config.googleAuthOptions = {
+      credentials
+    };
+  }
 
   vertex = new VertexAI(config);
   return vertex;
@@ -75,11 +65,7 @@ async function askVertex(prompt, model = "gemini-2.5-flash", timeoutMs = 50000, 
   const requestPayload = {
     contents: [{ role: "user", parts: [{ text: prompt }] }],
   };
-  // generationConfig es opcional — si no se pasa, el comportamiento es
-  // idéntico al de siempre (nadie que ya use askVertex() se ve afectado).
-  // Sirve principalmente para bajar la "temperatura" (creatividad) en
-  // pasos que necesitan ser más consistentes entre corridas, como la
-  // reconstrucción textual fiel de LOGOS.
+
   if (generationConfig) {
     requestPayload.generationConfig = generationConfig;
   }
@@ -89,59 +75,45 @@ async function askVertex(prompt, model = "gemini-2.5-flash", timeoutMs = 50000, 
   let response;
   try {
     response = await Promise.race([requestPromise, timeoutPromise]);
-    console.log("🔍 RAW RESPONSE VERTEX:");
-console.dir(response, { depth: 10 });
+    // 💡 LOGS LIMPIOS: Eliminado el volcado masivo crudo (console.dir con depth:10)
   } catch (err) {
     console.error(`[SOPHIA-VERTEX] Error en llamada:`, err.message);
     throw err;
   }
-const candidates =
-  response?.response?.candidates ||
-  response?.candidates ||
-  response?.[0]?.candidates;
 
-if (!candidates || !candidates.length) {
-  throw new Error("[SOPHIA-VERTEX] No hay candidates en la respuesta");
-}
+  const candidates =
+    response?.response?.candidates ||
+    response?.candidates ||
+    response?.[0]?.candidates;
 
-const parts = candidates[0]?.content?.parts;
+  if (!candidates || !candidates.length) {
+    throw new Error("[SOPHIA-VERTEX] No hay candidates en la respuesta");
+  }
 
-if (!parts || !parts.length) {
-  throw new Error("[SOPHIA-VERTEX] No hay parts en la respuesta");
-}
+  const parts = candidates[0]?.content?.parts;
 
-const textResponse =
-  parts.find(p => typeof p.text === "string")?.text;
+  if (!parts || !parts.length) {
+    throw new Error("[SOPHIA-VERTEX] No hay parts en la respuesta");
+  }
 
-if (!textResponse) {
-  throw new Error("[SOPHIA-VERTEX] No se encontró texto en parts");
-}
+  const textResponse =
+    parts.find(p => typeof p.text === "string")?.text;
 
-console.log(`[SOPHIA-VERTEX] Texto extraído OK`);
-return textResponse;
-  
+  if (!textResponse) {
+    throw new Error("[SOPHIA-VERTEX] No se encontró texto en parts");
+  }
+
+  console.log(`[SOPHIA-VERTEX] Texto extraído OK`);
+  return textResponse;
 }
 
 /**
  * Llama a Gemini CON BÚSQUEDA REAL DE GOOGLE activada (grounding).
- * A diferencia de askVertex(), esta función le permite a Gemini buscar
- * información actual en Google antes de responder, y devuelve también
- * las fuentes reales que encontró — no solo el texto.
- *
- * Usada por modules/evidencePipeline.js para verificar afirmaciones
- * contra el mundo real, en vez de contra el conocimiento entrenado de Gemini.
- *
- * @param {string} prompt
- * @param {string} model
- * @param {number} timeoutMs
- * @returns {Promise<{text: string, sources: Array<{uri: string, title: string}>}>}
  */
 async function askVertexWithSearch(prompt, model = "gemini-2.5-flash", timeoutMs = 50000) {
   console.log(`[SOPHIA-VERTEX] Preparando llamada CON BÚSQUEDA REAL a Vertex (${model}) con timeout de ${timeoutMs}ms`);
 
   const client = getVertex();
-
-  // La búsqueda con Google requiere el namespace "preview" del SDK.
   const gm = client.getGenerativeModel({ model });
 
   const googleSearchTool = {
@@ -163,11 +135,9 @@ async function askVertexWithSearch(prompt, model = "gemini-2.5-flash", timeoutMs
   let response;
   try {
     response = await Promise.race([requestPromise, timeoutPromise]);
-    console.log("🔍 RAW RESPONSE VERTEX (con búsqueda):");
-    console.dir(response, { depth: 10 });
+    // 💡 LOGS LIMPIOS: Eliminado el volcado masivo crudo (console.dir con depth:10)
   } catch (err) {
     console.error(`[SOPHIA-VERTEX] Error en llamada con búsqueda:`, err.message);
-    console.error(`[SOPHIA-VERTEX] Si el error persiste mencionando "tool" o "google_search" no reconocido, es señal de que hay que migrar a la librería nueva @google/genai — avisar para revisar.`);
     throw err;
   }
 
@@ -193,9 +163,6 @@ async function askVertexWithSearch(prompt, model = "gemini-2.5-flash", timeoutMs
     throw new Error("[SOPHIA-VERTEX] No se encontró texto en parts (búsqueda)");
   }
 
-  // Extraer las fuentes reales que Vertex usó para fundamentar la respuesta.
-  // Si Google cambia la forma de este objeto, esto puede quedar vacío sin
-  // romper el resto — por eso todo el acceso es defensivo (?.).
   const groundingMetadata = candidate?.groundingMetadata;
   const sources = [];
   if (groundingMetadata?.groundingChunks) {
