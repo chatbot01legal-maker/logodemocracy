@@ -69,6 +69,36 @@ body {
   overflow-x: hidden;
 }
 
+/* ─── BOOT SCREEN OVERLAY ───────────────────────────── */
+#boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--c-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  transition: opacity 800ms ease, visibility 800ms ease;
+  cursor: pointer;
+}
+
+#boot-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#boot-text {
+  font-family: var(--f-mono);
+  font-size: clamp(0.85rem, 1.8vw, 1.1rem);
+  color: var(--c-academia);
+  white-space: pre-wrap;
+  line-height: 1.8;
+  max-width: 600px;
+  text-align: center;
+}
+
 /* ─── CONTENEDOR ─────────────────────────────────────── */
 .container {
   width: 100%;
@@ -77,15 +107,7 @@ body {
   padding: 0 var(--space-md);
 }
 
-
 /* ─── DIVISOR ANIMADO ────────────────────────────────── */
-.divider-line {
-  position: relative;
-  height: 1px;
-  background: var(--c-border);
-  overflow: visible;
-}
-
 .divider-line {
   position: relative;
   height: 1px;
@@ -93,7 +115,6 @@ body {
   overflow: hidden;
 }
 
-/* “pulso ECG” */
 .divider-line::after {
   content: "";
   position: absolute;
@@ -114,7 +135,6 @@ body {
   opacity: 0.9;
 }
 
-/* micro “latido” de la línea base */
 .divider-line {
   animation: lineHeartbeat 2.2s ease-in-out infinite;
 }
@@ -126,7 +146,6 @@ body {
   100% { left: 110%; opacity: 0; }
 }
 
-/* leve vibración orgánica (sensación de vida) */
 @keyframes lineHeartbeat {
   0%, 100% { transform: scaleY(1); opacity: 0.9; }
   50%      { transform: scaleY(1.6); opacity: 1; }
@@ -153,7 +172,6 @@ body {
   gap: var(--space-md);
 }
 
-/* Reveal animation */
 .reveal-line {
   opacity: 0;
   animation: revealFade 800ms ease forwards;
@@ -202,7 +220,7 @@ body {
   font-weight: 300;
   color: var(--c-muted);
   line-height: 1.7;
-  max-width: 620px;
+  max-width: 560px;
 }
 
 .hero-cta {
@@ -519,7 +537,6 @@ body {
   border-radius: 50%;
 }
 
-/* Panel técnico */
 .academia-panel {
   border: 1px solid var(--c-border);
   border-radius: 1px;
@@ -721,7 +738,6 @@ body {
   flex-shrink: 0;
 }
 
-/* Panel: flujo de datos anonimizados (mock terminal, estilo academia-panel) */
 .lab-panel {
   border: 1px solid var(--c-border);
   border-radius: 1px;
@@ -758,59 +774,7 @@ body {
   box-shadow: 0 0 6px var(--c-lab);
 }
 
-/* ─── S6b RED SOCIAL COGNITIVA (NUEVO BLOQUE CONVOCANTE) ── */
-.redsocial-section {
-  background: linear-gradient(180deg, var(--c-bg), rgba(59,130,246,0.03) 50%, var(--c-bg));
-  border-top: 1px solid var(--c-border);
-  border-bottom: 1px solid var(--c-border);
-}
-
-.redsocial-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-lg);
-  align-items: center;
-}
-
-.redsocial-content p {
-  color: var(--c-muted);
-  margin-bottom: var(--space-sm);
-  line-height: 1.8;
-}
-
-.redsocial-content p strong {
-  color: var(--c-text);
-}
-
-.redsocial-card {
-  border: 1px solid rgba(59,130,246,0.25);
-  border-radius: 1px;
-  padding: var(--space-lg);
-  background: rgba(59,130,246,0.04);
-  position: relative;
-}
-
-.redsocial-card::before {
-  content: "✦ GENKIDAMA COGNITIVA";
-  position: absolute;
-  top: -10px;
-  left: 24px;
-  font-family: var(--f-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  color: var(--c-sophia);
-  background: var(--c-bg);
-  padding: 0 8px;
-}
-
-.redsocial-card p {
-  font-family: var(--f-mono);
-  font-size: 0.88rem;
-  color: var(--c-text);
-  line-height: 1.7;
-}
-
-/* ─── S6c HIPÓTESIS EN INVESTIGACIÓN ─────────────────── */
+/* ─── S6b HIPÓTESIS EN INVESTIGACIÓN ─────────────────── */
 .hipotesis-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1130,7 +1094,7 @@ body {
 
 .footer-logo {
   font-family: var(--f-mono);
- font-size: 0.65rem;
+  font-size: 0.65rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   color: var(--c-faint);
@@ -1199,7 +1163,6 @@ body {
   .agentes-grid        { grid-template-columns: 1fr; }
   .academia-layout     { grid-template-columns: 1fr; }
   .laboratorio-layout  { grid-template-columns: 1fr; }
-  .redsocial-grid      { grid-template-columns: 1fr; }
   .hipotesis-grid      { grid-template-columns: 1fr; }
   .cuadratica-layout   { grid-template-columns: 1fr; }
   .modelo-variables    { grid-template-columns: 1fr; }
@@ -1274,16 +1237,14 @@ body {
   .footer-inner { flex-direction: column; text-align: center; }
   .footer-nav { flex-wrap: wrap; justify-content: center; gap: var(--space-sm); }
 
-  .divider-dot { display: none; } /* GPU cost on mobile */
+  .divider-dot { display: none; }
 }
 
 </style>
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════════════════════
-       PANTALLA DE INICIO / BOOT SCREEN
-  ══════════════════════════════════════════════════════════ -->
+  <!-- Overlay Pantalla de Entrada (Cita Neruda) -->
   <div id="boot-screen">
     <pre id="boot-text"></pre>
   </div>
@@ -1292,42 +1253,38 @@ body {
        NAVEGACIÓN SUPERIOR
   ══════════════════════════════════════════════════════════ -->
   <header class="topbar">
-    <a href="/" class="brand">LOGODEMOCRACY</a>
 
-    <nav class="module-nav">
-      <a href="/pages/archive-template.html" class="module-link">Academia</a>
-      <a href="/pages/logos.html"           class="module-link">Logos</a>
-      <a href="/pages/sophia.html"           class="module-link">Sophia</a>
-    </nav>
+  <a href="/" class="brand">LOGODEMOCRACY</a>
 
-    <div class="topbar-right">
-      <span id="userLabel" class="user-label">⌂ Invitado</span>
-      <a href="#" id="authButton" class="auth-btn">Log in</a>
-    </div>
+  <nav class="module-nav">
+    <a href="/pages/archive-template.html" class="module-link">Academia</a>
+    <a href="/pages/sophia.html"           class="module-link">Sophia</a>
+  </nav>
 
-    <button class="mobile-menu-btn" id="mobileMenuBtn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M4 6H20"/><path d="M4 12H20"/><path d="M4 18H20"/>
-      </svg>
-    </button>
-  </header>
+  <button class="mobile-menu-btn" id="mobileMenuBtn">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M4 6H20"/><path d="M4 12H20"/><path d="M4 18H20"/>
+    </svg>
+  </button>
+
+</header>
 
   <!-- ═══════════════════════════════════════════════════════
        S1 — HERO
   ══════════════════════════════════════════════════════════ -->
   <section class="hero" id="inicio">
     <div class="hero-inner">
-      <span class="badge reveal-line" style="--delay:0ms">La Genkidama de la Atención Ciudadana</span>
+      <span class="badge reveal-line" style="--delay:0ms">Democracia Aumentada</span>
       <h1 class="hero-title">
         <span class="reveal-line" style="--delay:150ms">La democracia es un proceso</span>
         <span class="reveal-line" style="--delay:300ms">de pensamiento colectivo.</span>
       </h1>
       <p class="hero-sub reveal-line" style="--delay:500ms">
-        No te pedimos que votes sin sentido. Te invitamos a pausar, leer al menos 5 minutos,<br class="br-desk" />
-        pensar con rigor y enfocar nuestra voluntad cognitiva para iluminar los grandes problemas públicos.
+        Tecnología e Inteligencia artificial al servicio de la deliberación,<br class="br-desk" />
+        la educación y la ciudadanía.
       </p>
       <a href="#concepto" class="hero-cta reveal-line" style="--delay:700ms">
-        Explora nuestro ecosistema y empieza a pensar <span class="cta-arrow">↓</span>
+        Explorar el ecosistema <span class="cta-arrow">↓</span>
       </a>
     </div>
   </section>
@@ -1450,7 +1407,7 @@ body {
             <span class="agent-id"></span>
             <span class="agent-tag">Protocolo de comunicación</span>
           </div>
-          <span style="display:inline-block; font-size:.62rem; letter-spacing:.04em; text-transform:uppercase; color:var(--c-sophia); border:1px solid var(--c-sophia); border-radius:3px; padding:2px 6px; margin-bottom:8px;">Beta</span>
+          <span style="display:inline-block; font-size:.62rem; letter-spacing:.04em; text-transform:uppercase; color:var(--c-sophia); border:1px solid var(--c-sophia); border-radius:3px; padding:2px 6px; margin-bottom:8px;">Disponible</span>
           <h3 class="agent-name">Sophia</h3>
           <p class="agent-desc">Filtro epistémico de calidad argumentativa. Evalúa la coherencia, claridad, evidencia y honestidad intelectual de los documentos ciudadanos antes de su incorporación al conocimiento colectivo de la Academia.</p>
           <ul class="agent-capabilities">
@@ -1509,31 +1466,6 @@ body {
             <div class="panel-line panel-line--comment"># Rey Filósofo activado para lectura</div>
             <div class="panel-line panel-line--cursor"><span class="p-violet">_</span></div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
-
-  <!-- ═══════════════════════════════════════════════════════
-       S4.5 — RED SOCIAL COGNITIVA (NUEVO BLOQUE VISUAL)
-  ══════════════════════════════════════════════════════════ -->
-  <section class="section redsocial-section" id="redsocial">
-    <div class="container">
-      <div class="redsocial-grid">
-        <div class="redsocial-content">
-          <span class="section-label" style="--label-color: var(--c-sophia)">Próxima Frontera</span>
-          <h2 class="section-title">Una red social diseñada<br />para pensar y pausar</h2>
-          <p>Las redes sociales tradicionales premian la inmediatez, el ruido y la polarización rápida. <strong>LogoDemocracy nace para ser radicalmente distinta</strong>.</p>
-          <p>Imaginamos un espacio donde la interacción social exige un compromiso cognitivo previo: te invitamos a dedicar <strong>al menos 5 minutos a leer un documento con profundidad</strong>, asimilar sus premisas y estructurar tus ideas antes de emitir una opinión o debatir.</p>
-          <p>Es el antídoto contra la superficialidad digital: una red social pensada para cultivar el ejercicio del pensamiento colectivo y la deliberación genuina.</p>
-        </div>
-        <div class="redsocial-card">
-          <p>
-            "La atención humana es un recurso limitado. Pero cuando miles de mentes enfocan su voluntad cognitiva sobre un problema público —asistidas por IA y guiadas por el rigor ético—, ese problema se ilumina.<br><br>
-            Eso es la Genkidama de la atención ciudadana: transformar el debate digital en un motor de inteligencia colectiva."
-          </p>
         </div>
       </div>
     </div>
@@ -1656,6 +1588,43 @@ body {
       </div>
     </div>
   </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       S6b — HIPÓTESIS EN INVESTIGACIÓN
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section hipotesis" id="hipotesis">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label" style="--label-color: var(--c-lab)">En curso</span>
+        <h2 class="section-title">Hipótesis en observación</h2>
+        <p class="section-sub">Algunas de las preguntas que este laboratorio busca responder con datos agregados, a medida que la comunidad crece.</p>
+      </div>
+      <div class="hipotesis-grid">
+        <div class="hipotesis-card">
+          <span class="hipotesis-status">Preliminar</span>
+          <p class="hipotesis-text">Los usuarios con pensamiento sistémico alto responden mejor a mapas causales que a explicaciones lineales.</p>
+          <span class="hipotesis-modulo">Rey Filósofo · perfil pedagógico</span>
+        </div>
+        <div class="hipotesis-card">
+          <span class="hipotesis-status">Preliminar</span>
+          <p class="hipotesis-text">Los usuarios de orientación concreta mejoran su comprensión más rápido cuando el contenido parte de analogías.</p>
+          <span class="hipotesis-modulo">Academia · trayectoria formativa</span>
+        </div>
+        <div class="hipotesis-card">
+          <span class="hipotesis-status">En observación</span>
+          <p class="hipotesis-text">La representación robusta del argumento contrario (steelman) incrementa el Índice de Robustez Deliberativa.</p>
+          <span class="hipotesis-modulo">Sophia · calidad argumentativa</span>
+        </div>
+        <div class="hipotesis-card">
+          <span class="hipotesis-status">En observación</span>
+          <p class="hipotesis-text">Los cierres metacognitivos explícitos aumentan la persistencia y el retorno a la plataforma.</p>
+          <span class="hipotesis-modulo">Rey Filósofo · bitácora metacognitiva</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
 
   <!-- ═══════════════════════════════════════════════════════
        S7 — VOTACIÓN CUADRÁTICA
@@ -1784,17 +1753,17 @@ body {
     </div>
   </footer>
 
+  <script src="assets/js/home.js"></script>
   <script>
 /* ═══════════════════════════════════════════════════════
-   LOGODEMOCRACY — home.js
-   Scroll reveals, timeline, interactions
+   LOGODEMOCRACY — home.js (DOM reveals / interactions)
    ═══════════════════════════════════════════════════════ */
 
 (function () {
   'use strict';
 
   /* ─── INTERSECTION OBSERVER — GENERIC REVEALS ──────── */
-  const revealEls = document.querySelectorAll('.section-header, .concepto-grid, .formula-concepto, .agent-card, .academia-layout, .laboratorio-layout, .redsocial-card, .hipotesis-card, .cuadratica-layout, .formula-wrapper, .modelo-variables, .cierre-quote');
+  const revealEls = document.querySelectorAll('.section-header, .concepto-grid, .formula-concepto, .agent-card, .academia-layout, .laboratorio-layout, .hipotesis-card, .cuadratica-layout, .formula-wrapper, .modelo-variables, .cierre-quote');
 
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -1818,7 +1787,6 @@ body {
       if (entry.isIntersecting) {
         const nodes = Array.from(timelineNodes);
         const idx = nodes.indexOf(entry.target);
-        // Stagger each node
         setTimeout(() => {
           entry.target.classList.add('is-visible');
         }, idx * 120);
@@ -1877,37 +1845,18 @@ body {
 
   sections.forEach((s) => navObserver.observe(s));
 
-  /* ─── MOBILE MENU (base-layout compatible) ─────────── */
+  /* ─── MOBILE MENU ─────────────────────────────────── */
   const mobileBtn = document.getElementById('mobileMenuBtn');
   const moduleNav = document.querySelector('.module-nav');
   const topbarRight = document.querySelector('.topbar-right');
   if (mobileBtn) {
     mobileBtn.addEventListener('click', () => {
-      moduleNav.classList.toggle('open');
-      topbarRight.classList.toggle('open');
+      moduleNav?.classList.toggle('open');
+      topbarRight?.classList.toggle('open');
     });
   }
-
-  /* ─── AUTH DEMO ──────────────────────────────────────── */
-  let isLoggedIn = false;
-  const userLabel = document.getElementById('userLabel');
-  const authButton = document.getElementById('authButton');
-  function renderAuth() {
-    if (!userLabel || !authButton) return;
-    userLabel.textContent = isLoggedIn ? '⌂ Usuario' : '⌂ Invitado';
-    authButton.textContent = isLoggedIn ? 'Log out' : 'Log in';
-  }
-  if (authButton) {
-    authButton.addEventListener('click', (e) => {
-      e.preventDefault();
-      isLoggedIn = !isLoggedIn;
-      renderAuth();
-    });
-  }
-  renderAuth();
 
 })();
-
 </script>
 </body>
 </html>
