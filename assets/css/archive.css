@@ -20,9 +20,12 @@
   --accent-soft:   rgba(47,107,62,0.08);
   --accent-border: rgba(47,107,62,0.3);
 
-  /* Acentos de otros módulos citados dentro de esta página (Sophia) */
+  /* Acentos de otros módulos citados dentro de esta página (Sophia, Rey Filósofo) */
   --c-sophia: #2B5F8A;
   --c-seal:   #7A1F2B;
+  --c-rey:        #A8631E;
+  --c-rey-border: rgba(168,99,30,0.4);
+  --c-on-accent:  #F6F2E7;
 
   --header-color:  var(--accent);
   --header-border: rgba(47,107,62,.2);
