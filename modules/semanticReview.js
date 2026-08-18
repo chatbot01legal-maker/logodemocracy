@@ -1,8 +1,8 @@
 // modules/semanticReview.js
-// Revisor Semántico de Falsos Positivos Contextuales
+// Revisor Semántico de Falsos Positivos Contextuales (Capa 3 - SOPHIA v4.0)
 //
 // Principio fundamental: NO tiene autoridad sobre el Protocolo SOPHIA.
-// Solo interpreta penalizaciones ya emitidas. No modifica IRD, átomos ni puntajes.
+// Solo interpreta activaciones ya producidas por Capa 1. No modifica IRD, átomos ni puntajes.
 
 const { askVertex } = require("./vertexClient");
 
@@ -86,42 +86,50 @@ function validarRespuestaLLM(parsed) {
 }
 
 /**
- * Extrae una ventana de contexto alrededor de la evidencia.
+ * Extrae una ventana de contexto acotada alrededor del fragmento.
  */
-function extraerContexto(evidenciaText, documentoCompleto) {
-  if (!evidenciaText || typeof documentoCompleto !== 'string') {
-    return documentoCompleto.substring(0, 3000);
+function extraerContexto(fragmento, documentoCompleto) {
+  if (!fragmento || typeof documentoCompleto !== 'string') {
+    return fragmento || '';
   }
 
-  const idx = documentoCompleto.indexOf(evidenciaText);
+  const idx = documentoCompleto.indexOf(fragmento);
   if (idx === -1) {
-    return documentoCompleto.substring(0, 3000);
+    return fragmento;
   }
 
-  const start = Math.max(0, idx - 1500);
-  const end = Math.min(documentoCompleto.length, idx + evidenciaText.length + 1500);
+  const start = Math.max(0, idx - 1000);
+  const end = Math.min(documentoCompleto.length, idx + fragmento.length + 1000);
   return documentoCompleto.substring(start, end);
 }
 
 /**
- * Analiza una penalización individual para determinar si es un falso positivo contextual.
+ * Analiza una activación de Capa 1 para determinar si es un falso positivo contextual.
  */
 async function analizarPenalizacion(evidencia, documentoCompleto) {
-  const contextoAcotado = extraerContexto(evidencia.text, documentoCompleto);
+  const contextoAcotado = extraerContexto(evidencia.fragmento, documentoCompleto);
 
-  const prompt = `Eres el Revisor Semántico de SOPHIA.
+  const prompt = `Eres el Revisor Semántico de Capa 3 de SOPHIA.
 
-El documento ya fue evaluado mediante un algoritmo determinista.
-Tu única tarea consiste en clasificar la penalización recibida en una de las categorías predefinidas.
+CONTRATO DE AUTORIDAD Y LÍMITES ESTRICTOS:
+- No eres parte del motor SOPHIA determinista ni del Fact Checker.
+- No puedes modificar ningún resultado ni penalización producida por Capa 1.
+- No puedes modificar el IRD_global ni recalculaciones de puntajes.
+- No puedes crear nuevas infracciones ni nuevos átomos.
+- No puedes recalcular fases ni reevaluar el documento completo.
+- Tu evaluación debe limitarse exclusivamente a la activación recibida y al fragmento contextual proporcionado. No debes inferir una nueva evaluación global del documento.
+Tu única tarea es determinar si la activación producida por Capa 1 podría constituir un falso positivo contextual.
 
-DATOS DE LA PENALIZACIÓN:
-- Criterio: ${evidencia.criterion || evidencia.codigo || 'No especificado'}
-- Nombre del criterio: ${evidencia.nombre || evidencia.name || 'No especificado'}
-- Átomo activado: ${evidencia.atom || 'No especificado'}
-- Texto de la evidencia: "${evidencia.text || ''}"
-- Penalización aplicada: ${evidencia.penalty || evidencia.puntaje || 'No especificado'}
+DATOS DE LA ACTIVACIÓN DE CAPA 1:
+- Criterio: ${evidencia.criterio || 'No especificado'}
+- Átomo: ${evidencia.atomo || 'No especificado'}
+- Fase: ${evidencia.fase || 'No especificado'}
+- Perfil: ${evidencia.perfil || 'No especificado'}
+- Fragmento: "${evidencia.fragmento || ''}"
+- Indicador activado: ${evidencia.indicador_activado || 'No especificado'}
+- Severidad base: ${evidencia.severidad_base || 'No especificado'}
 
-CONTEXTO DE LA EVIDENCIA (Fragmento del documento):
+CONTEXTO EXCLUSIVO DE LA EVIDENCIA:
 """
 ${contextoAcotado}
 """
@@ -131,10 +139,9 @@ ${Object.entries(CATEGORIAS).map(([k, v]) => `- ${k} → ${v.descripcion}`).join
 
 INSTRUCCIONES ESTRICTAS:
 1. La única salida válida es un JSON.
-2. Está prohibido: evaluar nuevamente el documento, modificar el IRD, emitir recomendaciones o proponer nuevas penalizaciones.
-3. Clasifica la penalización en EXACTAMENTE UNA de las categorías listadas.
-4. Indica tu nivel de confianza como un número entre 0 y 1.
-5. Explica brevemente por qué elegiste esa categoría.
+2. Clasifica la activación en EXACTAMENTE UNA de las categorías listadas.
+3. Indica tu nivel de confianza como un número entre 0 y 1.
+4. Explica brevemente por qué elegiste esa categoría.
 
 Responde ÚNICAMENTE con el siguiente formato JSON:
 {
@@ -154,13 +161,11 @@ Responde ÚNICAMENTE con el siguiente formato JSON:
 
     const parsed = JSON.parse(jsonMatch[0]);
 
-    // Validar respuesta del LLM
     const validacion = validarRespuestaLLM(parsed);
     if (!validacion.valido) {
       throw new Error(validacion.error);
     }
 
-    // Lógica determinista
     const falsoPositivo = derivarFalsoPositivo(parsed.categoria);
     const requiereRevision = parsed.confianza < UMBRAL_CONFIANZA;
 
@@ -174,7 +179,7 @@ Responde ÚNICAMENTE con el siguiente formato JSON:
     };
   } catch (error) {
     console.error(
-      `Error en Revisor Semántico para criterio ${evidencia.criterion || evidencia.codigo}:`,
+      `Error en Revisor Semántico para criterio ${evidencia.criterio || 'desconocido'}:`,
       error.message
     );
     return {
@@ -182,14 +187,14 @@ Responde ÚNICAMENTE con el siguiente formato JSON:
       categoria: "ambiguo",
       falso_positivo: false,
       confianza: 0,
-      requiere_revision_humana: true, // Fuerza revisión si hay error
+      requiere_revision_humana: true,
       razon: `Fallo en el análisis: ${error.message}`
     };
   }
 }
 
 /**
- * Procesa todas las penalizaciones de una evaluación.
+ * Procesa todas las activaciones de una evaluación.
  */
 async function procesarPenalizaciones(evidencias, documentoCompleto) {
   if (!evidencias || evidencias.length === 0) return [];

@@ -42,3 +42,130 @@
 ♻️ [Read-Only Cache HIT] Entregando análisis pre-calculado de Logodemocracia.md
 📥 [9a8c5a76-7081-4ada-8f22-e3f40f08b82c] GET /api/sophia/analysis/Logodemocracia.md
 ♻️ [Read-Only Cache HIT] Entregando análisis pre-calculado de Logodemocracia.md
+📥 [f5759ff8-97db-47e4-958b-05d68283e97e] POST /api/sophia/evaluate
+📥 [1e0398fa-6395-4f3a-a9cf-5503de3ca699] POST /api/sophia/evaluate
+📥 [28370295-4e31-40ac-bbcf-9e0c165b4680] POST /api/sophia/evaluate
+📊 Iniciando Pipeline Cognitivo
+📝 Texto recibido (126 caracteres)
+🔍 PIPELINE STEP 1: Ejecutando evaluación local (Sophia Engine)...
+✅ Evaluación local completada. IRD: 100, evidencias: 0
+🔍 PIPELINE STEPS 2 & 3: Iniciando Revisión Semántica y Auditoría Factual en paralelo...
+⏩ No hay penalizaciones para revisar.
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=3648ms
+[SOPHIA-GENAI] METRICS stage=unknown input=337 output=1 thoughts=388 total=726 model=gemini-2.5-flash
+✅ Verificación factual completada. Verificados: 0
+🤖 PIPELINE STEP 4: Revisión de Gemini...
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=19329ms
+[SOPHIA-GENAI] METRICS stage=unknown input=945 output=532 thoughts=2529 total=4006 model=gemini-2.5-flash
+✅ Revisión de Gemini completada
+📊 PIPELINE STEP 5: Ensamblando informe final...
+🏁 PIPELINE COMPLETE
+📥 [12e0dd51-262b-4766-a5ab-c3f16b2c747f] POST /api/sophia/evaluate
+📊 Iniciando Pipeline Cognitivo
+📝 Texto recibido (231 caracteres)
+🔍 PIPELINE STEP 1: Ejecutando evaluación local (Sophia Engine)...
+✅ Evaluación local completada. IRD: 96, evidencias: 0
+🔍 PIPELINE STEPS 2 & 3: Iniciando Revisión Semántica y Auditoría Factual en paralelo...
+⏩ No hay penalizaciones para revisar.
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=2843ms
+[SOPHIA-GENAI] METRICS stage=unknown input=371 output=1 thoughts=391 total=763 model=gemini-2.5-flash
+✅ Verificación factual completada. Verificados: 0
+🤖 PIPELINE STEP 4: Revisión de Gemini...
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=12541ms
+[SOPHIA-GENAI] METRICS stage=unknown input=1267 output=700 thoughts=1512 total=3479 model=gemini-2.5-flash
+✅ Revisión de Gemini completada
+📊 PIPELINE STEP 5: Ensamblando informe final...
+🏁 PIPELINE COMPLETE
+📥 [37870e51-9946-4109-8332-7224faef45ca] POST /api/sophia/evaluate
+📊 Iniciando Pipeline Cognitivo
+📝 Texto recibido (229 caracteres)
+🔍 PIPELINE STEP 1: Ejecutando evaluación local (Sophia Engine)...
+✅ Evaluación local completada. IRD: 100, evidencias: 0
+🔍 PIPELINE STEPS 2 & 3: Iniciando Revisión Semántica y Auditoría Factual en paralelo...
+⏩ No hay penalizaciones para revisar.
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=3608ms
+[SOPHIA-GENAI] METRICS stage=unknown input=360 output=1 thoughts=468 total=829 model=gemini-2.5-flash
+✅ Verificación factual completada. Verificados: 0
+🤖 PIPELINE STEP 4: Revisión de Gemini...
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=22454ms
+[SOPHIA-GENAI] METRICS stage=unknown input=968 output=944 thoughts=2446 total=4358 model=gemini-2.5-flash
+✅ Revisión de Gemini completada
+📊 PIPELINE STEP 5: Ensamblando informe final...
+🏁 PIPELINE COMPLETE
+📥 [62590c3d-c3da-4d11-968e-c616dde4ef46] POST /api/sophia/evaluate
+📊 Iniciando Pipeline Cognitivo
+📝 Texto recibido (302 caracteres)
+🔍 PIPELINE STEP 1: Ejecutando evaluación local (Sophia Engine)...
+✅ Evaluación local completada. IRD: 98, evidencias: 0
+🔍 PIPELINE STEPS 2 & 3: Iniciando Revisión Semántica y Auditoría Factual en paralelo...
+⏩ No hay penalizaciones para revisar.
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=5088ms
+[SOPHIA-GENAI] METRICS stage=unknown input=378 output=1 thoughts=717 total=1096 model=gemini-2.5-flash
+✅ Verificación factual completada. Verificados: 0
+🤖 PIPELINE STEP 4: Revisión de Gemini...
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=16634ms
+[SOPHIA-GENAI] METRICS stage=unknown input=1170 output=631 thoughts=2151 total=3952 model=gemini-2.5-flash
+✅ Revisión de Gemini completada
+📊 PIPELINE STEP 5: Ensamblando informe final...
+🏁 PIPELINE COMPLETE
+📥 [8c7333cf-9d63-425d-9535-4e9798c868b5] POST /api/sophia/evaluate
+📊 Iniciando Pipeline Cognitivo
+📝 Texto recibido (425 caracteres)
+🔍 PIPELINE STEP 1: Ejecutando evaluación local (Sophia Engine)...
+✅ Evaluación local completada. IRD: 100, evidencias: 0
+🔍 PIPELINE STEPS 2 & 3: Iniciando Revisión Semántica y Auditoría Factual en paralelo...
+⏩ No hay penalizaciones para revisar.
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=3420ms
+[SOPHIA-GENAI] METRICS stage=unknown input=408 output=50 thoughts=322 total=780 model=gemini-2.5-flash
+   🔎 Verificando con búsqueda real (Vertex grounding): "la tasa de desempleo bajó al 2%..."
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash search=true
+[SOPHIA-GENAI] Texto extraído OK stage=unknown fuentes_encontradas=8
+[SOPHIA-GENAI] OK stage=unknown duration=15716ms sources_found=8
+[SOPHIA-GENAI] METRICS stage=unknown input=272 output=160 thoughts=2358 total=3008 model=gemini-2.5-flash
+✅ Verificación factual completada. Verificados: 0
+🤖 PIPELINE STEP 4: Revisión de Gemini...
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=18671ms
+[SOPHIA-GENAI] METRICS stage=unknown input=1025 output=905 thoughts=2363 total=4293 model=gemini-2.5-flash
+✅ Revisión de Gemini completada
+📊 PIPELINE STEP 5: Ensamblando informe final...
+🏁 PIPELINE COMPLETE
+📥 [98004319-8237-4ee3-ad99-24e802ee60c2] POST /api/sophia/evaluate
+📊 Iniciando Pipeline Cognitivo
+📝 Texto recibido (25 caracteres)
+🔍 PIPELINE STEP 1: Ejecutando evaluación local (Sophia Engine)...
+✅ Evaluación local completada. IRD: 100, evidencias: 0
+🔍 PIPELINE STEPS 2 & 3: Iniciando Revisión Semántica y Auditoría Factual en paralelo...
+⏩ No hay penalizaciones para revisar.
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=3165ms
+[SOPHIA-GENAI] METRICS stage=unknown input=324 output=1 thoughts=240 total=565 model=gemini-2.5-flash
+✅ Verificación factual completada. Verificados: 0
+🤖 PIPELINE STEP 4: Revisión de Gemini...
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=12852ms
+[SOPHIA-GENAI] METRICS stage=unknown input=932 output=623 thoughts=1861 total=3416 model=gemini-2.5-flash
+✅ Revisión de Gemini completada
+📊 PIPELINE STEP 5: Ensamblando informe final...
+🏁 PIPELINE COMPLETE
