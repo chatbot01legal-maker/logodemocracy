@@ -6,13 +6,14 @@
   <title>LogoDemocracy — Democracia Aumentada</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Sans:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/base-layout.css">
   <style>
   
 /* ═══════════════════════════════════════════════════════
    LOGODEMOCRACY — home.css
-   Filosofía visual: sistema cognitivo, no landing comercial
+   Filosofía visual: acta fundacional, no landing comercial.
+   Papel, tinta, un sello — la democracia como documento vivo.
    ═══════════════════════════════════════════════════════ */
 
 /* ─── RESET & BASE ──────────────────────────────────── */
@@ -23,32 +24,45 @@
 }
 
 :root {
-  --c-bg:       #050a12;
-  --c-text:     #e5e7eb;
-  --c-muted:    rgba(229,231,235,0.5);
-  --c-faint:    rgba(229,231,235,0.25);
-  --c-border:   rgba(255,255,255,0.08);
-  --c-glass:    rgba(255,255,255,0.03);
-  --c-glass-h:  rgba(255,255,255,0.055);
-  --c-aletheia: #8b5cf6;
-  --c-logos:    #06b6d4;
-  --c-rey:      #d97706;
-  --c-sophia:   #3b82f6;
-  --c-academia: #22c55e;
-  --c-lab:      #94a3b8;
-  --c-hope:     #f2b544;
+  /* Paleta — papel y tinta */
+  --c-bg:       #EDE7D8;
+  --c-bg-raised:#F6F2E7;
+  --c-text:     #1C1A16;
+  --c-muted:    rgba(28,26,22,0.62);
+  --c-faint:    rgba(28,26,22,0.4);
+  --c-border:   rgba(28,26,22,0.18);
+  --c-glass:    rgba(28,26,22,0.035);
+  --c-glass-h:  rgba(28,26,22,0.065);
+
+  --c-aletheia: #5B3B73;
+  --c-logos:    #146B6B;
+  --c-rey:      #A8631E;
+  --c-sophia:   #2B5F8A;
+  --c-academia: #2F6B3E;
+  --c-lab:      #6B6558;
+  --c-hope:     #B8862E;
+  --c-seal:     #7A1F2B;
+
+  /* Tipografía */
+  --f-display: 'Fraunces', serif;
   --f-mono: 'IBM Plex Mono', monospace;
   --f-sans: 'IBM Plex Sans', sans-serif;
+
+  /* Espaciado base */
   --space-xs:  0.5rem;
   --space-sm:  1rem;
   --space-md:  2rem;
   --space-lg:  4rem;
   --space-xl:  7rem;
   --space-2xl: 10rem;
+
+  /* Contenedor */
   --container: 1120px;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   background-color: var(--c-bg);
@@ -60,6 +74,159 @@ body {
   overflow-x: hidden;
 }
 
+/* ─── TOPBAR — SOLO MARCA + HAMBURGUESA ──────────────── */
+.ld-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1em var(--space-md);
+  background: linear-gradient(180deg, rgba(237,231,216,0.85), rgba(237,231,216,0));
+  backdrop-filter: blur(6px);
+}
+
+.ld-topbar .brand {
+  font-family: var(--f-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--c-text);
+  text-decoration: none;
+}
+
+.ld-menu-toggle {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-glass);
+  border: 1px solid var(--c-border);
+  border-radius: 1px;
+  cursor: pointer;
+  transition: border-color 200ms, background 200ms;
+}
+
+.ld-menu-toggle:hover { border-color: var(--c-hope); }
+
+.ld-menu-icon {
+  position: relative;
+  width: 18px;
+  height: 12px;
+}
+
+.ld-menu-icon span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--c-text);
+  transition: transform 250ms ease, opacity 250ms ease, top 250ms ease;
+}
+
+.ld-menu-icon span:nth-child(1) { top: 0; }
+.ld-menu-icon span:nth-child(2) { top: 50%; }
+.ld-menu-icon span:nth-child(3) { top: 100%; }
+
+.ld-menu-toggle[aria-expanded="true"] .ld-menu-icon span:nth-child(1) { top: 50%; transform: rotate(45deg); }
+.ld-menu-toggle[aria-expanded="true"] .ld-menu-icon span:nth-child(2) { opacity: 0; }
+.ld-menu-toggle[aria-expanded="true"] .ld-menu-icon span:nth-child(3) { top: 50%; transform: rotate(-45deg); }
+
+/* ─── PANEL DE MENÚ ───────────────────────────────────── */
+.ld-menu-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: rgba(237,231,216,0.97);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 350ms ease, visibility 350ms;
+}
+
+.ld-menu-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.ld-menu-nav {
+  width: 100%;
+  max-width: 420px;
+  padding: 0 var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.ld-menu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+.ld-menu-group-label {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-hope);
+  margin-bottom: 0.6em;
+}
+
+.ld-menu-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85em 0.2em;
+  border-bottom: 1px solid var(--c-border);
+  font-family: var(--f-mono);
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: var(--c-text);
+  text-decoration: none;
+  transition: color 200ms, padding-left 200ms, border-color 200ms;
+}
+
+.ld-menu-link:hover { padding-left: 0.6em; border-color: var(--c-hope); }
+
+.ld-menu-link--soon {
+  color: var(--c-faint);
+  cursor: default;
+}
+
+.ld-menu-link--soon:hover { padding-left: 0.2em; border-color: var(--c-border); }
+
+.ld-menu-link--plain {
+  font-size: 0.85rem;
+  color: var(--c-muted);
+  border-bottom-style: dashed;
+}
+
+.ld-menu-tag {
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-faint);
+}
+
+.ld-menu-tag--beta {
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 0.2em 0.55em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ld-menu-panel, .ld-menu-icon span { transition: none; }
+}
+
+/* ─── CONTENEDOR ─────────────────────────────────────── */
 .container {
   width: 100%;
   max-width: var(--container);
@@ -67,7 +234,15 @@ body {
   padding: 0 var(--space-md);
 }
 
+
 /* ─── DIVISOR ANIMADO ────────────────────────────────── */
+.divider-line {
+  position: relative;
+  height: 1px;
+  background: var(--c-border);
+  overflow: visible;
+}
+
 .divider-line {
   position: relative;
   height: 1px;
@@ -75,6 +250,7 @@ body {
   overflow: hidden;
 }
 
+/* “pulso ECG” */
 .divider-line::after {
   content: "";
   position: absolute;
@@ -83,13 +259,22 @@ body {
   width: 30%;
   height: 2px;
   transform: translateY(-50%);
-  background: linear-gradient(90deg, transparent, var(--c-sophia), var(--c-aletheia), var(--c-logos), transparent);
+  background: linear-gradient(90deg,
+    transparent,
+    var(--c-sophia),
+    var(--c-aletheia),
+    var(--c-logos),
+    transparent
+  );
   filter: blur(0.2px);
   animation: ecgPulse 2.2s linear infinite;
   opacity: 0.9;
 }
 
-.divider-line { animation: lineHeartbeat 2.2s ease-in-out infinite; }
+/* micro “latido” de la línea base */
+.divider-line {
+  animation: lineHeartbeat 2.2s ease-in-out infinite;
+}
 
 @keyframes ecgPulse {
   0%   { left: -30%; opacity: 0; }
@@ -98,6 +283,7 @@ body {
   100% { left: 110%; opacity: 0; }
 }
 
+/* leve vibración orgánica (sensación de vida) */
 @keyframes lineHeartbeat {
   0%, 100% { transform: scaleY(1); opacity: 0.9; }
   50%      { transform: scaleY(1.6); opacity: 1; }
@@ -133,30 +319,26 @@ body {
   font-weight: 300;
   font-size: clamp(0.95rem, 2.3vw, 1.3rem);
   line-height: 1.85;
-  color: #ffffff;
+  color: var(--c-muted);
   white-space: pre-wrap;
   min-height: 15em;
 }
 
-.boot-text .boot-highlight { color: #ffffff; }
+.boot-text .boot-highlight {
+  color: var(--c-text);
+}
 
-/* ─── ESTILOS PARA LA FIRMA ──────────────────────────── */
 .boot-text .boot-signature {
-  color: #ffffff;
-  font-style: italic;          /* Solo cursiva */
+  color: var(--c-seal);
+  font-family: var(--f-display);
+  font-style: italic;
 }
-
-.boot-text .boot-author {
-  color: #ffffff;
-  font-weight: bold;           /* Solo negrita, sin cursiva */
-}
-/* ────────────────────────────────────────────────────── */
 
 .boot-cursor {
   display: inline-block;
   width: 0.5em;
   height: 1em;
-  background: white;
+  background: var(--c-hope);
   margin-left: 1px;
   vertical-align: -0.15em;
   animation: blink 1s step-end infinite;
@@ -213,7 +395,8 @@ body {
   opacity: 0;
   transition: opacity 1800ms ease;
 }
-.hero-canvas.is-active { opacity: 0.5; }
+
+.hero-canvas.is-active { opacity: 0.22; }
 
 .hero-glow {
   position: absolute;
@@ -222,7 +405,7 @@ body {
   width: min(900px, 140vw);
   height: min(900px, 140vw);
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(242,181,68,0.09) 0%, rgba(139,92,246,0.05) 45%, transparent 72%);
+  background: radial-gradient(circle, rgba(184,134,46,0.09) 0%, rgba(91,59,115,0.05) 45%, transparent 72%);
   pointer-events: none;
 }
 
@@ -235,6 +418,7 @@ body {
   gap: var(--space-md);
 }
 
+/* Reveal animation */
 .reveal-line {
   opacity: 0;
   animation: revealFade 800ms ease forwards;
@@ -254,25 +438,30 @@ body {
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color:#22c55e;
-  border: 1px solid rgba(34,197,94,0.3);
+  color: var(--c-seal);
+  border: 1px solid rgba(122,31,43,0.3);
   border-radius: 1px;
   padding: 0.35em 1em;
-  background:rgba(34,197,94,.06);
+  background: rgba(122,31,43,.06);
 }
 
 .hero-title {
-  font-family: var(--f-mono);
-  font-weight: 300;
+  font-family: var(--f-display);
+  font-optical-sizing: auto;
+  font-weight: 450;
+  font-style: italic;
   font-size: clamp(2.4rem, 6.5vw, 6.5rem);
-  line-height: 1.08;
-  letter-spacing: -0.02em;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
   color: var(--c-text);
   display: flex;
   flex-direction: column;
   gap: 0.08em;
 }
-.hero-title .reveal-line { display: block; }
+
+.hero-title .reveal-line {
+  display: block;
+}
 
 .hero-sub {
   font-family: var(--f-sans);
@@ -290,7 +479,7 @@ body {
   color: var(--c-muted);
   text-decoration: none;
   padding-bottom: 2px;
-  border-bottom: 1px solid rgba(229,231,235,0.2);
+  border-bottom: 1px solid rgba(28,26,22,0.2);
   transition: color 200ms, border-color 200ms;
   margin-top: var(--space-sm);
 }
@@ -304,10 +493,14 @@ body {
   display: inline-block;
   transition: transform 300ms ease;
 }
-.hero-cta:hover .cta-arrow { transform: translateY(3px); }
+
+.hero-cta:hover .cta-arrow {
+  transform: translateY(3px);
+}
 
 .br-desk { display: inline; }
 
+/* ─── HERO QUICKSTART ────────────────────────────────── */
 .hero-quickstart {
   display: flex;
   flex-direction: column;
@@ -346,12 +539,17 @@ body {
   background: var(--c-glass);
   transition: border-color 200ms, background 200ms, transform 200ms;
 }
+
 .quickstart-chip span { transition: transform 200ms; opacity: 0.6; }
 .quickstart-chip:hover span { transform: translateX(3px); opacity: 1; }
-.quickstart-chip[data-accent="sophia"]:hover { border-color: var(--c-sophia); background: rgba(59,130,246,0.07); }
-.quickstart-chip[data-accent="rey"]:hover     { border-color: var(--c-rey); background: rgba(217,119,6,0.07); }
+
+.quickstart-chip[data-accent="sophia"]:hover { border-color: var(--c-sophia); background: rgba(43,95,138,0.07); }
+.quickstart-chip[data-accent="logos"]:hover   { border-color: var(--c-logos); background: rgba(20,107,107,0.07); }
+.quickstart-chip[data-accent="rey"]:hover     { border-color: var(--c-rey); background: rgba(168,99,30,0.07); }
+
 .quickstart-chip:hover { transform: translateY(-2px); }
 
+/* Pulso sutil en módulos disponibles */
 @keyframes availPulse {
   0%   { box-shadow: 0 0 0 0 currentColor; opacity: 1; }
   70%  { box-shadow: 0 0 0 5px transparent; opacity: 0.4; }
@@ -372,8 +570,8 @@ body {
 }
 
 .agent-status--soon {
-  color: rgba(229,231,235,0.4);
-  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(28,26,22,0.4);
+  border: 1px solid rgba(28,26,22,0.15);
 }
 
 .agent-status--live {
@@ -391,8 +589,13 @@ body {
 }
 
 /* ─── SECCIONES BASE ─────────────────────────────────── */
-.section { padding: var(--space-xl) 0; }
-.section-header { margin-bottom: var(--space-lg); }
+.section {
+  padding: var(--space-xl) 0;
+}
+
+.section-header {
+  margin-bottom: var(--space-lg);
+}
 
 .section-label {
   display: inline-block;
@@ -406,11 +609,12 @@ body {
 }
 
 .section-title {
-  font-family: var(--f-mono);
-  font-weight: 300;
+  font-family: var(--f-display);
+  font-optical-sizing: auto;
+  font-weight: 450;
   font-size: clamp(1.8rem, 3.5vw, 3rem);
-  line-height: 1.12;
-  letter-spacing: -0.02em;
+  line-height: 1.14;
+  letter-spacing: -0.01em;
   color: var(--c-text);
   margin-bottom: var(--space-sm);
 }
@@ -430,12 +634,16 @@ body {
   gap: var(--space-lg);
   margin-bottom: var(--space-xl);
 }
+
 .concepto-text {
   font-size: 1rem;
   color: var(--c-muted);
   line-height: 1.8;
 }
-.concepto-text p + p { margin-top: var(--space-sm); }
+
+.concepto-text p + p {
+  margin-top: var(--space-sm);
+}
 
 .formula-concepto {
   display: flex;
@@ -454,9 +662,11 @@ body {
   transition: border-color 250ms, background 250ms, transform 250ms;
   cursor: default;
 }
+
 .formula-block[data-color="sophia"]   { --hover-col: var(--c-sophia); }
 .formula-block[data-color="academia"] { --hover-col: var(--c-academia); }
 .formula-block[data-color="aletheia"] { --hover-col: var(--c-aletheia); }
+
 .formula-block:hover {
   border-color: var(--hover-col);
   background: var(--c-glass-h);
@@ -472,6 +682,7 @@ body {
   color: var(--c-text);
   margin-bottom: 0.4em;
 }
+
 .formula-block-desc {
   display: block;
   font-size: 0.78rem;
@@ -484,7 +695,7 @@ body {
   font-family: var(--f-mono);
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 300;
-  color: rgba(229,231,235,0.15);
+  color: rgba(28,26,22,0.15);
   display: flex;
   align-items: center;
   padding: 0 0.25em;
@@ -498,11 +709,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(139,92,246,0.3);
+  border: 1px solid rgba(91,59,115,0.3);
   border-radius: 1px;
   padding: var(--space-md);
-  background: rgba(139,92,246,0.06);
+  background: rgba(91,59,115,0.06);
 }
+
 .formula-result-name {
   font-family: var(--f-mono);
   font-size: 0.9rem;
@@ -514,9 +726,16 @@ body {
 /* ─── S3 AGENTES ─────────────────────────────────────── */
 .agentes-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-md);
 }
+
+.agent-card--soon {
+  border-style: dashed;
+  opacity: 0.72;
+}
+
+.agent-card--live { border-width: 1px; }
 
 .agent-card {
   position: relative;
@@ -524,20 +743,46 @@ body {
   border-left-width: 2px;
   border-radius: 1px;
   padding: var(--space-md) var(--space-md) var(--space-md) calc(var(--space-md) + 2px);
-  background: var(--c-glass);
+  background: var(--c-bg-raised);
   transition: background 250ms, transform 250ms, border-color 250ms, box-shadow 250ms;
 }
+
 .agent-card[data-agent="aletheia"] { border-left-color: var(--c-aletheia); }
 .agent-card[data-agent="logos"]    { border-left-color: var(--c-logos); }
 .agent-card[data-agent="rey"]      { border-left-color: var(--c-rey); }
 .agent-card[data-agent="sophia"]   { border-left-color: var(--c-sophia); }
-.agent-card[data-agent="aletheia"]:hover { box-shadow: 0 0 24px rgba(139,92,246,0.12); }
-.agent-card[data-agent="logos"]:hover    { box-shadow: 0 0 24px rgba(6,182,212,0.12); }
-.agent-card[data-agent="rey"]:hover      { box-shadow: 0 0 24px rgba(217,119,6,0.12); }
-.agent-card[data-agent="sophia"]:hover   { box-shadow: 0 0 24px rgba(59,130,246,0.12); }
+.agent-card[data-agent="agora"]    { border-left-color: var(--c-lab); }
+.agent-card[data-agent="mythos"]   { border-left-color: var(--c-lab); }
+
 .agent-card:hover {
   background: var(--c-glass-h);
   transform: translateY(-4px);
+  box-shadow: 0 10px 26px rgba(28,26,22,0.1);
+}
+
+/* Sello de tinta — el elemento que distingue a los módulos en beta */
+.agent-card--live {
+  overflow: hidden;
+}
+
+.agent-card--live::after {
+  content: 'BETA';
+  position: absolute;
+  top: 1.1em;
+  right: -2.6em;
+  width: 10em;
+  text-align: center;
+  padding: 0.3em 0;
+  transform: rotate(8deg);
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--c-seal);
+  border-top: 1.5px double var(--c-seal);
+  border-bottom: 1.5px double var(--c-seal);
+  opacity: 0.75;
+  pointer-events: none;
 }
 
 .agent-header {
@@ -546,12 +791,14 @@ body {
   justify-content: space-between;
   margin-bottom: var(--space-sm);
 }
+
 .agent-id {
   font-family: var(--f-mono);
   font-size: 0.65rem;
   color: var(--c-faint);
   letter-spacing: 0.1em;
 }
+
 .agent-tag {
   font-family: var(--f-mono);
   font-size: 0.62rem;
@@ -562,20 +809,23 @@ body {
   border-radius: 1px;
   padding: 0.15em 0.6em;
 }
+
 .agent-name {
-  font-family: var(--f-mono);
-  font-size: 1.25rem;
+  font-family: var(--f-display);
+  font-size: 1.5rem;
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
   color: var(--c-text);
-  margin-bottom: 0.75em;
+  margin-bottom: 0.6em;
 }
+
 .agent-desc {
   font-size: 0.9rem;
   color: var(--c-muted);
   line-height: 1.7;
   margin-bottom: var(--space-sm);
 }
+
 .agent-capabilities {
   list-style: none;
   display: flex;
@@ -583,6 +833,7 @@ body {
   gap: 0.3em;
   margin-bottom: var(--space-md);
 }
+
 .agent-capabilities li {
   font-family: var(--f-mono);
   font-size: 0.72rem;
@@ -591,12 +842,14 @@ body {
   padding-left: 1em;
   position: relative;
 }
+
 .agent-capabilities li::before {
   content: '—';
   position: absolute;
   left: 0;
   color: var(--c-border);
 }
+
 .agent-link {
   font-family: var(--f-mono);
   font-size: 0.72rem;
@@ -607,6 +860,7 @@ body {
   padding-bottom: 1px;
   transition: color 200ms, border-color 200ms;
 }
+
 .agent-card[data-agent="aletheia"] .agent-link:hover { color: var(--c-aletheia); border-color: var(--c-aletheia); }
 .agent-card[data-agent="logos"]    .agent-link:hover { color: var(--c-logos);    border-color: var(--c-logos); }
 .agent-card[data-agent="rey"]      .agent-link:hover { color: var(--c-rey);      border-color: var(--c-rey); }
@@ -619,11 +873,13 @@ body {
   gap: var(--space-lg);
   align-items: start;
 }
+
 .academia-content p {
   color: var(--c-muted);
   margin-bottom: var(--space-sm);
   line-height: 1.8;
 }
+
 .academia-features {
   list-style: none;
   display: flex;
@@ -631,6 +887,7 @@ body {
   gap: 0.75em;
   margin-top: var(--space-md);
 }
+
 .academia-features li {
   display: flex;
   align-items: center;
@@ -640,6 +897,7 @@ body {
   color: var(--c-muted);
   letter-spacing: 0.04em;
 }
+
 .feature-dot {
   flex-shrink: 0;
   width: 6px;
@@ -647,54 +905,66 @@ body {
   border-radius: 50%;
 }
 
+/* Panel técnico */
 .academia-panel {
   border: 1px solid var(--c-border);
   border-radius: 1px;
-  background: rgba(255,255,255,0.018);
+  background: var(--c-bg-raised);
   overflow: hidden;
   font-family: var(--f-mono);
 }
+
 .panel-bar {
   display: flex;
   align-items: center;
   gap: 0.5em;
-  padding: 0.6em 1em;
-  border-bottom: 1px solid var(--c-border);
-  background: rgba(255,255,255,0.025);
+  padding: 0.7em 1.1em;
+  border-bottom: 1.5px double var(--c-border);
+  background: rgba(28,26,22,0.03);
 }
+
 .panel-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--c-border);
+  display: none;
 }
+
 .panel-title {
   font-size: 0.65rem;
   color: var(--c-faint);
-  letter-spacing: 0.06em;
-  margin-left: auto;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
+
+.panel-title::before {
+  content: '§ ';
+  color: var(--c-seal);
+}
+
 .panel-body {
   padding: 1.25em 1.5em;
   display: flex;
   flex-direction: column;
   gap: 0.45em;
 }
+
 .panel-line {
   font-size: 0.78rem;
   color: var(--c-muted);
   line-height: 1.5;
 }
-.panel-line--comment { color: rgba(229,231,235,0.25); }
+
+.panel-line--comment { color: rgba(28,26,22,0.25); }
 .panel-line--gap     { margin-top: 0.5em; }
+
 .panel-line--cursor {
   margin-top: 0.3em;
   animation: blink 1s step-end infinite;
 }
+
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
 }
+
 .p-green  { color: var(--c-academia); }
 .p-cyan   { color: var(--c-logos); }
 .p-amber  { color: var(--c-rey); }
@@ -715,6 +985,7 @@ body {
   margin: 0 auto;
   padding: var(--space-md) 0;
 }
+
 .timeline::before {
   content: '';
   position: absolute;
@@ -723,9 +994,10 @@ body {
   left: 50%;
   transform: translateX(-50%);
   width: 1px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(28,26,22,0.1);
   z-index: 0;
 }
+
 .timeline-node {
   position: relative;
   display: flex;
@@ -737,10 +1009,12 @@ body {
   transform: translateY(16px);
   transition: opacity 500ms ease, transform 500ms ease;
 }
+
 .timeline-node.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
+
 .tl-connector {
   position: absolute;
   left: 50%;
@@ -748,8 +1022,9 @@ body {
   transform: translateX(-50%);
   width: 1px;
   height: 100%;
-  background: rgba(255,255,255,0.07);
+  background: rgba(28,26,22,0.07);
 }
+
 .tl-dot {
   position: absolute;
   left: 50%;
@@ -758,9 +1033,10 @@ body {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  box-shadow: 0 0 0 3px var(--c-bg), 0 0 0 4px rgba(255,255,255,0.1);
+  box-shadow: 0 0 0 3px var(--c-bg), 0 0 0 4px rgba(28,26,22,0.1);
   z-index: 2;
 }
+
 .tl-content {
   width: 44%;
   padding: var(--space-sm);
@@ -769,8 +1045,10 @@ body {
   background: var(--c-glass);
   text-align: left;
 }
+
 .tl-content--right { margin-left: 56%; }
 .tl-content--left  { margin-right: 56%; }
+
 .tl-title {
   font-family: var(--f-mono);
   font-size: 0.8rem;
@@ -779,11 +1057,13 @@ body {
   color: var(--c-text);
   margin-bottom: 0.4em;
 }
+
 .tl-desc {
   font-size: 0.8rem;
   color: var(--c-muted);
   line-height: 1.6;
 }
+
 .timeline-node--last .tl-connector { display: none; }
 
 /* ─── S6 LABORATORIO CÍVICO ──────────────────────────── */
@@ -793,15 +1073,18 @@ body {
   gap: var(--space-lg);
   align-items: start;
 }
+
 .laboratorio-content p {
   color: var(--c-muted);
   margin-bottom: var(--space-sm);
   line-height: 1.8;
 }
+
 .laboratorio-content p strong {
   color: var(--c-text);
   font-weight: 500;
 }
+
 .laboratorio-features {
   list-style: none;
   display: flex;
@@ -809,6 +1092,7 @@ body {
   gap: 0.75em;
   margin-top: var(--space-md);
 }
+
 .laboratorio-features li {
   display: flex;
   align-items: baseline;
@@ -818,19 +1102,24 @@ body {
   color: var(--c-muted);
   letter-spacing: 0.04em;
 }
+
 .laboratorio-features li::before {
   content: '—';
   color: var(--c-lab);
   flex-shrink: 0;
 }
+
+/* Panel: flujo de datos anonimizados (mock terminal, estilo academia-panel) */
 .lab-panel {
   border: 1px solid var(--c-border);
   border-radius: 1px;
-  background: rgba(255,255,255,0.018);
+  background: var(--c-bg-raised);
   overflow: hidden;
   font-family: var(--f-mono);
 }
+
 .lab-panel .panel-title { color: var(--c-faint); }
+
 .p-slate { color: var(--c-lab); }
 
 .lab-anon-badge {
@@ -842,12 +1131,13 @@ body {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--c-lab);
-  border: 1px solid rgba(148,163,184,0.3);
+  border: 1px solid rgba(107,101,88,0.3);
   border-radius: 1px;
   padding: 0.5em 0.9em;
-  background: rgba(148,163,184,0.06);
+  background: rgba(107,101,88,0.06);
   margin-top: var(--space-md);
 }
+
 .lab-anon-badge .dot {
   width: 6px;
   height: 6px;
@@ -863,6 +1153,7 @@ body {
   gap: var(--space-md);
   margin-top: var(--space-lg);
 }
+
 .hipotesis-card {
   position: relative;
   border: 1px solid var(--c-border);
@@ -873,11 +1164,13 @@ body {
   background: var(--c-glass);
   transition: background 250ms, transform 250ms, box-shadow 250ms;
 }
+
 .hipotesis-card:hover {
   background: var(--c-glass-h);
   transform: translateY(-3px);
-  box-shadow: 0 0 24px rgba(148,163,184,0.1);
+  box-shadow: 0 0 24px rgba(107,101,88,0.1);
 }
+
 .hipotesis-status {
   display: inline-block;
   font-family: var(--f-mono);
@@ -890,12 +1183,14 @@ body {
   padding: 0.15em 0.6em;
   margin-bottom: 0.75em;
 }
+
 .hipotesis-text {
   font-size: 0.86rem;
   color: var(--c-text);
   line-height: 1.6;
   margin-bottom: 0.5em;
 }
+
 .hipotesis-modulo {
   font-family: var(--f-mono);
   font-size: 0.68rem;
@@ -910,16 +1205,19 @@ body {
   gap: var(--space-lg);
   align-items: start;
 }
+
 .cuadratica-content p {
   color: var(--c-muted);
   margin-bottom: var(--space-sm);
   line-height: 1.8;
 }
+
 .cuadratica-content em {
   color: var(--c-text);
   font-style: normal;
   font-weight: 500;
 }
+
 .cuadratica-props {
   list-style: none;
   margin-top: var(--space-md);
@@ -927,6 +1225,7 @@ body {
   flex-direction: column;
   gap: 0.6em;
 }
+
 .cuadratica-props li {
   font-family: var(--f-mono);
   font-size: 0.78rem;
@@ -934,18 +1233,21 @@ body {
   padding-left: 1.25em;
   position: relative;
 }
+
 .cuadratica-props li::before {
   content: '›';
   position: absolute;
   left: 0;
   color: var(--c-aletheia);
 }
+
 .cuadratica-chart {
   border: 1px solid var(--c-border);
   border-radius: 1px;
   padding: var(--space-md);
   background: var(--c-glass);
 }
+
 .chart-title {
   font-family: var(--f-mono);
   font-size: 0.72rem;
@@ -954,39 +1256,46 @@ body {
   color: var(--c-faint);
   margin-bottom: var(--space-md);
 }
+
 .chart-rows {
   display: flex;
   flex-direction: column;
   gap: 1em;
 }
+
 .chart-row {
   display: grid;
   grid-template-columns: 4.5rem 1fr 5rem;
   align-items: center;
   gap: 0.75em;
 }
+
 .chart-label {
   font-family: var(--f-mono);
   font-size: 0.72rem;
   color: var(--c-muted);
   text-align: right;
 }
+
 .chart-bar-wrap {
   height: 8px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(28,26,22,0.05);
   border-radius: 1px;
   overflow: hidden;
 }
+
 .chart-bar {
   height: 100%;
   border-radius: 1px;
   background: linear-gradient(90deg, var(--c-aletheia), var(--c-logos));
 }
+
 .chart-cost {
   font-family: var(--f-mono);
   font-size: 0.68rem;
   color: var(--c-faint);
 }
+
 .chart-note {
   margin-top: var(--space-md);
   font-family: var(--f-mono);
@@ -1002,6 +1311,7 @@ body {
   justify-content: center;
   margin: var(--space-lg) 0;
 }
+
 .formula-display {
   display: flex;
   align-items: center;
@@ -1011,6 +1321,7 @@ body {
   border-radius: 1px;
   background: var(--c-glass);
 }
+
 .formula-lhs {
   font-family: var(--f-mono);
   font-size: clamp(2rem, 4vw, 3.5rem);
@@ -1018,18 +1329,21 @@ body {
   color: var(--c-text);
   letter-spacing: -0.02em;
 }
+
 .formula-eq-sign {
   font-family: var(--f-mono);
   font-size: clamp(1.5rem, 3vw, 2.5rem);
   font-weight: 300;
   color: var(--c-faint);
 }
+
 .formula-rhs {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.1em;
 }
+
 .formula-numerator,
 .formula-denominator {
   font-family: var(--f-mono);
@@ -1039,13 +1353,16 @@ body {
   text-align: center;
   padding: 0.2em 0;
 }
+
 .formula-denominator { color: var(--c-muted); }
+
 .formula-bar {
   width: 100%;
   height: 1px;
-  background: rgba(229,231,235,0.3);
+  background: rgba(28,26,22,0.3);
   margin: 0.15em 0;
 }
+
 .formula-numerator sub,
 .formula-denominator sub {
   font-size: 0.7em;
@@ -1058,6 +1375,7 @@ body {
   gap: var(--space-sm);
   margin-bottom: var(--space-md);
 }
+
 .var-block {
   display: flex;
   gap: var(--space-sm);
@@ -1067,17 +1385,21 @@ body {
   padding: var(--space-sm) var(--space-md);
   background: var(--c-glass);
 }
+
 .var-block[data-var="P"] { border-top-color: var(--c-sophia); }
 .var-block[data-var="E"] { border-top-color: var(--c-rey); }
 .var-block[data-var="V"] { border-top-color: var(--c-academia); }
+
 .var-letter {
-  font-family: var(--f-mono);
-  font-size: 2rem;
-  font-weight: 300;
+  font-family: var(--f-display);
+  font-style: italic;
+  font-size: 2.4rem;
+  font-weight: 450;
   color: var(--c-faint);
   line-height: 1;
   flex-shrink: 0;
 }
+
 .var-name {
   font-family: var(--f-mono);
   font-size: 0.78rem;
@@ -1086,11 +1408,13 @@ body {
   color: var(--c-text);
   margin-bottom: 0.4em;
 }
+
 .var-desc {
   font-size: 0.8rem;
   color: var(--c-muted);
   line-height: 1.6;
 }
+
 .modelo-nota {
   font-family: var(--f-mono);
   font-size: 0.75rem;
@@ -1109,31 +1433,37 @@ body {
   padding: var(--space-2xl) 0;
   text-align: center;
 }
+
 .cierre-quote {
   display: flex;
   flex-direction: column;
   gap: 0.4em;
 }
+
 .cierre-line {
-  font-family: var(--f-mono);
-  font-weight: 300;
-  font-size: clamp(1.4rem, 3.5vw, 2.6rem);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  font-family: var(--f-display);
+  font-style: italic;
+  font-weight: 450;
+  font-size: clamp(1.5rem, 3.6vw, 2.8rem);
+  line-height: 1.25;
+  letter-spacing: -0.005em;
 }
+
 .cierre-line--light  { color: var(--c-text); }
 .cierre-line--accent {
-  background: linear-gradient(90deg, var(--c-aletheia), var(--c-hope), var(--c-aletheia));
+  background: linear-gradient(90deg, var(--c-seal), var(--c-hope), var(--c-seal));
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   animation: shimmer 6s linear infinite;
 }
+
 @keyframes shimmer {
   0%   { background-position: 0% center; }
   100% { background-position: 200% center; }
 }
+
 @media (prefers-reduced-motion: reduce) {
   .cierre-line--accent { animation: none; }
 }
@@ -1143,6 +1473,7 @@ body {
   border-top: 1px solid var(--c-border);
   padding: var(--space-md) 0;
 }
+
 .footer-inner {
   display: flex;
   align-items: center;
@@ -1150,17 +1481,20 @@ body {
   flex-wrap: wrap;
   gap: var(--space-sm);
 }
+
 .footer-logo {
   font-family: var(--f-mono);
-  font-size: 0.65rem;
+ font-size: 0.65rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   color: var(--c-faint);
 }
+
 .footer-nav {
   display: flex;
   gap: var(--space-md);
 }
+
 .footer-nav a {
   font-family: var(--f-mono);
   font-size: 0.65rem;
@@ -1169,7 +1503,9 @@ body {
   text-decoration: none;
   transition: color 200ms;
 }
+
 .footer-nav a:hover { color: var(--c-muted); }
+
 .footer-copy {
   font-family: var(--f-mono);
   font-size: 0.62rem;
@@ -1202,6 +1538,13 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════
+   RESPONSIVE — INTERMEDIO (bento de agentes a 2 columnas)
+══════════════════════════════════════════════════════ */
+@media (max-width: 1180px) {
+  .agentes-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ══════════════════════════════════════════════════════
    RESPONSIVE — TABLET
 ══════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
@@ -1209,8 +1552,10 @@ body {
     --space-xl:  4.5rem;
     --space-2xl: 6rem;
   }
+
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }
+
   .concepto-grid       { grid-template-columns: 1fr; }
   .agentes-grid        { grid-template-columns: 1fr; }
   .academia-layout     { grid-template-columns: 1fr; }
@@ -1218,8 +1563,10 @@ body {
   .hipotesis-grid      { grid-template-columns: 1fr; }
   .cuadratica-layout   { grid-template-columns: 1fr; }
   .modelo-variables    { grid-template-columns: 1fr; }
+
   .formula-concepto { flex-direction: column; }
   .formula-op, .formula-eq { align-self: center; transform: rotate(90deg); }
+
   .tl-content--right { margin-left: 56%; }
   .tl-content--left  { margin-right: 56%; }
 }
@@ -1233,18 +1580,27 @@ body {
     --space-2xl: 4.5rem;
     --space-lg:  2.5rem;
   }
+
   .br-desk { display: none; }
-  .hero-title { font-size: clamp(2rem, 10vw, 3.2rem); }
+
+  .hero-title {
+    font-size: clamp(2rem, 10vw, 3.2rem);
+  }
+
   .formula-display {
     flex-direction: column;
     padding: var(--space-md);
     text-align: center;
   }
+
   .formula-eq-sign { transform: rotate(90deg); }
+
   .timeline {
     max-width: 100%;
   }
+
   .timeline::before { left: 20px; }
+
   .timeline-node {
     flex-direction: column;
     align-items: flex-start;
@@ -1252,25 +1608,33 @@ body {
     min-height: auto;
     padding-bottom: var(--space-md);
   }
+
   .tl-dot {
     left: 20px;
     top: 0;
     transform: translate(-50%, 4px);
   }
+
   .tl-connector { left: 20px; top: 14px; height: calc(100% - 14px); }
+
   .tl-content,
   .tl-content--right,
   .tl-content--left {
     width: 100%;
     margin: 0;
   }
+
   .cuadratica-chart { padding: var(--space-sm); }
+
   .chart-row { grid-template-columns: 3.5rem 1fr 4.5rem; }
+
   .formula-concepto { gap: var(--space-xs); }
   .formula-op, .formula-eq { transform: none; font-size: 1.5rem; }
+
   .footer-inner { flex-direction: column; text-align: center; }
   .footer-nav { flex-wrap: wrap; justify-content: center; gap: var(--space-sm); }
-  .divider-dot { display: none; }
+
+  .divider-dot { display: none; } /* GPU cost on mobile */
 }
 
 </style>
@@ -1290,19 +1654,65 @@ body {
   <!-- ═══════════════════════════════════════════════════════
        NAVEGACIÓN SUPERIOR
   ══════════════════════════════════════════════════════════ -->
-  <header class="topbar">
+  <header class="ld-topbar">
+
     <a href="/" class="brand">LOGODEMOCRACY</a>
-    <nav class="module-nav">
-      <a href="/pages/archive-template.html" class="module-link">Academia</a>
-      <a href="/pages/logos.html"           class="module-link">Logos</a>
-      <a href="/pages/sophia.html"           class="module-link">Sophia</a>
-    </nav>
-    <button class="mobile-menu-btn" id="mobileMenuBtn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M4 6H20"/><path d="M4 12H20"/><path d="M4 18H20"/>
-      </svg>
+
+    <button class="ld-menu-toggle" id="ldMenuToggle" aria-expanded="false" aria-controls="ldMenuPanel" aria-label="Abrir menú de módulos">
+      <span class="ld-menu-icon">
+        <span></span><span></span><span></span>
+      </span>
     </button>
+
   </header>
+
+  <!-- Panel de menú — único punto de navegación del sitio -->
+  <div class="ld-menu-panel" id="ldMenuPanel" aria-hidden="true">
+    <nav class="ld-menu-nav">
+
+      <div class="ld-menu-group">
+        <span class="ld-menu-group-label">Disponibles ahora</span>
+        <a href="/pages/sophia.html" class="ld-menu-link" data-accent="sophia">
+          <span class="ld-menu-link-name">Sophia</span>
+          <span class="ld-menu-tag ld-menu-tag--beta" style="color:var(--c-sophia);">Beta</span>
+        </a>
+        <a href="/pages/logos.html" class="ld-menu-link" data-accent="logos">
+          <span class="ld-menu-link-name">Logos</span>
+          <span class="ld-menu-tag ld-menu-tag--beta" style="color:var(--c-logos);">Beta</span>
+        </a>
+        <a href="/pages/archive-template.html" class="ld-menu-link" data-accent="rey">
+          <span class="ld-menu-link-name">Rey Filósofo</span>
+          <span class="ld-menu-tag ld-menu-tag--beta" style="color:var(--c-rey);">Beta</span>
+        </a>
+        <a href="/pages/archive-template.html" class="ld-menu-link" data-accent="academia">
+          <span class="ld-menu-link-name">Academia</span>
+          <span class="ld-menu-tag ld-menu-tag--beta" style="color:var(--c-academia);">Beta</span>
+        </a>
+      </div>
+
+      <div class="ld-menu-group">
+        <span class="ld-menu-group-label">En desarrollo</span>
+        <span class="ld-menu-link ld-menu-link--soon">
+          <span class="ld-menu-link-name">Aletheia</span>
+          <span class="ld-menu-tag">Próximamente</span>
+        </span>
+        <span class="ld-menu-link ld-menu-link--soon">
+          <span class="ld-menu-link-name">Ágora</span>
+          <span class="ld-menu-tag">Próximamente</span>
+        </span>
+        <span class="ld-menu-link ld-menu-link--soon">
+          <span class="ld-menu-link-name">Mythos</span>
+          <span class="ld-menu-tag">Próximamente</span>
+        </span>
+      </div>
+
+      <div class="ld-menu-group">
+        <a href="#laboratorio" class="ld-menu-link ld-menu-link--plain">Laboratorio Cívico</a>
+        <a href="#modelo" class="ld-menu-link ld-menu-link--plain">Modelo institucional</a>
+      </div>
+
+    </nav>
+  </div>
 
   <!-- ═══════════════════════════════════════════════════════
        S1 — HERO
@@ -1324,9 +1734,11 @@ body {
         Explorar el ecosistema <span class="cta-arrow">↓</span>
       </a>
       <div class="hero-quickstart reveal-line" style="--delay:950ms">
+        <span class="quickstart-label">Tres módulos ya en beta — empieza ahora</span>
         <div class="quickstart-links">
-          <a href="/pages/sophia.html" class="quickstart-chip" data-accent="sophia">Poner a prueba un texto en Sophia <span>→</span></a>
-          <a href="/pages/archive-template.html" class="quickstart-chip" data-accent="rey">Conocer al Rey Filósofo en la Academia <span>→</span></a>
+          <a href="/pages/sophia.html" class="quickstart-chip" data-accent="sophia">Sophia <span>→</span></a>
+          <a href="/pages/logos.html" class="quickstart-chip" data-accent="logos">Logos <span>→</span></a>
+          <a href="/pages/archive-template.html" class="quickstart-chip" data-accent="rey">Rey Filósofo <span>→</span></a>
         </div>
       </div>
     </div>
@@ -1389,12 +1801,63 @@ body {
       <div class="section-header">
         <span class="section-label">Sistema</span>
         <h2 class="section-title">Agentes Cognitivos</h2>
-        <p class="section-sub">Cuatro inteligencias especializadas que forman el núcleo del ecosistema.</p>
+        <p class="section-sub">Siete inteligencias especializadas forman el ecosistema. Tres ya están en beta y disponibles para usar hoy.</p>
       </div>
 
       <div class="agentes-grid">
 
-        <article class="agent-card" data-agent="aletheia">
+        <article class="agent-card agent-card--live" data-agent="sophia">
+          <div class="agent-header">
+            <span class="agent-id"></span>
+            <span class="agent-tag">Protocolo de comunicación</span>
+          </div>
+          <span class="agent-status agent-status--live" style="color:var(--c-sophia);">Beta · Disponible</span>
+          <h3 class="agent-name">Sophia</h3>
+          <p class="agent-desc">Filtro epistémico de calidad argumentativa. Evalúa la coherencia, claridad, evidencia y honestidad intelectual de los documentos ciudadanos antes de su incorporación al conocimiento colectivo de la Academia.</p>
+          <ul class="agent-capabilities">
+            <li>Calidad argumentativa</li>
+            <li>Coherencia lógica</li>
+            <li>Verificación de evidencia</li>
+            <li>Honestidad intelectual</li>
+          </ul>
+          <a href="/pages/sophia.html" class="agent-link">Explorar Sophia →</a>
+        </article>
+
+        <article class="agent-card agent-card--live" data-agent="logos">
+          <div class="agent-header">
+            <span class="agent-id"></span>
+            <span class="agent-tag">Deliberación</span>
+          </div>
+          <span class="agent-status agent-status--live" style="color:var(--c-logos);">Beta · Disponible</span>
+          <h3 class="agent-name">Logos</h3>
+          <p class="agent-desc">Facilitador deliberativo. Ayuda a comprender desacuerdos profundos, detecta el origen de los conflictos argumentativos, sintetiza posiciones divergentes y orienta hacia zonas de posible consenso.</p>
+          <ul class="agent-capabilities">
+            <li>Facilitación del diálogo</li>
+            <li>Síntesis de posiciones</li>
+            <li>Mapeo de desacuerdos</li>
+            <li>Construcción de consensos</li>
+          </ul>
+          <a href="/pages/logos.html" class="agent-link">Explorar Logos →</a>
+        </article>
+
+        <article class="agent-card agent-card--live" data-agent="rey">
+          <div class="agent-header">
+            <span class="agent-id"></span>
+            <span class="agent-tag">Aprendizaje</span>
+          </div>
+          <span class="agent-status agent-status--live" style="color:var(--c-rey);">Beta · Disponible</span>
+          <h3 class="agent-name">Rey Filósofo</h3>
+          <p class="agent-desc">Tutor cognitivo inspirado en la pedagogía de Vygotsky. Acompaña el proceso de aprendizaje individual, desarrolla la metacognición ciudadana y adapta los contenidos al nivel y contexto de cada usuario.</p>
+          <ul class="agent-capabilities">
+            <li>Tutoría adaptativa</li>
+            <li>Metacognición</li>
+            <li>Zona de desarrollo próximo</li>
+            <li>Aprendizaje profundo</li>
+          </ul>
+          <a href="/pages/archive-template.html" class="agent-link">Disponible en Academia y Sophia →</a>
+        </article>
+
+        <article class="agent-card agent-card--soon" data-agent="aletheia">
           <div class="agent-header">
             <span class="agent-id"></span>
             <span class="agent-tag">Estúpidometro</span>
@@ -1411,61 +1874,32 @@ body {
           <span class="agent-link" style="opacity:.4; cursor:default;">En desarrollo</span>
         </article>
 
-        <article class="agent-card" data-agent="logos">
+        <article class="agent-card agent-card--soon" data-agent="agora">
           <div class="agent-header">
             <span class="agent-id"></span>
-            <span class="agent-tag">Deliberación</span>
+            <span class="agent-tag">Participación</span>
           </div>
           <span class="agent-status agent-status--soon">Próximamente</span>
-          <h3 class="agent-name">Logos</h3>
-          <p class="agent-desc">Facilitador deliberativo. Ayuda a comprender desacuerdos profundos, detecta el origen de los conflictos argumentativos, sintetiza posiciones divergentes y orienta hacia zonas de posible consenso.</p>
-          <ul class="agent-capabilities">
-            <li>Facilitación del diálogo</li>
-            <li>Síntesis de posiciones</li>
-            <li>Mapeo de desacuerdos</li>
-            <li>Construcción de consensos</li>
-          </ul>
+          <h3 class="agent-name">Ágora</h3>
+          <p class="agent-desc">Espacio de participación y asamblea ciudadana. Capacidades en definición.</p>
           <span class="agent-link" style="opacity:.4; cursor:default;">En desarrollo</span>
         </article>
 
-        <article class="agent-card" data-agent="rey">
+        <article class="agent-card agent-card--soon" data-agent="mythos">
           <div class="agent-header">
             <span class="agent-id"></span>
-            <span class="agent-tag">Aprendizaje</span>
+            <span class="agent-tag">Narrativa colectiva</span>
           </div>
-          <span class="agent-status agent-status--live" style="color:var(--c-rey);">Disponible</span>
-          <h3 class="agent-name">Rey Filósofo</h3>
-          <p class="agent-desc">Tutor cognitivo inspirado en la pedagogía de Vygotsky. Acompaña el proceso de aprendizaje individual, desarrolla la metacognición ciudadana y adapta los contenidos al nivel y contexto de cada usuario.</p>
-          <ul class="agent-capabilities">
-            <li>Tutoría adaptativa</li>
-            <li>Metacognición</li>
-            <li>Zona de desarrollo próximo</li>
-            <li>Aprendizaje profundo</li>
-          </ul>
-          <a href="/pages/archive-template.html" class="agent-link">Disponible en Academia y Sophia →</a>
-        </article>
-
-        <article class="agent-card" data-agent="sophia">
-          <div class="agent-header">
-            <span class="agent-id"></span>
-            <span class="agent-tag">Protocolo de comunicación</span>
-          </div>
-          <span class="agent-status agent-status--live" style="color:var(--c-sophia);">Disponible</span>
-          <h3 class="agent-name">Sophia</h3>
-          <p class="agent-desc">Filtro epistémico de calidad argumentativa. Evalúa la coherencia, claridad, evidencia y honestidad intelectual de los documentos ciudadanos antes de su incorporación al conocimiento colectivo de la Academia.</p>
-          <ul class="agent-capabilities">
-            <li>Calidad argumentativa</li>
-            <li>Coherencia lógica</li>
-            <li>Verificación de evidencia</li>
-            <li>Honestidad intelectual</li>
-          </ul>
-          <a href="/pages/sophia.html" class="agent-link">Explorar Sophia →</a>
+          <span class="agent-status agent-status--soon">Próximamente</span>
+          <h3 class="agent-name">Mythos</h3>
+          <p class="agent-desc">Construcción de sentido e identidad colectiva. Capacidades en definición.</p>
+          <span class="agent-link" style="opacity:.4; cursor:default;">En desarrollo</span>
         </article>
 
       </div>
 
-      <p style="text-align:center; margin-top: var(--space-md); font-size:.8rem; color:rgba(229,231,235,.4);">
-        LogoDemocracy se construye progresivamente. La primera etapa integra SOPHIA, la Academia y el Rey Filósofo — Logos, Aletheia, Ágora y Mythos forman parte del horizonte de desarrollo.
+      <p style="text-align:center; margin-top: var(--space-md); font-size:.8rem; color:rgba(28,26,22,.4);">
+        LogoDemocracy se construye progresivamente. Sophia, Logos y Rey Filósofo ya están en beta, junto con la Academia — Aletheia, Ágora y Mythos forman parte del horizonte de desarrollo.
       </p>
     </div>
   </section>
@@ -1748,11 +2182,13 @@ body {
     <div class="container footer-inner">
       <span class="footer-logo">LOGODEMOCRACY</span>
       <nav class="footer-nav">
+        <a href="/pages/sophia.html">Sophia</a>
+        <a href="/pages/logos.html">Logos</a>
+        <a href="/pages/archive-template.html">Rey Filósofo</a>
         <a href="/pages/archive-template.html">Academia</a>
         <span style="opacity:.35; cursor:default;">Aletheia</span>
-        <span style="opacity:.35; cursor:default;">Logos</span>
-        <a href="/pages/archive-template.html">Rey Filósofo</a>
-        <a href="/pages/sophia.html">Sophia</a>
+        <span style="opacity:.35; cursor:default;">Ágora</span>
+        <span style="opacity:.35; cursor:default;">Mythos</span>
         <a href="#laboratorio">Laboratorio Cívico</a>
       </nav>
       <span class="footer-copy">Democracia Aumentada · 2026</span>
@@ -1760,27 +2196,30 @@ body {
   </footer>
 
   <script>
+/* ═══════════════════════════════════════════════════════
+   LOGODEMOCRACY — home.js
+   Scroll reveals, timeline, interactions
+   ═══════════════════════════════════════════════════════ */
+
 (function () {
   'use strict';
 
+  /* ─── BOOT SCREEN — CITA DE APERTURA (Neruda) ──────── */
   const bootScreen = document.getElementById('boot-screen');
   const bootText = document.getElementById('boot-text');
   const bootSkip = document.getElementById('boot-skip');
   const heroCanvas = document.getElementById('hero-canvas');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ─── ARRAY CON DOS SALTOS Y CLASES SEPARADAS ────────── */
   const bootLines = [
     { text: 'Salimos perdiendo… Salimos ganando…', pause: 550 },
     { text: 'Se llevaron el oro y nos dejaron el oro…', pause: 550 },
     { text: 'Se lo llevaron todo y nos dejaron todo…', pause: 700 },
     { text: 'Nos dejaron las palabras.', pause: 900, cls: 'boot-highlight' },
-    { text: '', pause: 200 },   // ← primer salto
-    { text: '', pause: 200 },   // ← segundo salto
-    { text: 'Confieso que he vivido', pause: 100, cls: 'boot-signature' },  // solo cursiva
-    { text: '— Pablo Neruda', pause: 0, cls: 'boot-author' }              // solo negrita
+    { text: '', pause: 200 },
+    { text: '"Confieso que he vivido"', pause: 100, cls: 'boot-signature' },
+    { text: '— Pablo Neruda', pause: 0, cls: 'boot-signature' }
   ];
-  /* ────────────────────────────────────────────────────── */
 
   let heroBgStarted = false;
 
@@ -1798,7 +2237,7 @@ body {
     resize();
     window.addEventListener('resize', resize);
 
-    const palette = ['242,181,68', '139,92,246', '34,197,94'];
+    const palette = ['184,134,46', '91,59,115', '47,107,62'];
     const nodes = [];
     const nodeCount = window.innerWidth < 700 ? 26 : 48;
 
@@ -1854,7 +2293,6 @@ body {
     if (!bootScreen || bootScreen.classList.contains('fade-out')) return;
     bootScreen.classList.add('fade-out');
     document.body.style.overflow = '';
-    window.scrollTo(0, 0);
     startHeroBackground();
   }
 
@@ -1878,7 +2316,7 @@ body {
       let ci = 0;
       function typeChar() {
         if (ci < line.text.length) {
-          span.innerHTML += line.text.charAt(ci);
+          span.textContent += line.text.charAt(ci);
           ci++;
           setTimeout(typeChar, 32);
         } else {
@@ -1905,7 +2343,38 @@ body {
     startHeroBackground();
   }
 
-  /* ─── INTERSECTION OBSERVER — REVEALS ──────────────── */
+  /* ─── MENÚ HAMBURGUESA (único punto de navegación) ─── */
+  const ldMenuToggle = document.getElementById('ldMenuToggle');
+  const ldMenuPanel = document.getElementById('ldMenuPanel');
+
+  function closeLdMenu() {
+    ldMenuToggle?.setAttribute('aria-expanded', 'false');
+    ldMenuPanel?.classList.remove('is-open');
+    ldMenuPanel?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  function openLdMenu() {
+    ldMenuToggle?.setAttribute('aria-expanded', 'true');
+    ldMenuPanel?.classList.add('is-open');
+    ldMenuPanel?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  ldMenuToggle?.addEventListener('click', () => {
+    const isOpen = ldMenuToggle.getAttribute('aria-expanded') === 'true';
+    isOpen ? closeLdMenu() : openLdMenu();
+  });
+
+  ldMenuPanel?.querySelectorAll('a.ld-menu-link').forEach((link) => {
+    link.addEventListener('click', closeLdMenu);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLdMenu();
+  });
+
+  /* ─── INTERSECTION OBSERVER — GENERIC REVEALS ──────── */
   const revealEls = document.querySelectorAll('.section-header, .concepto-grid, .formula-concepto, .agent-card, .academia-layout, .laboratorio-layout, .hipotesis-card, .cuadratica-layout, .formula-wrapper, .modelo-variables, .cierre-quote');
 
   const revealObserver = new IntersectionObserver((entries) => {
@@ -1922,13 +2391,15 @@ body {
     revealObserver.observe(el);
   });
 
-  /* ─── TIMELINE ───────────────────────────────────────── */
+  /* ─── TIMELINE NODES — SEQUENTIAL REVEAL ───────────── */
   const timelineNodes = document.querySelectorAll('.timeline-node');
+
   const timelineObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const nodes = Array.from(timelineNodes);
         const idx = nodes.indexOf(entry.target);
+        // Stagger each node
         setTimeout(() => {
           entry.target.classList.add('is-visible');
         }, idx * 120);
@@ -1941,7 +2412,7 @@ body {
     timelineObserver.observe(node);
   });
 
-  /* ─── AGENT CARDS ────────────────────────────────────── */
+  /* ─── AGENT CARDS — STAGGERED REVEAL ───────────────── */
   const agentCards = document.querySelectorAll('.agent-card');
   const agentObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -1964,7 +2435,7 @@ body {
     agentObserver.observe(card);
   });
 
-  /* ─── SMOOTH SCROLL ──────────────────────────────────── */
+  /* ─── SMOOTH SCROLL FOR HERO CTA ───────────────────── */
   document.querySelector('.hero-cta')?.addEventListener('click', (e) => {
     e.preventDefault();
     const target = document.querySelector('#concepto');
@@ -1973,28 +2444,20 @@ body {
     }
   });
 
-  /* ─── NAV ACTIVE ────────────────────────────────────── */
+  /* ─── NAV: ACTIVE STATE ON SCROLL ──────────────────── */
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
+
   const navObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         navLinks.forEach((l) => l.style.opacity = '0.5');
+        // just dim all — active state is subtle
       }
     });
   }, { threshold: 0.4 });
-  sections.forEach((s) => navObserver.observe(s));
 
-  /* ─── MOBILE MENU ───────────────────────────────────── */
-  const mobileBtn = document.getElementById('mobileMenuBtn');
-  const moduleNav = document.querySelector('.module-nav');
-  const topbarRight = document.querySelector('.topbar-right');
-  if (mobileBtn) {
-    mobileBtn.addEventListener('click', () => {
-      moduleNav?.classList.toggle('open');
-      topbarRight?.classList.toggle('open');
-    });
-  }
+  sections.forEach((s) => navObserver.observe(s));
 
   /* ─── AUTH DEMO ──────────────────────────────────────── */
   let isLoggedIn = false;

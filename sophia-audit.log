@@ -1,0 +1,44 @@
+🧠 Sophia Engine cargado (v4.0)
+🚀 Iniciando servidor SOPHIA...
+📁 Directorio actual: /data/data/com.termux/files/home/logodemocracy_tech
+📦 Protocolo cargado: 4.0
+🚀 Servidor SOPHIA ejecutándose y escuchando en el puerto 3000
+🤖 [Sophia Auto-Audit] Ejecutando proceso automático por única vez...
+🔍 [Audit] Iniciando auditoría de documentos...
+🎉 [Audit] Finalizada. Evaluados: 0, En caché/Omitidos: 20
+✅ [Sophia Auto-Audit] Proceso completado y marcado como ejecutado.
+📥 [879fe057-6a1e-4705-85a5-be360cccd6ed] POST /api/sophia/evaluate
+📊 Iniciando Pipeline Cognitivo
+📝 Texto recibido (105 caracteres)
+🔍 PIPELINE STEP 1: Ejecutando evaluación local (Sophia Engine)...
+✅ Evaluación local completada. IRD: 98, evidencias: 0
+🔍 PIPELINE STEPS 2 & 3: Iniciando Revisión Semántica y Auditoría Factual en paralelo...
+⏩ No hay penalizaciones para revisar.
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Usando Application Default Credentials (ADC)
+[SOPHIA-GENAI] Inicializando Vertex AI project=logodemocracy-ai-2026 location=us-central1
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=6601ms
+[SOPHIA-GENAI] METRICS stage=unknown input=337 output=1 thoughts=362 total=700 model=gemini-2.5-flash
+✅ Verificación factual completada. Verificados: 0
+🤖 PIPELINE STEP 4: Revisión de Gemini...
+[SOPHIA-GENAI] CALL stage=unknown model=gemini-2.5-flash
+[SOPHIA-GENAI] Texto extraído OK stage=unknown
+[SOPHIA-GENAI] OK stage=unknown duration=14097ms
+[SOPHIA-GENAI] METRICS stage=unknown input=1129 output=661 thoughts=1445 total=3235 model=gemini-2.5-flash
+✅ Revisión de Gemini completada
+📊 PIPELINE STEP 5: Ensamblando informe final...
+🏁 PIPELINE COMPLETE
+📥 [fd880da4-4f47-4d22-926f-a61b6fae9faf] POST /api/admin/audit-all
+🔍 [Audit] Iniciando auditoría de documentos...
+🎉 [Audit] Finalizada. Evaluados: 0, En caché/Omitidos: 20
+📥 [5c189b84-1157-4938-a04b-51e6baa2eed5] GET /api/sophia/analysis/Logodemocracia.md
+♻️ [Read-Only Cache HIT] Entregando análisis pre-calculado de Logodemocracia.md
+📥 [8d992875-70f2-4494-a0e5-f6367b287fef] GET /api/sophia/analysis/Logodemocracia.md
+♻️ [Read-Only Cache HIT] Entregando análisis pre-calculado de Logodemocracia.md
+📥 [a9e4a3bf-74f1-4f5a-a14f-9eefca7d86db] GET /api/sophia/analysis/Logodemocracia.md
+♻️ [Read-Only Cache HIT] Entregando análisis pre-calculado de Logodemocracia.md
+📥 [1e23fc5f-5154-4ee5-877c-1e96c4cf97d6] GET /api/sophia/analysis/Logodemocracia.md
+♻️ [Read-Only Cache HIT] Entregando análisis pre-calculado de Logodemocracia.md
+📥 [9a8c5a76-7081-4ada-8f22-e3f40f08b82c] GET /api/sophia/analysis/Logodemocracia.md
+♻️ [Read-Only Cache HIT] Entregando análisis pre-calculado de Logodemocracia.md

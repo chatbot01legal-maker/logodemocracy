@@ -1,0 +1,3083 @@
+{
+  "protocol_version": "4.0",
+  "evaluated_at": "2026-08-16T00:11:53.846Z",
+  "local": {
+    "protocol_version": "4.0",
+    "naturaleza_documental": "POL",
+    "naturalezas_secundarias": [
+      "SC"
+    ],
+    "hibrido": true,
+    "confianza_clasificacion": 0.67,
+    "rutas_evaluadas": {
+      "ruta_esperada": [
+        "dato",
+        "interpretacion",
+        "causal",
+        "generalizacion",
+        "propuesta"
+      ],
+      "pasos_presentes": {
+        "dato": true,
+        "interpretacion": true,
+        "causal": true,
+        "generalizacion": true,
+        "propuesta": false
+      },
+      "saltos_detectados": [],
+      "penalizacion_ruta": 0,
+      "continuidad": 0.8
+    },
+    "fases": [
+      {
+        "id": "fase1",
+        "nombre": "Estructura Lógica",
+        "puntaje": 93,
+        "infracciones": [
+          {
+            "criterio": "1.4 - Integridad de las Premisas",
+            "constructo": "ATOMO_SOPORTE_LOGICO",
+            "penalizacion": 7,
+            "atomos_activados": [
+              {
+                "atomo": "ATOMO_SOPORTE_LOGICO",
+                "segmento": 175,
+                "penalizacion": 7,
+                "heredado": false
+              }
+            ],
+            "saltos": null
+          }
+        ]
+      },
+      {
+        "id": "fase2",
+        "nombre": "Inferencia",
+        "puntaje": 53,
+        "infracciones": [
+          {
+            "criterio": "2.2 - Causalidad Rigurosa",
+            "constructo": "ATOMO_CAUSALIDAD",
+            "penalizacion": 25,
+            "atomos_activados": [
+              {
+                "atomo": "ATOMO_CAUSALIDAD",
+                "segmento": 38,
+                "penalizacion": 10,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_CAUSALIDAD",
+                "segmento": 47,
+                "penalizacion": 10,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_CAUSALIDAD",
+                "segmento": 66,
+                "penalizacion": 10,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_CAUSALIDAD",
+                "segmento": 111,
+                "penalizacion": 10,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_CAUSALIDAD",
+                "segmento": 131,
+                "penalizacion": 10,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_CAUSALIDAD",
+                "segmento": 154,
+                "penalizacion": 10,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_CAUSALIDAD",
+                "segmento": 200,
+                "penalizacion": 10,
+                "heredado": false
+              }
+            ],
+            "saltos": null
+          },
+          {
+            "criterio": "2.3 - Proporcionalidad Generalizadora",
+            "constructo": "ATOMO_GENERALIZACION",
+            "penalizacion": 22.5,
+            "atomos_activados": [
+              {
+                "atomo": "ATOMO_GENERALIZACION",
+                "segmento": 171,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_GENERALIZACION",
+                "segmento": 215,
+                "penalizacion": 11.25,
+                "heredado": false
+              }
+            ],
+            "saltos": null
+          }
+        ]
+      },
+      {
+        "id": "fase3",
+        "nombre": "Calibración Epistémica",
+        "puntaje": 65,
+        "infracciones": [
+          {
+            "criterio": "3.3 - Delimitación Hecho-Valor",
+            "constructo": "ATOMO_HECHO_VALOR",
+            "penalizacion": 25,
+            "atomos_activados": [
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 2,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 3,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 10,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 12,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 14,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 16,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 17,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 21,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 29,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 31,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 38,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 39,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 40,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 42,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 44,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 47,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 48,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 51,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 55,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 60,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 61,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 68,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 69,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 70,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 71,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 77,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 79,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 80,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 81,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 82,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 83,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 92,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 96,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 99,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 100,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 101,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 102,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 107,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 108,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 109,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 110,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 111,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 112,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 113,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 114,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 115,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 117,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 122,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 126,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 127,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 131,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 133,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 134,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 135,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 136,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 138,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 144,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 147,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 151,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 154,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 171,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 172,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 173,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 175,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 179,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 183,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 184,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 186,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 187,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 191,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 192,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 198,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 200,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 203,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 208,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 210,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 214,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 220,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 222,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 223,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 226,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 229,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 230,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 233,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 238,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 240,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 243,
+                "penalizacion": 11.25,
+                "heredado": false
+              },
+              {
+                "atomo": "ATOMO_HECHO_VALOR",
+                "segmento": 256,
+                "penalizacion": 11.25,
+                "heredado": false
+              }
+            ],
+            "saltos": null
+          },
+          {
+            "criterio": "3.4 - Completitud del Contexto",
+            "constructo": "ATOMO_CONTEXTO",
+            "penalizacion": 10,
+            "atomos_activados": [
+              {
+                "atomo": "ATOMO_CONTEXTO",
+                "segmento": 24,
+                "penalizacion": 10,
+                "heredado": false
+              }
+            ],
+            "saltos": null
+          }
+        ]
+      },
+      {
+        "id": "fase4",
+        "nombre": "Transparencia Retórica",
+        "puntaje": 92,
+        "infracciones": [
+          {
+            "criterio": "4.4 - Claridad Denotativa",
+            "constructo": "ATOMO_AMBIGUEDAD_LEXICA",
+            "penalizacion": 8,
+            "atomos_activados": [
+              {
+                "atomo": "ATOMO_AMBIGUEDAD_LEXICA",
+                "segmento": 100,
+                "penalizacion": 8,
+                "heredado": false
+              }
+            ],
+            "saltos": null
+          }
+        ]
+      },
+      {
+        "id": "fase5",
+        "nombre": "Pertinencia Deliberativa",
+        "puntaje": 100,
+        "infracciones": []
+      }
+    ],
+    "evidencias": [
+      {
+        "atomo": "ATOMO_SOPORTE_LOGICO",
+        "criterio": "1.4",
+        "fragmento": "El ciudadano como centro\n\nLa arquitectura puede parecer compleja porque contiene numerosos componentes",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_CAUSALIDAD",
+        "criterio": "2.2",
+        "fragmento": "La arquitectura general\n\nLogoDemocracy se estructura conceptualmente alrededor de diferentes componentes especializados",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_CAUSALIDAD",
+        "criterio": "2.2",
+        "fragmento": "Sus contenidos pueden incluir:\n\n- democracia;\n- filosofía;\n- economía;\n- ciencias cognitivas;\n- epistemología;\n- estadística;\n- pensamiento crítico;\n- instituciones;\n- inteligencia artificial;\n- tecnología;\n- alfabetización digital;\n- cultura general",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_CAUSALIDAD",
+        "criterio": "2.2",
+        "fragmento": "También puede convertirse en el lugar donde queda depositado el conocimiento generado por la propia participación ciudadana",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_CAUSALIDAD",
+        "criterio": "2.2",
+        "fragmento": "Los contenidos más relevantes pueden generar:\n\n- comentarios;\n- preguntas;\n- respuestas;\n- argumentos;\n- debates;\n- conversaciones en Logos;\n- síntesis;\n- nuevas propuestas",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_CAUSALIDAD",
+        "criterio": "2.2",
+        "fragmento": "A partir de él pueden generarse:\n\n- antecedentes;\n- conceptos relevantes;\n- información técnica;\n- evidencia;\n- posiciones;\n- argumentos;\n- análisis de consecuencias;\n- preguntas;\n- material pedagógico",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_CAUSALIDAD",
+        "criterio": "2.2",
+        "fragmento": "Busca transformar información histórica dispersa en una memoria capaz de recuperar:\n\n- acontecimientos;\n- declaraciones;\n- promesas;\n- decisiones;\n- consecuencias;\n- patrones;\n- correlaciones;\n- relaciones causales cuando puedan establecerse;\n- contradicciones;\n- recurrencias;\n- antecedentes relevantes",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_CAUSALIDAD",
+        "criterio": "2.2",
+        "fragmento": "Esto genera un circuito:\n\n```\n\nCIUDADANOS\n│\n▼\nINTERACCIÓN\n│\n▼\nDATOS Y RETROALIMENTACIÓN\n│\n▼\nANÁLISIS\n│\n▼\nMEJORA DE LOS SISTEMAS\n│\n▼\nNUEVA EXPERIENCIA\n│\n└──────────────► CIUDADANOS\n\n```\n\nLa plataforma no debe entenderse como un producto terminado",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_GENERALIZACION",
+        "criterio": "2.3",
+        "fragmento": "A partir de él puede producirse el siguiente proceso:\n\n```\n\nformación específica          evaluación de calidad\n│                           │\n└─────────────┬─────────────┘\n▼\nLOGOS\n│\ndeliberación\n│\n┌─────────────┴─────────────┐\n▼                           ▼\nALETHEIA                     MYTHOS\nanálisis del discurso       antecedentes y memoria\n│                           │\n└─────────────┬─────────────┘\n▼\nÁGORA\n│\nexperiencia institucional\n│\n▼\nconocimiento generado\n│\n▼\nACADEMIA\n\n```\n\nEste flujo no constituye una secuencia rígida ni implica que todos los componentes deban intervenir siempre",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_GENERALIZACION",
+        "criterio": "2.3",
+        "fragmento": "Una sociedad no puede prestar atención simultáneamente a todos los problemas",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "## Arquitectura de la plataforma tecnológica\n\n### Pregunta central\n\n¿Cómo puede una infraestructura digital integrar educación, inteligencia artificial, producción de conocimiento, memoria colectiva, deliberación y participación ciudadana sin sustituir la autonomía de las personas",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "### Idea central\n\nLogoDemocracy es una infraestructura digital orientada a explorar una evolución de la democracia representativa mediante la integración de educación, inteligencia artificial, deliberación asistida, producción colaborativa de conocimiento, memoria colectiva y participación ciudadana",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Una arquitectura en construcción\n\nLos módulos descritos en este documento representan la arquitectura conceptual y el horizonte de desarrollo del ecosistema LogoDemocracy",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "LogoDemocracy será construido progresivamente",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Posteriormente se incorporará el Rey Filósofo, incluyendo progresivamente sus capacidades de personalización pedagógica, perfil de aprendizaje y estimación de la Zona de Desarrollo Próximo",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "La arquitectura completa funciona, por tanto, como un mapa de desarrollo progresivo",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Cada nuevo componente deberá construirse sobre la infraestructura y el conocimiento producido por las etapas anteriores",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Es un ecosistema que debe aprender a construirse a medida que aprende cómo aprenden y deliberan sus usuarios",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Democracia aumentada\n\nEl concepto de democracia aumentada constituye uno de los principios centrales del proyecto",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Es una democracia en la que determinadas capacidades humanas pueden ser ampliadas mediante herramientas tecnológicas",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "La arquitectura general\n\nLogoDemocracy se estructura conceptualmente alrededor de diferentes componentes especializados",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "La relación entre ellos puede representarse de manera simplificada:\n\n```\n\n```\n\nEsta representación describe una arquitectura conceptual de largo plazo",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "No implica que todos los componentes estén actualmente implementados ni que exista una única secuencia obligatoria",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "La arquitectura debe entenderse como un circuito de retroalimentación que se irá construyendo progresivamente",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "La Academia: infraestructura de conocimiento\n\nLa Academia constituye la base educativa y epistemológica del ecosistema",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Sus contenidos pueden incluir:\n\n- democracia;\n- filosofía;\n- economía;\n- ciencias cognitivas;\n- epistemología;\n- estadística;\n- pensamiento crítico;\n- instituciones;\n- inteligencia artificial;\n- tecnología;\n- alfabetización digital;\n- cultura general",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Los documentos son versionables, editables y pueden ser explicados mediante inteligencia artificial",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "### La Academia también produce conocimiento\n\nUna característica fundamental de LogoDemocracy es que la Academia no debe limitarse a almacenar conocimiento producido previamente",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Ese conocimiento puede posteriormente incorporarse a la Academia si resulta suficientemente valioso",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Constituyen una biblioteca especializada dentro de la Academia",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Su característica particular es que cada proyecto puede convertirse en un objeto de aprendizaje, deliberación y participación",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "SOPHIA: responsabilidad cognitiva\n\nSOPHIA constituye el protocolo y motor de evaluación deliberativa de LogoDemocracy",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Su función es examinar la robustez de contenidos, argumentos y determinadas producciones del ecosistema",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Puede evaluar aspectos como:\n\n- coherencia lógica;\n- trazabilidad;\n- verificabilidad;\n- claridad conceptual;\n- diferenciación entre hechos y valores;\n- incertidumbre;\n- calidad de la evidencia;\n- falacias;\n- transparencia;\n- proporcionalidad;\n- simetría argumentativa;\n- steelman",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "SOPHIA puede producir indicadores como:\n\n- Índice de Robustez Deliberativa;\n- evidencias;\n- constructos;\n- átomos cognitivos;\n- calibración;\n- riesgos deliberativos",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Rey Filósofo: infraestructura de aprendizaje\n\nEl Rey Filósofo es el tutor cognitivo personalizado del ecosistema",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Su función es acompañar el proceso mediante el cual una persona aprende a pensar sobre un problema",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Su objetivo central es desarrollar:\n\n- pensamiento crítico;\n- metacognición;\n- alfabetización epistemológica;\n- comprensión profunda;\n- autonomía cognitiva",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Se inspira en conceptos y líneas de investigación asociados con:\n\n- Lev Vygotsky;\n- Jerome Bruner;\n- andamiaje pedagógico;\n- sistemas inteligentes de tutoría;\n- metacognición;\n- aprendizaje adaptativo",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "El Rey Filósofo puede adaptar progresivamente:\n\n- nivel de explicación;\n- ejemplos;\n- analogías;\n- ritmo;\n- preguntas;\n- abstracción;\n- profundidad",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Esta adaptación dependerá del perfil pedagógico y de la trayectoria de aprendizaje del usuario",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Logos: el gimnasio de la deliberación\n\nLogos es el facilitador de comunicación asistido por inteligencia artificial de LogoDemocracy",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Su función es ayudar a las personas a pensar y comunicarse mejor cuando existen desacuerdos",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Una de las experiencias centrales de Logos puede consistir en presentar dos posiciones claramente diferenciadas respecto de un determinado tema:\n\n```\n\n```\n\nEl usuario puede asumir una posición y defenderla frente a otra",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Logos ayuda a estructurar el intercambio, identificar los puntos reales de desacuerdo, solicitar precisiones y mejorar los argumentos",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "La conversación puede desarrollarse en tiempo real y, posteriormente, quedar disponible públicamente",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "De este modo, participar en Logos no es solamente una interacción privada con una inteligencia artificial",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "El muro: producción orgánica de conocimiento\n\nLogoDemocracy no pretende que toda producción ciudadana comience escribiendo un documento",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Escribir un documento completo puede requerir un nivel de elaboración que muchas personas no están acostumbradas a realizar",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Comentar, discutir y responder constituye una actividad mucho más accesible",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Por ello, la plataforma puede desarrollar una capa de producción orgánica de conocimiento alrededor de los documentos de la Academia",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Los contenidos más relevantes pueden generar:\n\n- comentarios;\n- preguntas;\n- respuestas;\n- argumentos;\n- debates;\n- conversaciones en Logos;\n- síntesis;\n- nuevas propuestas",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "La comunidad puede, de esta manera, construir conocimiento a partir de unidades relativamente pequeñas de participación",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "El proceso puede representarse:\n\n```\n\nDOCUMENTO\n│\n▼\nLECTURA\n│\n▼\nCOMENTARIO\n│\n▼\nDISCUSIÓN\n│\n▼\nLOGOS\n│\n▼\nCONOCIMIENTO PRODUCIDO\n│\n▼\nACADEMIA\n\n```\n\nLa votación cuadrática puede ayudar a determinar qué contenidos y conversaciones merecen mayor atención comunitaria",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Así, el muro no constituye simplemente un flujo de publicaciones",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Es una capa de producción colectiva de conocimiento alrededor de los contenidos de la Academia",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Aletheia: alfabetización frente a la manipulación\n\nAletheia es el módulo orientado al análisis de discursos públicos y al fortalecimiento de la resistencia cognitiva frente a mecanismos de manipulación",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Busca hacer visibles mecanismos que pueden aprovechar vulnerabilidades cognitivas",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Ágora: el congreso virtual\n\nÁgora constituye el congreso virtual de LogoDemocracy",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Su propósito es permitir que los ciudadanos experimenten un proceso de participación institucional semejante al que enfrentaría un representante político ante un proyecto de ley real",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "A partir de él pueden generarse:\n\n- antecedentes;\n- conceptos relevantes;\n- información técnica;\n- evidencia;\n- posiciones;\n- argumentos;\n- análisis de consecuencias;\n- preguntas;\n- material pedagógico",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Pero su propósito inmediato es formar a los ciudadanos que participarán en ese determinado proceso deliberativo",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "El proceso puede representarse:\n\n```\n\n```\n\nDentro de Ágora:\n\n1",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "los ciudadanos estudian el problema;\n2",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "desarrollan los conocimientos necesarios;\n3",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "asumen posiciones o roles representativos;\n5",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "No se trata solamente de aprender cómo funciona un Congreso",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Mythos: memoria colectiva aumentada\n\nMythos representa la dimensión de memoria colectiva aumentada de LogoDemocracy",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Una sociedad puede olvidar:\n\n- lo que un político prometió;\n- qué decisiones tomó una autoridad;\n- qué consecuencias produjo una política pública;\n- determinados casos de corrupción;\n- advertencias realizadas anteriormente;\n- argumentos utilizados en una controversia;\n- antecedentes relevantes;\n- patrones que se repiten a lo largo del tiempo",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Busca transformar información histórica dispersa en una memoria capaz de recuperar:\n\n- acontecimientos;\n- declaraciones;\n- promesas;\n- decisiones;\n- consecuencias;\n- patrones;\n- correlaciones;\n- relaciones causales cuando puedan establecerse;\n- contradicciones;\n- recurrencias;\n- antecedentes relevantes",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "A partir de él puede producirse el siguiente proceso:\n\n```\n\nformación específica          evaluación de calidad\n│                           │\n└─────────────┬─────────────┘\n▼\nLOGOS\n│\ndeliberación\n│\n┌─────────────┴─────────────┐\n▼                           ▼\nALETHEIA                     MYTHOS\nanálisis del discurso       antecedentes y memoria\n│                           │\n└─────────────┬─────────────┘\n▼\nÁGORA\n│\nexperiencia institucional\n│\n▼\nconocimiento generado\n│\n▼\nACADEMIA\n\n```\n\nEste flujo no constituye una secuencia rígida ni implica que todos los componentes deban intervenir siempre",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Representa una arquitectura objetivo",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Lo importante es que cada componente pueda aportar una capacidad distinta al mismo ecosistema",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "El ciudadano como centro\n\nLa arquitectura puede parecer compleja porque contiene numerosos componentes",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "```\n\naprendizaje   deliberación   participación\n│             │             │\n└─────────────┼─────────────┘\n▼\nautonomía cognitiva\n\n```\n\nLa inteligencia artificial constituye infraestructura",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "El ecosistema contempla una progresiva producción comunitaria de conocimiento",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "El proceso puede comenzar con una propuesta:\n\n```\n\nPROPUESTA\n│\n▼\nSOPHIA\n│\nevaluación\n│\n▼\nDISCUSIÓN\n│\n▼\nMEJORA\n│\n▼\nVALORACIÓN COMUNITARIA\n│\n▼\nACADEMIA\n\n```\n\nLa comunidad puede pasar de ser receptora de contenidos a participar en su producción",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Puede comenzar con:\n\n- una pregunta;\n- un comentario;\n- una objeción;\n- un argumento;\n- una conversación;\n- una deliberación en Logos;\n- una propuesta de mejora",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "La plataforma puede transformar progresivamente esas contribuciones en conocimiento estructurado",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "### Gobernanza\n\nPermitir que la comunidad exprese la intensidad de sus preferencias respecto de determinados contenidos, propuestas o proyectos",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "### Pedagogía\n\nPermitir que los ciudadanos experimenten directamente conceptos como:\n\n- escasez;\n- intensidad de preferencias;\n- costo de concentrar votos;\n- priorización;\n- asignación de recursos limitados",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "El circuito de retroalimentación\n\nUno de los principios fundamentales de LogoDemocracy es que sus componentes no deben permanecer estáticos",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Esto genera un circuito:\n\n```\n\nCIUDADANOS\n│\n▼\nINTERACCIÓN\n│\n▼\nDATOS Y RETROALIMENTACIÓN\n│\n▼\nANÁLISIS\n│\n▼\nMEJORA DE LOS SISTEMAS\n│\n▼\nNUEVA EXPERIENCIA\n│\n└──────────────► CIUDADANOS\n\n```\n\nLa plataforma no debe entenderse como un producto terminado",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "LogoDemocracy como red social ciudadana\n\nLa arquitectura descrita permite pensar LogoDemocracy como una forma diferente de red social",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Es la idea sometida a atención, aprendizaje y deliberación",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Es aumentar la calidad de la atención",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "La atención como recurso democrático\n\nLa atención humana es limitada",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Puede después formular una pregunta o comentario",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Puede revisar antecedentes en Mythos",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Puede participar en un proceso legislativo en Ágora",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "LogoDemocracy como laboratorio cívico\n\nLogoDemocracy también constituye una infraestructura potencial de investigación",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Esto permitiría formular y evaluar hipótesis como:\n\n- si determinadas estrategias pedagógicas mejoran la comprensión;\n- si el steelman aumenta la robustez deliberativa;\n- si la interacción con Logos mejora la capacidad argumentativa;\n- si los cierres metacognitivos mejoran el aprendizaje;\n- si determinados formatos de contenido favorecen la comprensión;\n- si la formación específica mejora la calidad de la deliberación legislativa",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "La plataforma puede convertirse así en algo más que una infraestructura tecnológica",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Principios fundamentales\n\nTodo el ecosistema debe permanecer subordinado a algunos principios básicos:\n\n### La IA aumenta capacidades\n\nLa inteligencia artificial debe ampliar capacidades humanas",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "### El conocimiento debe poder ser cuestionado\n\nLos contenidos deben permanecer abiertos a revisión, evidencia y discusión",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "### La comunidad produce conocimiento\n\nLos ciudadanos no son únicamente consumidores de información",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Una arquitectura que aprende democracia\n\nLogoDemocracy puede resumirse como un circuito:\n\n```\n\n```\n\nLa Academia proporciona conocimiento",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_HECHO_VALOR",
+        "criterio": "3.3",
+        "fragmento": "Pretende construir una infraestructura en la que los ciudadanos puedan seguir aprendiendo, pensar mejor juntos y participar de manera cada vez más informada y autónoma",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_CONTEXTO",
+        "criterio": "3.4",
+        "fragmento": "La democracia representativa moderna, sin embargo, continúa dependiendo de instituciones y mecanismos de comunicación diseñados en contextos tecnológicos muy diferentes",
+        "perfil": "POL"
+      },
+      {
+        "atomo": "ATOMO_AMBIGUEDAD_LEXICA",
+        "criterio": "4.4",
+        "fragmento": "Logos ayuda a estructurar el intercambio, identificar los puntos reales de desacuerdo, solicitar precisiones y mejorar los argumentos",
+        "perfil": "POL"
+      }
+    ],
+    "IRD_global": 81,
+    "riesgo": "Atención"
+  },
+  "semantic_review": [
+    {
+      "atomo": "ATOMO_SOPORTE_LOGICO",
+      "criterio": "1.4",
+      "fragmento": "El ciudadano como centro\n\nLa arquitectura puede parecer compleja porque contiene numerosos componentes",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "No se proporcionó el 'Texto de la evidencia', el 'Criterio' o el 'Átomo activado' de la penalización. Sin esta información crucial, es imposible determinar qué concepto fue penalizado o la intención del autor, haciendo que la clasificación sea ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_CAUSALIDAD",
+      "criterio": "2.2",
+      "fragmento": "La arquitectura general\n\nLogoDemocracy se estructura conceptualmente alrededor de diferentes componentes especializados",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "La información de la penalización (criterio, átomo activado, texto de la evidencia) está vacía o no especificada. Esto hace imposible determinar la naturaleza de una infracción o el uso de un concepto por parte del autor, ya que no hay un evento o uso específico que clasificar. Por lo tanto, la clasificación es ambigua debido a la falta de datos."
+      }
+    },
+    {
+      "atomo": "ATOMO_CAUSALIDAD",
+      "criterio": "2.2",
+      "fragmento": "Sus contenidos pueden incluir:\n\n- democracia;\n- filosofía;\n- economía;\n- ciencias cognitivas;\n- epistemología;\n- estadística;\n- pensamiento crítico;\n- instituciones;\n- inteligencia artificial;\n- tecnología;\n- alfabetización digital;\n- cultura general",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "Los detalles de la penalización (criterio, nombre del criterio, átomo activado, texto de la evidencia y penalización aplicada) están completamente no especificados o vacíos. Sin ninguna información sobre qué infracción se detectó o qué texto la activó, es imposible clasificar la intención del autor o la naturaleza de la supuesta infracción."
+      }
+    },
+    {
+      "atomo": "ATOMO_CAUSALIDAD",
+      "criterio": "2.2",
+      "fragmento": "También puede convertirse en el lugar donde queda depositado el conocimiento generado por la propia participación ciudadana",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, y el criterio, el nombre del criterio, el átomo activado y la penalización aplicada no están especificados. Esta ausencia de información impide determinar la base de la penalización o el tipo de uso del concepto por parte del autor, haciendo que la situación sea ambigua e inclasificable en las demás categorías."
+      }
+    },
+    {
+      "atomo": "ATOMO_CAUSALIDAD",
+      "criterio": "2.2",
+      "fragmento": "Los contenidos más relevantes pueden generar:\n\n- comentarios;\n- preguntas;\n- respuestas;\n- argumentos;\n- debates;\n- conversaciones en Logos;\n- síntesis;\n- nuevas propuestas",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, y el 'Criterio', 'Nombre del criterio', 'Átomo activado' y 'Penalización aplicada' no están especificados. Sin ningún texto de evidencia ni contexto claro sobre la naturaleza de la infracción, es imposible determinar la intención del autor o la validez de la penalización. Por lo tanto, la situación es ambigua y no permite una clasificación más específica."
+      }
+    },
+    {
+      "atomo": "ATOMO_CAUSALIDAD",
+      "criterio": "2.2",
+      "fragmento": "A partir de él pueden generarse:\n\n- antecedentes;\n- conceptos relevantes;\n- información técnica;\n- evidencia;\n- posiciones;\n- argumentos;\n- análisis de consecuencias;\n- preguntas;\n- material pedagógico",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización (criterio, nombre del criterio, átomo activado y texto de la evidencia) están todos vacíos o 'No especificado'. Sin información sobre la infracción o el concepto penalizado, es imposible clasificar la intención del autor respecto a dicho concepto. La ambigüedad reside en la falta de datos sobre la penalización misma."
+      }
+    },
+    {
+      "atomo": "ATOMO_CAUSALIDAD",
+      "criterio": "2.2",
+      "fragmento": "Busca transformar información histórica dispersa en una memoria capaz de recuperar:\n\n- acontecimientos;\n- declaraciones;\n- promesas;\n- decisiones;\n- consecuencias;\n- patrones;\n- correlaciones;\n- relaciones causales cuando puedan establecerse;\n- contradicciones;\n- recurrencias;\n- antecedentes relevantes",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "No es posible determinar con claridad la intención del autor ni la naturaleza de la penalización, ya que el 'Criterio', 'Nombre del criterio', 'Átomo activado', 'Texto de la evidencia' y 'Penalización aplicada' están todos marcados como 'No especificado' o vacíos. No hay información alguna sobre qué concepto o infracción fue detectada para poder clasificarla."
+      }
+    },
+    {
+      "atomo": "ATOMO_CAUSALIDAD",
+      "criterio": "2.2",
+      "fragmento": "Esto genera un circuito:\n\n```\n\nCIUDADANOS\n│\n▼\nINTERACCIÓN\n│\n▼\nDATOS Y RETROALIMENTACIÓN\n│\n▼\nANÁLISIS\n│\n▼\nMEJORA DE LOS SISTEMAS\n│\n▼\nNUEVA EXPERIENCIA\n│\n└──────────────► CIUDADANOS\n\n```\n\nLa plataforma no debe entenderse como un producto terminado",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, y los campos 'Criterio', 'Nombre del criterio' y 'Átomo activado' no están especificados. Sin evidencia textual ni información sobre el criterio de la penalización, no es posible determinar con claridad la naturaleza de la infracción o la intención del autor."
+      }
+    },
+    {
+      "atomo": "ATOMO_GENERALIZACION",
+      "criterio": "2.3",
+      "fragmento": "A partir de él puede producirse el siguiente proceso:\n\n```\n\nformación específica          evaluación de calidad\n│                           │\n└─────────────┬─────────────┘\n▼\nLOGOS\n│\ndeliberación\n│\n┌─────────────┴─────────────┐\n▼                           ▼\nALETHEIA                     MYTHOS\nanálisis del discurso       antecedentes y memoria\n│                           │\n└─────────────┬─────────────┘\n▼\nÁGORA\n│\nexperiencia institucional\n│\n▼\nconocimiento generado\n│\n▼\nACADEMIA\n\n```\n\nEste flujo no constituye una secuencia rígida ni implica que todos los componentes deban intervenir siempre",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El campo 'Texto de la evidencia' está vacío, lo que indica que el algoritmo determinista no detectó ninguna porción específica del texto como una infracción. En ausencia de evidencia de una infracción, se asume que el uso del lenguaje es legítimo con respecto al criterio (no especificado) que se estaba evaluando."
+      }
+    },
+    {
+      "atomo": "ATOMO_GENERALIZACION",
+      "criterio": "2.3",
+      "fragmento": "Una sociedad no puede prestar atención simultáneamente a todos los problemas",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, lo que impide determinar qué fragmento específico del documento activó la penalización y, por lo tanto, no es posible clasificar la intención del autor o el tipo de uso."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "## Arquitectura de la plataforma tecnológica\n\n### Pregunta central\n\n¿Cómo puede una infraestructura digital integrar educación, inteligencia artificial, producción de conocimiento, memoria colectiva, deliberación y participación ciudadana sin sustituir la autonomía de las personas",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, y el 'Criterio', 'Nombre del criterio', 'Átomo activado' y 'Penalización aplicada' no están especificados. Sin ningún detalle sobre la infracción o el texto que la generó, no es posible clasificar la penalización en ninguna de las otras categorías."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "### Idea central\n\nLogoDemocracy es una infraestructura digital orientada a explorar una evolución de la democracia representativa mediante la integración de educación, inteligencia artificial, deliberación asistida, producción colaborativa de conocimiento, memoria colectiva y participación ciudadana",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.8,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización (Criterio, Nombre del criterio, Átomo activado, Texto de la evidencia, Penalización aplicada) están todos marcados como 'No especificado' o vacíos. Esto indica que el algoritmo determinista no detectó ninguna infracción o no aplicó una penalización en este caso. En ausencia de una infracción detectada, la presunción es que el uso del autor es legítimo con respecto a cualquier criterio que el algoritmo pudiera haber evaluado."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Una arquitectura en construcción\n\nLos módulos descritos en este documento representan la arquitectura conceptual y el horizonte de desarrollo del ecosistema LogoDemocracy",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío y los detalles de la penalización (Criterio, Nombre del criterio, Átomo activado, Penalización aplicada) no están especificados. Sin ninguna evidencia textual o detalles de la infracción, es imposible determinar la intención del autor o la naturaleza de la supuesta infracción."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "LogoDemocracy será construido progresivamente",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización (criterio, nombre, átomo activado, texto de evidencia y penalización aplicada) están todos 'No especificado' o vacíos. Esto significa que no hay información concreta sobre la naturaleza de la infracción o el evento penalizado, haciendo imposible determinar con claridad la intención del autor o la validez de la penalización."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Posteriormente se incorporará el Rey Filósofo, incluyendo progresivamente sus capacidades de personalización pedagógica, perfil de aprendizaje y estimación de la Zona de Desarrollo Próximo",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los detalles de la penalización (criterio, nombre del criterio, átomo activado, texto de la evidencia y penalización aplicada) están todos 'No especificado' o vacíos. Esto impide determinar la naturaleza de la infracción o la intención del autor en relación con un concepto específico, haciendo imposible una clasificación clara."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "La arquitectura completa funciona, por tanto, como un mapa de desarrollo progresivo",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización están incompletos y la 'Texto de la evidencia' está vacía (''), lo que hace imposible determinar la naturaleza de la supuesta infracción o el uso de cualquier concepto. No hay información suficiente para clasificar el tipo de uso del texto."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Cada nuevo componente deberá construirse sobre la infraestructura y el conocimiento producido por las etapas anteriores",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El 'Criterio', 'Nombre del criterio', 'Átomo activado', 'Texto de la evidencia' y 'Penalización aplicada' están todos como 'No especificado' o vacíos. Sin esta información crucial, es imposible determinar la naturaleza de la infracción o la intención del autor, haciendo que cualquier clasificación más específica sea inviable."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Es un ecosistema que debe aprender a construirse a medida que aprende cómo aprenden y deliberan sus usuarios",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "No se especifica el criterio, nombre del criterio, átomo activado ni la penalización aplicada. Además, el 'Texto de la evidencia' está vacío, lo que impide determinar qué aspecto del contexto debería ser evaluado y bajo qué base."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Democracia aumentada\n\nEl concepto de democracia aumentada constituye uno de los principios centrales del proyecto",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.75,
+        "requiere_revision_humana": false,
+        "razon": "La ausencia de 'Texto de la evidencia' y el estado 'No especificado' para el criterio, átomo activado y penalización aplicada, indican que el algoritmo determinista no detectó ninguna infracción específica. Esto implica que el contenido evaluado es conforme a los (no especificados) criterios, por lo que se considera un uso legítimo."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Es una democracia en la que determinadas capacidades humanas pueden ser ampliadas mediante herramientas tecnológicas",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización (Criterio, Nombre del criterio, Átomo activado, Texto de la evidencia y Penalización aplicada) están todos 'No especificado' o vacíos. Sin información sobre la naturaleza de la infracción o el texto específico que la activó, es imposible determinar con claridad la intención del autor o la validez de la penalización."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "La arquitectura general\n\nLogoDemocracy se estructura conceptualmente alrededor de diferentes componentes especializados",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "La penalización recibida no especifica el criterio, el átomo activado, ni el texto de la evidencia. El 'Texto de la evidencia' está explícitamente vacío (`\"\"`), lo que imposibilita cualquier tipo de evaluación o clasificación de la intención del autor o del contexto de una supuesta infracción. Sin evidencia textual, no es posible determinar si hubo una infracción confirmada, un uso legítimo, metadiscursivo, crítico, irónico, hipotético o una cita. Por lo tanto, la situación es ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "La relación entre ellos puede representarse de manera simplificada:\n\n```\n\n```\n\nEsta representación describe una arquitectura conceptual de largo plazo",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "No se proporcionó 'Texto de la evidencia', ni el criterio o nombre del criterio de la penalización. Sin esta información crucial, es imposible determinar la naturaleza de la infracción o la intención del autor, haciendo que la clasificación sea ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "No implica que todos los componentes estén actualmente implementados ni que exista una única secuencia obligatoria",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El campo 'Texto de la evidencia' está vacío, lo que imposibilita analizar la intención del autor o la naturaleza de la penalización. Sin texto específico para evaluar, no se puede clasificar en ninguna de las otras categorías."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "La arquitectura debe entenderse como un circuito de retroalimentación que se irá construyendo progresivamente",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "No se proporcionó ningún 'Texto de la evidencia' específico que activara la penalización, ni se especificó el 'Criterio', el 'Nombre del criterio' o la 'Penalización aplicada'. Sin esta información clave, es imposible clasificar la intención del autor o la naturaleza de la supuesta infracción."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "La Academia: infraestructura de conocimiento\n\nLa Academia constituye la base educativa y epistemológica del ecosistema",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.9,
+        "requiere_revision_humana": false,
+        "razon": "Dado que el 'Texto de la evidencia' está vacío y la 'Penalización aplicada' no está especificada, se infiere que el algoritmo determinista no detectó ninguna infracción específica en el fragmento de texto proporcionado. Por lo tanto, el uso del contenido por parte del autor, en relación con el criterio no especificado, se considera legítimo al no haberse identificado ninguna evidencia de infracción."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Sus contenidos pueden incluir:\n\n- democracia;\n- filosofía;\n- economía;\n- ciencias cognitivas;\n- epistemología;\n- estadística;\n- pensamiento crítico;\n- instituciones;\n- inteligencia artificial;\n- tecnología;\n- alfabetización digital;\n- cultura general",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, lo que imposibilita determinar la intención del autor o la naturaleza de la infracción, ya que no hay contenido textual específico para analizar o clasificar dentro de las categorías provistas."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Los documentos son versionables, editables y pueden ser explicados mediante inteligencia artificial",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío y los detalles de la penalización (Criterio, Nombre del criterio, Átomo activado, Penalización aplicada) son 'No especificado'. Sin ninguna información sobre qué fue detectado o por qué, es imposible clasificar la intención del autor o la naturaleza de la infracción."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "### La Academia también produce conocimiento\n\nUna característica fundamental de LogoDemocracy es que la Academia no debe limitarse a almacenar conocimiento producido previamente",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.9,
+        "requiere_revision_humana": false,
+        "razon": "La ausencia de 'Texto de la evidencia', 'Criterio', 'Nombre del criterio' y 'Átomo activado', junto con el estado 'Penalización aplicada: No especificado', indica que no se identificó ninguna infracción específica ni se aplicó una penalización. En este contexto, la categoría 'uso_legitimo' es la que mejor describe la situación de que el texto no incurre en la infracción que supuestamente activaría una penalización, o que no se encontró base para una penalización."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Ese conocimiento puede posteriormente incorporarse a la Academia si resulta suficientemente valioso",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "No se especifica el criterio de penalización, el átomo activado, ni el texto de la evidencia que habría provocado la penalización. Sin esta información, es imposible clasificar la naturaleza de la infracción o el uso del concepto."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Constituyen una biblioteca especializada dentro de la Academia",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.9,
+        "requiere_revision_humana": false,
+        "razon": "El campo 'Texto de la evidencia' está vacío, y la 'Penalización aplicada' es 'No especificado'. Esto indica que el algoritmo determinista no encontró ninguna evidencia de infracción ni aplicó penalización. Por lo tanto, se asume que el contenido del documento hace un uso legítimo de los conceptos, ya que no se detectó ninguna irregularidad."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Su característica particular es que cada proyecto puede convertirse en un objeto de aprendizaje, deliberación y participación",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los 'DATOS DE LA PENALIZACIÓN' (Criterio, Nombre del criterio, Átomo activado, Texto de la evidencia, Penalización aplicada) están todos 'No especificado' o vacíos. Sin ninguna información sobre qué fue penalizado, es imposible determinar la naturaleza de la infracción o el concepto relevante para clasificar la penalización en las categorías provistas."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "SOPHIA: responsabilidad cognitiva\n\nSOPHIA constituye el protocolo y motor de evaluación deliberativa de LogoDemocracy",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "No es posible clasificar la penalización porque el 'Texto de la evidencia' está vacío, lo que impide analizar el uso o la intención del autor respecto a cualquier concepto."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Su función es examinar la robustez de contenidos, argumentos y determinadas producciones del ecosistema",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El campo 'Texto de la evidencia' está vacío, lo que indica que no se proporcionó ningún fragmento de texto específico del documento para evaluar la supuesta infracción. Sin esta evidencia, es imposible determinar la intención del autor o clasificar la penalización en las categorías predefinidas."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Puede evaluar aspectos como:\n\n- coherencia lógica;\n- trazabilidad;\n- verificabilidad;\n- claridad conceptual;\n- diferenciación entre hechos y valores;\n- incertidumbre;\n- calidad de la evidencia;\n- falacias;\n- transparencia;\n- proporcionalidad;\n- simetría argumentativa;\n- steelman",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, y tanto el 'Criterio' como la 'Penalización aplicada' se indican como 'No especificado'. Sin ninguna evidencia textual ni información sobre el criterio o la penalización, no es posible determinar la intención del autor ni clasificar la supuesta infracción de manera clara."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "SOPHIA puede producir indicadores como:\n\n- Índice de Robustez Deliberativa;\n- evidencias;\n- constructos;\n- átomos cognitivos;\n- calibración;\n- riesgos deliberativos",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío y los detalles de la penalización (Criterio, Nombre del criterio, Átomo activado, Penalización aplicada) son 'No especificado'. Sin información específica sobre la infracción o el texto que la evidencia, no es posible determinar con claridad la intención del autor o la naturaleza de la penalización. Por lo tanto, se clasifica como ambiguo."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Rey Filósofo: infraestructura de aprendizaje\n\nEl Rey Filósofo es el tutor cognitivo personalizado del ecosistema",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "La ausencia de 'Texto de la evidencia' y la especificación como 'No especificado' para el criterio, el nombre del criterio y la penalización aplicada, impiden determinar la naturaleza de la infracción o el uso del concepto por parte del autor. Esto hace imposible clasificar la penalización con claridad en cualquier otra categoría."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Su función es acompañar el proceso mediante el cual una persona aprende a pensar sobre un problema",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización (Criterio, Nombre del criterio, Átomo activado, Texto de la evidencia y Penalización aplicada) están todos marcados como 'No especificado' o vacíos. Sin información sobre la penalización específica o el criterio activado, es imposible determinar la intención del autor o clasificar la penalización."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Su objetivo central es desarrollar:\n\n- pensamiento crítico;\n- metacognición;\n- alfabetización epistemológica;\n- comprensión profunda;\n- autonomía cognitiva",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío (''), y el criterio de penalización no está especificado. Sin una evidencia textual concreta o un criterio conocido, es imposible determinar la intención del autor o la validez de la penalización. Por lo tanto, la clasificación es inherentemente ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Se inspira en conceptos y líneas de investigación asociados con:\n\n- Lev Vygotsky;\n- Jerome Bruner;\n- andamiaje pedagógico;\n- sistemas inteligentes de tutoría;\n- metacognición;\n- aprendizaje adaptativo",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El campo 'Texto de la evidencia' está vacío, y los detalles de la penalización ('Criterio', 'Nombre del criterio', 'Átomo activado', 'Penalización aplicada') no están especificados. Sin evidencia textual clara ni información sobre el criterio de penalización, es imposible clasificar la intención del autor o la naturaleza de la infracción."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "El Rey Filósofo puede adaptar progresivamente:\n\n- nivel de explicación;\n- ejemplos;\n- analogías;\n- ritmo;\n- preguntas;\n- abstracción;\n- profundidad",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El texto de la evidencia para la penalización está vacío y todos los detalles del criterio de penalización están marcados como 'No especificado'. Sin información específica sobre cuál fue la infracción detectada, no es posible clasificar la penalización recibida en ninguna de las categorías disponibles, lo que la hace ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Esta adaptación dependerá del perfil pedagógico y de la trayectoria de aprendizaje del usuario",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.9,
+        "requiere_revision_humana": false,
+        "razon": "Dado que el 'Texto de la evidencia' está vacío, no se detectó ninguna porción específica del documento que activara una penalización. Esto implica que el algoritmo no encontró una infracción, y por defecto, el uso del lenguaje por parte del autor, en relación con el criterio no especificado, es considerado legítimo."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Logos: el gimnasio de la deliberación\n\nLogos es el facilitador de comunicación asistido por inteligencia artificial de LogoDemocracy",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Dado que el 'Texto de la evidencia' está vacío y los demás datos de la penalización no están especificados (Criterio, Nombre del criterio, Átomo activado), no es posible determinar con claridad la intención del autor o la naturaleza específica de la infracción. Las categorías disponibles requieren un fragmento de texto para analizar su uso o la confirmación de una infracción específica. Sin evidencia textual, la situación es ambigua para una clasificación semántica."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Su función es ayudar a las personas a pensar y comunicarse mejor cuando existen desacuerdos",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El campo 'Texto de la evidencia' está vacío, al igual que los datos sobre el criterio y el átomo activado. Esto impide completamente identificar la naturaleza de la penalización o la intención del autor, haciendo imposible clasificarla en cualquier otra categoría."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Una de las experiencias centrales de Logos puede consistir en presentar dos posiciones claramente diferenciadas respecto de un determinado tema:\n\n```\n\n```\n\nEl usuario puede asumir una posición y defenderla frente a otra",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, lo que impide identificar cualquier fragmento textual específico sobre el cual basar la clasificación de la penalización. Sin evidencia textual, no es posible determinar cómo el autor usó un concepto ni su intención, haciendo la situación inherentemente ambigua para la clasificación."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Logos ayuda a estructurar el intercambio, identificar los puntos reales de desacuerdo, solicitar precisiones y mejorar los argumentos",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío y todos los demás detalles de la penalización (Criterio, Nombre del criterio, Átomo activado, Penalización aplicada) se indican como 'No especificado'. Sin ninguna información sobre qué fue penalizado o cuál era el criterio, es imposible determinar la intención del autor o la naturaleza de la supuesta infracción. Por lo tanto, la situación es completamente ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "La conversación puede desarrollarse en tiempo real y, posteriormente, quedar disponible públicamente",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.9,
+        "requiere_revision_humana": false,
+        "razon": "El campo 'Texto de la evidencia' está vacío, lo que significa que el algoritmo no identificó un fragmento de texto específico que active una penalización. Al no haber evidencia textual, no es posible determinar si hubo una infracción, un uso legítimo o cualquier otra categoría relacionada con el uso del lenguaje por parte del autor."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "De este modo, participar en Logos no es solamente una interacción privada con una inteligencia artificial",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "No se proporcionaron detalles específicos sobre el criterio, el átomo activado o el texto de la evidencia que generó la penalización (el 'Texto de la evidencia' está vacío). Sin esta información fundamental, es imposible determinar la naturaleza de la infracción o la intención del autor, haciendo que cualquier clasificación sea ambigua por falta de datos."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "El muro: producción orgánica de conocimiento\n\nLogoDemocracy no pretende que toda producción ciudadana comience escribiendo un documento",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, lo que indica que no se proporcionó un fragmento específico del texto para analizar la penalización. Sin una evidencia textual concreta, no es posible determinar con claridad la intención del autor o si se incurrió en una infracción."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Escribir un documento completo puede requerir un nivel de elaboración que muchas personas no están acostumbradas a realizar",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "No se puede clasificar la penalización debido a la falta de información crucial. El 'Texto de la evidencia' está vacío y el 'Criterio', 'Nombre del criterio', 'Átomo activado' y 'Penalización aplicada' no están especificados. Sin esta información, es imposible determinar la naturaleza de la penalización o su relación con el contexto proporcionado."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Comentar, discutir y responder constituye una actividad mucho más accesible",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización (Criterio, Nombre del criterio, Átomo activado, Texto de la evidencia y Penalización aplicada) están todos 'No especificado' o vacíos. Sin información sobre la infracción o el criterio aplicado, no es posible clasificar la penalización recibida en ninguna de las categorías específicas, ya que no hay un concepto o una intención del autor que evaluar en relación con una penalización concreta."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Por ello, la plataforma puede desarrollar una capa de producción orgánica de conocimiento alrededor de los documentos de la Academia",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización indican que no se especificó ningún criterio, átomo activado, texto de evidencia o penalización aplicada. Esto sugiere que el algoritmo determinista no encontró ninguna infracción en el fragmento del documento, lo que implica que el uso del lenguaje o conceptos relevantes (aunque no especificados) es legítimo."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Los contenidos más relevantes pueden generar:\n\n- comentarios;\n- preguntas;\n- respuestas;\n- argumentos;\n- debates;\n- conversaciones en Logos;\n- síntesis;\n- nuevas propuestas",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "No es posible clasificar la penalización debido a que todos los datos relevantes (Criterio, Nombre del criterio, Átomo activado, Texto de la evidencia, Penalización aplicada) están marcados como 'No especificado' o vacíos, impidiendo determinar la naturaleza de la infracción o el concepto al que se refiere."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "La comunidad puede, de esta manera, construir conocimiento a partir de unidades relativamente pequeñas de participación",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El campo 'Texto de la evidencia' está vacío, lo que significa que no se ha proporcionado ningún fragmento de texto específico para evaluar. Sin una evidencia textual o un criterio/átomo activado, es imposible clasificar la intención del autor o determinar si existe una infracción."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "El proceso puede representarse:\n\n```\n\nDOCUMENTO\n│\n▼\nLECTURA\n│\n▼\nCOMENTARIO\n│\n▼\nDISCUSIÓN\n│\n▼\nLOGOS\n│\n▼\nCONOCIMIENTO PRODUCIDO\n│\n▼\nACADEMIA\n\n```\n\nLa votación cuadrática puede ayudar a determinar qué contenidos y conversaciones merecen mayor atención comunitaria",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "La 'Texto de la evidencia' está vacía, y el criterio de la penalización no está especificado. Sin un texto específico que haya activado la penalización, es imposible determinar la intención del autor o la naturaleza de la supuesta infracción, haciendo que la situación sea inherentemente ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Así, el muro no constituye simplemente un flujo de publicaciones",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "No es posible clasificar la penalización en una categoría específica porque el 'Texto de la evidencia', el 'Criterio', el 'Nombre del criterio' y el 'Átomo activado' están todos sin especificar o vacíos. Sin estos datos, no se puede determinar la naturaleza de la infracción o el uso del concepto."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Es una capa de producción colectiva de conocimiento alrededor de los contenidos de la Academia",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización indican 'No especificado' para el criterio, el átomo activado y la penalización aplicada, y el 'Texto de la evidencia' está vacío. Esto significa que no se detectó ni identificó ninguna infracción específica por parte del algoritmo. Sin evidencia textual o un criterio definido, es imposible clasificar la intención del autor o la naturaleza de una penalización inexistente, por lo que la situación es ambigua para esta tarea."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Aletheia: alfabetización frente a la manipulación\n\nAletheia es el módulo orientado al análisis de discursos públicos y al fortalecimiento de la resistencia cognitiva frente a mecanismos de manipulación",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, y el 'Criterio', 'Nombre del criterio', 'Átomo activado' y 'Penalización aplicada' no están especificados. Sin información sobre la infracción o el texto relevante, es imposible clasificar la intención del autor o el uso de un concepto específico."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Busca hacer visibles mecanismos que pueden aprovechar vulnerabilidades cognitivas",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización indican que no se especificó ningún criterio, nombre de criterio, átomo activado, texto de evidencia o penalización aplicada. Esto significa que el algoritmo no detectó ninguna infracción en el texto. Por lo tanto, se clasifica como 'uso_legitimo', ya que la ausencia de evidencia de una infracción implica que el contenido es conforme y su uso es considerado legítimo respecto a cualquier criterio que pudiera haber sido evaluado."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Ágora: el congreso virtual\n\nÁgora constituye el congreso virtual de LogoDemocracy",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío ('\"\"') y el 'Criterio', 'Nombre del criterio', 'Átomo activado' y 'Penalización aplicada' no están especificados. Sin evidencia textual ni detalles de la infracción, es imposible determinar la intención del autor o la naturaleza de la penalización."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Su propósito es permitir que los ciudadanos experimenten un proceso de participación institucional semejante al que enfrentaría un representante político ante un proyecto de ley real",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.9,
+        "requiere_revision_humana": false,
+        "razon": "Los 'DATOS DE LA PENALIZACIÓN' están completamente vacíos o marcados como 'No especificado', incluyendo el 'Texto de la evidencia'. Esto significa que no se proporcionó información alguna sobre la naturaleza de la penalización, el criterio activado o el fragmento de texto que la generó. Dada la ausencia total de detalles, es imposible determinar qué se debe clasificar o la intención detrás de una penalización no definida."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "A partir de él pueden generarse:\n\n- antecedentes;\n- conceptos relevantes;\n- información técnica;\n- evidencia;\n- posiciones;\n- argumentos;\n- análisis de consecuencias;\n- preguntas;\n- material pedagógico",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío y los detalles del 'Criterio', 'Nombre del criterio', 'Átomo activado' y 'Penalización aplicada' son 'No especificado'. Esta falta de información impide determinar la naturaleza de la infracción o el uso de cualquier concepto por parte del autor, haciendo imposible clasificarla en cualquier otra categoría."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Pero su propósito inmediato es formar a los ciudadanos que participarán en ese determinado proceso deliberativo",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío y los campos de 'Criterio', 'Nombre del criterio' y 'Átomo activado' no están especificados. Sin una porción de texto específica que haya sido señalada como infracción o un criterio definido, es imposible determinar la intención del autor o la validez de una supuesta penalización."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "El proceso puede representarse:\n\n```\n\n```\n\nDentro de Ágora:\n\n1",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "La evidencia textual de la penalización está vacía (''), así como los detalles del criterio y el átomo activado. Sin esta información, es imposible determinar qué concepto o uso del lenguaje se estaba evaluando y, por lo tanto, no se puede clasificar la intención del autor o la naturaleza de una posible infracción."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "los ciudadanos estudian el problema;\n2",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El texto de la evidencia está vacío y el criterio, nombre del criterio, átomo activado y penalización aplicada no están especificados. Sin esta información crucial, es imposible determinar la intención del autor o la naturaleza de una posible infracción."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "desarrollan los conocimientos necesarios;\n3",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El campo 'Texto de la evidencia' está vacío, lo que significa que no se proporcionó ninguna parte específica del documento como base para la penalización. Sin texto de evidencia, es imposible determinar la intención del autor o la naturaleza de la supuesta infracción, haciendo que la penalización sea ambigua e inclasificable en cualquier otra categoría."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "asumen posiciones o roles representativos;\n5",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.6,
+        "requiere_revision_humana": true,
+        "razon": "Los 'DATOS DE LA PENALIZACIÓN' no especifican el criterio, el átomo activado ni la penalización aplicada, y el 'Texto de la evidencia' está vacío. Sin ninguna evidencia textual específica ni información sobre el criterio o átomo, es imposible determinar la intención del autor o la naturaleza de cualquier posible infracción o uso del lenguaje. Por lo tanto, la situación de la penalización es ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "No se trata solamente de aprender cómo funciona un Congreso",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización (criterio, nombre del criterio, átomo activado, texto de la evidencia y penalización aplicada) están todos 'No especificado' o vacíos. Esto impide determinar qué concepto o acción del autor está siendo evaluada, haciendo imposible una clasificación precisa según las categorías provistas."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Mythos: memoria colectiva aumentada\n\nMythos representa la dimensión de memoria colectiva aumentada de LogoDemocracy",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los 'DATOS DE LA PENALIZACIÓN' (Criterio, Nombre del criterio, Átomo activado, Texto de la evidencia y Penalización aplicada) están todos marcados como 'No especificado' o vacíos. Esto indica que no se proporcionó información específica sobre la infracción detectada o la penalización aplicada por el algoritmo. Sin estos detalles, no es posible determinar con claridad la naturaleza de la supuesta infracción o la intención del autor en relación con un criterio específico, por lo que la clasificación es ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Una sociedad puede olvidar:\n\n- lo que un político prometió;\n- qué decisiones tomó una autoridad;\n- qué consecuencias produjo una política pública;\n- determinados casos de corrupción;\n- advertencias realizadas anteriormente;\n- argumentos utilizados en una controversia;\n- antecedentes relevantes;\n- patrones que se repiten a lo largo del tiempo",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío y los detalles de la penalización (criterio, nombre del criterio, átomo activado) no están especificados. Sin la evidencia textual específica que supuestamente activó la penalización, no es posible determinar la intención del autor o la naturaleza de la infracción en el contexto proporcionado, lo que hace la clasificación ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Busca transformar información histórica dispersa en una memoria capaz de recuperar:\n\n- acontecimientos;\n- declaraciones;\n- promesas;\n- decisiones;\n- consecuencias;\n- patrones;\n- correlaciones;\n- relaciones causales cuando puedan establecerse;\n- contradicciones;\n- recurrencias;\n- antecedentes relevantes",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "Los 'DATOS DE LA PENALIZACIÓN' están completamente ausentes o no especificados (Criterio, Nombre del criterio, Átomo activado, Texto de la evidencia, Penalización aplicada). Sin información alguna sobre qué fue penalizado o bajo qué criterio, es imposible clasificar la penalización o la intención del autor. El contexto de la evidencia por sí mismo no permite inferir la naturaleza de una penalización no especificada."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "A partir de él puede producirse el siguiente proceso:\n\n```\n\nformación específica          evaluación de calidad\n│                           │\n└─────────────┬─────────────┘\n▼\nLOGOS\n│\ndeliberación\n│\n┌─────────────┴─────────────┐\n▼                           ▼\nALETHEIA                     MYTHOS\nanálisis del discurso       antecedentes y memoria\n│                           │\n└─────────────┬─────────────┘\n▼\nÁGORA\n│\nexperiencia institucional\n│\n▼\nconocimiento generado\n│\n▼\nACADEMIA\n\n```\n\nEste flujo no constituye una secuencia rígida ni implica que todos los componentes deban intervenir siempre",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío y los detalles del criterio y la penalización no están especificados. Sin un fragmento de texto concreto o una descripción del criterio de la penalización, es imposible determinar la intención del autor o la naturaleza de la infracción, haciendo que la situación sea inherentemente ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Representa una arquitectura objetivo",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El campo 'Texto de la evidencia' está vacío y los campos 'Criterio' y 'Átomo activado' no están especificados. Sin información sobre la evidencia textual o el criterio de la infracción, es imposible determinar la intención del autor o la naturaleza de la supuesta penalización."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Lo importante es que cada componente pueda aportar una capacidad distinta al mismo ecosistema",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' proporcionado está vacío, lo que significa que no hay contenido específico para evaluar y clasificar según las categorías de uso del concepto o infracción. Sin evidencia textual, es imposible determinar la intención del autor o la naturaleza de la penalización."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "El ciudadano como centro\n\nLa arquitectura puede parecer compleja porque contiene numerosos componentes",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "Los 'DATOS DE LA PENALIZACIÓN' están incompletos, con el 'Texto de la evidencia' vacío ('') y el 'Criterio', 'Nombre del criterio' y 'Penalización aplicada' sin especificar. Sin esta información crucial, no es posible determinar qué infracción se detectó o qué tipo de uso se le dio a un concepto, haciendo imposible una clasificación precisa."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "```\n\naprendizaje   deliberación   participación\n│             │             │\n└─────────────┼─────────────┘\n▼\nautonomía cognitiva\n\n```\n\nLa inteligencia artificial constituye infraestructura",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, y el criterio, nombre del criterio, átomo activado y penalización aplicada no están especificados. Sin evidencia textual ni detalles sobre la infracción, es imposible determinar la intención del autor o la naturaleza de la penalización."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "El ecosistema contempla una progresiva producción comunitaria de conocimiento",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, y tanto el 'Criterio' como la 'Penalización aplicada' están 'No especificados'. Sin ninguna evidencia textual ni detalles sobre la infracción o el criterio, es imposible determinar la intención del autor o clasificar cómo se utilizó un concepto específico."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "El proceso puede comenzar con una propuesta:\n\n```\n\nPROPUESTA\n│\n▼\nSOPHIA\n│\nevaluación\n│\n▼\nDISCUSIÓN\n│\n▼\nMEJORA\n│\n▼\nVALORACIÓN COMUNITARIA\n│\n▼\nACADEMIA\n\n```\n\nLa comunidad puede pasar de ser receptora de contenidos a participar en su producción",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.8,
+        "requiere_revision_humana": false,
+        "razon": "Dado que el 'Texto de la evidencia' está vacío y los detalles de la penalización no están especificados, se interpreta que el algoritmo determinista no encontró ninguna infracción para el criterio que estaba evaluando en este punto. Por lo tanto, la ausencia de evidencia de una infracción se clasifica como 'uso_legitimo', implicando que el contenido del autor no activó una penalización y, por extensión, no presentó un uso problemático según el criterio (no especificado)."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Puede comenzar con:\n\n- una pregunta;\n- un comentario;\n- una objeción;\n- un argumento;\n- una conversación;\n- una deliberación en Logos;\n- una propuesta de mejora",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "No es posible clasificar la penalización porque el 'Criterio', 'Nombre del criterio', 'Átomo activado' y 'Texto de la evidencia' están especificados como 'No especificado' o vacío. Sin esta información crucial, no se puede determinar la naturaleza de la infracción o la intención del autor respecto a ella."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "La plataforma puede transformar progresivamente esas contribuciones en conocimiento estructurado",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "No se especifican el criterio de la penalización, el átomo activado, ni el texto de la evidencia. Al no tener ningún dato sobre qué fue penalizado o por qué, no es posible clasificar la intención del autor o la naturaleza de la infracción en ninguna de las otras categorías."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "### Gobernanza\n\nPermitir que la comunidad exprese la intensidad de sus preferencias respecto de determinados contenidos, propuestas o proyectos",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "No se proporciona ningún 'Criterio', 'Nombre del criterio', 'Átomo activado' o 'Texto de la evidencia' de la penalización. Dado que la evidencia es una cadena vacía y los detalles de la penalización son 'No especificado', no hay información alguna sobre una infracción específica para clasificarla en cualquiera de las categorías relacionadas con el uso del lenguaje o la confirmación de una infracción. Por lo tanto, no es posible determinar con claridad la naturaleza o la intención del autor respecto a una infracción no identificada."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "### Pedagogía\n\nPermitir que los ciudadanos experimenten directamente conceptos como:\n\n- escasez;\n- intensidad de preferencias;\n- costo de concentrar votos;\n- priorización;\n- asignación de recursos limitados",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "Los 'DATOS DE LA PENALIZACIÓN' (Criterio, Nombre del criterio, Átomo activado, Texto de la evidencia y Penalización aplicada) están todos 'No especificado' o vacíos. Sin esta información crucial, es imposible determinar la naturaleza de la penalización o el concepto que se debería clasificar en las categorías proporcionadas."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "El circuito de retroalimentación\n\nUno de los principios fundamentales de LogoDemocracy es que sus componentes no deben permanecer estáticos",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "No se proporcionó ningún 'Texto de la evidencia' ni se especificó el criterio de penalización. Sin esta información, es imposible determinar la naturaleza de la supuesta infracción o la intención del autor, por lo que la clasificación es ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Esto genera un circuito:\n\n```\n\nCIUDADANOS\n│\n▼\nINTERACCIÓN\n│\n▼\nDATOS Y RETROALIMENTACIÓN\n│\n▼\nANÁLISIS\n│\n▼\nMEJORA DE LOS SISTEMAS\n│\n▼\nNUEVA EXPERIENCIA\n│\n└──────────────► CIUDADANOS\n\n```\n\nLa plataforma no debe entenderse como un producto terminado",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.9,
+        "requiere_revision_humana": false,
+        "razon": "Dado que el 'Texto de la evidencia' está vacío y los detalles de la penalización ('Criterio', 'Átomo activado', 'Penalización aplicada') se indican como 'No especificado', se interpreta que el algoritmo determinista no detectó ninguna infracción específica en el documento. En este escenario, la ausencia de una infracción implica que el uso del lenguaje o los conceptos por parte del autor se considera legítimo según los criterios evaluados."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "LogoDemocracy como red social ciudadana\n\nLa arquitectura descrita permite pensar LogoDemocracy como una forma diferente de red social",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización (criterio, nombre del criterio, átomo activado, texto de la evidencia, penalización aplicada) están todos marcados como 'No especificado' o el texto de la evidencia está vacío. Sin esta información, no es posible determinar la naturaleza de la infracción o la intención del autor, haciendo que la situación sea ambigua para la clasificación."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Es la idea sometida a atención, aprendizaje y deliberación",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización indican que el 'Texto de la evidencia' está vacío y la 'Penalización aplicada' no está especificada. Esto significa que el algoritmo determinista no detectó ninguna infracción o no aplicó ninguna penalización. Por lo tanto, se clasifica como 'uso_legitimo' al no haber evidencia de mal uso o infracción."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Es aumentar la calidad de la atención",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El campo 'Texto de la evidencia' está vacío, lo que significa que el algoritmo no identificó ningún fragmento de texto como relevante para una posible infracción. Por lo tanto, no es posible determinar la intención del autor o el uso de un concepto específico que pudiera clasificarse en las otras categorías."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "La atención como recurso democrático\n\nLa atención humana es limitada",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El campo 'Texto de la evidencia' está vacío, lo que significa que no se proporcionó un fragmento de texto específico que haya activado la penalización. Sin esta evidencia, es imposible determinar la intención del autor o la naturaleza de la supuesta infracción, haciendo que la clasificación sea ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Puede después formular una pregunta o comentario",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "La ausencia de un criterio específico, átomo activado, texto de evidencia y penalización aplicada indica que el algoritmo determinista no detectó ninguna infracción en el documento. Esto implica que el uso de los conceptos relevantes en el texto se considera legítimo, por lo que no se aplicó ninguna penalización."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Puede revisar antecedentes en Mythos",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los 'Datos de la penalización' están todos en 'No especificado' y el 'Texto de la evidencia' está vacío. Sin información sobre el criterio activado o el fragmento de texto que generó la penalización, es imposible clasificar la intención del autor o la naturaleza de la infracción."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Puede participar en un proceso legislativo en Ágora",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, lo que significa que no se proporcionó ningún fragmento de texto específico del documento para analizar. Sin evidencia textual, es imposible determinar la intención del autor o la naturaleza de la supuesta infracción, haciendo que la situación sea ambigua desde una perspectiva de revisión semántica."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "LogoDemocracy como laboratorio cívico\n\nLogoDemocracy también constituye una infraestructura potencial de investigación",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización indican que el 'Texto de la evidencia' está vacío y la 'Penalización aplicada' no está especificada, al igual que el criterio y el átomo activado. Esto significa que no hay contenido específico del documento que haya sido marcado como evidencia de una infracción, ni se ha aplicado una penalización concreta. Sin una evidencia textual o un criterio definido, es imposible clasificar la intención del autor o el tipo de infracción (o la ausencia de ella) en cualquiera de las categorías predefinidas que requieren un uso específico de un concepto. La situación es intrínsecamente ambigua porque no hay información sobre qué clasificar."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Esto permitiría formular y evaluar hipótesis como:\n\n- si determinadas estrategias pedagógicas mejoran la comprensión;\n- si el steelman aumenta la robustez deliberativa;\n- si la interacción con Logos mejora la capacidad argumentativa;\n- si los cierres metacognitivos mejoran el aprendizaje;\n- si determinados formatos de contenido favorecen la comprensión;\n- si la formación específica mejora la calidad de la deliberación legislativa",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "uso_legitimo",
+        "falso_positivo": true,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización proporcionados indican que no se especificó ningún criterio, nombre de criterio, átomo activado o texto de evidencia, y la penalización aplicada también está 'No especificado'. Esto implica que el algoritmo determinista no detectó ninguna infracción específica. En ausencia de una infracción identificada, se clasifica como 'uso_legitimo' ya que no hay evidencia de un uso incorrecto."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "La plataforma puede convertirse así en algo más que una infraestructura tecnológica",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío y los detalles de la penalización (Criterio, Nombre del criterio, Átomo activado) no están especificados. Esto hace imposible determinar qué fue lo penalizado o cómo fue utilizado por el autor, impidiendo su clasificación en las categorías basadas en el uso de un concepto."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Principios fundamentales\n\nTodo el ecosistema debe permanecer subordinado a algunos principios básicos:\n\n### La IA aumenta capacidades\n\nLa inteligencia artificial debe ampliar capacidades humanas",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, y el Criterio, Nombre del criterio, Átomo activado y Penalización aplicada no están especificados. Sin evidencia textual o detalles de la penalización, es imposible clasificar la intención del autor o la naturaleza de la infracción."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "### El conocimiento debe poder ser cuestionado\n\nLos contenidos deben permanecer abiertos a revisión, evidencia y discusión",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío y los demás datos de la penalización (criterio, nombre del criterio, átomo activado, penalización aplicada) están 'No especificado'. Sin evidencia textual ni información sobre el criterio o átomo, es imposible determinar la intención del autor o el tipo de uso (legítimo, metadiscursivo, etc.)."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "### La comunidad produce conocimiento\n\nLos ciudadanos no son únicamente consumidores de información",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, lo que imposibilita clasificar la intención del autor o la naturaleza de la infracción, ya que no hay evidencia textual sobre la cual basar la clasificación."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Una arquitectura que aprende democracia\n\nLogoDemocracy puede resumirse como un circuito:\n\n```\n\n```\n\nLa Academia proporciona conocimiento",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización (Criterio, Nombre del criterio, Átomo activado, Texto de la evidencia y Penalización aplicada) están todos 'No especificado' o vacíos. Sin información sobre la infracción o la evidencia textual, es imposible determinar la intención del autor o la naturaleza de la penalización, haciendo la situación completamente ambigua."
+      }
+    },
+    {
+      "atomo": "ATOMO_HECHO_VALOR",
+      "criterio": "3.3",
+      "fragmento": "Pretende construir una infraestructura en la que los ciudadanos puedan seguir aprendiendo, pensar mejor juntos y participar de manera cada vez más informada y autónoma",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 0.95,
+        "requiere_revision_humana": false,
+        "razon": "Los datos de la penalización (criterio, átomo activado, texto de la evidencia y penalización aplicada) están todos 'No especificado' o vacíos. Sin ninguna información sobre qué infracción se detectó o qué texto la causó, es imposible clasificar la intención del autor o la naturaleza de la penalización."
+      }
+    },
+    {
+      "atomo": "ATOMO_CONTEXTO",
+      "criterio": "3.4",
+      "fragmento": "La democracia representativa moderna, sin embargo, continúa dependiendo de instituciones y mecanismos de comunicación diseñados en contextos tecnológicos muy diferentes",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "No se proporcionó 'Texto de la evidencia', 'Criterio', ni 'Átomo activado'. La ausencia de esta información esencial imposibilita determinar la naturaleza o el fundamento de la penalización, por lo que no es posible clasificar la intención del autor respecto a ninguna infracción o uso específico."
+      }
+    },
+    {
+      "atomo": "ATOMO_AMBIGUEDAD_LEXICA",
+      "criterio": "4.4",
+      "fragmento": "Logos ayuda a estructurar el intercambio, identificar los puntos reales de desacuerdo, solicitar precisiones y mejorar los argumentos",
+      "perfil": "POL",
+      "revision_semantica": {
+        "schema": "SOPHIA.semanticReview.v2",
+        "categoria": "ambiguo",
+        "falso_positivo": false,
+        "confianza": 1,
+        "requiere_revision_humana": false,
+        "razon": "El 'Texto de la evidencia' está vacío, lo que imposibilita identificar qué fragmento del documento fue la base de la penalización. Sin esta información, no se puede determinar la intención del autor ni si hubo una infracción."
+      }
+    }
+  ],
+  "confiabilidad_factual": {
+    "claims_verificados": [
+      {
+        "claim_id": "CLM-000002",
+        "canonical_text": "Las tecnologías de comunicación han transformado profundamente la manera en que las personas producen, reciben y comparten información.",
+        "original_texts": [
+          "Las tecnologías de comunicación han transformado profundamente la manera en que las personas producen, reciben y comparten información."
+        ],
+        "estado": "verificado",
+        "fuentes": [
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEwSN5VEXGaDpIHTwr11a5CLVuOyTpEpxZX8U4ONQfeT8Es-_Ycgz-JSc7HKlZQFOclmrHSG5gWKFh9iNqEBQ1itBiTKZ-BGkp6uKD4SF4vUHK2Pyy1hlrez-qj3tVgooKvucHa8_BYHgFgNcaAkfbDAPkkTvWyu5kmzn7_Sx0ouAXRvZWcULxjhA==",
+            "title": "ayacnet.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHV4SIrfS-Jp68oBbCDKAfvAyr1Ap6KD_JXFhWwX2WTgWmQmtu3iLifPlKQit_l3yp-mM3xzM2uj66qEMyqQ_2UWVxWXmI1TWt3tFqauPmuR_ABZVPQANBZtHtK1snNJhunxl1Ix9gvDFa_PpcAK7S0_CLJQfuBGUXMFCAQinu2526OoQgph7dzOvpohw==",
+            "title": "udep.edu.pe"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF177CTZzyT0WtWXDtV7qZIeopDrdI53zIaNRwiMloGWwXxxKWpv-hWmnmxMq2ZuetX0BlSpnFDdOGaMLZQQsatqasjTAfvUZKqsefGTCLYMN-v-0jzvvb8C8DuP2Vq2gB8HpM72b8YAr6Pj5fi1XByd3QIuaOJwnJUpXDT9V2m2O8Ujm6A0iApBKpTuGRp17s7YThi",
+            "title": "ascenderformacion.es"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE4iaX479BPh5RUj5PVOO2Rx9mfsLDNJ0L1c1HvnWnEB1pJXiMKZmKlzpMWp2WP9SFIB0nNkiTYoeQnmMIzWsBGecTRIb4dqPgCLxPCkwvjggZ7aQeqzhA6N79vRao_nSLTZEPFrfW5vk-FzCf_NNoGYdoAmPhLvjKCOtmaeO11kWXuo2p-tJ4Ep_BGLq4=",
+            "title": "legontelecomunicaciones.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHgvNsqrNYGYAdu8I5pQEF7AFZpgZilQaxyfbCE-w7nfqzIaX6DEKgJybr60HqAE1CANDCzi-Kq8QRl3kWeGPCuRDnrRsVS8wOKT5Ar7hX4T1-o5oMnorihRtYBpviND46xBizHsayTGPb4AwHmbC4LxJb8FNcIMY_kIHgm2AirwYSqUzsCCCK5vQtuGHWtrknaCvSk3QP4eqabnPOesodV5-14qHXtm6iAJJujfSxwAYZe_Cfbuo-hoPhHTQ==",
+            "title": "universidadviu.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQErLltGlIUte2twvmjjJgfEbawO_HTXaUTOBIa-F_-RZk5O7JQBVx7GsrFt0XWBuJSfLZJegRq6yQxIIr27QDlzVVbNgoKMkkTF7coN5NEpXMuPifK3VQbPEdicKvjXOImpsjjHLcmtlNzZSb9RGwcgB7HUHAc0hv8x_wVmyCy_R-F5F44TBcXcgpcqOizOvbi2EDk=",
+            "title": "snhu.edu"
+          }
+        ]
+      },
+      {
+        "claim_id": "CLM-000003",
+        "canonical_text": "Los documentos son versionables, editables y pueden ser explicados mediante inteligencia artificial.",
+        "original_texts": [
+          "Los documentos son versionables, editables y pueden ser explicados mediante inteligencia artificial."
+        ],
+        "estado": "verificado",
+        "fuentes": [
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFbISSgoedk3m_Lf8hnqiDLhZsZ42aTp4HJjXog7eBKZUh0SErHh1L9Ex6GSMcCzXUWlayxt7Ck0awj9axux0vFwo7yyXPtuym-F1SKSF27rYMUsYivQWa5fIvUDi5XuQx-GXTMNu1l9m5bMz2mUQriimtW5yi9Rjy8_oPrVAradFFv2CVvponkW5fGoWNPMm4=",
+            "title": "docpath.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFKN-T8u6l-pw-BNQQzzZEDjgRtO5n0UG03TCQ8LKnAqRTbt-sctXkAvK1hHuDtx_w3p8bx57f6MHc4xJ9FTNSQpNkjfLIEc0vcE9inzU10OWyhkI2SQnh63W4wvN6-q0W3WZAMMaa_Hbk5h1EVl8lvEitFdcFo",
+            "title": "logicaldoc.es"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG3xKETeUVSYQZ85H5IZJA_lh-Ck4Tv7CCR__jFXn8CSrUCEYGbhyS19Egm85N8mzVujR-zgjNWtOM7nkI8CPs9E8X98DHTuSXy74BSbKYm8QgmNv1aibUGU82oCD7g1-370FzIdiiTJ4betHqZxJGQjajLA785dsqahac=",
+            "title": "filestage.io"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGRKK62TXnacBwzP0UPOKVaNhH25O9AzvnHw1pjDBs52MZv8uxRHbSFcYrfWhP6_zthTKTn8mXJ9uQwO-S7nhK9anP2hyvbwGavmNdY0HpPZ2zcT411we-ZvGbpbnyS9FjVKveZ0MkbAA0Dkw2xQqca4-UuLCRDzIYTi4EJCsEoeRKJZZiJ22JN5x2hG6_FSA==",
+            "title": "docunecta.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEeRgmu3ucsJ6DWckBGdTSjHILTCymudDCE6EFzokF7PvftZ0TupSKRFPefaCNvn_4qix-25W9p5qOAkKxTulLmRdnXVatOS3-BGvqOGqSlHAunXekLuhrig6FrDKYCBZPAgh1IV5U=",
+            "title": "planfix.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGupGBwghGTNMzW-K1rjQIF3fyhB7u-TCaxKaA_WkuKlxhGaBoTjkluCcmnkskFYJwHueYdJLPACIP75gYAaAAQBifT6Of1uhXz1RA-Nvv3JvSwlyk5Teh838xvbvRkMeEmhitesQ-YCvVuiNFKQijY2Y4=",
+            "title": "google.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHmc-nN-xGzLB7-_JU-WuWFLkvxeIvEEspdMAHJIBfQs3Jja8oKgo5YtmmFYpTNbIHMVyOKUFsYTk0DKh4Bsm7D2KCBJtEe39m6fnheyuquMRxG4VE8RgNsnDP0VGvqEmXUz_XR0g6bB7xYcUDT438X6iI=",
+            "title": "cloud.microsoft"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFXr3gMtZ1WJZDrmFRF08MxAsipw4kmuy0Kx48NYj9vygNjmEUIHx4pD9xJCzJjElvaZw9EmwkXDYvyqGC67buS1J3hGmLGT-bOqEswoW2jQeI3M4nvW2mYohTknTIc1y_0nnjZvdREeBj9tfg0JqxY0g==",
+            "title": "visual-paradigm.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE5yMrVwt34ManxonMTcXzIUtxhzD4qp4PcERSsGzBNwZiAV0-sTHZVgyDrnmYy4GJa9_2epdzR3RSQgmReNgNKae38-MN4dUAw1d8PtjT_YRf4pdiQUXkXXDaSp5YHD0BicB2yjoRBkjWS",
+            "title": "mindgrasp.ai"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFBmwWbbxrdYo3og98uccXOUJ4AZYHhX3oDipFMxhpuJcePJLxm2rMeQ4wuq3thKol0V4ObpJ1s-u3Mv1eY69JaJxj-8TjLbeHZMzrVGj7S_YRxxzs3eVqBPTMhYJErPXCW-L_nmVpjP25fE_QaaQ==",
+            "title": "google.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH0VIcJlxdx7jQedL1uY_nGB_qSbfvhm0zkU5MxuWz1FzXoAgbUVrtlyMPxBKtG0YzDdsvKPBAlxl-X0n60TC6Do0p345DLYPbkNhXuczvHLPQl8dhWWz89hHxC91cqkq18a8ZofdQ=",
+            "title": "axioshq.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFTjXhHo8aFFykcibomOIPftzZ9V8zWVWUan3TWQB5GkNLz7c189K2arIGETusKzlIAJJicueDjLgB2PRRJVz7JzIvuXRx16hYV2A3oTO8Od0i6cO9BovyePi1xAa5W_kvS6A==",
+            "title": "hipdf.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFFSfyTYSXgx5XxIJRZHVZT7xJk8DnmT3bW8ROFc7kMXC6XStnyCZjkaWZBLODvSBebb2fX691iaKe2MO9wVzBu1tzcAza5cAlnsCbTeUf38eu4zujRl-Zl0faTJM_5qj7XVKmZIFPNHL2v8PyXCGIr8A==",
+            "title": "databricks.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE6Att1JwwOy8S2KzNnleyendRsgjbcUoE6vh3zSDkLu7iKJcj2stO0WzO4it75bZj4YBhX1wQbpDnTZCYKJugUuw61IZWR8PRBLMHFkLRscgvyKB78Z_VIigxDKpXzbR5lPxA6HUrzLxwp9bTY",
+            "title": "ibm.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHJx2GIzDtP3ZZ0LG6AZJzhFFA05n2xAE8Q4Lixkrm4hbhnO1xG8MoEPAuKDFRBHzfau7QcnZcp1bf6QKxxce_Vv9DqzVlbJ6pWuw1rhAhk4Y3lBnjZELL9UegnafZM8R-XbsrEMOrnkumcq13wYo4=",
+            "title": "silkdata.tech"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHiQYm1hhMcnkIQcjNpfqAfBkE_geTWCO-vPIATBAqZke_40PcYzVyjYmXcKBGZOlZvTGNTlPAciqCw4nizG5w2uqApurwtgvsbd4Vf7ecsLNUpG-v1yCiQ4L2Y2OlHoTNX4pu_0ODkvQ==",
+            "title": "sparkpod.ai"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF3LfiyQBz3yIZdj18V_y4U0S8dcdtxOzDoKpowEuhJnFdbaBbWhlXoXzzKJ4JYzAk3FBCuqutTYgtq5KRV1KqeX-bTzs1SLhExaLCvwS7zpDn2Fw_q2hrwLLLTxIppasCw79rTs0bMb9I=",
+            "title": "foxit.com"
+          }
+        ]
+      },
+      {
+        "claim_id": "CLM-000006",
+        "canonical_text": "Constituyen una biblioteca especializada dentro de la Academia.",
+        "original_texts": [
+          "Constituyen una biblioteca especializada dentro de la Academia."
+        ],
+        "estado": "verificado",
+        "fuentes": [
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHilmisoZBJeBY6WdW-0APJJdTsmLaelwxT1NrRc292zyLJ0rzjRmDNLu5Y8qrOqsgi9qZhHp8hXjlABT06NrCBF9iMA1pVOU8zHEQoZ7ni4-aJurZElC5HWVxW87xDamlYre8k41-0tKjUHqZg2SOfGAlyRW7PRqccuTUjyzxU2FfPsvLHRDYJGBifRrD-nMRcyfLzeoig0UMdT28QFkiDz-sie76vUUPEgBLQzjY=",
+            "title": "comunidadbaratz.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFMrtHGFyHD9RH0MaBUbDOT75e9u2olKUq8nYDpmWTYP9vPebg0EkHnblf6rp6SXIjODkXzNb_o9ieTbVQ5BAeGZbmhxzZ5w7Krx577P_-BAiNXZfQceyVE_fNQBWxA19G0D-aDpZ6LfH_rtd81JNfPuw1R75KA",
+            "title": "infotecarios.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHsgnx4JFb2v290PskgFa004CgO5y89yaEcxZJMAEvQ6FLIKJ7Rg5Vl26lbCDzi6kl57n1pc8gb59RK7xsH9Nc0OHZurJgYJKzBX2Af_7GsuTHunAK0Dvk1ycp_9oGMdrc9Ngy7hZHsnsn_UxT56d2bw_MtdlllnTL9vx-w7b-RJVGZVZC9qgWEun47IicpYHgOraWdbfx1EQDpB5o3XHMfeq-AmGiql8upgSACZ1d2r5iXZi97GPXhwJWsTcTxSw==",
+            "title": "auxiliardebiblioteca.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHZ5hRGzmUkWM-e_kUtbttKQS6WvOjhTKPz_j_QRIZFHVZ3wqn0XojlwsSZ2OpXRFGVfFUeqFZXDQ1lJPlzJLeo_KDXU1D27vtWe0kxIggnNkBTZbJUXwAAvHS9P5ufGYyGikptXUWzxqcMoyG7",
+            "title": "esap.edu.co"
+          }
+        ]
+      }
+    ],
+    "claims_refutados": [],
+    "claims_en_conflicto": [],
+    "claims_evidencia_insuficiente": [
+      {
+        "claim_id": "CLM-000001",
+        "canonical_text": "La primera etapa se concentra en: SOPHIA; La Academia.",
+        "original_texts": [
+          "La primera etapa se concentra en: SOPHIA; La Academia."
+        ],
+        "estado": "evidencia_insuficiente",
+        "fuentes": [
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEj9zO1Gw6tkPvAMmnwdkuVPa4Vk0_NHDpkfG9FWK36V4hjrvFLAOnisGvyWEZKSQNYutO-qg5gG3LS0Mujj9t9jrKxtSGxyzgozq7-s5wO6rARpA9ktEHv6zRIsS8LwKgdaZ4E",
+            "title": "sophia-academy.org"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEANiJzFmZeZskNtmvdPRV4iVSSpiiRPdotVj2u1PGi0uyaeAg-KxHoRefjPokWNw1LxY6QGHA62kDK4FH-hbpX9vfKydFN3o42ZHyRiSncSZE0mjsYz2tKGYIvIHfP",
+            "title": "sophiaphila.org"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEX9M9WmI-8CydLop5ZhE7k9qqDiqTRw3PhIBZXfnYzOuxxJ7aa0ThoM-tCv4nkcUV6bFDHva-XYgLkHIupQT0VHSl8BZJlYP-PeksRfmZSaWOp84zYU7iaLYWqaod19s59srH9he4tz4E6Ew==",
+            "title": "santasophiaacademy.org"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEwG4beP8JbZASx1yMVDWG2MGxZtpF5r6hGTDudoodxmh_knbSF2UrZp9XDxWrwnkEZZTLxDTozpB0koFCNr5U0JIVQtAgSjuNqVtRzNBHX-e-X8O2snKRjzAc=",
+            "title": "sophia-academy.org"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGkBtlL4Y2ozmnbfudfX4INWHItUzZg74ZsT5Ev5sRjY8Qr0nwlCOdybbJip_o9HedG3F3AS2-hC4eccOcnwSV4SMIES0gJUYAMdkCExcVDo7AM8W9j5vD4vzo5vzUAVktURRtvwSEBjA-9iG6FpERG5ieGwjDJFmOL4Zj0ebj1dbxhDwIGq-MmxwsoGiyzxy-DMQCAQBuEbhWwFrVAh2LUjMaYWPeGpja1KO9riKUkHNQkKUk1v6_4itnJcEPhZl7hhZ-Qn2XMbP1kzfn3LWub_wYjbMcu21fid4fwnOgnzQ==",
+            "title": "facebook.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGtKajr_q8L-LTMhlbUtXjKP-Omg8F9iV-YxE1f4_5yxdYPuzvaj8TP6CIFeXQOhPdjOMiVm5NmYAYgeJPaw9oHevQ8BDDaaJJY7bDHvuYVzZ87j0s88uRbDPjAdZaKpEu864x2_U3a0J0Ty1FzUq0EtZwVpSrnZJKJGN29GP73Dnr7k6x4mNwrnpIssNmeHX8NGiMGBB3oJPYHXlGsxmxOcJw9fQ-qLV-ee9-0K4o2A4DR9qjX8IAU8xf7d9vbh_LeMoPGfuU_LWIY7iGb-WjRuTk=",
+            "title": "facebook.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH7SHsqfgP-QRsb99djkPonJtxNx5aO1cKrfyk3V5A1DPeRGGEKKUHUK4XyqxK6jgSz-1lA8PEB32TnvuFsnLERTxpHNYb0FwTZgJNdri9QsBzJaPQeWM-g1oIMVsEkAADObPq30FIsjTgqSX7kd324lSFp4OdfmCX7pEzeA_422ej3YtwK6mzrj1XnyUuAC4llIraU_FTwOJJpXVXWKrFYhBVK461d-2PpzcrPtYCdcC-TwyTXY9iisXHFWmGOBfX5ZR_InIj5EVDtU5yHxFlXhESPa8NdJEhVvFT1mbM=",
+            "title": "facebook.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHVru-XOQ5YtNP9EaISoEcDnzbrv1aKARhLP64gjlM739MpYf3Tqn4Q4TXSav__R8Hti1ia7fu252LNNoptColM0pxlnvUAxcpsBkuAfqPsmRMIl3Q4twxtfyBW4dyHz0nkfAwZH23zh-Hk2StMqV6tqAu5Y-B1DLdyJ3M6dnXU8KJNT-ae83FkPn7BbctCGL2PDxROkXhHfsJD9Xsm6CrBGSgl7USV9iKiGcmYdl814653D8mo16kDLJHqsU9752uhNti2JE37wYre0EA_Wg6QvY4=",
+            "title": "facebook.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE0LcjW8iAOEDxe6_Nv8U7xyksktrI-7bmvl6texvco4i6xMVVLeHJHrgnTejhb7qYnl0BTlg2HGiaEc-D94uYFYIXngopSmlBzMWdpPR_22zp7YBogW01yI6-YLbLxNmlhkh7b5wIQzg8=",
+            "title": "wikipedia.org"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHqKZu9pqh9IGokhwtGG-WpP-X3R2PiSTLWmzEBeLiDR7mDSPETG3_ai13YHszGwYnWZM90140WZUDJ2_lCKgm9UnUpHLTPSEmOgCBMLQIdtmNOtmAVa8VG5wOe0PP-zJRMdwxr5XQ7URE=",
+            "title": "valdepenas.es"
+          }
+        ]
+      },
+      {
+        "claim_id": "CLM-000004",
+        "canonical_text": "La Academia puede contener diferentes bibliotecas, entre ellas: Logodemocracia; Todo Ciudadano Sabe; Proyectos de Ley; Joe Pino; Alfabetización Digital para Humanistas.",
+        "original_texts": [
+          "La Academia puede contener diferentes bibliotecas, entre ellas: Logodemocracia; Todo Ciudadano Sabe; Proyectos de Ley; Joe Pino; Alfabetización Digital para Humanistas."
+        ],
+        "estado": "evidencia_insuficiente",
+        "fuentes": [
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGGvdu7UX70efvbgomYXttduvLC3QBZsusAK7y_AjcpRUK0LRreFsAl_XbcFMRKfX5ABzhT9EmqvlnPzFFT6u5Va90tAwrz5Riadbzwl7h3RlPxTrvymzwyY9hxEHokhZugHHDGwC0b-sKKG49urmh1slSUqOt7xlx3bsUznCW4KI1HZPR-lJ2EcIg31upEOz0nB57RoKzIlksHdHsmDL28Yl33LGOX8wLsNpx5Te3wOE6wYdD3KkBcJp_CholynrCRGPPwMenSVDsb-xCULwwMahizhvLSso-g",
+            "title": "universoabierto.org"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGyu577TTdVoae9NKNOQ0q9Ko3id9oKWsvANxW3iaT0U1N-pFM0PO4f3IHnYW0DT8kvl0g_ZijafpjH05jlu_K-3Xy-BBKWu3i0GifxvWk9NlR6iVmzjuuAFO46LvoD1LBQOf42iDw=",
+            "title": "youtube.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH1SA4lU3DDwp370qrLf14FztNcEJpsjJFKmJOU_xfuGVStiCIwT816aGnRJzYThteNKFx7oPsGNh5ze--bzY8jXm0tT8J8o02qA_WCvYu8DXA2HJByG5srW2mhlfXa7Z9q9bu5-OOV-duAW0u9YatDe4x6OsJkoUZHCMyM7MUc5jVKhe2z0_RTlBHSo86aELQGBGGz48xFCPnSCx7-x5jl11YNDUz2klxvu4U=",
+            "title": "diariodemocracia.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEd7jYYukCD9h1ZZC5jrSh8wb2pDWr9v06B76wYoaItEe7KCNf3Zz0p4cYOjN4NJYsUdDtk6tyzZog0_489zU3IYRt5Puugsp1UeH6CWgCPWpwOkKsB-fVt35BgVL3ge_BhPukNgbYb2nb0ie03kICvOjXJblmsZyqzjvIdpDmQDKSVX8yfEL_2j698uG4bRJA=",
+            "title": "universoabierto.org"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFbZFk238JqYUV4M-vCkVd2WXs6GvawMoXMRh2U0sPtek2gFa0eMExTIW3e_Oi6z2b2F5t8jFcMLmJsENBGUY6vGqFUNuW1S0DhbnSDO38RObY4G8GCtmcEa4UJq_uU1S434aVITmJ4k2aUVtjvQSwxwW5pgSmMkCQyTfNEiijb-HLRTiX8ol_voJTcAFz37yxvaV62F4RJaF9yQhaIsgalPbLmR8j4IEA5h3CfFePiSBIrmhQ7waZ45pamLm_lKA_TCFIlxcMwby4_MkqfunGC9OVV_Ro7NB1ikg58BQY=",
+            "title": "facebook.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFZj_R29-YgNjVpb5V5utZsY70Y8XTXvZvO4ZS-1A4srYgiCuRzT87x9f32nhjLlDTPUFvE3pA1aPIjsaXA0Vcr8u5y_1y7THda5yFk5h45xBaxc1YJmOPV2fnVKtgPoKTWebIjkBuXx_67AF83v4h_GFlyuShLqwOkxy_1cHisXqwvuMjIafY4GxJFN1707F05Q1qH6-TB8F9YUCBc7zsCCsl3Dp-w6GBJBte3uMyGkKQ=",
+            "title": "ufcg.edu.br"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH2VrUIxwiHoW9SAN3pjzGkhUD_lpUeEF917Yk72VLBlpQPou49sJHNVD2vfeg7FdfaSoTpOT5fzFS0gckndr-BEhYCv7r3-yIksEJK5fgJvbadTBR94nmiw8hQb0yXyP482rUFavNxoQcypz5HFhJWfVxH4a-5_n-wOiidlH4nq_GaYtEREQwhkBrn8tzBB_ObkEY=",
+            "title": "usp.br"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFA9NbPgtcdH23Ix5XMrltFa8QBTtSdWn2pwmAIUKXvCeOyCSmOHnyM7WDFtVaw4yv_iuxBov9gKVwVmvLKpcyVI2uIFNO4yEwYRpnmzKVem6N1A03F6FPsH0hlfAEtzT0jxa-6ZMBBHre5n7PhTY6GHdcFRwabo9UkKyVjIBDInHWGSNFHWCCxHGkS_z1aGw5h0ED54ykhnoHoBp_JDRxebV0=",
+            "title": "julianmarquina.es"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGaJsWPLZp6v_ABBuIJzCf027xfOgpYw103TUNrT0m9K5NKrb10Qvo8xRPiq7fnSlmtqSS07pP-BtS1YILIeNcCcQ2jo6tekVyiR7n3xbn-f3QsXNHanhALso59DRBrVlzDsCKpn1HSjXnyd0gJlXeu-reHJAn3PQ6OIO0-Lwj5FcDHTEtEBu2wXb1-S2Q5rExUfLIdqcbGMkT_ccIikSU0ko3YlAv0RLV_rF0ssj8ol9cnHr6GS5V-eab0dWJFEBd5aD6VGjDxAGSg4nVeeqYN_QlecEvxj3bY176IUKFRz4LVNVvb7O8JSxGMWsawEw==",
+            "title": "alianzaverde.org.co"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGWuXG3hnv-JOI5I1PBrR8gJsdP_2H1-m1vOI4jTW8YpF-7qw8pEnQGNqkicHs_euhJKrTok63BuEfsc5Zp9uvt5JAbAte99tX-Q_QPDH1mIaXnWDEY68Yep3uApJ-32T1QRKKyuftbjQ7oSoiVt4jnypaz0rkb_uIPWuC3k1StqYxajox189KzbjX0qLMT2bCTYY5C92hI2lqdQ1xnmJGNAzuPuKzGGbPy-ZMGI9rVrBX1IwLgN91IPa3_T5VYrgiV4A==",
+            "title": "universidad.edu.co"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFif0niZlx4leF38oSpkmk86_zD0LElGBfpOqjXDYCjCFZMw4dPX9HNxC86I8NMliwwRFF5b5O5P4uf1xLseLwDiN5j_F4uBdedFYj7KMqaSHEkUDX_8A3KRYMlDocN318gTW6xflitjxYtSxV6r0Nk",
+            "title": "susanaharp.org"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFio19tWTrVozbHyGAyGNQevA1RUkiKbLU1DLUPYtVRBi2-mhuhJt1mDfgoZ2LI7zVVMeJpwwiuKl3xQMqscQ8v7oRvHLCVWfWfcXDLs3OH60purL-UPP346j-Q6AT7XUcb9NB3zKQJzqbsUm_L1fClBeZ80XkQsI21PV9i6og4X9ilqJrQYvcDeiG5vAI9B8hWh5QEk8BvqzekoN-qKMTZk7KGg-1U-_nllZ0qm5Yohd41nGyv_jiWmmrnmyLcL8gaxSHCHUAtIWcKUUdotA==",
+            "title": "senado.gov.co"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHu1EAG5uslkGu3wAUZ-V8yBcTb_53HnuBEywOEL7Qtmjw5_-UcInjiiHvLCr-IHPq9bQyRrI_p3VpEo49U6owl1P8QnzcVh3lMyU5AM0V9nBQQvoa3KSOWornN3ddG9JuvxKh9yw==",
+            "title": "fandom.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFjgwQeo9SnNvUUHzpT_R348RXA7apIWdydh8GQI-5i2avg8KZDpb2NPDO8tLKTiATmZ7JmzO4kqbiy0Wu6rg9DaZpbHzTkWW1OV_iyX8ggJKgCAli4Vo0uP3QrHkT31tzLfOb6muZot24_-W1dooEn-FmXxi9rGgY=",
+            "title": "spotify.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFj7TDd84o8CTWoJ7FbJKwXy_NoVWEutozADmB_3s6UkGbKtwXG4E1O94Ie5AxIiB6tpzCtv8GdiZGmMtJCH4uJS6x8DsCQM2cZcjVnIFT0nLnD0JdZuh8XiUAaUWsk8F-slOxOwuE=",
+            "title": "youtube.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGi9WTjedSIRDOJfX3_g37DHUsJ-W1PxTJTcbMpH2jEkkQUVB71j1ZA7rNGoa6cROq0H3tDVwaZDCv5feK1nvt72fP1BW37j_u8T6ItcS6DYZxBY4Dh6mnOJnB1uxvIJa0rBmnxXc8=",
+            "title": "youtube.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGlIkIRRj_brgB9e-cgyY0P7ThZlSvBgpYtVRT8cR7M81R-Fz9sClem2Mtl7awEtz9d-3JJeg0IZuCVsxAXqwtmB7HkMZX006TgZZsCs0aXzouZI05StQ2y3ELfZRIIMA9yOkayINgdhVsB5PlbYgsIhvztfOMxZtV1NRa-LnIBVsauxTu6zf6TZZ_lzDpY8auGZpL3Yc7pRVq4X7hvejCHCsghr5HhSRwISGG0Tm9CuYStecKz39mp9EA=",
+            "title": "facebook.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHpygThcWcax6XTuRSFSE0Gip3JUlFeoSy9AAA16D2kT1OJxyKCb20VybcAmn_pzvSCB5xpYg0hS2SFIiPZik3FsimuGKPUWDRomcML_REJbVMK1vopaovSNR8KMQjkMFFxGFx-pVqFWAPUWOFBgRdQJEFPtC800w7RSnVezmrLUI0seIbPZeHUhiM6dmj0KfVa0GLGhfo=",
+            "title": "academia.edu"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFMEVb1AmDd2MMZKRm8_vNTIVCr048DxFZ1NksCbw_CcofZbLNMrHqGCi6iejbIrb3bJkC1EGS-kjSrLI68UexQvh6jDQY94QStfH23ptBBoGPbNkv-IvwYL7gMa9gId88ng5qTTN1dsm5o1KtgnrBC5NisLA==",
+            "title": "human-i-t.org"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEin8xdGKOiNsSp-Wy-Vj4ju_A9sIo65DiWeGYrSikHn6JjlOt39nYgCMkHB0-vQbQjAp00G8rACkzV-fNG5D4KRPndO-cEwVB_F1rQZMjlAoyKQWLrz_hN_jBhoTs0N8w4DZWx3A5bdjYouaysLam6Z-JgPg5BLt3AIp57K78a5o7Beb7arLTXAlQaz3aTIb1KsF3Pyv_zXcgppdW1bV-TfHy63Er4",
+            "title": "bibliotecaspublicas.es"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGsygNP5ZNG3d4dbmR2p3VwQPUz1LtUWLwlZWI8EHCTFm8KH6-2mdU9Y4krdOPRwhbk611sRVCpO5J9WH7jzzFKP6lVBM1IzVba5-S-YGMox31wH5WgIwiPFEwo6uGD3-aeu3_jOxIvyM3qCBcIWfk332voCzneJJQFRumucJu7ZtS6gnWPHy2JxKLr6EjWIjombNUt656NZhzyOHoL3L4MhEM05qQNNRmm5mTgSWQu47tf7o8nTf4pTlEZLHLDlc3k1xTx2VUjbrvhXF7Mlx_b2KjoPQ==",
+            "title": "universoabierto.org"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHdGNKJEiby9zIk26k4SQrgOlMP5y7LMZ_95pBz2qMfA847wOrzrvyY_GCfWJ6DKfNRbKbcNM6yc5QdYwyu1uOsfXP7KW0gmzKdTGMNE0w7wbVskX-d6mS1ZDSK4rKtJEohTq3nBx8=",
+            "title": "youtube.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF6GGsgkL-YwD7TYa6CFjXf3bUde2J_mooTFLjGQHCSsb-ZuGeI-nefBDJsa7RF4NsZdzNR7L-tv2TgXi_wsj8R_npXqNQriOA3ED37uQT9paZTW8lbtLq06oZIYM69spqzXQMQ0xo=",
+            "title": "youtube.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFbS5i-hgbTyrRzmpxknyCe5Wj5aMNXl5WK2XGHgSwMPGRcwFvY7KyR9y_OK0R62oVqrsf_V7UEBziTN0lUhtJREC8DspL-ezMPDgE6Q7J7QGGAWkq5VEk7qgDa-cHyFlwG",
+            "title": "wikipedia.org"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGEzeE1zX1wFgDQ3DNMuxWzAjd7ri-Q9qGcqAgcHtLc38jFfVWJTWGhcVoc3ZtsqUgTqF-9CTfNb-_3e6b1eBNWqmDd09zqb7VuiFobiob9SbuO8bCwuammDxD-BteaMr5mwV-L0m4=",
+            "title": "unacar.mx"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGNMdneoZKfiZ0wWCfkQZQHCrO4gM6uIHxRMS_J0DtNDl3EXCmx1AMOGYlI1oIE7oKkPQ5bxzxekDWVlXsFk0kErVfA0dnuaF-5fifHdfAT-tIQFjFEdpLqHO3cnW216evLJ4Dv0GKI3-I_IV0fwUeFWr4=",
+            "title": "wikipedia.org"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH3R7zzhyvLLqiNoNuTHE4n-_fvRt-ERXo-T49iMDxMwCR7bf80OgwErXp6RSS1eoYsIiqAOdadYWmXpP2urQKq0wG0pXIaowbNPwgOWlODNjgYcy-_pgprzmPHf2uA0mkoIObtv0xHjJL0VXodsj_sC3zfoWU136PkNskB0nf6e7Q=",
+            "title": "cinesaurio.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGOYZon4f4wo-gcC8ZlslAwunxNqjpWd02-N2c7XZflVG8JJObAOYD9zvpvuR7BIjC07tejMmxuPMYUjUWPE2S-A8mNQEknozfDVHBKpYi586eJInd83ByTYE-vHc1ocdQW2U5cKzw=",
+            "title": "youtube.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGozy59nTOpc61VPBkrq3ihu-hjg_dtpkDcYZh16fqp1Ql_UbvcujDvn_pAA54Er3HbMG_MQljuwB2hsV3k_E8yNoDIerOX5yxIKiHv4_VlvnBuL4KTUy_Qe60eDRCT5CAQ6MIZ7vc=",
+            "title": "youtube.com"
+          },
+          {
+            "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHYmUrabURqpuBmT7gA3fD5OS6ly9Fd7_LGaj-USRQnphIIPFflkMn_Dc49wClrs5wkpDv7_4GsoOGH-5DI_P-Gu1zJ6Ogmw4BxeECOfcpFxhhA2Q0VforuxJYW_uX4JWu9d_Sdm8A=",
+            "title": "youtube.com"
+          }
+        ]
+      },
+      {
+        "claim_id": "CLM-000005",
+        "canonical_text": "Los Proyectos de Ley no constituyen, por ahora, un módulo independiente de LogoDemocracy.",
+        "original_texts": [
+          "Los Proyectos de Ley no constituyen, por ahora, un módulo independiente de LogoDemocracy."
+        ],
+        "estado": "evidencia_insuficiente",
+        "fuentes": []
+      }
+    ],
+    "claims_no_aplicables": []
+  },
+  "gemini_review": {
+    "interpretacion": "El documento '¿Qué es LogoDemocracy? Arquitectura de la plataforma tecnológica' es una exposición detallada y visionaria de un proyecto socio-tecnológico. Su Índice de Robustez Deliberativa (IRD) de 81 indica una estructura argumentativa generalmente sólida, con una clara pertinencia deliberativa (100%). Sin embargo, las penalizaciones significativas en Inferencia y Calibración Epistémica sugieren áreas donde el motor detecta una menor rigurosidad. La confiabilidad factual reporta 3 afirmaciones verificadas y 3 sin evidencia suficiente. Esto se alinea con la naturaleza conceptual y proyectiva del texto: presenta una arquitectura futura, lo que implica describir intenciones y potenciales más que resultados empíricos concluyentes. La robustez deliberativa del documento es alta en su articulación de principios y propósitos, pero su 'confiabilidad factual' y 'rigor inferencial/epistémico' son evaluados con criterios estrictos que a menudo colisionan con la esencia de un documento fundacional y aspiracional.",
+    "contexto": "El motor determinista local ha identificado varias instancias de átomos que, desde la perspectiva de SOPHIA-Gemini, son utilizados por el autor con un fin constructivo o retórico inherente a la naturaleza de un documento arquitectónico y visionario, y no necesariamente como fallas argumentativas.\n\n*   **ATOMO_SOPORTE_LOGICO (segmento 175):** La frase 'La arquitectura puede parecer compleja porque contiene numerosos componentes' es una anticipación retórica de una objeción del lector, seguida de una reafirmación del principio central ('El ciudadano es el centro'). No representa una falta de integridad en las premisas, sino una técnica para mantener la atención y la comprensión del lector en un texto de diseño complejo.\n\n*   **ATOMO_CAUSALIDAD (numerosas instancias, ej., segmentos 38, 47, 66, 111, 131, 154, 200):** Las detecciones de causalidad corresponden a descripciones de *funcionamiento intencionado* y *potenciales efectos sistémicos* de los módulos de LogoDemocracia. En un documento de arquitectura, el autor describe cómo los componentes *se relacionan y qué resultados se esperan*, lo cual es una forma de causalidad 'de diseño' o 'de propósito', no una falacia. Por ejemplo, 'Los contenidos más relevantes pueden generar...' explica una característica funcional del sistema, no una afirmación causal que requiera verificación experimental inmediata.\n\n*   **ATOMO_GENERALIZACION (segmentos 171, 215):** La descripción de 'un proceso' o 'flujo' en el sistema (segmento 171) no es una generalización empírica, sino la explicación de una *secuencia lógica y operativa* dentro del diseño. La afirmación 'Una sociedad no puede prestar atención simultáneamente a todos los problemas' (segmento 215) es una premisa ampliamente aceptada sobre la cognición humana y la economía de la atención, utilizada como base para el argumento del documento, no como una generalización extraída de datos específicos presentados en el texto.\n\n*   **ATOMO_HECHO_VALOR (numerosas instancias):** La elevada frecuencia de este átomo es una característica esperable en un documento que propone una nueva infraestructura política-tecnológica. El autor describe el sistema tal como *será* o *debería ser* ('LogoDemocracy será construido progresivamente', 'Su objetivo central es desarrollar...', 'La IA aumenta capacidades'). Estas afirmaciones mezclan la descripción de la realidad proyectada (hecho) con los valores y propósitos que la guían (valor). No es que el autor confunda hechos y valores, sino que articula una visión donde los hechos son la manifestación de valores deseables. El motor aplica un criterio de separación estricta que es difícil de cumplir para un texto que es, por su naturaleza, un 'manifiesto' o 'blueprint' con una carga axiológica intrínseca.\n\n*   **ATOMO_CONTEXTO (segmento 24):** La frase 'La democracia representativa moderna, sin embargo, continúa dependiendo de instituciones y mecanismos de comunicación diseñados en contextos tecnológicos muy diferentes' establece una premisa fundamental para justificar la existencia de LogoDemocracia. Para un documento de arquitectura, este nivel de contextualización es funcional y suficiente para enmarcar el problema a resolver, sin necesidad de una exhaustiva disertación histórica.\n\n*   **ATOMO_AMBIGUEDAD_LEXICA (segmento 100):** El término 'intercambio' en el contexto de 'Logos ayuda a estructurar el intercambio...' es semánticamente claro. Se refiere a 'intercambio de ideas' o 'conversación', lo cual se infiere sin ambigüedad del propósito de Logos como 'gimnasio de la deliberación'. La detección es una interpretación excesivamente literal por parte del motor, ignorando el contexto discursivo.",
+    "observaciones": [
+      "La naturaleza de 'arquitectura conceptual' del documento, que traza una visión y un camino de desarrollo futuro, explica gran parte de las detecciones del motor. Al describir lo que 'será', 'puede' o 'debe' ser, el texto transita entre hechos proyectados y valores inherentes al diseño de una democracia aumentada, lo que el motor interpreta como una constante mezcla de hechos y valores.",
+      "Las 'causalidades' identificadas son, en su mayoría, descripciones de cómo los componentes del sistema interactúan o cuáles son sus efectos *diseñados* o *esperados*, no afirmaciones empíricas de causalidad que requieran un soporte científico riguroso en este formato.",
+      "La puntuación perfecta en 'Pertinencia Deliberativa' resalta que, a pesar de las penalizaciones en otras fases, el motor reconoce la profunda orientación del documento hacia el debate y la mejora de la deliberación ciudadana, que es su objetivo central.",
+      "El contraste entre la robustez estructural y las penalizaciones por inferencia y calibración epistémica subraya la tensión entre la presentación de una visión compleja y los criterios estrictos de evaluación, sugiriendo una necesidad de calibrar el motor para documentos de tipo 'blueprint' o 'manifiesto'."
+    ],
+    "preguntas_reflexivas": [
+      "¿Cómo podría un autor de un documento arquitectónico y visionario como este balancear la articulación de valores y aspiraciones con la estricta delimitación hecho-valor sin sacrificar la claridad o la fuerza de su mensaje?",
+      "Considerando que el documento describe un sistema en construcción, ¿qué tipo de 'evidencia' o 'soporte lógico' sería apropiado esperar para las afirmaciones causales o las generalizaciones sobre el funcionamiento futuro, más allá de la lógica de diseño interna?",
+      "¿De qué manera podría la metodología de evaluación diferenciar entre la intención de presentar un sistema complejo de manera clara (como en el 'átomo de soporte lógico' del segmento 175) y una verdadera debilidad en la estructura de las premisas?"
+    ]
+  },
+  "metadata": {
+    "module_versions": {
+      "protocol": "4.0",
+      "engine": "4.0",
+      "semantic_review": "2.0",
+      "fact_checker": "1.0",
+      "gemini_review": "1.0"
+    },
+    "evidence_density": 0.02485089463220676
+  }
+}
