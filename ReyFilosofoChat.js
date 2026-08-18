@@ -162,8 +162,8 @@
       <button id="rf-launcher-btn" title="Rey Filósofo" style="
         position:fixed; bottom:24px; right:24px; z-index:9998;
         width:56px; height:56px; border-radius:50%;
-        background:#111827; border:1px solid rgba(59,130,246,.4);
-        color:#e5e7eb; font-size:1.4rem; cursor:pointer;
+        background:var(--c-bg-raised, #111827); border:1px solid var(--c-rey-border, rgba(59,130,246,.4));
+        color:var(--c-text, #e5e7eb); font-size:1.4rem; cursor:pointer;
         box-shadow:0 4px 14px rgba(0,0,0,.4);
       ">🏛</button>
     `;
@@ -205,12 +205,12 @@
             <div style="
               max-width:80%; padding:8px 12px; border-radius:10px;
               font-size:.82rem; line-height:1.45; white-space:pre-wrap;
-              background:${m.role === 'user' ? '#1d4ed8' : (m.isError ? '#3f1d1d' : '#1f2937')};
-              color:#e5e7eb;
+              background:${m.role === 'user' ? 'var(--c-rey, #1d4ed8)' : (m.isError ? 'var(--c-error-bg, #3f1d1d)' : 'var(--c-bg-raised, #1f2937)')};
+              color:${m.role === 'user' ? 'var(--c-on-accent, #fff)' : 'var(--c-text, #e5e7eb)'};
             ">${escapeHtml(m.content)}</div>
           </div>
         `).join('')
-      : `<p style="color:rgba(229,231,235,.4); font-size:.8rem;">Cuéntale al Rey Filósofo qué te gustaría entender mejor sobre este documento.</p>`;
+      : `<p style="color:var(--c-faint, rgba(229,231,235,.4)); font-size:.8rem;">Cuéntale al Rey Filósofo qué te gustaría entender mejor sobre este documento.</p>`;
 
     // === CAMBIO MÍNIMO: INDICADOR DE PENSANDO ===
     if (state.isSending) {
@@ -218,7 +218,7 @@
         <div style="margin-bottom:10px; display:flex; justify-content:flex-start; animation: pulse 1.5s infinite;">
           <div style="
             max-width:80%; padding:8px 12px; border-radius:10px;
-            font-size:.82rem; background:#1f2937; color:#9ca3af; font-style:italic; display:flex; gap:4px; align-items:center;
+            font-size:.82rem; background:var(--c-bg-raised, #1f2937); color:var(--c-muted, #9ca3af); font-style:italic; display:flex; gap:4px; align-items:center;
           ">
             <span>Reflexionando...</span>
           </div>
@@ -238,22 +238,22 @@
         position:fixed; bottom:24px; right:24px; z-index:9999;
         width:340px; max-width:calc(100vw - 32px);
         height:460px; max-height:calc(100vh - 48px);
-        background:#0a0a0a; border:1px solid rgba(59,130,246,.3);
+        background:var(--c-bg, #0a0a0a); border:1px solid var(--c-rey-border, rgba(59,130,246,.3));
         border-radius:10px; display:flex; flex-direction:column;
         box-shadow:0 8px 30px rgba(0,0,0,.5); overflow:hidden;
       ">
-        <div style="padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.08); display:flex; justify-content:space-between; align-items:center;">
-          <span style="color:#e5e7eb; font-size:.85rem; font-weight:500;">🏛 Rey Filósofo</span>
-          <button id="rf-close-btn" style="background:none; border:none; color:rgba(229,231,235,.5); cursor:pointer; font-size:1rem; line-height:1;">✕</button>
+        <div style="padding:12px 14px; border-bottom:1px solid var(--c-border, rgba(255,255,255,.08)); display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:var(--c-text, #e5e7eb); font-size:.85rem; font-weight:500;">🏛 Rey Filósofo</span>
+          <button id="rf-close-btn" style="background:none; border:none; color:var(--c-muted, rgba(229,231,235,.5)); cursor:pointer; font-size:1rem; line-height:1;">✕</button>
         </div>
         <div id="rf-messages" style="flex:1; overflow-y:auto; padding:14px;">${messagesHtml}</div>
-        <div style="padding:10px; border-top:1px solid rgba(255,255,255,.08); display:flex; gap:8px;">
+        <div style="padding:10px; border-top:1px solid var(--c-border, rgba(255,255,255,.08)); display:flex; gap:8px;">
           <textarea id="rf-input"
             placeholder="${state.isSending ? 'Esperando respuesta...' : 'Escribe tu pregunta...'}"
             ${state.isSending ? 'disabled' : ''}
-            style="flex:1; resize:none; height:38px; background:#111827; border:1px solid rgba(255,255,255,.1); border-radius:6px; color:#e5e7eb; font-size:.8rem; padding:8px 10px;"
+            style="flex:1; resize:none; height:38px; background:var(--c-bg-raised, #111827); border:1px solid var(--c-border, rgba(255,255,255,.1)); border-radius:6px; color:var(--c-text, #e5e7eb); font-size:.8rem; padding:8px 10px;"
           ></textarea>
-          <button id="rf-send-btn" ${state.isSending ? 'disabled' : ''} style="background:#1d4ed8; border:none; border-radius:6px; color:#fff; padding:0 14px; cursor:pointer; font-size:.8rem;">${state.isSending ? '...' : 'Enviar'}</button>
+          <button id="rf-send-btn" ${state.isSending ? 'disabled' : ''} style="background:var(--c-rey, #1d4ed8); border:none; border-radius:6px; color:var(--c-on-accent, #fff); padding:0 14px; cursor:pointer; font-size:.8rem;">${state.isSending ? '...' : 'Enviar'}</button>
         </div>
       </div>
     `;
@@ -346,3 +346,4 @@
   }
 
 })();
+         
