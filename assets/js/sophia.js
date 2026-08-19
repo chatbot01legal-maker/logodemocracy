@@ -611,19 +611,18 @@ const VIEWS = {
     }
   },
   inicio: {
-    title: 'Sophia — Protocolo Abierto de Comunicación Deliberativa',
+    title: 'Sophia — Instrumento de Pensamiento Crítico',
     render: () => {
       try {
         return `
           <div class="view">
-            <div class="view-eyebrow">Marco de Evaluación Deliberativa · v${getSophiaVersion()}</div>
+            <div class="view-eyebrow">Instrumento de Pensamiento Crítico · v${getSophiaVersion()}</div>
             <h1 class="view-title">¿Qué es SOPHIA?</h1>
             <div class="view-body">
-              <p>SOPHIA es un <strong>protocolo abierto de comunicación deliberativa</strong> (RFC de la racionalidad pública). No evalúa la verdad del contenido, sino la <strong>legitimidad del proceso argumentativo</strong>.</p>
-              <p>Se fundamenta en una <strong>gramática formal de la deliberación</strong>: un sistema de reglas, átomos semánticos y meta-reglas que cualquier ciudadano puede auditar, debatir y versionar.</p>
-              <p>Todo el código fuente cognitivo es <strong>Open Source</strong>; cada criterio, constructo y átomo está documentado y es debatible. La ciudadanía puede inspeccionar cada fase y definición operacional, proponer modificaciones y observar el historial de cambios.</p>
-              <p>SOPHIA no censura; <strong>etiqueta</strong>. Su salida es un <em>acta de infracción</em> que detalla qué reglas de la conversación racional han sido violadas y en qué medida.</p>
-              <p>Es, en esencia, un <strong>sistema inmunológico cognitivo</strong> para el espacio público.</p>
+              <p>SOPHIA es una herramienta de inteligencia artificial diseñada para ayudarte a <strong>examinar tu propio razonamiento</strong>. No pretende decirte qué pensar ni decidir si tienes razón. Su propósito es hacer visible aquello que normalmente permanece oculto cuando razonamos: nuestras premisas, evidencias, inferencias, supuestos, niveles de confianza y posibles errores.</p>
+              <p>SOPHIA reconstruye tu razonamiento y te permite recorrerlo paso a paso. Puedes ver qué detectó, qué evidencia utilizó, qué fue comprobado, qué permanece incierto y dónde podría incluso haberse equivocado el propio instrumento. Porque pensar críticamente no consiste solamente en encontrar errores en las ideas de los demás. También consiste en aprender a examinar las propias.</p>
+              <p>Su salida no es un veredicto, sino un <strong>mapa de razonamiento</strong> que muestra caminos sólidos, caminos inciertos, saltos, supuestos y zonas que requieren revisión. <strong>SOPHIA no piensa por ti. Te ayuda a mirar cómo estás pensando.</strong></p>
+              <p><strong>Un instrumento abierto y auditable:</strong> SOPHIA no es una caja negra. Sus criterios, mecanismos de evaluación y límites están documentados y pueden ser examinados, discutidos y modificados. No tienes que creerle a SOPHIA; puedes examinar cómo llegó a lo que te está mostrando y cuestionar sus propias evaluaciones.</p>
             </div>
             <div class="view-section">
               <div class="view-section-title">Las 5 Fases del Protocolo (Capa 1 · Motor Determinista)</div>
@@ -646,7 +645,7 @@ const VIEWS = {
               <div class="card-grid">
                 <div class="s-card">
                   <div class="s-card-title">Capa 1 · Motor Determinista</div>
-                  <div class="s-card-body">Aplica las 5 fases y sus criterios mediante reglas públicas, sin IA. Produce el IRD, el nivel de riesgo y las infracciones detectadas. Es el único resultado que nunca se modifica.</div>
+                  <div class="s-card-body">Aplica las 5 fases y sus criterios mediante reglas públicas, sin IA. Produce el IRD, el nivel de riesgo y las áreas de revisión detectadas. Es el único resultado que nunca se modifica.</div>
                 </div>
                 <div class="s-card">
                   <div class="s-card-title">Capa 2 · Auditoría Factual</div>
@@ -828,7 +827,7 @@ const VIEWS = {
                 <div class="flow-step"><div class="flow-dot">5</div><div class="flow-body"><div class="flow-title">Definición operacional</div><div class="flow-desc">Cada átomo tiene una definición concreta y patrones lingüísticos.</div></div></div>
                 <div class="flow-step"><div class="flow-dot">6</div><div class="flow-body"><div class="flow-title">Reglas de interpretación</div><div class="flow-desc">Lógica IF-THEN que determina penalizaciones.</div></div></div>
                 <div class="flow-step"><div class="flow-dot">7</div><div class="flow-body"><div class="flow-title">Implementación LLM</div><div class="flow-desc">Patrones de búsqueda (ej: "todos", "siempre").</div></div></div>
-                <div class="flow-step"><div class="flow-dot">8</div><div class="flow-body"><div class="flow-title">Salida obligatoria</div><div class="flow-desc">Acta de infracción con puntaje, átomos activados y evidencias.</div></div></div>
+                <div class="flow-step"><div class="flow-dot">8</div><div class="flow-body"><div class="flow-title">Salida obligatoria</div><div class="flow-desc">Mapa de razonamiento con puntaje, átomos activados y evidencias.</div></div></div>
               </div>
             </div>
 
@@ -985,7 +984,7 @@ const VIEWS = {
             <h1 class="view-title">Auditoría de Adherencia</h1>
             <div class="view-body">
               <p>Ingresa un texto para estimar su <strong>Índice de Robustez Deliberativa (IRD)</strong>. SOPHIA calculará el puntaje basándose en las 5 fases, 20 criterios y 48 átomos del protocolo.</p>
-              <p>El resultado es un <strong>acta de infracción</strong> con el desglose por fase, las infracciones detectadas y las evidencias textuales.</p>
+              <p>El resultado es un <strong>mapa de razonamiento</strong> con el desglose por fase, los puntos de revisión detectados y las evidencias textuales.</p>
             </div>
             <div class="eval-tool">
               <textarea class="sophia-input" id="evalInput" placeholder="Pega aquí el documento a auditar. SOPHIA evaluará su adherencia al protocolo de comunicación deliberativa..."></textarea>
@@ -1512,7 +1511,7 @@ const SOPHIA = {
 
         ${hayInfracciones ? `
           <div class="view-section">
-            <div class="view-section-title">Infracciones detectadas</div>
+            <div class="view-section-title">Puntos de revisión detectados</div>
             ${fases.filter(f => (f.infracciones || []).length > 0).map(f => `
               <div style="margin-bottom:16px;">
                 <div style="font-size:.75rem; color:var(--accent); margin-bottom:6px;">${f.nombre}</div>
@@ -1531,7 +1530,7 @@ const SOPHIA = {
           </div>
         ` : `
           <div class="view-section">
-            <p style="color:#22c55e;">✅ No se detectaron infracciones al protocolo.</p>
+            <p style="color:#22c55e;">✅ No se detectaron áreas de revisión de acuerdo al protocolo.</p>
           </div>
         `}
 
@@ -1738,44 +1737,14 @@ const SOPHIA = {
               ${data.gemini_review.observaciones ? `
                 <div style="margin-bottom:12px;">
                   <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Observaciones</div>
-                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
-                    ${Array.isArray(data.gemini_review.observaciones)
-                      ? data.gemini_review.observaciones.map(o => `<div style="margin-bottom: 6px;"><strong style="color:#e5e7eb;">${o.tipo}:</strong> ${o.detalle}</div>`).join('')
-                      : data.gemini_review.observaciones}
-                  </div>
-                </div>` : ''}
-              ${(data.gemini_review.preguntas_reflexivas && Array.isArray(data.gemini_review.preguntas_reflexivas) && data.gemini_review.preguntas_reflexivas.length > 0) ? `
-                <div>
-                  <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Preguntas reflexivas</div>
-                  <ul style="margin:0; padding-left:18px; font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
-                    ${data.gemini_review.preguntas_reflexivas.map(p => `<li>${p}</li>`).join('')}
-                  </ul>
+                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.observaciones}</div>
                 </div>` : ''}
             </div>
           </div>
         ` : ''}
       `;
-
-      this._animateBars(out);
     } catch (e) {
       showDebug(`❌ Error en _renderEvaluation: ${e.message}`, true);
-      out.innerHTML = `<p style="color:#ef4444;">Error al renderizar la evaluación: ${e.message}</p>`;
-    }
-  },
-
-  init() {
-    try {
-      console.log('🚀 Inicializando SOPHIA...');
-      const buttons = document.querySelectorAll('button.snav-item');
-      buttons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          this.navigate(e.currentTarget.dataset.view);
-        });
-      });
-      this.navigate('inicio');
-      console.log('✅ SOPHIA inicializada con éxito');
-    } catch (e) {
-      console.error(`❌ Error en init: ${e.message}`);
     }
   }
 };
@@ -1784,6 +1753,4 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('✅ El motor está encendido');
   SOPHIA.init();
 });
-
-// Exponer explícitamente para el consumo del Motor Cognitivo (Rey Filósofo)
 window.SOPHIA = SOPHIA;
