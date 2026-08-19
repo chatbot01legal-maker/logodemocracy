@@ -151,7 +151,7 @@ Responde ÚNICAMENTE con el siguiente formato JSON:
 }`;
 
   try {
-    const response = await askVertex(prompt);
+    const response = await askVertex(prompt, undefined, undefined, undefined, "semantic_review");
     let cleaned = response.replace(/```json\s?/g, '').replace(/```\s?/g, '').trim();
 
     const jsonMatch = cleaned.match(/\{[\s\S]*\}/);

@@ -35,7 +35,7 @@ Devuelve EXCLUSIVAMENTE un array JSON con este formato, sin texto adicional ni e
 ]`;
 
   try {
-    const response = await askVertex(prompt);
+    const response = await askVertex(prompt, undefined, undefined, undefined, "claim_extraction");
     // Limpiar marcas de código Markdown
     let cleaned = response.replace(/```json\s?/g, '').replace(/```\s?/g, '').trim();
     

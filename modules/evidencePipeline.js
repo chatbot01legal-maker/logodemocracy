@@ -37,7 +37,7 @@ Devuelve EXCLUSIVAMENTE un JSON, sin texto adicional, sin comillas de markdown:
   "justificacion": "breve explicación de por qué, basada en lo que encontraste en la búsqueda"
 }`;
 
-  const { text, sources } = await askVertexWithSearch(prompt);
+  const { text, sources } = await askVertexWithSearch(prompt, undefined, undefined, "factual_verification");
 
   let cleaned = text.replace(/```json\s?/g, '').replace(/```\s?/g, '').trim();
   let evaluation;

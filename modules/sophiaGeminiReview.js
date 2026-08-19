@@ -69,7 +69,7 @@ Devuelve ÚNICAMENTE un objeto JSON válido con la siguiente estructura exacta (
 `;
 
   try {
-    const rawResponse = await askVertex(prompt);
+    const rawResponse = await askVertex(prompt, undefined, undefined, undefined, "gemini_review");
     
     // Limpiamos la respuesta en caso de que Vertex devuelva el JSON envuelto en markdown
     let cleanJson = rawResponse.replace(/```json/g, '').replace(/```/g, '').trim();
