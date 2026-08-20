@@ -610,7 +610,7 @@ const VIEWS = {
       }
     }
   },
-  inicio: {
+inicio: {
     title: 'Sophia — Instrumento de Pensamiento Crítico',
     render: () => {
       try {
