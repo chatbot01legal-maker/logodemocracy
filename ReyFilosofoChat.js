@@ -1,28 +1,29 @@
 /* ═══════════════════════════════════════════════════════
-   REYFILOSOFOCHAT.JS — Motor Cognitivo v1.0
+   REYFILOSOFOCHAT.JS — Motor Cognitivo v1.1
    Rey Filósofo — Servicio Cognitivo Transversal
    ═══════════════════════════════════════════════════════
 
-   Esta implementación NO es la aplicación definitiva del Rey Filósofo.
-   Es el Motor Cognitivo v1.0: el núcleo mínimo y reutilizable que
-   cualquier módulo del ecosistema LogoDemocracy (SOPHIA, Academia, y
-   los que vengan después) puede invocar para que el Rey Filósofo
-   acompañe al usuario sobre un Activo Cognitivo.
+   v1.1
+   ───────────────────────────────────────────────────────
+   Se incorpora una capa de accesibilidad / presentación
+   mediante SpeechSynthesis del navegador.
 
-   Principios de diseño (no negociables en esta versión):
-   1. Servicio cognitivo: el Rey Filósofo no pertenece a ningún módulo.
-   2. Desacoplamiento: este archivo nunca debe conocer la lógica
-      interna de SOPHIA, Academia, ni de ningún módulo futuro.
-      Solo conoce el contrato de datos definido más abajo.
-   3. Toda la inteligencia pedagógica vive en el backend. Este archivo
-      no interpreta el activo, no arma prompts, no aplica reglas
-      pedagógicas — solo recibe, muestra, envía y transporta.
+   Esta capa:
+   - NO modifica el backend.
+   - NO modifica el contrato cognitivo.
+   - NO modifica la inteligencia pedagógica.
+   - NO genera llamadas adicionales a Gemini.
+   - NO requiere un servicio TTS externo.
 
-   La arquitectura de estado/API está separada de la de render
-   deliberadamente, para que la futura aplicación completa (con
-   autenticación, ZDP, perfil de aprendizaje, memoria pedagógica,
-   etc.) pueda añadirse como capas nuevas sobre este mismo núcleo,
-   sin reescribirlo.
+   Funciones:
+   - ▶ Escuchar
+   - ⏸ Pausar
+   - ▶ Continuar
+   - ⏹ Detener
+   - Resaltado de la frase actualmente reproducida.
+
+   La síntesis de voz es ejecutada localmente por el navegador /
+   dispositivo mediante Web Speech API.
    ═══════════════════════════════════════════════════════ */
 
 (function () {
@@ -36,34 +37,55 @@
 
   const SESSION_STORAGE_KEY = 'reyFilosofoSessionId';
 
+  // Configuración de voz
+  const SPEECH_LANG = 'es-CL';
+  const SPEECH_RATE = 1.0;
+  const SPEECH_PITCH = 1.0;
+  const SPEECH_VOLUME = 1.0;
+
   // ─── Estado interno ─────────────────────────────────
   const state = {
     sessionId: null,
-    activeAsset: null,   // el Activo Cognitivo recibido del módulo origen
-    conversation: [],    // historial de la sesión actual (en memoria)
+    activeAsset: null,
+    conversation: [],
     isOpen: false,
     isSending: false
   };
 
-  let container = null; // nodo DOM raíz del widget (botón + panel)
+  // ─── Estado independiente de lectura ────────────────
+  const speechState = {
+    supported: 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window,
+    messageIndex: null,
+    chunks: [],
+    chunkIndex: 0,
+    isSpeaking: false,
+    isPaused: false,
+    utterance: null,
+    voices: []
+  };
 
-  // Función opcional que cada página puede registrar con
-  // setDefaultSessionProvider(). El motor la llama únicamente cuando el
-  // botón flotante se toca sin que haya una sesión activa todavía — el
-  // motor sigue sin saber nada de Academia, SOPHIA ni ningún módulo
-  // específico, solo invoca lo que la página le haya registrado.
+  let container = null;
+
   let defaultSessionProvider = null;
 
-  // ─── Contrato de entrada: normalización tolerante ───
+
+  // ═════════════════════════════════════════════════════
+  // NORMALIZACIÓN DEL ACTIVO COGNITIVO
+  // ═════════════════════════════════════════════════════
+
   function normalizeCognitiveAsset(raw) {
     if (!raw || typeof raw !== 'object') {
-      throw new Error('Se requiere un Activo Cognitivo válido: { source, objective, asset, ... }');
+      throw new Error(
+        'Se requiere un Activo Cognitivo válido: { source, objective, asset, ... }'
+      );
     }
-    
-    // Soporta 'source' directo o 'metadata.originModule' generado por CognitiveSessionFactory
+
     const source = raw.source || (raw.metadata && raw.metadata.originModule);
+
     if (!source) {
-      throw new Error('El Activo Cognitivo requiere "source" o "metadata.originModule" (módulo de origen).');
+      throw new Error(
+        'El Activo Cognitivo requiere "source" o "metadata.originModule" (módulo de origen).'
+      );
     }
 
     return {
@@ -71,42 +93,79 @@
       contractVersion: raw.contractVersion || CONTRACT_VERSION,
       objective: raw.objective || null,
       asset: raw.asset !== undefined ? raw.asset : null,
-      conversation: Array.isArray(raw.conversation) ? raw.conversation.slice() : [],
-      metadata: (raw.metadata && typeof raw.metadata === 'object') ? raw.metadata : {}
+      conversation: Array.isArray(raw.conversation)
+        ? raw.conversation.slice()
+        : [],
+      metadata:
+        raw.metadata && typeof raw.metadata === 'object'
+          ? raw.metadata
+          : {}
     };
   }
 
+
+  // ═════════════════════════════════════════════════════
+  // SESIÓN
+  // ═════════════════════════════════════════════════════
+
   function getSessionId() {
     if (state.sessionId) return state.sessionId;
+
     let sid = null;
+
     try {
       sid = localStorage.getItem(SESSION_STORAGE_KEY);
+
       if (!sid) {
-        sid = (window.crypto && window.crypto.randomUUID)
-          ? window.crypto.randomUUID()
-          : ('rf-' + Date.now() + '-' + Math.random().toString(16).slice(2));
+        sid =
+          window.crypto && window.crypto.randomUUID
+            ? window.crypto.randomUUID()
+            : 'rf-' +
+              Date.now() +
+              '-' +
+              Math.random().toString(16).slice(2);
+
         localStorage.setItem(SESSION_STORAGE_KEY, sid);
       }
     } catch (e) {
-      sid = 'rf-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+      sid =
+        'rf-' +
+        Date.now() +
+        '-' +
+        Math.random().toString(16).slice(2);
     }
+
     state.sessionId = sid;
+
     return sid;
   }
 
-  // ─── Envío de mensajes ──────────────────────────────
+
+  // ═════════════════════════════════════════════════════
+  // ENVÍO DE MENSAJES
+  // ═════════════════════════════════════════════════════
+
   async function sendMessage(rawText) {
     const text = (rawText || '').trim();
+
     if (!text || state.isSending) return;
 
     if (!state.activeAsset) {
-      console.error('❌ ReyFilosofoChat: no hay Activo Cognitivo activo. Llamar a .open() primero.');
+      console.error(
+        '❌ ReyFilosofoChat: no hay Activo Cognitivo activo. Llamar a .open() primero.'
+      );
       return;
     }
 
-    const userMessage = { role: 'user', content: text, timestamp: new Date().toISOString() };
+    const userMessage = {
+      role: 'user',
+      content: text,
+      timestamp: new Date().toISOString()
+    };
+
     state.conversation.push(userMessage);
     state.isSending = true;
+
     renderPanel();
 
     const payload = {
@@ -119,7 +178,9 @@
     try {
       const response = await fetch(ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(payload)
       });
 
@@ -128,46 +189,532 @@
       }
 
       const data = await response.json();
-      const reply = (data && (data.content || data.reply || data.message)) || null;
+
+      const reply =
+        (data && (data.content || data.reply || data.message)) || null;
 
       state.conversation.push({
         role: 'assistant',
-        content: reply || 'No se recibió una respuesta legible del Rey Filósofo.',
+        content:
+          reply ||
+          'No se recibió una respuesta legible del Rey Filósofo.',
         timestamp: new Date().toISOString()
       });
+
     } catch (error) {
-      console.error('❌ ReyFilosofoChat.sendMessage:', error.message);
+      console.error(
+        '❌ ReyFilosofoChat.sendMessage:',
+        error.message
+      );
+
       state.conversation.push({
         role: 'assistant',
-        content: 'No pude conectar con el Rey Filósofo en este momento. Intenta nuevamente en unos segundos.',
+        content:
+          'No pude conectar con el Rey Filósofo en este momento. Intenta nuevamente en unos segundos.',
         timestamp: new Date().toISOString(),
         isError: true
       });
+
     } finally {
       state.isSending = false;
       renderPanel();
     }
   }
 
-  // ─── Render ──────────────────────────────────────────
+
+  // ═════════════════════════════════════════════════════
+  // UTILIDADES HTML
+  // ═════════════════════════════════════════════════════
+
   function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str == null ? '' : String(str);
     return div.innerHTML;
   }
 
+
+  // ═════════════════════════════════════════════════════
+  // SISTEMA DE VOZ
+  // ═════════════════════════════════════════════════════
+
+  function loadSpeechVoices() {
+    if (!speechState.supported) return;
+
+    speechState.voices = window.speechSynthesis.getVoices() || [];
+  }
+
+  if (speechState.supported) {
+    loadSpeechVoices();
+
+    if ('onvoiceschanged' in window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = loadSpeechVoices;
+    }
+  }
+
+
+  // ─── Divide una respuesta en fragmentos razonables ──
+  function splitTextForSpeech(text) {
+    const clean = String(text || '').trim();
+
+    if (!clean) return [];
+
+    /*
+     * Primero intentamos separar por frases.
+     * Esto permite que el resaltado sea natural.
+     */
+    const sentenceParts = clean.match(
+      /[^.!?…。！？]+[.!?…。！？]+|[^.!?…。！？]+$/g
+    );
+
+    if (!sentenceParts) {
+      return [clean];
+    }
+
+    const chunks = [];
+
+    sentenceParts.forEach(part => {
+      const sentence = part.trim();
+
+      if (!sentence) return;
+
+      /*
+       * Si una frase es excesivamente larga,
+       * la dividimos aproximadamente por palabras.
+       */
+      if (sentence.length <= 220) {
+        chunks.push(sentence);
+        return;
+      }
+
+      const words = sentence.split(/\s+/);
+      let current = '';
+
+      words.forEach(word => {
+        const candidate = current
+          ? current + ' ' + word
+          : word;
+
+        if (candidate.length > 180 && current) {
+          chunks.push(current);
+          current = word;
+        } else {
+          current = candidate;
+        }
+      });
+
+      if (current) {
+        chunks.push(current);
+      }
+    });
+
+    return chunks;
+  }
+
+
+  // ─── Obtiene una voz española disponible ─────────────
+  function getPreferredVoice() {
+    const voices = speechState.voices || [];
+
+    if (!voices.length) return null;
+
+    const preferredLanguages = [
+      'es-CL',
+      'es_CL',
+      'es',
+      'es-ES',
+      'es-MX',
+      'es-US'
+    ];
+
+    for (const language of preferredLanguages) {
+      const exact = voices.find(
+        voice =>
+          voice.lang &&
+          voice.lang.toLowerCase() === language.toLowerCase()
+      );
+
+      if (exact) return exact;
+    }
+
+    const spanish = voices.find(
+      voice =>
+        voice.lang &&
+        voice.lang.toLowerCase().startsWith('es')
+    );
+
+    return spanish || null;
+  }
+
+
+  // ─── Actualiza visualmente el fragmento activo ───────
+  function updateSpeechHighlight() {
+    if (!container) return;
+
+    const allChunks = container.querySelectorAll(
+      '[data-rf-speech-chunk]'
+    );
+
+    allChunks.forEach(chunk => {
+      const messageIndex = Number(
+        chunk.getAttribute('data-message-index')
+      );
+
+      const chunkIndex = Number(
+        chunk.getAttribute('data-chunk-index')
+      );
+
+      const active =
+        speechState.isSpeaking &&
+        messageIndex === speechState.messageIndex &&
+        chunkIndex === speechState.chunkIndex;
+
+      if (active) {
+        chunk.style.background =
+          'var(--rf-speech-highlight, rgba(59,130,246,.28))';
+
+        chunk.style.borderRadius = '4px';
+        chunk.style.padding = '1px 2px';
+        chunk.style.boxShadow =
+          '0 0 0 1px rgba(59,130,246,.18)';
+
+      } else {
+        chunk.style.background = '';
+        chunk.style.borderRadius = '';
+        chunk.style.padding = '';
+        chunk.style.boxShadow = '';
+      }
+    });
+  }
+
+
+  // ─── Detener completamente la reproducción ──────────
+  function stopSpeech() {
+    if (!speechState.supported) return;
+
+    window.speechSynthesis.cancel();
+
+    speechState.messageIndex = null;
+    speechState.chunks = [];
+    speechState.chunkIndex = 0;
+    speechState.isSpeaking = false;
+    speechState.isPaused = false;
+    speechState.utterance = null;
+
+    renderPanel();
+  }
+
+
+  // ─── Reproduce el fragmento actual ──────────────────
+  function speakCurrentChunk() {
+    if (!speechState.supported) return;
+
+    if (!speechState.chunks.length) {
+      stopSpeech();
+      return;
+    }
+
+    const chunk = speechState.chunks[speechState.chunkIndex];
+
+    if (!chunk) {
+      stopSpeech();
+      return;
+    }
+
+    const utterance =
+      new SpeechSynthesisUtterance(chunk);
+
+    utterance.lang = SPEECH_LANG;
+    utterance.rate = SPEECH_RATE;
+    utterance.pitch = SPEECH_PITCH;
+    utterance.volume = SPEECH_VOLUME;
+
+    const preferredVoice = getPreferredVoice();
+
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+    }
+
+    speechState.utterance = utterance;
+    speechState.isSpeaking = true;
+    speechState.isPaused = false;
+
+    updateSpeechHighlight();
+
+    utterance.onend = function () {
+      /*
+       * Si el usuario detuvo la reproducción,
+       * no continuamos automáticamente.
+       */
+      if (!speechState.isSpeaking) return;
+
+      speechState.chunkIndex += 1;
+
+      if (
+        speechState.chunkIndex >=
+        speechState.chunks.length
+      ) {
+        speechState.messageIndex = null;
+        speechState.chunks = [];
+        speechState.chunkIndex = 0;
+        speechState.isSpeaking = false;
+        speechState.isPaused = false;
+        speechState.utterance = null;
+
+        renderPanel();
+        return;
+      }
+
+      speakCurrentChunk();
+    };
+
+    utterance.onerror = function (event) {
+      /*
+       * "interrupted" ocurre normalmente cuando se llama
+       * speechSynthesis.cancel(). No lo tratamos como un
+       * error visible para el usuario.
+       */
+      if (event && event.error === 'interrupted') {
+        return;
+      }
+
+      console.warn(
+        '⚠️ ReyFilosofoChat: error de síntesis de voz:',
+        event && event.error
+      );
+
+      speechState.isSpeaking = false;
+      speechState.isPaused = false;
+      speechState.utterance = null;
+
+      renderPanel();
+    };
+
+    window.speechSynthesis.speak(utterance);
+  }
+
+
+  // ─── Comenzar lectura de una respuesta ───────────────
+  function startSpeech(messageIndex) {
+    if (!speechState.supported) {
+      console.warn(
+        '⚠️ Este navegador no soporta SpeechSynthesis.'
+      );
+      return;
+    }
+
+    const message = state.conversation[messageIndex];
+
+    if (
+      !message ||
+      message.role !== 'assistant' ||
+      message.isError
+    ) {
+      return;
+    }
+
+    const text = String(message.content || '').trim();
+
+    if (!text) return;
+
+    /*
+     * Si ya estamos leyendo otra respuesta,
+     * la detenemos antes de comenzar la nueva.
+     */
+    window.speechSynthesis.cancel();
+
+    speechState.messageIndex = messageIndex;
+    speechState.chunks = splitTextForSpeech(text);
+    speechState.chunkIndex = 0;
+    speechState.isSpeaking = true;
+    speechState.isPaused = false;
+    speechState.utterance = null;
+
+    renderPanel();
+
+    /*
+     * Pequeño retraso para permitir que el navegador
+     * procese el cambio de estado antes de hablar.
+     */
+    setTimeout(() => {
+      if (
+        speechState.isSpeaking &&
+        speechState.messageIndex === messageIndex
+      ) {
+        speakCurrentChunk();
+      }
+    }, 30);
+  }
+
+
+  // ─── Pausar / continuar ─────────────────────────────
+  function toggleSpeechPause() {
+    if (!speechState.supported) return;
+
+    if (!speechState.isSpeaking) return;
+
+    if (speechState.isPaused) {
+      window.speechSynthesis.resume();
+      speechState.isPaused = false;
+    } else {
+      window.speechSynthesis.pause();
+      speechState.isPaused = true;
+    }
+
+    renderPanel();
+  }
+
+
+  // ─── Construye el texto de una respuesta con resaltado
+  function renderSpeechText(content, messageIndex) {
+    const chunks = splitTextForSpeech(content);
+
+    if (!chunks.length) {
+      return escapeHtml(content);
+    }
+
+    return chunks
+      .map((chunk, index) => {
+        const active =
+          speechState.isSpeaking &&
+          speechState.messageIndex === messageIndex &&
+          speechState.chunkIndex === index;
+
+        const activeStyle = active
+          ? `
+              background:var(--rf-speech-highlight, rgba(59,130,246,.28));
+              border-radius:4px;
+              padding:1px 2px;
+              box-shadow:0 0 0 1px rgba(59,130,246,.18);
+            `
+          : '';
+
+        return `
+          <span
+            data-rf-speech-chunk="true"
+            data-message-index="${messageIndex}"
+            data-chunk-index="${index}"
+            style="${activeStyle}"
+          >${escapeHtml(chunk)}</span>
+        `;
+      })
+      .join(' ');
+  }
+
+
+  // ─── Botones de voz de cada respuesta ───────────────
+  function renderSpeechControls(messageIndex, message) {
+    if (
+      !speechState.supported ||
+      message.isError ||
+      !message.content
+    ) {
+      return '';
+    }
+
+    const isCurrent =
+      speechState.messageIndex === messageIndex;
+
+    const isSpeaking =
+      isCurrent && speechState.isSpeaking;
+
+    const isPaused =
+      isCurrent && speechState.isPaused;
+
+    if (!isSpeaking) {
+      return `
+        <div style="
+          display:flex;
+          align-items:center;
+          gap:6px;
+          margin-top:7px;
+        ">
+          <button
+            data-rf-speech-action="play"
+            data-message-index="${messageIndex}"
+            title="Escuchar respuesta"
+            style="
+              background:transparent;
+              border:1px solid var(--rf-border, rgba(255,255,255,.12));
+              color:var(--rf-muted, rgba(229,231,235,.7));
+              border-radius:6px;
+              padding:4px 8px;
+              cursor:pointer;
+              font-size:.72rem;
+            "
+          >▶ Escuchar</button>
+        </div>
+      `;
+    }
+
+    return `
+      <div style="
+        display:flex;
+        align-items:center;
+        gap:6px;
+        margin-top:7px;
+      ">
+        <button
+          data-rf-speech-action="pause"
+          data-message-index="${messageIndex}"
+          title="${isPaused ? 'Continuar' : 'Pausar'}"
+          style="
+            background:transparent;
+            border:1px solid var(--rf-border, rgba(255,255,255,.12));
+            color:var(--rf-muted, rgba(229,231,235,.7));
+            border-radius:6px;
+            padding:4px 8px;
+            cursor:pointer;
+            font-size:.72rem;
+          "
+        >${isPaused ? '▶ Continuar' : '⏸ Pausar'}</button>
+
+        <button
+          data-rf-speech-action="stop"
+          data-message-index="${messageIndex}"
+          title="Detener lectura"
+          style="
+            background:transparent;
+            border:1px solid var(--rf-border, rgba(255,255,255,.12));
+            color:var(--rf-muted, rgba(229,231,235,.7));
+            border-radius:6px;
+            padding:4px 8px;
+            cursor:pointer;
+            font-size:.72rem;
+          "
+        >⏹ Detener</button>
+      </div>
+    `;
+  }
+
+
+  // ═════════════════════════════════════════════════════
+  // RENDER DEL LAUNCHER
+  // ═════════════════════════════════════════════════════
+
   function renderLauncher() {
     if (!container) return;
+
     container.innerHTML = `
       <button id="rf-launcher-btn" title="Rey Filósofo" style="
-        position:fixed; bottom:24px; right:24px; z-index:9998;
-        width:56px; height:56px; border-radius:50%;
-        background:var(--rf-bg, #111827); border:1px solid var(--rf-accent-border, rgba(59,130,246,.4));
-        color:var(--rf-text, #e5e7eb); font-size:1.4rem; cursor:pointer;
+        position:fixed;
+        bottom:24px;
+        right:24px;
+        z-index:9998;
+        width:56px;
+        height:56px;
+        border-radius:50%;
+        background:var(--rf-bg, #111827);
+        border:1px solid var(--rf-accent-border, rgba(59,130,246,.4));
+        color:var(--rf-text, #e5e7eb);
+        font-size:1.4rem;
+        cursor:pointer;
         box-shadow:0 4px 14px rgba(0,0,0,.4);
       ">🏛</button>
     `;
-    const btn = document.getElementById('rf-launcher-btn');
+
+    const btn =
+      document.getElementById('rf-launcher-btn');
+
     if (btn) {
       btn.onclick = () => {
         if (state.activeAsset) {
@@ -175,172 +722,474 @@
           renderPanel();
           return;
         }
-        // Todavía no hay sesión abierta (nadie tocó "Profundizar" antes).
-        // Si la página registró un proveedor por defecto, lo usamos para
-        // construir la sesión al vuelo con el contexto actual — así el
-        // botón flotante también funciona como primer punto de entrada,
-        // no solo como reabridor de una sesión ya iniciada.
+
         if (typeof defaultSessionProvider === 'function') {
-          const autoSession = defaultSessionProvider();
+          const autoSession =
+            defaultSessionProvider();
+
           if (autoSession) {
             ReyFilosofoChat.open(autoSession);
             return;
           }
         }
-        console.warn('⚠️ Rey Filósofo no tiene un Activo Cognitivo activo todavía.');
+
+        console.warn(
+          '⚠️ Rey Filósofo no tiene un Activo Cognitivo activo todavía.'
+        );
       };
     }
   }
 
+
+  // ═════════════════════════════════════════════════════
+  // RENDER DEL PANEL
+  // ═════════════════════════════════════════════════════
+
   function renderPanel() {
     if (!container) return;
+
     if (!state.isOpen) {
       renderLauncher();
       return;
     }
 
-    let messagesHtml = state.conversation.length > 0
-      ? state.conversation.map(m => `
-          <div style="margin-bottom:10px; display:flex; justify-content:${m.role === 'user' ? 'flex-end' : 'flex-start'};">
-            <div style="
-              max-width:80%; padding:8px 12px; border-radius:10px;
-              font-size:.82rem; line-height:1.45; white-space:pre-wrap;
-              background:${m.role === 'user' ? 'var(--rf-user-bg, #1d4ed8)' : (m.isError ? 'var(--rf-error-bg, #3f1d1d)' : 'var(--rf-assistant-bg, #1f2937)')};
-              color:${m.role === 'user' ? 'var(--rf-user-text, #ffffff)' : (m.isError ? 'var(--rf-error-text, #fecaca)' : 'var(--rf-assistant-text, #ffffff)')} !important;
-            ">${escapeHtml(m.content)}</div>
-          </div>
-        `).join('')
-      : `<p style="color:var(--rf-faint, rgba(229,231,235,.4)); font-size:.8rem;">Cuéntale al Rey Filósofo qué te gustaría entender mejor sobre este documento.</p>`;
+    let messagesHtml =
+      state.conversation.length > 0
+        ? state.conversation
+            .map((m, messageIndex) => {
+              const isAssistant =
+                m.role === 'assistant';
 
-    // === CAMBIO MÍNIMO: INDICADOR DE PENSANDO ===
+              const messageContent =
+                isAssistant
+                  ? renderSpeechText(
+                      m.content,
+                      messageIndex
+                    )
+                  : escapeHtml(m.content);
+
+              const speechControls =
+                isAssistant
+                  ? renderSpeechControls(
+                      messageIndex,
+                      m
+                    )
+                  : '';
+
+              return `
+                <div style="
+                  margin-bottom:10px;
+                  display:flex;
+                  justify-content:${
+                    m.role === 'user'
+                      ? 'flex-end'
+                      : 'flex-start'
+                  };
+                ">
+                  <div style="
+                    max-width:80%;
+                    padding:8px 12px;
+                    border-radius:10px;
+                    font-size:.82rem;
+                    line-height:1.45;
+                    white-space:pre-wrap;
+                    background:${
+                      m.role === 'user'
+                        ? 'var(--rf-user-bg, #1d4ed8)'
+                        : (
+                            m.isError
+                              ? 'var(--rf-error-bg, #3f1d1d)'
+                              : 'var(--rf-assistant-bg, #1f2937)'
+                          )
+                    };
+                    color:${
+                      m.role === 'user'
+                        ? 'var(--rf-user-text, #ffffff)'
+                        : (
+                            m.isError
+                              ? 'var(--rf-error-text, #fecaca)'
+                              : 'var(--rf-assistant-text, #ffffff)'
+                          )
+                    } !important;
+                  ">
+                    <div>${messageContent}</div>
+                    ${speechControls}
+                  </div>
+                </div>
+              `;
+            })
+            .join('')
+        : `
+          <p style="
+            color:var(--rf-faint, rgba(229,231,235,.4));
+            font-size:.8rem;
+          ">
+            Cuéntale al Rey Filósofo qué te gustaría entender mejor sobre este documento.
+          </p>
+        `;
+
+
+    // ─── Indicador de pensamiento ──────────────────────
     if (state.isSending) {
       messagesHtml += `
-        <div style="margin-bottom:10px; display:flex; justify-content:flex-start; animation: pulse 1.5s infinite;">
+        <div style="
+          margin-bottom:10px;
+          display:flex;
+          justify-content:flex-start;
+          animation:rfPulse 1.5s infinite;
+        ">
           <div style="
-            max-width:80%; padding:8px 12px; border-radius:10px;
-            font-size:.82rem; background:var(--rf-assistant-bg, #1f2937); color:var(--rf-assistant-text, #ffffff) !important; font-style:italic; display:flex; gap:4px; align-items:center;
+            max-width:80%;
+            padding:8px 12px;
+            border-radius:10px;
+            font-size:.82rem;
+            background:var(--rf-assistant-bg, #1f2937);
+            color:var(--rf-assistant-text, #ffffff) !important;
+            font-style:italic;
+            display:flex;
+            gap:4px;
+            align-items:center;
           ">
             <span>Reflexionando...</span>
           </div>
         </div>
+
         <style>
-          @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
+          @keyframes rfPulse {
+            0% { opacity:.5; }
+            50% { opacity:1; }
+            100% { opacity:.5; }
           }
         </style>
       `;
     }
 
+
+    // ═══════════════════════════════════════════════════
+    // PANEL
+    // ═══════════════════════════════════════════════════
+
     container.innerHTML = `
       <div id="rf-panel" style="
-        position:fixed; bottom:24px; right:24px; z-index:9999;
-        width:340px; max-width:calc(100vw - 32px);
-        height:460px; max-height:calc(100vh - 48px);
-        background:var(--rf-bg, #0a0a0a); border:1px solid var(--rf-accent-border, rgba(59,130,246,.3));
-        border-radius:10px; display:flex; flex-direction:column;
-        box-shadow:0 8px 30px rgba(0,0,0,.5); overflow:hidden;
+        position:fixed;
+        bottom:24px;
+        right:24px;
+        z-index:9999;
+        width:340px;
+        max-width:calc(100vw - 32px);
+        height:460px;
+        max-height:calc(100vh - 48px);
+        background:var(--rf-bg, #0a0a0a);
+        border:1px solid var(--rf-accent-border, rgba(59,130,246,.3));
+        border-radius:10px;
+        display:flex;
+        flex-direction:column;
+        box-shadow:0 8px 30px rgba(0,0,0,.5);
+        overflow:hidden;
       ">
-        <div style="padding:12px 14px; border-bottom:1px solid var(--rf-border, rgba(255,255,255,.08)); display:flex; justify-content:space-between; align-items:center;">
-          <span style="color:var(--rf-text, #e5e7eb); font-size:.85rem; font-weight:500;">🏛 Rey Filósofo</span>
-          <button id="rf-close-btn" style="background:none; border:none; color:var(--rf-muted, rgba(229,231,235,.5)); cursor:pointer; font-size:1rem; line-height:1;">✕</button>
+
+        <div style="
+          padding:12px 14px;
+          border-bottom:1px solid var(--rf-border, rgba(255,255,255,.08));
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+        ">
+          <span style="
+            color:var(--rf-text, #e5e7eb);
+            font-size:.85rem;
+            font-weight:500;
+          ">
+            🏛 Rey Filósofo
+          </span>
+
+          <button
+            id="rf-close-btn"
+            style="
+              background:none;
+              border:none;
+              color:var(--rf-muted, rgba(229,231,235,.5));
+              cursor:pointer;
+              font-size:1rem;
+              line-height:1;
+            "
+          >✕</button>
         </div>
-        <div id="rf-messages" style="flex:1; overflow-y:auto; padding:14px;">${messagesHtml}</div>
-        <div style="padding:10px; border-top:1px solid var(--rf-border, rgba(255,255,255,.08)); display:flex; gap:8px;">
-          <textarea id="rf-input"
-            placeholder="${state.isSending ? 'Esperando respuesta...' : 'Escribe tu pregunta...'}"
+
+
+        <div
+          id="rf-messages"
+          style="
+            flex:1;
+            overflow-y:auto;
+            padding:14px;
+          "
+        >
+          ${messagesHtml}
+        </div>
+
+
+        <div style="
+          padding:10px;
+          border-top:1px solid var(--rf-border, rgba(255,255,255,.08));
+          display:flex;
+          gap:8px;
+        ">
+          <textarea
+            id="rf-input"
+            placeholder="${
+              state.isSending
+                ? 'Esperando respuesta...'
+                : 'Escribe tu pregunta...'
+            }"
             ${state.isSending ? 'disabled' : ''}
-            style="flex:1; resize:none; height:38px; background:var(--rf-input-bg, #111827); border:1px solid var(--rf-border, rgba(255,255,255,.1)); border-radius:6px; color:var(--rf-text, #e5e7eb); font-size:.8rem; padding:8px 10px;"
+            style="
+              flex:1;
+              resize:none;
+              height:38px;
+              background:var(--rf-input-bg, #111827);
+              border:1px solid var(--rf-border, rgba(255,255,255,.1));
+              border-radius:6px;
+              color:var(--rf-text, #e5e7eb);
+              font-size:.8rem;
+              padding:8px 10px;
+            "
           ></textarea>
-          <button id="rf-send-btn" ${state.isSending ? 'disabled' : ''} style="background:var(--rf-accent, #1d4ed8); border:none; border-radius:6px; color:var(--rf-user-text, #fff); padding:0 14px; cursor:pointer; font-size:.8rem;">${state.isSending ? '...' : 'Enviar'}</button>
+
+          <button
+            id="rf-send-btn"
+            ${state.isSending ? 'disabled' : ''}
+            style="
+              background:var(--rf-accent, #1d4ed8);
+              border:none;
+              border-radius:6px;
+              color:var(--rf-user-text, #fff);
+              padding:0 14px;
+              cursor:pointer;
+              font-size:.8rem;
+            "
+          >
+            ${state.isSending ? '...' : 'Enviar'}
+          </button>
         </div>
+
       </div>
     `;
 
-    const closeBtn = document.getElementById('rf-close-btn');
-    if (closeBtn) closeBtn.onclick = () => ReyFilosofoChat.close();
 
-    const sendBtn = document.getElementById('rf-send-btn');
-    const input = document.getElementById('rf-input');
-    if (sendBtn && input && !state.isSending) {
+    // ═══════════════════════════════════════════════════
+    // EVENTOS DEL PANEL
+    // ═══════════════════════════════════════════════════
+
+    const closeBtn =
+      document.getElementById('rf-close-btn');
+
+    if (closeBtn) {
+      closeBtn.onclick = () =>
+        ReyFilosofoChat.close();
+    }
+
+
+    const sendBtn =
+      document.getElementById('rf-send-btn');
+
+    const input =
+      document.getElementById('rf-input');
+
+    if (
+      sendBtn &&
+      input &&
+      !state.isSending
+    ) {
       sendBtn.onclick = () => {
         const text = input.value;
+
         input.value = '';
+
         sendMessage(text);
       };
-      input.onkeydown = (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
+
+      input.onkeydown = e => {
+        if (
+          e.key === 'Enter' &&
+          !e.shiftKey
+        ) {
           e.preventDefault();
           sendBtn.click();
         }
       };
+
       input.focus();
     }
 
-    const messagesEl = document.getElementById('rf-messages');
-    if (messagesEl) messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    // ═══════════════════════════════════════════════════
+    // EVENTOS DE LOS BOTONES DE VOZ
+    // ═══════════════════════════════════════════════════
+
+    const speechButtons =
+      container.querySelectorAll(
+        '[data-rf-speech-action]'
+      );
+
+    speechButtons.forEach(button => {
+      button.onclick = () => {
+        const action =
+          button.getAttribute(
+            'data-rf-speech-action'
+          );
+
+        const messageIndex = Number(
+          button.getAttribute(
+            'data-message-index'
+          )
+        );
+
+        if (action === 'play') {
+          startSpeech(messageIndex);
+        }
+
+        if (action === 'pause') {
+          toggleSpeechPause();
+        }
+
+        if (action === 'stop') {
+          stopSpeech();
+        }
+      };
+    });
+
+
+    // ─── Scroll automático ─────────────────────────────
+    const messagesEl =
+      document.getElementById('rf-messages');
+
+    if (messagesEl) {
+      messagesEl.scrollTop =
+        messagesEl.scrollHeight;
+    }
+
+    updateSpeechHighlight();
   }
 
-  // ─── API pública ─────────────────────────────────────
+
+  // ═════════════════════════════════════════════════════
+  // API PÚBLICA
+  // ═════════════════════════════════════════════════════
+
   const ReyFilosofoChat = {
 
     init() {
       if (container) return;
-      container = document.createElement('div');
-      container.id = 'rey-filosofo-root';
+
+      container =
+        document.createElement('div');
+
+      container.id =
+        'rey-filosofo-root';
+
       document.body.appendChild(container);
+
       renderLauncher();
     },
+
 
     open(cognitiveAsset) {
       let normalized;
+
       try {
-        normalized = normalizeCognitiveAsset(cognitiveAsset);
+        normalized =
+          normalizeCognitiveAsset(
+            cognitiveAsset
+          );
       } catch (e) {
-        console.error('❌ ReyFilosofoChat.open():', e.message);
+        console.error(
+          '❌ ReyFilosofoChat.open():',
+          e.message
+        );
+
         return;
       }
+
       state.activeAsset = normalized;
-      state.conversation = normalized.conversation.slice();
+
+      state.conversation =
+        normalized.conversation.slice();
+
       state.isOpen = true;
+
       getSessionId();
-      if (!container) this.init();
+
+      if (!container) {
+        this.init();
+      }
+
       renderPanel();
     },
 
+
     close() {
       state.isOpen = false;
+
+      /*
+       * Cerramos el panel, pero NO detenemos automáticamente
+       * la voz. Esto permite que el usuario pueda cerrar el
+       * panel sin interrumpir la lectura si el navegador lo
+       * permite.
+       *
+       * Si posteriormente prefieres que cerrar el panel
+       * detenga la voz, basta con cambiar esta decisión.
+       */
       renderLauncher();
     },
 
-    // Cada página llama a esto UNA VEZ al cargar, para decirle al motor
-    // cómo construir una sesión "de emergencia" si el usuario toca el
-    // botón flotante sin haber abierto ninguna sesión todavía.
-    // fn debe ser una función sin argumentos que devuelva una
-    // CognitiveSession (por ejemplo, vía CognitiveSessionFactory) o null
-    // si en este momento no hay nada disponible para mostrar.
+
     setDefaultSessionProvider(fn) {
       if (typeof fn === 'function') {
         defaultSessionProvider = fn;
       }
     },
 
+
     _getState() {
       return {
         sessionId: state.sessionId,
         activeAsset: state.activeAsset,
-        conversation: state.conversation.slice(),
+        conversation:
+          state.conversation.slice(),
         isOpen: state.isOpen,
-        isSending: state.isSending
+        isSending: state.isSending,
+        speech: {
+          supported:
+            speechState.supported,
+          messageIndex:
+            speechState.messageIndex,
+          isSpeaking:
+            speechState.isSpeaking,
+          isPaused:
+            speechState.isPaused,
+          chunkIndex:
+            speechState.chunkIndex
+        }
       };
     }
   };
 
-  window.ReyFilosofoChat = ReyFilosofoChat;
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => ReyFilosofoChat.init());
+  // ─── Exposición global ──────────────────────────────
+  window.ReyFilosofoChat =
+    ReyFilosofoChat;
+
+
+  // ─── Inicialización ─────────────────────────────────
+  if (
+    document.readyState === 'loading'
+  ) {
+    document.addEventListener(
+      'DOMContentLoaded',
+      () =>
+        ReyFilosofoChat.init()
+    );
   } else {
     ReyFilosofoChat.init();
   }
