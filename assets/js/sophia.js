@@ -1775,8 +1775,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Exponer explícitamente para el consumo del Motor Cognitivo (Rey Filósofo)
 window.SOPHIA = SOPHIA;
-
-  console.log('✅ El motor está encendido');
-  SOPHIA.init();
-});
-window.SOPHIA = SOPHIA;
