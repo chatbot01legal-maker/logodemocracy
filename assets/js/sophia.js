@@ -1743,11 +1743,38 @@ const SOPHIA = {
           </div>
         ` : ''}
       `;
+       
+this._animateBars(out);
     } catch (e) {
       showDebug(`❌ Error en _renderEvaluation: ${e.message}`, true);
+      out.innerHTML = `<p style="color:#ef4444;">Error al renderizar la evaluación: ${e.message}</p>`;
+    }
+  },
+
+  init() {
+    try {
+      console.log('🚀 Inicializando SOPHIA...');
+      const buttons = document.querySelectorAll('button.snav-item');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          this.navigate(e.currentTarget.dataset.view);
+        });
+      });
+      this.navigate('inicio');
+      console.log('✅ SOPHIA inicializada con éxito');
+    } catch (e) {
+      console.error(`❌ Error en init: ${e.message}`);
     }
   }
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('✅ El motor está encendido');
+  SOPHIA.init();
+});
+
+// Exponer explícitamente para el consumo del Motor Cognitivo (Rey Filósofo)
+window.SOPHIA = SOPHIA;
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('✅ El motor está encendido');
