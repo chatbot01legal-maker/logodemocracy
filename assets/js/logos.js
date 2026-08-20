@@ -89,21 +89,22 @@
     },
 
     inicio: {
-      title: 'Protocolo Logos',
-      render: () => `
-        <div class="view-eyebrow">Infraestructura dialéctica</div>
-        <h1 class="view-title">¿Qué es Logos?</h1>
-        <div class="view-body">
-          <p><strong>SOPHIA aumenta la robustez de una posición. Logos aumenta la calidad del encuentro entre posiciones.</strong></p>
-          <p>Logos no decide quién tiene razón, no vota ni fabrica consenso. Es un gimnasio deliberativo: reconstruye cada posición, valida esa reconstrucción con la propia persona, mapea acuerdos y desacuerdos, y explora — sin imponer — posibles síntesis.</p>
-          <p style="font-size:.75rem; color:rgba(229,231,235,.45);">"La síntesis pertenece a las personas": Logos propone, las personas examinan, aceptan, rechazan o modifican. Ese ciclo es lo que distingue a un instrumento deliberativo de un oráculo.</p>
-        </div>
-        <div class="view-section">
-          <div class="view-section-title">Un desacuerdo bien descrito es un éxito</div>
-          <p style="font-size:.85rem; color:rgba(229,231,235,.75); line-height:1.6;">Logos puede — y debe, cuando corresponda — concluir que "existe un desacuerdo legítimo que permanece". Eso no es una falla del instrumento: es, muchas veces, el resultado más honesto posible.</p>
-        </div>
-      `
-    },
+  title: 'Pensamiento Colectivo',
+  render: () => `
+    <div class="view-eyebrow">Infraestructura dialéctica</div>
+    <h1 class="view-title">¿Qué es Logos?</h1>
+    <div class="view-body">
+      <p><strong>Logos ayuda a las personas a comprender mejor sus desacuerdos y encontrar puntos de encuentro sin borrar sus diferencias.</strong></p>
+      <p>Reconstruye cada posición, permite comprobar si fue comprendida correctamente y hace visibles los acuerdos, desacuerdos y supuestos que suelen quedar ocultos en una discusión.</p>
+      <p>Esto permite pasar de discutir para vencer a <strong>deliberar para comprender</strong>: descubrir qué nos separa, qué compartimos y qué nuevas posibilidades aparecen cuando somos capaces de entender realmente la posición del otro.</p>
+      <p style="font-size:.75rem; color:rgba(229,231,235,.45);"><strong>Logos no decide quién tiene razón ni fabrica consenso.</strong> Propone mapas y posibles síntesis que las personas pueden examinar, aceptar, rechazar o modificar.</p>
+    </div>
+    <div class="view-section">
+      <div class="view-section-title">Un mejor diálogo produce mejores decisiones</div>
+      <p style="font-size:.85rem; color:rgba(229,231,235,.75); line-height:1.6;">Cuando podemos comprender con mayor precisión por qué pensamos distinto, el desacuerdo deja de ser solamente un obstáculo. Puede convertirse en una fuente de aprendizaje, cooperación y nuevas soluciones.</p>
+    </div>
+  `
+},
 
     sintesis: {
       title: 'Tipos de Síntesis',
