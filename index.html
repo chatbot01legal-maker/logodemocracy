@@ -1230,6 +1230,191 @@ body {
   .tl-content--left  { margin-right: 56%; }
 }
 
+/* ═══════════════════════════════════════════════════════
+   FOOTER — LOGODEMOCRACY
+══════════════════════════════════════════════════════════ */
+
+.footer {
+  position: relative;
+  margin-top: var(--space-xl);
+  padding: 4.5rem 0 1.5rem;
+  border-top: 1px solid rgba(229, 231, 235, .08);
+  background:
+    radial-gradient(
+      circle at 20% 0%,
+      rgba(255,255,255,.035),
+      transparent 35%
+    ),
+    rgba(5, 7, 12, .72);
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* ───────────────────────────────────────────────────────
+   IDENTIDAD
+─────────────────────────────────────────────────────── */
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+}
+
+.footer-logo {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  color: rgba(229,231,235,.92);
+}
+
+.footer-tagline {
+  max-width: 260px;
+  margin: 0;
+  font-size: .78rem;
+  line-height: 1.6;
+  color: rgba(229,231,235,.42);
+}
+
+/* ───────────────────────────────────────────────────────
+   NAVEGACIÓN
+─────────────────────────────────────────────────────── */
+
+.footer-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(110px, 1fr));
+  gap: 2rem;
+}
+
+.footer-nav-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .65rem;
+}
+
+.footer-nav-title {
+  margin-bottom: .35rem;
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(229,231,235,.3);
+}
+
+.footer-nav a,
+.footer-link-disabled {
+  font-size: .78rem;
+  line-height: 1.4;
+  text-decoration: none;
+  transition:
+    color .2s ease,
+    opacity .2s ease;
+}
+
+.footer-nav a {
+  color: rgba(229,231,235,.62);
+}
+
+.footer-nav a:hover {
+  color: rgba(229,231,235,.95);
+}
+
+.footer-link-disabled {
+  color: rgba(229,231,235,.25);
+  cursor: default;
+}
+
+/* ───────────────────────────────────────────────────────
+   CONTACTO
+─────────────────────────────────────────────────────── */
+
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-email {
+  display: inline-block;
+  margin-top: .15rem;
+  color: rgba(229,231,235,.72);
+  font-size: .82rem;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+
+.footer-email:hover {
+  color: rgba(229,231,235,1);
+}
+
+.footer-contact-note {
+  max-width: 220px;
+  margin: .75rem 0 0;
+  font-size: .72rem;
+  line-height: 1.55;
+  color: rgba(229,231,235,.3);
+}
+
+/* ───────────────────────────────────────────────────────
+   LÍNEA INFERIOR
+─────────────────────────────────────────────────────── */
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 3.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(229,231,235,.06);
+}
+
+.footer-copy,
+.footer-bottom-text {
+  font-size: .68rem;
+  letter-spacing: .04em;
+  color: rgba(229,231,235,.25);
+}
+
+.footer-bottom-text {
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+/* ───────────────────────────────────────────────────────
+   MOBILE
+─────────────────────────────────────────────────────── */
+
+@media (max-width: 760px) {
+
+  .footer {
+    padding: 3.5rem 0 1.25rem;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .footer-nav {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .5rem;
+    margin-top: 2.5rem;
+  }
+
+}
+    
 /* ══════════════════════════════════════════════════════
    RESPONSIVE — MOBILE
 ══════════════════════════════════════════════════════ */
@@ -2419,59 +2604,98 @@ body {
   </section>
 
   <!-- ═══════════════════════════════════════════════════════
-       FOOTER
-  ══════════════════════════════════════════════════════════ -->
-  <footer class="footer">
+     FOOTER
+══════════════════════════════════════════════════════════ -->
+<footer class="footer">
 
-    <div class="container footer-inner">
+  <div class="container footer-inner">
 
-      <span class="footer-logo">
-        LOGODEMOCRACY
-      </span>
+    <div class="footer-brand">
+      <span class="footer-logo">LOGODEMOCRACY</span>
 
-      <nav class="footer-nav">
+      <p class="footer-tagline">
+        Democracia Aumentada · Pensamiento colectivo asistido
+      </p>
+    </div>
+
+    <nav class="footer-nav" aria-label="Navegación del ecosistema">
+
+      <div class="footer-nav-group">
+        <span class="footer-nav-title">Ecosistema</span>
 
         <a href="/pages/archive-template.html">
           Academia
         </a>
 
-        <span style="opacity:.35; cursor:default;">
-          Aletheia
-        </span>
-
-        <span style="opacity:.35; cursor:default;">
+        <a href="/pages/logos.html">
           Logos
-        </span>
-
-        <a href="/pages/archive-template.html">
-          Rey Filósofo
         </a>
 
         <a href="/pages/sophia.html">
           Sophia
         </a>
 
-        <span style="opacity:.35; cursor:default;">
+        <a href="/pages/archive-template.html">
+          Rey Filósofo
+        </a>
+      </div>
+
+      <div class="footer-nav-group">
+        <span class="footer-nav-title">En desarrollo</span>
+
+        <span class="footer-link-disabled">
+          Aletheia
+        </span>
+
+        <span class="footer-link-disabled">
           Mythos
         </span>
 
-        <span style="opacity:.35; cursor:default;">
+        <span class="footer-link-disabled">
           Agora
         </span>
 
         <a href="#laboratorio">
           Laboratorio Cívico
         </a>
+      </div>
 
-      </nav>
+    </nav>
 
-      <span class="footer-copy">
-        Democracia Aumentada · 2026
+    <div class="footer-contact">
+
+      <span class="footer-nav-title">
+        Contacto
       </span>
+
+      <a
+        href="mailto:contacto@logodemocracy.tech"
+        class="footer-email"
+      >
+        contacto@logodemocracy.tech
+      </a>
+
+      <p class="footer-contact-note">
+        Una plataforma en construcción abierta.
+      </p>
 
     </div>
 
-  </footer>
+  </div>
+
+  <div class="container footer-bottom">
+
+    <span class="footer-copy">
+      © 2026 LogoDemocracy
+    </span>
+
+    <span class="footer-bottom-text">
+      Democracia Aumentada
+    </span>
+
+  </div>
+
+</footer>
 
 </body>
 </html>
