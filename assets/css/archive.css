@@ -1,121 +1,15 @@
-/* ═══════════════════════════════════════════════════════
-   ACADEMIA — archive.css
-   Prueba: mismo tema "papel y tinta" que la nueva portada.
-   Todo lo de aquí para abajo sobrescribe base-layout.css
-   (que no se toca, porque lo comparten Sophia y Logos).
-   ═══════════════════════════════════════════════════════ */
-
 :root {
-  /* Paleta — papel y tinta (igual que la portada) */
-  --c-bg:        #EDE7D8;
-  --c-bg-raised: #F6F2E7;
-  --c-text:      #1C1A16;
-  --c-muted:     rgba(28,26,22,0.62);
-  --c-faint:     rgba(28,26,22,0.4);
-  --c-border:    rgba(28,26,22,0.18);
-  --c-glass:     rgba(28,26,22,0.035);
-
-  /* Acento del módulo Academia (verde bosque) */
-  --accent:        #2F6B3E;
-  --accent-soft:   rgba(47,107,62,0.08);
-  --accent-border: rgba(47,107,62,0.3);
-
-  /* Acentos de otros módulos citados dentro de esta página (Sophia, Rey Filósofo) */
-  --c-sophia: #2B5F8A;
-  --c-seal:   #7A1F2B;
-  --c-rey:        #A8631E;
-  --c-rey-border: rgba(168,99,30,0.4);
-  --c-on-accent:  #F6F2E7;
-
-  --header-color:  var(--accent);
-  --header-border: rgba(47,107,62,.2);
-
-  /* Tipografía */
-  --f-display: 'Fraunces', serif;
-  --f-mono:    'IBM Plex Mono', monospace;
-  --f-sans:    'IBM Plex Sans', sans-serif;
+  --accent: #22c55e;
+  --header-color: #22c55e;
+  --header-border: rgba(34, 197, 94, .25);
 }
 
-/* ─── SOBRESCRITURA DE BASE-LAYOUT.CSS ───────────────── */
-body {
-  background: var(--c-bg);
-  color: var(--c-text);
-  font-family: var(--f-sans);
-}
-
-.topbar {
-  background: var(--c-bg);
-  border-bottom: 1px solid var(--header-border);
-}
-
-.brand {
-  font-family: var(--f-mono);
-}
-
-.sidebar {
-  border-right: 1px solid var(--c-border);
-}
-
-.sidebar-toggle {
-  border: 1px solid var(--c-border);
-  color: var(--accent);
-  background: var(--c-bg-raised);
-}
-
-.document-header {
-  border-bottom: 1px solid var(--c-border);
-  color: var(--c-text);
-  font-family: var(--f-display);
-  font-style: italic;
-  font-weight: 450;
-  font-size: 1.15rem;
-  line-height: 1.5;
-}
-
-.footer {
-  border-top: 1px solid var(--c-border);
-  color: var(--c-muted);
-  font-family: var(--f-mono);
-  font-size: 0.75rem;
-}
-
-.module-link {
-  color: var(--c-muted);
-}
-
-.module-link:hover,
-.module-link.active {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.module-link.active {
-  background: var(--accent-soft);
-}
-
-.module-nav.open {
-  background: var(--c-bg);
-  border-bottom: 1px solid var(--c-border);
-}
-
-.user-menu,
-.auth-btn {
-  color: var(--c-muted);
-}
-
-.user-menu:hover,
-.auth-btn:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-
-/* ─── PANELES LATERALES ──────────────────────────────── */
 .tree,
 .epistemic,
 .philosopher {
-  border: 1px solid var(--c-border);
+  border: 1px solid #22c55e22;
   padding: 10px;
-  background: var(--c-bg-raised);
+  background: #050a12;
   box-sizing: border-box;
 }
 
@@ -127,14 +21,12 @@ body {
 .folder {
   font-weight: bold;
   margin-top: 10px;
-  color: var(--c-text);
 }
 
 .file {
   margin-left: 10px;
   opacity: .8;
   cursor: pointer;
-  color: var(--c-text);
 }
 
 .epistemic {
@@ -142,7 +34,7 @@ body {
 }
 
 .epistemic-title {
-  color: var(--accent);
+  color: #22c55e;
   margin-bottom: 8px;
 }
 
@@ -159,19 +51,19 @@ body {
   justify-content: space-between;
   padding: 10px 12px;
   margin-bottom: 12px;
-  background: linear-gradient(135deg, var(--accent-soft) 0%, var(--c-bg-raised) 100%);
-  border: 1px solid var(--accent-border);
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.06) 0%, rgba(5, 10, 18, 0.9) 100%);
+  border: 1px solid rgba(34, 197, 94, 0.3);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.22s ease-in-out;
-  box-shadow: 0 2px 8px rgba(28,26,22,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   user-select: none;
 }
 
 .sophia-score-card:hover {
-  border-color: rgba(47,107,62,0.7);
-  background: linear-gradient(135deg, rgba(47,107,62,0.14) 0%, var(--c-bg-raised) 100%);
-  box-shadow: 0 0 12px rgba(47,107,62,0.18);
+  border-color: rgba(34, 197, 94, 0.7);
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.14) 0%, rgba(5, 10, 18, 0.98) 100%);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.25);
   transform: translateY(-1px);
 }
 
@@ -191,18 +83,17 @@ body {
   gap: 6px;
   font-size: 0.68rem;
   font-weight: 700;
-  color: var(--accent);
+  color: #22c55e;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-family: var(--f-mono);
 }
 
 .sophia-status-dot {
   width: 6px;
   height: 6px;
-  background-color: var(--accent);
+  background-color: #22c55e;
   border-radius: 50%;
-  box-shadow: 0 0 6px var(--accent);
+  box-shadow: 0 0 6px #22c55e;
   animation: sophiaPulse 2s infinite ease-in-out;
 }
 
@@ -214,34 +105,34 @@ body {
 
 .sophia-card-action {
   font-size: 0.72rem;
-  color: var(--c-muted);
+  color: rgba(229, 231, 235, 0.65);
   transition: color 0.2s ease;
 }
 
 .sophia-score-card:hover .sophia-card-action {
-  color: var(--c-text);
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .sophia-card-score {
   display: flex;
   align-items: baseline;
   gap: 2px;
-  background: var(--c-bg);
+  background: rgba(0, 0, 0, 0.5);
   padding: 4px 10px;
   border-radius: 4px;
-  border: 1px solid var(--accent-border);
+  border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
 .sophia-score-value {
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--accent);
-  font-family: var(--f-mono), monospace;
+  color: #22c55e;
+  font-family: monospace, monospace;
 }
 
 .sophia-score-max {
   font-size: 0.65rem;
-  color: var(--c-faint);
+  color: rgba(229, 231, 235, 0.4);
 }
 
 /* =========================
@@ -255,31 +146,17 @@ body {
 }
 
 .philosopher-title {
-  color: var(--accent);
+  color: #22c55e;
   margin-bottom: 6px;
-  font-family: var(--f-mono);
 }
 
 .philosopher-text {
   text-align: center;
-  color: var(--c-muted);
 }
 
 .philosopher-btn {
   margin-top: 8px;
   width: 100%;
-  background: var(--c-bg);
-  border: 1px solid var(--accent-border);
-  color: var(--accent);
-  font-family: var(--f-mono);
-  padding: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.philosopher-btn:hover {
-  background: var(--accent-soft);
-  border-color: var(--accent);
 }
 
 /* =========================
@@ -288,14 +165,11 @@ body {
 blockquote {
   text-align: center;
   font-style: italic;
-  font-family: var(--f-display);
-  font-weight: 450;
-  color: var(--c-text);
-  font-size: 1.3em;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25em;
   line-height: 1.6;
   margin: 40px auto;
   max-width: 720px;
-  border: none;
 }
 
 /* =========================
@@ -305,19 +179,17 @@ blockquote {
   display: block;
   text-align: center;
   font-style: italic;
-  font-family: var(--f-display);
-  font-size: 1.1em;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.05em;
   line-height: 1.6;
   margin: 28px auto;
   max-width: 720px;
   font-weight: 500;
-  color: var(--c-text);
 }
 
 /* Texto normal del documento */
 .content p {
   text-align: left;
-  color: var(--c-text);
 }
 
 .content p:last-of-type {
@@ -335,3 +207,8 @@ blockquote {
 .meta {
   margin-bottom: 24px;
 }
+
+.topbar {
+  --header-color: var(--accent);
+}
+
