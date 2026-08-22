@@ -656,43 +656,108 @@ const SOPHIA_LOADING_FACTS = [
   "¿Sabías que? El objetivo de SOPHIA no es que tu texto 'apruebe', sino que vos entiendas mejor cómo se construye un argumento sólido."
 ];
 
-const VIEWS = {
-  analisis: {
-    title: 'Análisis Sophia',
-    render: () => {
-      try {
-        return `
-          <div class="view">
-            <div class="view-eyebrow">Desarrollá tus ideas con más precisión</div>
-            <h1 class="view-title">Análisis Sophia <span style="font-size:.6rem; font-weight:600; color:#eab308; border:1px solid #eab308; border-radius:4px; padding:2px 6px; vertical-align:middle; margin-left:8px;">BETA</span></h1>
-            <div class="view-body">
-              <p>SOPHIA te ayuda a encontrar los puntos débiles de un argumento antes de publicarlo o defenderlo: dónde falta evidencia, dónde la lógica se quiebra, dónde una idea todavía no está madura. Pegá un texto o subí un documento y vas a ver, capa por capa, cómo mejorarlo.</p>
-              <p style="font-size:.75rem; color:rgba(229,231,235,.45);">SOPHIA está en etapa <strong>beta</strong>: seguimos ajustando el instrumento, y tus comentarios sobre cada análisis nos ayudan a calibrarlo mejor.</p>
-              <p>Formatos aceptados: <strong>.txt, .pdf, .docx, .md, .rtf</strong>.</p>
-              <p style="font-size:.72rem; color:rgba(229,231,235,.4);">Técnicamente, esto se hace calculando tu <strong>Índice de Robustez Deliberativa (IRD)</strong> según el protocolo SOPHIA v${getSophiaVersion()}.</p>
-            </div>
-            <div class="eval-tool">
-              <div class="upload-area" id="uploadArea" style="border:2px dashed rgba(59,130,246,.3); padding:20px; text-align:center; cursor:pointer; border-radius:4px; transition: border-color .2s;">
-                <p style="color:rgba(229,231,235,.4);">Arrastra tu archivo aquí o haz clic para seleccionarlo</p>
-                <input type="file" id="fileInput" accept=".txt,.pdf,.docx,.md,.rtf" style="display:none;">
-                <button class="btn-primary" id="uploadBtn">Seleccionar archivo</button>
-              </div>
-              <div id="filePreview" style="margin-top:12px; display:none;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <span id="fileName" style="color:var(--accent);"></span>
-                  <span id="fileSize" style="color:rgba(229,231,235,.4);font-size:.7rem;"></span>
-                </div>
-              </div>
-              <p style="text-align:center; color:rgba(229,231,235,.3); font-size:.75rem; margin:14px 0;">— o pega el texto directamente —</p>
-              <textarea class="sophia-input" id="evalInput" placeholder="Pega aquí el texto a analizar, o el contenido del archivo cargado aparecerá aquí..." style="height:150px;"></textarea>
-              <div class="eval-actions">
-                <button class="btn-primary" id="evalBtn">Piensa con Sophia →</button>
-                <span class="eval-note">El algoritmo es determinista y basado en reglas públicas.</span>
-              </div>
-            </div>
-            <div id="evalResult"></div>
+analisis: {
+  title: 'Analiza tus ideas con Sophia',
+  render: () => {
+    try {
+      return `
+        <div class="view">
+
+          <div class="view-eyebrow">Instrumento de Pensamiento Crítico · v${getSophiaVersion()}</div>
+
+          <h1 class="view-title">Mira cómo estás pensando</h1>
+
+          <div class="view-body">
+            <p>
+              <strong>SOPHIA te ayuda a examinar tus propias ideas con mayor claridad.</strong>
+              Puedes traer un argumento, una opinión, un texto que estés escribiendo o una
+              idea que quieras defender, y recorrer con ella cómo estás razonando.
+            </p>
+
+            <p>
+              SOPHIA busca hacer visible lo que normalmente permanece oculto:
+              <strong>qué estás suponiendo, qué evidencia tienes, qué estás infiriendo
+              y dónde podría haber un salto o una debilidad en tu razonamiento.</strong>
+            </p>
+
+            <p>
+              El resultado no es un veredicto sobre si tienes razón o estás equivocado.
+              Es un <strong>mapa de tu razonamiento</strong> que puedes revisar, cuestionar
+              y utilizar para mejorar tus propias ideas.
+            </p>
+
+            <p style="font-size:.75rem; color:rgba(229,231,235,.45);">
+              SOPHIA tampoco es infalible. Parte de pensar críticamente consiste en
+              poder examinar y cuestionar las propias evaluaciones del instrumento.
+            </p>
           </div>
-        `;
+
+          <div class="eval-tool">
+
+            <div class="upload-area"
+                 id="uploadArea"
+                 style="border:2px dashed rgba(59,130,246,.3); padding:20px; text-align:center; cursor:pointer; border-radius:4px; transition:border-color .2s;">
+
+              <p style="color:rgba(229,231,235,.4);">
+                Sube un documento para examinarlo con SOPHIA
+              </p>
+
+              <input
+                type="file"
+                id="fileInput"
+                accept=".txt,.pdf,.docx,.md,.rtf"
+                style="display:none;">
+
+              <button class="btn-primary" id="uploadBtn">
+                Seleccionar archivo
+              </button>
+
+            </div>
+
+            <div id="filePreview" style="margin-top:12px; display:none;">
+
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+
+                <span id="fileName" style="color:var(--accent);"></span>
+
+                <span id="fileSize"
+                      style="color:rgba(229,231,235,.4);font-size:.7rem;">
+                </span>
+
+              </div>
+
+            </div>
+
+            <p style="text-align:center; color:rgba(229,231,235,.3); font-size:.75rem; margin:14px 0;">
+              — o escribe tu idea directamente —
+            </p>
+
+            <textarea
+              class="sophia-input"
+              id="evalInput"
+              placeholder="Escribe aquí la idea, argumento o texto que quieres examinar..."
+              style="height:150px;">
+            </textarea>
+
+            <div class="eval-actions">
+
+              <button class="btn-primary" id="evalBtn">
+                Piensa con Sophia →
+              </button>
+
+              <span class="eval-note">
+                SOPHIA no decide por ti. Te ayuda a examinar cómo estás pensando.
+              </span>
+
+            </div>
+
+          </div>
+
+          <div id="evalResult"></div>
+
+        </div>
+      `;
+       
       } catch (e) {
         showDebug(`❌ Error en vista analisis: ${e.message}`, true);
         return `<p>Error al renderizar: ${e.message}</p>`;
