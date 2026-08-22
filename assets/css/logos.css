@@ -34,4 +34,37 @@ body.logos-page {
    body.logos-page .snav-item.active { border-color: var(--c-logos); color: var(--c-logos); }
    body.logos-page .btn-primary { background: var(--c-logos); }
    body.logos-page .s-card-title { color: var(--c-logos); }
+
+body.logos-page .sophia-module-label {
+  border-bottom-color: rgba(34,211,238,.15);
+}
+
+body.logos-page .module-version {
+  color: rgba(34,211,238,.5);
+}
+
+body.logos-page .snav-section--group {
+  border-left-color: rgba(34,211,238,.2);
+}
+
+body.logos-page .snav-group-label {
+  color: rgba(34,211,238,.6);
+}
+
+body.logos-page .snav-item:hover {
+  background: rgba(34,211,238,.06);
+}
+
+body.logos-page .snav-item.active {
+  background: rgba(34,211,238,.08);
+}
+
+body.logos-page .view-eyebrow {
+  color: rgba(34,211,238,.5);
+}
+
+body.logos-page .view-section-title {
+  color: rgba(34,211,238,.6);
+  border-bottom-color: rgba(34,211,238,.12);
+}
 */
