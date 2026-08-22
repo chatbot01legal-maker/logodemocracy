@@ -65,7 +65,7 @@
   render: () => `
     <div class="view-eyebrow">Gimnasio deliberativo</div>
 
-    <h1 class="view-title">Comprendé mejor un desacuerdo</h1>
+    <h1 class="view-title">Comprende mejor un desacuerdo</h1>
 
     <div class="view-body">
       <p>
@@ -89,7 +89,7 @@
     </div>
 
     <div class="view-section">
-      <div class="view-section-title">Probalo con dos posiciones</div>
+      <div class="view-section-title">Pruebalo con dos posiciones</div>
 
       <div class="view-body" style="margin-bottom:16px;">
         <p style="font-size:.82rem;">
@@ -108,7 +108,7 @@
 
           <textarea
             id="logos-posicion-a"
-            placeholder="Pegá acá el primer texto o posición..."
+            placeholder="Pega acá el primer texto o posición..."
             style="width:100%; min-height:180px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px; color:#e5e7eb; font-size:.82rem; padding:10px; box-sizing:border-box; resize:vertical;"
           ></textarea>
         </div>
@@ -120,7 +120,7 @@
 
           <textarea
             id="logos-posicion-b"
-            placeholder="Pegá acá el segundo texto o posición..."
+            placeholder="Pega acá el segundo texto o posición..."
             style="width:100%; min-height:180px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px; color:#e5e7eb; font-size:.82rem; padding:10px; box-sizing:border-box; resize:vertical;"
           ></textarea>
         </div>
