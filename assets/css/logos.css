@@ -19,6 +19,9 @@
    también -- ver notas al final de este archivo. */
 body.logos-page {
   --accent: var(--c-logos);
+  --header-color: var(--c-logos);
+  --header-border: rgba(34,211,238,.22);
+  --s-border: rgba(34,211,238,.14);
 }
 
 /* Overrides puntuales, por si sophia.css fija el azul de SOPHIA con
