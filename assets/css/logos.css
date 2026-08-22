@@ -32,7 +32,7 @@ body.logos-page {
 
    body.logos-page .module-badge { background: var(--c-logos); }
    body.logos-page .snav-item.active { border-color: var(--c-logos); color: var(--c-logos); }
-   body.logos-page .btn-primary {background: var(--c-logos);color: var(--c-bg);}
+   body.logos-page .btn-primary {background: var(--c-logos);color: var(--c-bg) !important;}
    body.logos-page .s-card-title { color: var(--c-logos); }
 
 body.logos-page .sophia-module-label {
