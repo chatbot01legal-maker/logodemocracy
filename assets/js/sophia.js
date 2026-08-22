@@ -420,36 +420,125 @@ function evaluateText(text) {
 function normalizeSophiaResult(raw) {
   if (!raw) return null;
 
-  // Forma híbrida del backend (tiene "local" anidado)
+  // ─── Forma híbrida / caché MongoDB ──────────────────
+  // El backend puede entregar:
+  //
+  // {
+  //   local: {
+  //     fases,
+  //     evidencias,
+  //     IRD_global,
+  //     riesgo,
+  //     naturaleza_documental,
+  //     naturalezas_secundarias,
+  //     hibrido,
+  //     confianza_clasificacion,
+  //     rutas_evaluadas
+  //   },
+  //   semantic_review,
+  //   confiabilidad_factual,
+  //   gemini_review,
+  //   metadata
+  // }
+  //
+  // También puede existir la forma antigua con ird/risk.
+
   if (raw.local && typeof raw.local === 'object') {
-    const llmOk = raw.llm_review && !raw.llm_review.error ? raw.llm_review : null;
-    const llmErr = raw.llm_review && raw.llm_review.error ? raw.llm_review.error : null;
+    const local = raw.local;
+
+    const llmOk =
+      raw.llm_review && !raw.llm_review.error
+        ? raw.llm_review
+        : null;
+
+    const llmErr =
+      raw.llm_review && raw.llm_review.error
+        ? raw.llm_review.error
+        : null;
+
     return {
-      fases: raw.local.fases || [],
-      evidencias: raw.local.evidencias || [],
-      IRD_global: raw.ird !== undefined ? raw.ird : raw.local.IRD_global,
-      riesgo: raw.risk || raw.local.riesgo,
+      fases: local.fases || [],
+      evidencias: local.evidencias || [],
+
+      IRD_global:
+        raw.ird !== undefined
+          ? raw.ird
+          : local.IRD_global,
+
+      riesgo:
+        raw.risk !== undefined
+          ? raw.risk
+          : local.riesgo,
+
+      naturaleza_documental:
+        local.naturaleza_documental,
+
+      naturalezas_secundarias:
+        local.naturalezas_secundarias || [],
+
+      hibrido:
+        local.hibrido ?? false,
+
+      confianza_clasificacion:
+        local.confianza_clasificacion,
+
+      rutas_evaluadas:
+        local.rutas_evaluadas || null,
+
       llm: llmOk,
       llmError: llmErr,
-      semantic_review: raw.semantic_review || [],
-      confiabilidad_factual: raw.confiabilidad_factual || null,
-      gemini_review: raw.gemini_review || null,
-      metadata: raw.metadata || null
+
+      semantic_review:
+        raw.semantic_review || [],
+
+      confiabilidad_factual:
+        raw.confiabilidad_factual || null,
+
+      gemini_review:
+        raw.gemini_review || null,
+
+      metadata:
+        raw.metadata || null
     };
   }
 
-  // Forma plana (motor local evaluateText, sin revisión LLM)
+  // ─── Forma plana ─────────────────────────────────────
   return {
     fases: raw.fases || [],
     evidencias: raw.evidencias || [],
+
     IRD_global: raw.IRD_global,
     riesgo: raw.riesgo,
+
+    naturaleza_documental:
+      raw.naturaleza_documental,
+
+    naturalezas_secundarias:
+      raw.naturalezas_secundarias || [],
+
+    hibrido:
+      raw.hibrido ?? false,
+
+    confianza_clasificacion:
+      raw.confianza_clasificacion,
+
+    rutas_evaluadas:
+      raw.rutas_evaluadas || null,
+
     llm: null,
     llmError: null,
-    semantic_review: raw.semantic_review || [],
-    confiabilidad_factual: raw.confiabilidad_factual || null,
-    gemini_review: raw.gemini_review || null,
-    metadata: raw.metadata || null
+
+    semantic_review:
+      raw.semantic_review || [],
+
+    confiabilidad_factual:
+      raw.confiabilidad_factual || null,
+
+    gemini_review:
+      raw.gemini_review || null,
+
+    metadata:
+      raw.metadata || null
   };
 }
 
