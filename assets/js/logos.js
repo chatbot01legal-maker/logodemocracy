@@ -61,32 +61,82 @@
   const VIEWS = {
 
     comparar: {
-      title: 'Comparar Posiciones',
-      render: () => `
-        <div class="view-eyebrow">Modalidad A</div>
-        <h1 class="view-title">Comparar Posiciones</h1>
-        <div class="view-body">
-          <p>Cargá los materiales de dos posiciones — documentos, argumentos, extractos — y Logos las reconstruye, las relaciona y explora posibles síntesis. Ninguna síntesis se presenta como conclusión: siempre queda sujeta a tu evaluación.</p>
-        </div>
+  title: 'Comparar Posiciones',
+  render: () => `
+    <div class="view-eyebrow">Gimnasio deliberativo</div>
 
-        <div class="view-section" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-          <div>
-            <div class="view-section-title" style="color:var(--accent);">Posición A</div>
-            <textarea id="logos-posicion-a" placeholder="Pegá acá los materiales que representan la Posición A..." style="width:100%; min-height:180px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px; color:#e5e7eb; font-size:.82rem; padding:10px; box-sizing:border-box; resize:vertical;"></textarea>
+    <h1 class="view-title">Comprendé mejor un desacuerdo</h1>
+
+    <div class="view-body">
+      <p>
+        <strong>Logos te ayuda a entender qué hay realmente detrás de dos posiciones diferentes.</strong>
+      </p>
+
+      <p>
+        En lugar de decirte quién tiene razón, reconstruye los argumentos de cada lado,
+        identifica en qué coinciden, en qué se diferencian y qué tipo de desacuerdo existe.
+      </p>
+
+      <p>
+        También puede encontrar puntos de encuentro y explorar nuevas posibilidades
+        que no aparecen cuando cada posición se defiende por separado.
+      </p>
+
+      <p style="font-size:.75rem; color:rgba(229,231,235,.45);">
+        Logos no decide quién gana ni reemplaza tu juicio.
+        <strong>Te entrega un mapa para que puedas pensar mejor el desacuerdo.</strong>
+      </p>
+    </div>
+
+    <div class="view-section">
+      <div class="view-section-title">Probalo con dos posiciones</div>
+
+      <div class="view-body" style="margin-bottom:16px;">
+        <p style="font-size:.82rem;">
+          Pega dos textos que representen posiciones diferentes sobre un mismo tema.
+          Pueden ser argumentos, publicaciones, artículos, declaraciones o cualquier
+          material que quieras comparar.
+        </p>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+
+        <div>
+          <div class="view-section-title" style="color:var(--accent);">
+            Posición A
           </div>
-          <div>
-            <div class="view-section-title" style="color:var(--accent);">Posición B</div>
-            <textarea id="logos-posicion-b" placeholder="Pegá acá los materiales que representan la Posición B..." style="width:100%; min-height:180px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px; color:#e5e7eb; font-size:.82rem; padding:10px; box-sizing:border-box; resize:vertical;"></textarea>
+
+          <textarea
+            id="logos-posicion-a"
+            placeholder="Pegá acá el primer texto o posición..."
+            style="width:100%; min-height:180px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px; color:#e5e7eb; font-size:.82rem; padding:10px; box-sizing:border-box; resize:vertical;"
+          ></textarea>
+        </div>
+
+        <div>
+          <div class="view-section-title" style="color:var(--accent);">
+            Posición B
           </div>
+
+          <textarea
+            id="logos-posicion-b"
+            placeholder="Pegá acá el segundo texto o posición..."
+            style="width:100%; min-height:180px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px; color:#e5e7eb; font-size:.82rem; padding:10px; box-sizing:border-box; resize:vertical;"
+          ></textarea>
         </div>
 
-        <div style="margin-top:14px;">
-          <button class="btn-primary" id="logosCompareBtn">Comparar con Logos →</button>
-        </div>
+      </div>
 
-        <div id="logos-output" style="margin-top:20px;"></div>
-      `
-    },
+      <div style="margin-top:14px;">
+        <button class="btn-primary" id="logosCompareBtn">
+          Analizar con Logos →
+        </button>
+      </div>
+    </div>
+
+    <div id="logos-output" style="margin-top:20px;"></div>
+  `
+},
 
     inicio: {
   title: 'Pensamiento Colectivo',
