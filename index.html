@@ -1155,11 +1155,11 @@ body {
   padding: var(--space-md) 0;
 }
 .footer-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+  justify-items: start;
 }
 .footer-logo {
   font-family: var(--f-mono);
