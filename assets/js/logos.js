@@ -129,7 +129,7 @@
 
       <div style="margin-top:14px;">
         <button class="btn-primary" id="logosCompareBtn">
-          Analizar con Logos →
+          Haz que las ideas se encuentren →
         </button>
       </div>
     </div>
