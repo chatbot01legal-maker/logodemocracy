@@ -656,7 +656,8 @@ const SOPHIA_LOADING_FACTS = [
   "¿Sabías que? El objetivo de SOPHIA no es que tu texto 'apruebe', sino que vos entiendas mejor cómo se construye un argumento sólido."
 ];
 
-analisis: {
+const VIEWS = {
+  analisis: {
   title: 'Analiza tus ideas con Sophia',
   render: () => {
     try {
