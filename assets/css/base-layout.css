@@ -304,8 +304,8 @@ body {
 
 .footer {
   position: relative;
-  margin-top: var(--space-xl);
-  padding: 4.5rem 0 1.5rem;
+  margin-top: 2.5rem;
+  padding: 1.75rem 0 1rem;
   border-top: 1px solid rgba(229, 231, 235, .08);
   background:
     radial-gradient(
@@ -446,16 +446,12 @@ body {
 @media (max-width: 760px) {
 
   .footer {
-    padding: 3.5rem 0 1.25rem;
+    margin-top: 2rem;
+    padding: 1.5rem 0 .75rem;
   }
 
   .footer-inner {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-
-  .footer-nav {
-    grid-template-columns: repeat(2, minmax(120px, 1fr));
     gap: 1.5rem;
   }
 
@@ -463,6 +459,6 @@ body {
     flex-direction: column;
     align-items: flex-start;
     gap: .5rem;
-    margin-top: 2.5rem;
+    margin-top: 1.5rem;
   }
 }
