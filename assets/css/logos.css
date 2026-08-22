@@ -24,16 +24,25 @@ body.logos-page {
   --s-border: rgba(34,211,238,.14);
 }
 
-/* Overrides puntuales, por si sophia.css fija el azul de SOPHIA con
-   valores directos en vez de con la variable --accent. Quedan
-   comentados: activalos (quitando /* y */ ) solo si después de subir
-   este archivo seguís viendo azul en alguna pieza puntual, y decime
-   cuál para ajustar el selector exacto.
+/* ─── OVERRIDES LOGOS ─────────────────────────────────── */
 
-   body.logos-page .module-badge { background: var(--c-logos); }
-   body.logos-page .snav-item.active { border-color: var(--c-logos); color: var(--c-logos); }
-   body.logos-page .btn-primary {background: var(--c-logos);color: var(--c-bg) !important;}
-   body.logos-page .s-card-title { color: var(--c-logos); }
+body.logos-page .module-badge {
+  background: var(--c-logos);
+}
+
+body.logos-page .snav-item.active {
+  border-color: var(--c-logos);
+  color: var(--c-logos);
+}
+
+body.logos-page .btn-primary {
+  background: var(--c-logos);
+  color: var(--c-bg) !important;
+}
+
+body.logos-page .s-card-title {
+  color: var(--c-logos);
+}
 
 body.logos-page .sophia-module-label {
   border-bottom-color: rgba(34,211,238,.15);
