@@ -319,14 +319,16 @@ body {
 .footer-inner {
   display: grid;
   grid-template-columns: 1.3fr 1fr 1fr;
-  gap: 4rem;
+  gap: 3rem;
   align-items: start;
+  justify-items: start;
 }
 
 .footer-brand {
   display: flex;
   flex-direction: column;
   gap: .8rem;
+  text-align: left;
 }
 
 .footer-logo {
@@ -347,6 +349,7 @@ body {
 .footer-nav {
   display: grid;
   grid-template-columns: repeat(2, minmax(110px, 1fr));
+  text-align: left;
   gap: 2rem;
 }
 
@@ -393,6 +396,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  text-align: left;
 }
 
 .footer-email {
@@ -402,6 +406,7 @@ body {
   font-size: .82rem;
   text-decoration: none;
   transition: color .2s ease;
+  text-align: left;
 }
 
 .footer-email:hover {
