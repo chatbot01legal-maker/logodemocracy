@@ -37,7 +37,7 @@ body.logos-page .snav-item.active {
 
 body.logos-page .btn-primary {
   background: var(--c-logos);
-  color: var(--c-bg) !important;
+  color: #050a12 !important;
 }
 
 body.logos-page .s-card-title {
