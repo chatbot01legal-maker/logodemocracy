@@ -138,6 +138,437 @@
   `
 },
 
+    ejemplo: {
+      title: 'Ejemplo',
+      render: () => `
+        <div class="view-eyebrow">Caso real · LOGOS en acción</div>
+
+        <h1 class="view-title">
+          Joy Behar, Vivek Ramaswamy y la riqueza de Elon Musk
+        </h1>
+
+        <div class="view-body">
+
+          <p>
+            <strong>
+              Este es un ejemplo real de cómo LOGOS puede analizar un desacuerdo.
+            </strong>
+          </p>
+
+          <p>
+            El diálogo ocurrió en televisión entre
+            <strong>Joy Behar</strong> y
+            <strong>Vivek Ramaswamy</strong>,
+            a propósito de la enorme riqueza de Elon Musk y la responsabilidad
+            que deberían tener las personas extremadamente ricas frente a las
+            necesidades de la sociedad.
+          </p>
+
+          <p>
+            La conversación comienza con una crítica a la acumulación de riqueza
+            de Musk, pero la respuesta desplaza el problema hacia la propia
+            riqueza de Behar. A partir de ahí aparecen argumentos económicos,
+            afirmaciones cuantitativas, juicios morales y diferentes ideas sobre
+            qué significa que una fortuna tenga un impacto social.
+          </p>
+
+          <p style="font-size:.78rem; color:rgba(229,231,235,.55);">
+            El análisis que aparece a continuación fue generado por LOGOS a partir
+            del diálogo. Las afirmaciones factuales identificadas por el instrumento
+            no deben interpretarse como hechos comprobados: algunas requieren
+            verificación externa.
+          </p>
+
+        </div>
+
+        <div class="view-section">
+
+          <div class="s-card">
+
+            <div class="view-eyebrow">Diálogo analizado</div>
+
+            <h2 class="view-subtitle">Posición A · Joy Behar</h2>
+
+            <blockquote>
+              ¿Qué está haciendo Elon Musk con su dinero? Está a punto de convertirse
+              en trillonario. ¿Dónde está ese dinero? Con ese dinero podría salvar a
+              algunos países. Las personas que tienen tanto dinero… ¿qué creen?
+              ¿Que van a vivir para siempre, Elon?
+            </blockquote>
+
+            <h2 class="view-subtitle">Posición B · Vivek Ramaswamy</h2>
+
+            <blockquote>
+              Sí, podría. ¿Lo va a hacer? No. Menos del 0,1 % del patrimonio neto
+              total de Elon está realmente en efectivo depositado en el banco.
+              Eso equivale, como máximo, a unos mil o dos mil millones de dólares.
+              El resto está compuesto básicamente por acciones y participaciones
+              en sus empresas, como SpaceX, Tesla y otras.
+            </blockquote>
+
+            <blockquote>
+              Esas empresas han creado más de 160.000 empleos directos, más de
+              600.000 empleos indirectos a través de sus cadenas de suministro y
+              más de 500.000 empleos adicionales derivados de una actividad
+              económica más amplia.
+            </blockquote>
+
+            <blockquote>
+              Así que, si hacemos los cálculos, al menos un millón de personas
+              en todo el mundo pueden llevar el pan a su mesa gracias a los
+              empleos que han creado las empresas de Elon.
+            </blockquote>
+
+            <blockquote>
+              Ahora bien, por otro lado, tú, Joy, tienes un patrimonio de 30
+              millones de dólares. Y, a diferencia de Elon, tú no has creado
+              ningún empleo. No eres fundadora ni propietaria de una empresa
+              escalable.
+            </blockquote>
+
+            <blockquote>
+              ¿Vas a vivir para siempre, Joy? ¿Por qué no estás regalando tu dinero?
+              Con solo un tercio de tu patrimonio, probablemente podrías alimentar
+              a 3.000 personas durante todo un año.
+            </blockquote>
+
+          </div>
+
+        </div>
+
+        <div class="view-section">
+
+          <div class="s-card">
+
+            <div class="view-eyebrow">Síntesis descriptiva</div>
+
+            <h2 class="view-subtitle">Posición A</h2>
+
+            <p>
+              Elon Musk, a punto de convertirse en trillonario, debería usar su
+              dinero para salvar a algunos países.
+            </p>
+
+            <h2 class="view-subtitle">Posición B</h2>
+
+            <p>
+              Joy, con un patrimonio de 30 millones de dólares que no ha generado
+              empleos, debería empezar a repartir su dinero.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="view-section">
+
+          <div class="s-card">
+
+            <div class="view-eyebrow">Reconstrucción</div>
+
+            <h2 class="view-subtitle">Posición A · Argumentos</h2>
+
+            <ul>
+              <li>Elon Musk está a punto de convertirse en trillonario.</li>
+              <li>Con su dinero se podría salvar a algunos países.</li>
+              <li>
+                Las personas que tienen tanta riqueza parecen actuar como si
+                fueran a vivir para siempre.
+              </li>
+            </ul>
+
+            <h2 class="view-subtitle">Supuestos inferidos</h2>
+
+            <ul>
+              <li>
+                La posesión de una riqueza extrema implica una responsabilidad
+                de usarla para el bien común.
+              </li>
+              <li>
+                Una fortuna de esa magnitud puede utilizarse para producir
+                beneficios sociales a gran escala.
+              </li>
+              <li>
+                La acumulación extrema sin propósito altruista puede interpretarse
+                como una actitud egocéntrica.
+              </li>
+            </ul>
+
+            <h2 class="view-subtitle">Posición B · Argumentos</h2>
+
+            <ul>
+              <li>
+                La mayor parte del patrimonio de Musk estaría invertida en
+                acciones y participaciones empresariales.
+              </li>
+              <li>
+                Sus empresas han generado una gran cantidad de empleos.
+              </li>
+              <li>
+                El patrimonio de Joy sería mucho más líquido y no estaría
+                vinculado a una empresa escalable.
+              </li>
+              <li>
+                Una parte de esa riqueza podría utilizarse para aliviar
+                necesidades inmediatas.
+              </li>
+            </ul>
+
+            <h2 class="view-subtitle">Supuestos inferidos</h2>
+
+            <ul>
+              <li>
+                Existe una obligación moral asociada a la posesión de una
+                riqueza significativa y líquida.
+              </li>
+              <li>
+                Aliviar directamente el sufrimiento puede ser una razón
+                suficiente para distribuir riqueza.
+              </li>
+              <li>
+                La riqueza que excede ampliamente las necesidades personales
+                puede destinarse al beneficio de otros.
+              </li>
+            </ul>
+
+          </div>
+
+        </div>
+
+        <div class="view-section">
+
+          <div class="s-card">
+
+            <div class="view-eyebrow">Comprensión mutua</div>
+
+            <h2 class="view-subtitle">Cómo entiende A a B</h2>
+
+            <p>
+              LOGOS interpreta que la Posición A podría entender la respuesta de B
+              como una aplicación más específica del principio de responsabilidad
+              de los ricos: alguien que posee una gran fortuna debería utilizarla
+              para producir un beneficio social.
+            </p>
+
+            <h2 class="view-subtitle">Cómo entiende B a A</h2>
+
+            <p>
+              LOGOS interpreta que B reconoce la preocupación moral de A, pero
+              considera que A caracteriza de manera incompleta la riqueza de Musk,
+              porque gran parte de ella estaría vinculada a empresas y actividad
+              económica.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="view-section">
+
+          <div class="s-card">
+
+            <div class="view-eyebrow">Steelman dialéctico</div>
+
+            <h2 class="view-subtitle">La mejor versión de A</h2>
+
+            <p>
+              La acumulación de riqueza extrema puede imponer una responsabilidad
+              moral especial de utilizarla para el bien común. La magnitud de una
+              fortuna podría ser, por sí misma, un motivo para exigir una
+              contribución proporcionalmente extraordinaria a la sociedad.
+            </p>
+
+            <h2 class="view-subtitle">La mejor versión de B</h2>
+
+            <p>
+              No toda riqueza tiene la misma naturaleza. Una fortuna invertida
+              en empresas productivas puede estar generando empleo y actividad
+              económica, mientras que una gran cantidad de riqueza líquida puede
+              tener un potencial diferente para aliviar necesidades inmediatas.
+              Por lo tanto, la responsabilidad moral debería considerar cómo está
+              siendo utilizada la riqueza, no solamente cuánto vale.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="view-section">
+
+          <div class="s-card">
+
+            <div class="view-eyebrow">Acuerdos</div>
+
+            <ul>
+              <li>Existe una dimensión moral en la posesión de riqueza significativa.</li>
+              <li>
+                Las personas con gran riqueza pueden tener responsabilidades
+                hacia otras personas y hacia la sociedad.
+              </li>
+              <li>
+                La finitud de la vida humana es relevante para pensar sobre
+                acumulación y distribución.
+              </li>
+              <li>
+                La riqueza puede utilizarse para aliviar necesidades o producir
+                beneficios sociales.
+              </li>
+            </ul>
+
+            <div class="view-eyebrow" style="margin-top:24px;">Desacuerdos</div>
+
+            <ul>
+              <li>
+                <strong>Factual:</strong> naturaleza y liquidez del patrimonio
+                de Elon Musk.
+              </li>
+              <li>
+                <strong>Normativo:</strong> cuál es la principal razón por la
+                que una persona rica debería distribuir su riqueza.
+              </li>
+              <li>
+                <strong>Conceptual:</strong> qué significa que una riqueza
+                produzca impacto social.
+              </li>
+              <li>
+                <strong>Causal:</strong> si la riqueza de Musk ya está generando
+                un impacto social positivo mediante sus empresas.
+              </li>
+            </ul>
+
+          </div>
+
+        </div>
+
+        <div class="view-section">
+
+          <div class="s-card">
+
+            <div class="view-eyebrow">Supuestos compartidos</div>
+
+            <ul>
+              <li>
+                Es posible acumular cantidades de riqueza que excedan ampliamente
+                las necesidades personales.
+              </li>
+              <li>
+                La acumulación de riqueza sin considerar su impacto social puede
+                ser problemática.
+              </li>
+              <li>
+                La riqueza tiene potencial para producir un impacto significativo
+                en la sociedad.
+              </li>
+            </ul>
+
+            <div class="view-eyebrow" style="margin-top:24px;">Convergencias</div>
+
+            <p>
+              Ambas posiciones podrían coincidir en que la riqueza que no está
+              produciendo un beneficio social activo debería ser considerada para
+              su distribución.
+            </p>
+
+            <p>
+              También podrían coincidir en que la riqueza, especialmente en
+              cantidades extraordinarias, implica algún grado de responsabilidad
+              hacia la sociedad.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="view-section">
+
+          <div class="s-card">
+
+            <div class="view-eyebrow">Síntesis relacional</div>
+
+            <p>
+              Ambas posiciones convergen en la premisa de que la posesión de una
+              riqueza significativa conlleva una responsabilidad moral hacia la
+              sociedad y que la finitud de la vida humana debe influir en cómo
+              se gestiona esa fortuna.
+            </p>
+
+            <p>
+              Sin embargo, difieren en la caracterización de la riqueza y en el
+              principal criterio para determinar su responsabilidad social.
+              La Posición A enfatiza la magnitud de la riqueza extrema, mientras
+              que la Posición B distingue entre riqueza vinculada a empresas
+              productivas y riqueza líquida disponible para distribución directa.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="view-section">
+
+          <div class="s-card">
+
+            <div class="view-eyebrow">Síntesis generativa · propuesta</div>
+
+            <h2 class="view-subtitle">Una posible solución</h2>
+
+            <p>
+              Desarrollar un marco que distinga entre riqueza productiva,
+              aquella que genera empleo y actividad económica, y riqueza
+              acumulada no productiva o líquida, para evaluar de manera más
+              precisa la responsabilidad social asociada a cada una.
+            </p>
+
+            <h2 class="view-subtitle">Una nueva pregunta</h2>
+
+            <p>
+              ¿Cuál debería ser el criterio principal para determinar la
+              responsabilidad social de una gran fortuna: su magnitud total,
+              su liquidez o el impacto social que ya está produciendo?
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="view-section">
+
+          <div class="s-card" style="border-left:3px solid var(--accent);">
+
+            <div class="view-eyebrow">Lo que este ejemplo permite ver</div>
+
+            <p>
+              LOGOS no determina quién ganó la discusión.
+            </p>
+
+            <p>
+              Tampoco convierte automáticamente las afirmaciones de los
+              participantes en hechos verdaderos.
+            </p>
+
+            <p>
+              Lo que hace es algo diferente:
+              <strong>
+                reconstruye el desacuerdo para que podamos ver qué se está
+                discutiendo realmente.
+              </strong>
+            </p>
+
+            <p>
+              En este caso, una discusión aparentemente centrada en Elon Musk
+              termina revelando una pregunta mucho más amplia:
+              <strong>
+                ¿qué hace que una riqueza tenga responsabilidad frente a la
+                sociedad?
+              </strong>
+            </p>
+
+          </div>
+
+        </div>
+      `
+    },
+
     inicio: {
   title: 'Pensamiento Colectivo',
   render: () => `
