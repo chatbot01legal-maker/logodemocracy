@@ -1915,7 +1915,7 @@ this._animateBars(out);
           this.navigate(e.currentTarget.dataset.view);
         });
       });
-      this.navigate('inicio');
+      this.navigate('analisis');
       console.log('✅ SOPHIA inicializada con éxito');
     } catch (e) {
       console.error(`❌ Error en init: ${e.message}`);
