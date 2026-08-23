@@ -14,8 +14,8 @@
 }
 
 .tree {
-  flex: 1;
-  overflow-y: auto;
+  flex: 0 0 auto;
+  overflow: visible;
 }
 
 .folder {
