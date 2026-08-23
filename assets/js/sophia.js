@@ -1026,6 +1026,372 @@ const VIEWS = {
     `
   },
 
+  ejemplo: {
+    title: 'Ejemplo',
+    render: () => `
+      <div class="view-eyebrow">Caso real · SOPHIA en acción</div>
+
+      <h1 class="view-title">
+        Un argumento puede ser sólido y, aun así, estar equivocado
+      </h1>
+
+      <div class="view-body">
+
+        <p>
+          <strong>Resultado real de una evaluación de SOPHIA.</strong>
+        </p>
+
+        <p>
+          Este ejemplo utiliza el mismo diálogo analizado previamente con LOGOS,
+          pero aquí se presenta desde la perspectiva de SOPHIA: evaluación de
+          robustez deliberativa, verificación factual y revisión semántica.
+        </p>
+
+      </div>
+
+      <div class="view-section">
+
+        <div class="s-card">
+
+          <div class="view-eyebrow">Resultado de la evaluación</div>
+
+          <h2 class="view-subtitle">Naturaleza documental detectada</h2>
+
+          <p><strong>Argumentativa</strong></p>
+
+          <p>
+            <strong>Confianza de clasificación:</strong> 0%
+          </p>
+
+          <h2 class="view-subtitle">Índice de Robustez Deliberativa</h2>
+
+          <p style="font-size:1.5rem;">
+            <strong>100/100</strong>
+          </p>
+
+          <h2 class="view-subtitle">Nivel de riesgo</h2>
+
+          <p><strong>Normal</strong></p>
+
+          <h2 class="view-subtitle">Puntaje por fase</h2>
+
+          <ul>
+            <li><strong>Estructura Lógica</strong> 100/100</li>
+            <li><strong>Inferencia</strong> 100/100</li>
+            <li><strong>Calibración Epistémica</strong> 100/100</li>
+            <li><strong>Transparencia Retórica</strong> 100/100</li>
+            <li><strong>Pertinencia Deliberativa</strong> 100/100</li>
+          </ul>
+
+          <p>
+            <strong>
+              ✅ No se detectaron áreas de revisión de acuerdo al protocolo.
+            </strong>
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="view-section">
+
+        <div class="s-card">
+
+          <div class="view-eyebrow">Confiabilidad factual</div>
+
+          <h2 class="view-subtitle">Verificadas (4)</h2>
+
+          <div class="s-card">
+            <p>
+              Menos del 0,1 % del patrimonio neto total de Elon está realmente
+              en efectivo depositado en el banco.
+            </p>
+            <p>
+              <strong>Fuentes:</strong>
+              uniladtech.com, reddit.com, moneylion.com, facebook.com
+            </p>
+          </div>
+
+          <div class="s-card">
+            <p>
+              El resto, es decir, el 99,9 %, está compuesto básicamente por
+              acciones y participaciones en sus empresas, como SpaceX, Tesla y otras.
+            </p>
+            <p>
+              <strong>Fuentes:</strong>
+              statspanda.com, moneylion.com
+            </p>
+          </div>
+
+          <div class="s-card">
+            <p>
+              más de 600.000 empleos indirectos a través de sus cadenas de suministro
+            </p>
+            <p>
+              <strong>Fuentes:</strong>
+              facebook.com
+            </p>
+          </div>
+
+          <div class="s-card">
+            <p>
+              No eres fundadora ni propietaria de una empresa escalable.
+            </p>
+            <p>
+              <strong>Fuentes:</strong>
+              teraopenscience.com, syvantis.com, element61.be, mean.ceo,
+              arxiv.org, inc.com
+            </p>
+          </div>
+
+          <h2 class="view-subtitle">Refutadas (3)</h2>
+
+          <div class="s-card">
+            <p>
+              al menos un millón de personas en todo el mundo pueden llevar el
+              pan a su mesa gracias a los empleos que han creado las empresas de Elon.
+            </p>
+            <p>
+              <strong>Fuentes:</strong>
+              reveliolabs.com, reveliolabs.com, reveliolabs.com, growjo.com,
+              diariobitcoin.com, elimparcial.com, growjo.com, facebook.com
+            </p>
+          </div>
+
+          <div class="s-card">
+            <p>
+              tienes un patrimonio de 30 millones de dólares.
+            </p>
+            <p>
+              <strong>Fuentes:</strong>
+              chitralekha.com, larepublica.co, xataka.com, forbesargentina.com,
+              qz.com, forbes.es, donweb.com, lovemoney.com, youtube.com
+            </p>
+          </div>
+
+          <div class="s-card">
+            <p>
+              tú no has creado ningún empleo.
+            </p>
+            <p>
+              <strong>Fuentes:</strong>
+              adeccoinstitute.es, innopharmaeducation.com, zendesk.es,
+              forbesargentina.com
+            </p>
+          </div>
+
+          <h2 class="view-subtitle">Evidencia insuficiente (3)</h2>
+
+          <div class="s-card">
+            <p>
+              Eso equivale, como máximo, a unos mil o dos mil millones de dólares.
+            </p>
+            <p>
+              <strong>Fuentes:</strong>
+              facebook.com, quora.com, ingles.com
+            </p>
+          </div>
+
+          <div class="s-card">
+            <p>
+              Esas empresas han creado más de 160.000 empleos directos
+            </p>
+            <p>
+              <strong>Fuentes:</strong>
+              gaceta.es, elcapitalfinanciero.com, marketscreener.com,
+              biobiochile.cl, diariolasamericas.com, larepublica.co, prensa.com,
+              larepublica.co, diariolasamericas.com, extra.ec, eldiario.ec,
+              vistazo.com, youtube.com, facebook.com
+            </p>
+          </div>
+
+          <div class="s-card">
+            <p>
+              y más de 500.000 empleos adicionales derivados de una actividad
+              económica más amplia.
+            </p>
+            <p>
+              <strong>Fuentes:</strong>
+              ambito.com, elcolombiano.com, abc.com.py
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="view-section">
+
+        <div class="s-card">
+
+          <div class="view-eyebrow">Revisión semántica</div>
+
+          <p>
+            No se detectaron observaciones semánticas — el motor determinista
+            no presenta activaciones que requieran revisión.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="view-section">
+
+        <div class="s-card">
+
+          <div class="view-eyebrow">Interpretación integral</div>
+
+          <h2 class="view-subtitle">Interpretación</h2>
+
+          <p>
+            El documento presenta un debate donde Vivek Ramaswamy refuta las
+            críticas de Joy hacia Elon Musk, detallando la estructura de la
+            riqueza de Musk y su impacto en la creación de empleo. Vivek
+            Ramaswamy luego invierte el argumento, desafiando a Joy a aplicar
+            sus propios estándares de generosidad a su fortuna personal. El
+            motor determinista otorga al texto un Índice de Robustez
+            Deliberativa (IRD) de 100, sugiriendo una alta coherencia y
+            estructura argumentativa interna. Sin embargo, la verificación
+            factual revela que varias afirmaciones clave que sustentan la
+            argumentación de Vivek Ramaswamy son incorrectas, lo que destaca
+            una dicotomía entre la robustez estructural y la veracidad de las
+            premisas.
+          </p>
+
+          <h2 class="view-subtitle">Contexto</h2>
+
+          <p>
+            El motor ha identificado correctamente la naturaleza argumentativa
+            del texto, mostrando una ruta lógica que incluye datos,
+            interpretación, causalidad y generalización. La ausencia de
+            'propuesta' en la ruta evaluada es interesante, dado que Vivek
+            Ramaswamy cierra su intervención con un claro desafío a Joy
+            ('¿Cuándo empiezas a repartir tu dinero?'), que funciona
+            semánticamente como una contra-propuesta o una provocación retórica.
+            Este uso de un desafío directo a la interlocutora, conocido como
+            'tu quoque' (tú también), es una estrategia retórica clave aquí,
+            donde se cuestiona la consistencia de la crítica de Joy basándose
+            en su propia situación, en lugar de refutar directamente su punto
+            inicial sobre Musk. El motor clasificó la 'Transparencia Retórica'
+            en 100, lo que indica que, si bien esta estrategia fue utilizada,
+            no fue considerada engañosa o falaz desde una perspectiva
+            estructural para el motor. La robustez deliberativa (IRD) de 100
+            indica que la estructura del argumento de Vivek Ramaswamy es sólida.
+            No obstante, la verificación factual es crítica: refuta claims
+            centrales sobre la generación de empleo de Musk y,
+            fundamentalmente, la cuantificación de la riqueza de Joy y su
+            supuesta inactividad laboral. Esto ilustra que un argumento puede
+            ser estructuralmente robusto y coherente en su lógica interna
+            (alto IRD), pero basarse en premisas fácticas erróneas, lo que
+            socava su validez sustantiva.
+          </p>
+
+          <h2 class="view-subtitle">Observaciones</h2>
+
+          <p>
+            El motor ha detectado una estructura argumentativa completa y
+            coherente, otorgando la máxima puntuación en todas las fases. La
+            alta puntuación en 'Transparencia Retórica' sugiere que las
+            herramientas argumentativas empleadas por Vivek Ramaswamy,
+            incluyendo su giro retórico hacia Joy, fueron consideradas
+            estructuralmente claras y no engañosas por el motor. Un punto clave
+            es la discrepancia entre la robustez estructural del argumento
+            (IRD 100) y la refutación factual de sus premisas centrales. Esto
+            subraya que la solidez formal no garantiza la veracidad del
+            contenido. Aunque el paso 'propuesta' no se marcó como presente en
+            la ruta esperada, la pregunta final de Vivek Ramaswamy a Joy
+            funciona retóricamente como una clara interpelación o propuesta de
+            acción, lo cual el motor no penalizó, implicando que no afectó la
+            cohesión estructural del argumento.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="view-section">
+
+        <div class="s-card">
+
+          <div class="view-eyebrow">Texto inicial</div>
+
+          <h2 class="view-subtitle">Diálogo evaluado</h2>
+
+          <blockquote>
+            <strong>Joy:</strong>
+            ¿Qué está haciendo Elon Musk con su dinero? Está a punto de
+            convertirse en trillonario. ¿Dónde está ese dinero? Con ese dinero
+            podría salvar a algunos países. Las personas que tienen tanto
+            dinero… ¿qué creen? ¿Que van a vivir para siempre, Elon?
+          </blockquote>
+
+          <blockquote>
+            <strong>Vivek Ramaswamy:</strong>
+            Sí, podría. ¿Lo va a hacer? No. Menos del 0,1 % del patrimonio neto
+            total de Elon está realmente en efectivo depositado en el banco.
+            Eso equivale, como máximo, a unos mil o dos mil millones de dólares.
+            El resto, es decir, el 99,9 %, está compuesto básicamente por
+            acciones y participaciones en sus empresas, como SpaceX, Tesla y otras.
+          </blockquote>
+
+          <blockquote>
+            Esas empresas han creado más de 160.000 empleos directos,
+            más de 600.000 empleos indirectos a través de sus cadenas de
+            suministro y más de 500.000 empleos adicionales derivados de una
+            actividad económica más amplia.
+          </blockquote>
+
+          <blockquote>
+            Así que, si hacemos los cálculos, al menos un millón de personas en
+            todo el mundo pueden llevar el pan a su mesa gracias a los empleos
+            que han creado las empresas de Elon.
+          </blockquote>
+
+          <blockquote>
+            Ahora bien, por otro lado, tú, Joy, tienes un patrimonio de 30
+            millones de dólares. Y, a diferencia de Elon, tú no has creado
+            ningún empleo. No eres fundadora ni propietaria de una empresa
+            escalable.
+          </blockquote>
+
+          <blockquote>
+            Y, por lo tanto, la mayor parte —si no todo— de tus 30 millones de
+            dólares es dinero real disponible para gastar.
+          </blockquote>
+
+          <blockquote>
+            30 millones de dólares. Eso es riqueza generacional.
+          </blockquote>
+
+          <blockquote>
+            Y como tú misma acabas de decir: ¿vas a vivir para siempre, Elon?
+          </blockquote>
+
+          <blockquote>
+            ¿Vas a vivir para siempre, Joy?
+          </blockquote>
+
+          <blockquote>
+            ¿Por qué no estás regalando tu dinero?
+          </blockquote>
+
+          <blockquote>
+            Con solo, no sé, un tercio de tu patrimonio, probablemente podrías
+            alimentar a 3.000 personas durante todo un año.
+          </blockquote>
+
+          <blockquote>
+            Así que, Joy: 30 millones de dólares. ¿Cuándo empiezas a repartir
+            tu dinero?
+          </blockquote>
+
+        </div>
+
+      </div>
+
+    `
+  },
+
   analisis: {
   title: 'Analiza tus ideas con Sophia',
   render: () => {
