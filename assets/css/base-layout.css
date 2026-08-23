@@ -469,3 +469,29 @@ body {
     margin-top: 1.25rem;
   }
 }
+
+@media (max-width: 760px) {
+
+  .page {
+    min-height: 100vh;
+    height: auto;
+    overflow: visible;
+  }
+
+  .layout {
+    flex: none;
+    overflow: visible;
+    min-height: auto;
+  }
+
+  .document {
+    overflow: visible;
+    min-height: auto;
+  }
+
+  .document-content {
+    overflow: visible;
+    flex: none;
+  }
+
+}
