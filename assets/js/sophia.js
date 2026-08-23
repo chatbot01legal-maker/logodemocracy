@@ -657,6 +657,375 @@ const SOPHIA_LOADING_FACTS = [
 ];
 
 const VIEWS = {
+  ejemplo: {
+    title: 'Ejemplo',
+    render: () => `
+      <div class="view-eyebrow">Caso real · SOPHIA en acción</div>
+
+      <h1 class="view-title">
+        Un argumento puede ser sólido y, aun así, estar equivocado
+      </h1>
+
+      <div class="view-body">
+
+        <p>
+          <strong>
+            Este es un ejemplo real de cómo SOPHIA analiza un texto argumentativo.
+          </strong>
+        </p>
+
+        <p>
+          El texto corresponde a un diálogo televisivo entre
+          <strong>Joy Behar</strong> y
+          <strong>Vivek Ramaswamy</strong>,
+          a propósito de la riqueza de Elon Musk y de la responsabilidad que
+          deberían tener las personas extremadamente ricas frente a las
+          necesidades de la sociedad.
+        </p>
+
+        <p>
+          En este caso, SOPHIA analiza la intervención de Ramaswamy después de
+          que Behar cuestionara la acumulación de riqueza de Musk. El ejemplo es
+          especialmente interesante porque muestra una distinción central del
+          instrumento:
+          <strong>
+            un argumento puede presentar una estructura lógica y deliberativa
+            muy robusta sin que sus premisas fácticas sean verdaderas.
+          </strong>
+        </p>
+
+        <p style="font-size:.78rem; color:rgba(229,231,235,.55);">
+          El resultado que aparece a continuación corresponde a una evaluación
+          real realizada por SOPHIA. La verificación factual es una capa
+          independiente de la evaluación de robustez deliberativa.
+        </p>
+
+      </div>
+
+      <div class="view-section">
+
+        <div class="s-card">
+
+          <div class="view-eyebrow">Resultado de SOPHIA</div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-top:18px;">
+
+            <div class="s-card" style="margin:0;">
+              <div class="view-eyebrow">Naturaleza documental</div>
+              <strong style="font-size:1.15rem;">Argumentativa</strong>
+            </div>
+
+            <div class="s-card" style="margin:0;">
+              <div class="view-eyebrow">IRD</div>
+              <strong style="font-size:1.5rem;">100/100</strong>
+            </div>
+
+            <div class="s-card" style="margin:0;">
+              <div class="view-eyebrow">Riesgo</div>
+              <strong style="font-size:1.15rem;">Normal</strong>
+            </div>
+
+            <div class="s-card" style="margin:0;">
+              <div class="view-eyebrow">Revisión semántica</div>
+              <strong style="font-size:1.15rem;">Sin observaciones</strong>
+            </div>
+
+          </div>
+
+          <div style="margin-top:24px;">
+
+            <div class="view-eyebrow">Puntaje por fase</div>
+
+            <ul>
+              <li><strong>Estructura Lógica:</strong> 100/100</li>
+              <li><strong>Inferencia:</strong> 100/100</li>
+              <li><strong>Calibración Epistémica:</strong> 100/100</li>
+              <li><strong>Transparencia Retórica:</strong> 100/100</li>
+              <li><strong>Pertinencia Deliberativa:</strong> 100/100</li>
+            </ul>
+
+          </div>
+
+          <p style="margin-top:20px;">
+            <strong>Confianza de clasificación:</strong> 0%
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="view-section">
+
+        <div class="s-card" style="border-left:3px solid var(--accent);">
+
+          <div class="view-eyebrow">La observación central</div>
+
+          <h2 class="view-subtitle">
+            Robustez no significa verdad
+          </h2>
+
+          <p>
+            SOPHIA otorgó al argumento un
+            <strong>Índice de Robustez Deliberativa de 100/100</strong>.
+            Esto significa que, desde el punto de vista de su estructura,
+            el argumento presenta una organización coherente entre sus
+            afirmaciones, inferencias, recursos retóricos y propósito
+            deliberativo.
+          </p>
+
+          <p>
+            Pero eso no significa que todo lo que afirma sea verdadero.
+          </p>
+
+          <p>
+            De hecho, la verificación factual encontró afirmaciones centrales
+            que fueron <strong>refutadas</strong> o para las cuales existía
+            <strong>evidencia insuficiente</strong>.
+          </p>
+
+          <p>
+            Esta diferencia es precisamente una de las funciones más importantes
+            de SOPHIA:
+            <strong>
+              separar la calidad estructural de un razonamiento de la verdad
+              de las afirmaciones sobre el mundo.
+            </strong>
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="view-section">
+
+        <div class="s-card">
+
+          <div class="view-eyebrow">Confiabilidad factual</div>
+
+          <h2 class="view-subtitle">Afirmaciones verificadas</h2>
+
+          <ul>
+            <li>
+              Menos del 0,1 % del patrimonio neto total de Elon estaría
+              realmente en efectivo.
+            </li>
+            <li>
+              El 99,9 % restante estaría compuesto básicamente por acciones
+              y participaciones en sus empresas.
+            </li>
+            <li>
+              Más de 600.000 empleos indirectos habrían sido generados a través
+              de sus cadenas de suministro.
+            </li>
+            <li>
+              Joy no sería fundadora ni propietaria de una empresa escalable.
+            </li>
+          </ul>
+
+          <h2 class="view-subtitle">Afirmaciones refutadas</h2>
+
+          <ul>
+            <li>
+              Que al menos un millón de personas en todo el mundo puedan llevar
+              el pan a su mesa gracias a los empleos creados por las empresas
+              de Elon.
+            </li>
+            <li>
+              Que Joy tenga un patrimonio de 30 millones de dólares.
+            </li>
+            <li>
+              Que Joy no haya creado ningún empleo.
+            </li>
+          </ul>
+
+          <h2 class="view-subtitle">Evidencia insuficiente</h2>
+
+          <ul>
+            <li>
+              Que la parte líquida del patrimonio de Elon equivalga como máximo
+              a mil o dos mil millones de dólares.
+            </li>
+            <li>
+              Que sus empresas hayan creado más de 160.000 empleos directos.
+            </li>
+            <li>
+              Que hayan generado más de 500.000 empleos adicionales derivados
+              de una actividad económica más amplia.
+            </li>
+          </ul>
+
+        </div>
+
+      </div>
+
+      <div class="view-section">
+
+        <div class="s-card">
+
+          <div class="view-eyebrow">Interpretación integral</div>
+
+          <h2 class="view-subtitle">¿Qué vio SOPHIA?</h2>
+
+          <p>
+            El texto presenta un debate en el que el hablante primero responde
+            a las críticas dirigidas contra Elon Musk describiendo la estructura
+            de su riqueza y su supuesto impacto en la creación de empleo.
+          </p>
+
+          <p>
+            Posteriormente, el argumento cambia de dirección y cuestiona a la
+            propia interlocutora: si ella considera que las grandes fortunas
+            deberían utilizarse para ayudar a otras personas, ¿por qué no
+            aplica ese mismo criterio a su propia riqueza?
+          </p>
+
+          <p>
+            SOPHIA identifica así una estructura argumentativa que combina
+            datos, interpretación, causalidad, generalización y una interpelación
+            directa.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="view-section">
+
+        <div class="s-card">
+
+          <div class="view-eyebrow">Transparencia retórica</div>
+
+          <h2 class="view-subtitle">El giro hacia Joy</h2>
+
+          <p>
+            Una parte importante del argumento consiste en devolver la crítica
+            hacia quien la formula:
+            <strong>
+              si Joy sostiene que Elon debería repartir su riqueza,
+              entonces también debería aplicar ese criterio a su propia fortuna.
+            </strong>
+          </p>
+
+          <p>
+            Esta estrategia puede describirse como un
+            <strong>tu quoque</strong>: se cuestiona la consistencia de la
+            posición del interlocutor a partir de su propia conducta o situación.
+          </p>
+
+          <p>
+            SOPHIA detectó esta estrategia, pero no la penalizó automáticamente
+            como una falacia. Esto es importante: identificar una estrategia
+            retórica no equivale necesariamente a determinar que sea ilegítima.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="view-section">
+
+        <div class="s-card">
+
+          <div class="view-eyebrow">El texto original</div>
+
+          <h2 class="view-subtitle">Diálogo evaluado</h2>
+
+          <blockquote>
+            <strong>Joy:</strong>
+            ¿Qué está haciendo Elon Musk con su dinero? Está a punto de
+            convertirse en trillonario. ¿Dónde está ese dinero? Con ese dinero
+            podría salvar a algunos países. Las personas que tienen tanto
+            dinero… ¿qué creen? ¿Que van a vivir para siempre, Elon?
+          </blockquote>
+
+          <blockquote>
+            <strong>Guy / Vivek Ramaswamy:</strong>
+            Sí, podría. ¿Lo va a hacer? No. Menos del 0,1 % del patrimonio neto
+            total de Elon está realmente en efectivo depositado en el banco.
+            Eso equivale, como máximo, a unos mil o dos mil millones de dólares.
+            El resto, es decir, el 99,9 %, está compuesto básicamente por
+            acciones y participaciones en sus empresas, como SpaceX, Tesla y otras.
+          </blockquote>
+
+          <blockquote>
+            Esas empresas han creado más de 160.000 empleos directos, más de
+            600.000 empleos indirectos a través de sus cadenas de suministro y
+            más de 500.000 empleos adicionales derivados de una actividad
+            económica más amplia.
+          </blockquote>
+
+          <blockquote>
+            Así que, si hacemos los cálculos, al menos un millón de personas en
+            todo el mundo pueden llevar el pan a su mesa gracias a los empleos
+            que han creado las empresas de Elon.
+          </blockquote>
+
+          <blockquote>
+            Ahora bien, por otro lado, tú, Joy, tienes un patrimonio de 30
+            millones de dólares. Y, a diferencia de Elon, tú no has creado
+            ningún empleo. No eres fundadora ni propietaria de una empresa
+            escalable.
+          </blockquote>
+
+          <blockquote>
+            Y, por lo tanto, la mayor parte —si no todo— de tus 30 millones de
+            dólares es dinero real disponible para gastar.
+          </blockquote>
+
+          <blockquote>
+            ¿Vas a vivir para siempre, Joy?
+            ¿Por qué no estás regalando tu dinero?
+            Con solo un tercio de tu patrimonio, probablemente podrías alimentar
+            a 3.000 personas durante todo un año.
+          </blockquote>
+
+        </div>
+
+      </div>
+
+      <div class="view-section">
+
+        <div class="s-card" style="border-left:3px solid var(--accent);">
+
+          <div class="view-eyebrow">Lo que este ejemplo permite ver</div>
+
+          <p>
+            SOPHIA no responde simplemente:
+            <strong>“¿Tiene razón?”</strong>
+          </p>
+
+          <p>
+            Primero pregunta, en términos estructurales:
+            <strong>¿cómo está construido el razonamiento?</strong>
+          </p>
+
+          <p>
+            Después incorpora una capa diferente:
+            <strong>¿qué ocurre cuando comprobamos las afirmaciones verificables?</strong>
+          </p>
+
+          <p>
+            En este caso, ambas respuestas son muy diferentes:
+            <strong>la estructura argumentativa obtuvo 100/100, mientras varias
+            premisas fácticas centrales fueron refutadas o quedaron sin
+            evidencia suficiente.</strong>
+          </p>
+
+          <p>
+            Esa diferencia es precisamente lo que SOPHIA busca hacer visible:
+            <strong>
+              un argumento puede estar muy bien construido y, al mismo tiempo,
+              conducir a una conclusión débil porque parte de información falsa,
+              dudosa o insuficientemente comprobada.
+            </strong>
+          </p>
+
+        </div>
+
+      </div>
+    `
+  },
+
   analisis: {
   title: 'Analiza tus ideas con Sophia',
   render: () => {
