@@ -39,9 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!modal) {
       modal = document.createElement("div");
       modal.id = "sophia-modal";
-      modal.style.cssText = "position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(28,26,22,0.55); z-index:10000; display:flex; justify-content:center; align-items:center; padding:20px;";
+      modal.style.cssText = "position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.72); z-index:10000; display:flex; justify-content:center; align-items:center; padding:20px;";
       modal.innerHTML = `
-        <div style="background:var(--c-bg-raised); border:1px solid var(--c-sophia); border-radius:8px; width:100%; max-width:800px; max-height:90vh; overflow-y:auto; padding:20px; color:var(--c-text); box-shadow:0 10px 30px rgba(28,26,22,0.25);">
+        <div style="background:#050a12; border:1px solid var(--c-sophia); border-radius:8px; width:100%; max-width:800px; max-height:90vh; overflow-y:auto; padding:20px; color:var(--c-text); box-shadow:0 10px 30px rgba(28,26,22,0.25);">
           <div style="display:flex; justify-content:space-between; margin-bottom:15px; border-bottom:1px solid var(--c-border); padding-bottom:10px;">
             <h3 style="margin:0; font-size:1rem; color:var(--c-sophia);">Auditoría Completa SOPHIA v4.0</h3>
             <button onclick="document.getElementById('sophia-modal').style.display='none'" style="background:none; border:none; color:var(--c-muted); font-size:1.2rem; cursor:pointer;">✕</button>
