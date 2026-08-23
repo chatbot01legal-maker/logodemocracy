@@ -497,3 +497,42 @@ body {
   }
 
 }
+
+/* ═══════════════════════════════════════════════════════
+   HEADER + SIDEBAR PERSISTENTES
+   Mantiene la navegación accesible durante todo el scroll
+   ═══════════════════════════════════════════════════════ */
+
+/* Header siempre visible */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Sidebar siempre visible debajo del header */
+.layout > .sidebar {
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  max-height: calc(100vh - 56px);
+  align-self: flex-start;
+  box-sizing: border-box;
+  z-index: 900;
+}
+
+/* El contenido interno del sidebar conserva su propio scroll */
+.layout > .sidebar .sidebar-content {
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* El botón de abrir/cerrar queda siempre accesible */
+.layout > .sidebar .sidebar-rail {
+  position: sticky;
+  top: 0;
+  height: 100%;
+  flex-shrink: 0;
+}
+
