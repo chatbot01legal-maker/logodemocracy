@@ -2609,29 +2609,40 @@ const SOPHIA = {
             </div>
           </div>`;
         })() : ''}
-
-        ${data.gemini_review ? `
-          <div class="view-section">
-            <div class="view-section-title">Interpretación integral</div>
-            <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
-              ${data.gemini_review.interpretacion ? `
-                <div style="margin-bottom:12px;">
-                  <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Interpretación</div>
-                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.interpretacion}</div>
-                </div>` : ''}
-              ${data.gemini_review.contexto ? `
-                <div style="margin-bottom:12px;">
-                  <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Contexto</div>
-                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.contexto}</div>
-                </div>` : ''}
-              ${data.gemini_review.observaciones ? `
-                <div style="margin-bottom:12px;">
-                  <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Observaciones</div>
-                  <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.observaciones}</div>
-                </div>` : ''}
-            </div>
+${data.gemini_review ? `
+  <div class="view-section">
+    <div class="view-section-title">Interpretación integral</div>
+    <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
+      ${data.gemini_review.interpretacion ? `
+        <div style="margin-bottom:12px;">
+          <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Interpretación</div>
+          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.interpretacion}</div>
+        </div>` : ''}
+      ${data.gemini_review.contexto ? `
+        <div style="margin-bottom:12px;">
+          <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Contexto</div>
+          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.contexto}</div>
+        </div>` : ''}
+      ${data.gemini_review.observaciones ? `
+        <div style="margin-bottom:12px;">
+          <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Observaciones</div>
+          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
+            ${Array.isArray(data.gemini_review.observaciones)
+              ? data.gemini_review.observaciones.map(o => `<div style="margin-bottom: 6px;"><strong style="color:#e5e7eb;">${o.tipo}:</strong> ${o.detalle}</div>`).join('')
+              : data.gemini_review.observaciones}
           </div>
-        ` : ''}
+        </div>` : ''}
+      ${(data.gemini_review.preguntas_reflexivas && Array.isArray(data.gemini_review.preguntas_reflexivas) && data.gemini_review.preguntas_reflexivas.length > 0) ? `
+        <div>
+          <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Preguntas reflexivas</div>
+          <ul style="margin:0; padding-left:18px; font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
+            ${data.gemini_review.preguntas_reflexivas.map(p => `<li>${p}</li>`).join('')}
+          </ul>
+        </div>` : ''}
+    </div>
+  </div>
+` : ''}
+
       `;
        
 this._animateBars(out);
