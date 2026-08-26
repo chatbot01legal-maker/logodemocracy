@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   LOGOS.JS — Frontend del instrumento Logos v0.1.1
+   LOGOS.JS — Frontend del instrumento Logos v0.2.2
    Ecosistema LogoDemocracy
 
    Sigue el mismo patrón arquitectónico que sophia.js:
@@ -9,15 +9,22 @@
      herramienta de Comparar Posiciones.
 
    IMPORTANTE — alcance de este archivo:
-   Este archivo implementa el FRONTEND completo: navegación, contenido
-   explicativo del protocolo, y la interfaz de "Comparar Posiciones"
-   (columnas A/B, envío al backend, render de resultados).
+   Implementa el FRONTEND completo hablando el contrato REAL que expone
+   LogosEngine v0.2.1 en POST /api/logos/compare (reconstructions,
+   mutualUnderstanding, agreements, sharedAssumptions, disagreements,
+   convergences, synthesisEligibility, synthesis, openQuestions,
+   uncertainties — ver LogosEngine.js).
 
-   NO implementa el motor cognitivo de Logos (reconstrucción, prueba de
-   reconstrucción, steelman, síntesis, etc.) — eso vive en el backend,
-   en un endpoint todavía por construir: POST /api/logos/compare.
-   Ver el contrato exacto de entrada/salida esperado más abajo, junto
-   a la función compareWithLogos().
+   La Prueba de Reconstrucción es una etapa cognitiva real: el estado de
+   validación humana (reconstructionValidation, por posición: status /
+   correction / iteration / history) vive en una sesión de comparación
+   independiente del objeto `data` que devuelve el backend en cada
+   llamada, precisamente porque el backend no tiene memoria de sesión.
+   El botón "Ver análisis completo" está deshabilitado hasta que AMBAS
+   posiciones estén confirmadas. Ver la explicación de cambios entregada
+   junto a este archivo para el detalle de qué se corrigió, cómo, y qué
+   depende de un cambio de contrato en el backend que no fue posible
+   implementar solo desde este archivo.
    ═══════════════════════════════════════════════════════ */
 
 (function () {
@@ -668,14 +675,72 @@
     };
   });
 
+  // ═══════════════════════════════════════════════════════
+  // A PARTIR DE ACÁ: lógica de comparación real.
+  //
+  // Esta sección fue reescrita para hablar el contrato REAL que expone
+  // LogosEngine v0.2.1 (reconstructions / mutualUnderstanding / agreements /
+  // sharedAssumptions / disagreements / convergences / synthesisEligibility /
+  // synthesis / openQuestions / uncertainties), y para que la validación
+  // humana de la reconstrucción sea una etapa cognitiva real, no un adorno
+  // visual. Ver la explicación de cambios entregada junto a este archivo
+  // para el detalle completo de qué se corrigió y por qué.
+  // ═══════════════════════════════════════════════════════
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  // ─── Estado de sesión de Comparar Posiciones ──────────
+  // Vive FUERA del objeto `data` que devuelve el backend, porque cada
+  // llamada a /api/logos/compare devuelve un objeto `data` enteramente
+  // nuevo (el backend no tiene memoria de sesión). Si guardáramos el
+  // estado de validación humana dentro de `data`, se perdería cada vez
+  // que Logos recalcula tras una corrección — exactamente el problema
+  // que el punto 6 del encargo pide evitar.
+  function nuevaSesion() {
+    return {
+      data: null,
+      reconstructionValidation: {
+        a: { status: 'PENDING', correction: null, iteration: 1, lastChangeDetected: null, history: [] },
+        b: { status: 'PENDING', correction: null, iteration: 1, lastChangeDetected: null, history: [] }
+      }
+    };
+  }
+
+  // ─── Comparación estructural entre dos reconstrucciones ──
+  // Punto 21: nunca decir "corrección incorporada" si no hubo un cambio
+  // real. Comparamos texto, estado epistémico y evidencia de cada claim,
+  // no el objeto completo (que puede diferir en formato sin diferir en
+  // contenido).
+  function reconstruccionesDifierenSustancialmente(prevClaims, nuevosClaims) {
+    if (!prevClaims) return null; // no hay línea de base todavía (primera vez)
+    const normalizar = (claims) => (claims || [])
+      .map(c => JSON.stringify({
+        texto: (c.text || '').trim(),
+        estado: (c.epistemicStatus || c.status || '').toString().toUpperCase(),
+        evidencia: (c.evidence || []).map(e => (e.quote || '').trim()).sort()
+      }))
+      .sort();
+    const a = normalizar(prevClaims);
+    const b = normalizar(nuevosClaims);
+    if (a.length !== b.length) return true;
+    return JSON.stringify(a) !== JSON.stringify(b);
+  }
+
   // ─── Envío al backend (Modalidad A: Comparar) ─────────
-  async function compareWithLogos(posicionA, posicionB, outEl) {
+  // sesion: objeto de nuevaSesion(). ladoCorregido ('a' | 'b' | null): si
+  // esta llamada es consecuencia de una corrección, indica qué lado se
+  // corrigió, para poder comparar su reconstrucción anterior vs la nueva.
+  async function compareWithLogos(posicionA, posicionB, outEl, sesion, ladoCorregido) {
     const loadingPhrases = [
       "<b>¿Sabías que...?</b> Logos no decide quién tiene la razón, sino que cartografía la estructura del desacuerdo.",
       "<b>¿Sabías que...?</b> Un desacuerdo bien descrito es, muchas veces, un resultado más valioso que un consenso forzado.",
       "<b>¿Sabías que...?</b> La síntesis generativa ocurre cuando ambas partes descubren que el problema tenía dimensiones ocultas.",
-      "<b>¿Sabías que...?</b> El 'Steelman' dialéctico consiste en reconstruir el argumento del otro en su versión más fuerte.",
-      "<b>¿Sabías que...?</b> Identificar los supuestos que ambas posiciones comparten es el primer paso para destrabar el debate."
+      "<b>¿Sabías que...?</b> Identificar los supuestos que ambas posiciones comparten es el primer paso para destrabar el debate.",
+      "<b>¿Sabías que...?</b> Cuando corregís una reconstrucción, Logos vuelve a calcular todo el análisis posterior — nada queda construido sobre una versión que ya invalidaste."
     ];
     let phraseIndex = 0;
 
@@ -691,8 +756,7 @@
     `;
 
     outEl.innerHTML = renderLoading();
-    
-    // Rotar frase cada 20 segundos
+
     const loadingInterval = setInterval(() => {
       phraseIndex = (phraseIndex + 1) % loadingPhrases.length;
       outEl.innerHTML = renderLoading();
@@ -706,109 +770,126 @@
       });
       if (!res.ok) throw new Error(`El servidor respondió ${res.status}`);
       const data = await res.json();
-      // Se guardan los textos originales DENTRO de data (no solo en
-      // LOGOS._lastComparison) para que la validación de reconstrucción
-      // pueda reenviar una corrección sin depender de closures externos.
-      data._posicionA_original = posicionA;
-      data._posicionB_original = posicionB;
+
+      const prevData = sesion.data;
+      sesion.data = data;
+      sesion.posicionA_original = posicionA;
+      sesion.posicionB_original = posicionB;
+
+      // Si esta llamada viene de una corrección, comparamos ESTRUCTURALMENTE
+      // la reconstrucción anterior del lado corregido contra la nueva, y
+      // dejamos el veredicto (huboCambio: true/false/null) guardado — nunca
+      // inventado en el render.
+      if (ladoCorregido && prevData && prevData.reconstructions && data.reconstructions) {
+        const prevClaims = (prevData.reconstructions[ladoCorregido] || {}).coreClaims;
+        const nuevosClaims = (data.reconstructions[ladoCorregido] || {}).coreClaims;
+        const huboCambio = reconstruccionesDifierenSustancialmente(prevClaims, nuevosClaims);
+        const rv = sesion.reconstructionValidation[ladoCorregido];
+        rv.lastChangeDetected = huboCambio;
+        rv.history.push({ iteration: rv.iteration, claims: prevClaims || [] });
+        rv.iteration += 1;
+        rv.status = 'PENDING'; // una reconstrucción corregida vuelve a necesitar su propia confirmación
+      }
+
       LOGOS._lastComparison = { posicionA, posicionB, resultado: data, timestamp: new Date().toISOString() };
-      renderComparison(data, outEl);
+      renderComparison(data, outEl, sesion);
     } catch (err) {
       console.error('❌ Error en compareWithLogos:', err);
+      // Punto 28: un error técnico nunca debe leerse como una validación
+      // resuelta. Si esto ocurrió durante una corrección, el lado corregido
+      // se deja explícitamente en PENDIENTE (no confirmado, no perdido).
+      if (ladoCorregido) {
+        sesion.reconstructionValidation[ladoCorregido].status = 'PENDING';
+      }
       outEl.innerHTML = `
         <div style="background:var(--s-panel); border:1px dashed rgba(255,255,255,.15); border-radius:4px; padding:16px; margin-top: 16px;">
-          <p style="color:#eab308; font-size:.82rem; margin:0 0 6px 0;">El motor de comparación todavía no está disponible.</p>
-          <p style="color:rgba(229,231,235,.5); font-size:.78rem; margin:0;">La interfaz está lista — falta construir <code>POST /api/logos/compare</code> en el backend, el que reconstruye, relaciona y sintetiza las dos posiciones. (Detalle técnico: ${err.message})</p>
+          <p style="color:#eab308; font-size:.82rem; margin:0 0 6px 0;">No fue posible generar ${ladoCorregido ? 'la reconstrucción revisada' : 'la comparación'}.</p>
+          <p style="color:rgba(229,231,235,.5); font-size:.78rem; margin:0;">
+            ${ladoCorregido ? 'Tu validación sigue pendiente — no se dio por confirmada ninguna reconstrucción a partir de este error.' : 'El motor de comparación no respondió correctamente.'}
+            (Detalle técnico: ${escapeHtml(err.message)})
+          </p>
+          <div style="margin-top:10px;">
+            <button class="btn-primary logos-retry-btn" style="font-size:.75rem; padding:5px 12px;">Reintentar →</button>
+          </div>
         </div>`;
+      const retryBtn = outEl.querySelector('.logos-retry-btn');
+      if (retryBtn) retryBtn.onclick = () => compareWithLogos(posicionA, posicionB, outEl, sesion, ladoCorregido);
     } finally {
       clearInterval(loadingInterval);
     }
   }
 
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str == null ? '' : String(str);
-    return div.innerHTML;
+  // ─── Badges de estado epistémico (punto 8) ────────────
+  // EXPLICIT: la afirmación aparece efectivamente en el material.
+  // INFERRED: es una reconstrucción/inferencia de Logos a partir del material.
+  // "Explícito" no significa "verdadero" — esa verificación no es tarea de
+  // Logos (punto 24), es tarea de Sophia.
+  function epistemicBadge(claim) {
+    const raw = (claim.epistemicStatus || claim.status || '').toString().toUpperCase();
+    if (raw.includes('EXPLIC')) {
+      return `<span title="Aparece efectivamente en el material analizado." style="font-size:.62rem; color:#22c55e; border:1px solid #22c55e; border-radius:3px; padding:1px 5px; margin-left:6px; white-space:nowrap;">🟢 Explícito</span>`;
+    }
+    if (raw.includes('INFER')) {
+      const desde = (claim.inferredFrom && claim.inferredFrom.length) ? ` desde ${claim.inferredFrom.map(escapeHtml).join(', ')}` : '';
+      return `<span title="Inferencia de Logos a partir del material${desde}." style="font-size:.62rem; color:#eab308; border:1px solid #eab308; border-radius:3px; padding:1px 5px; margin-left:6px; white-space:nowrap;">🟡 Inferencia de Logos${desde}</span>`;
+    }
+    // El backend todavía no siempre declara epistemicStatus para cada claim.
+    // No lo inventamos: lo marcamos como no clasificado en vez de adivinar.
+    return `<span title="El backend no declaró un estado epistémico estructural para esta afirmación." style="font-size:.62rem; color:rgba(229,231,235,.4); border:1px solid rgba(229,231,235,.25); border-radius:3px; padding:1px 5px; margin-left:6px; white-space:nowrap;">· no clasificado</span>`;
   }
 
-  function renderComparison(data, outEl) {
-    // Etiqueta visual según el origen de cada argumento/evidencia:
-    // explícito (dicho literalmente) vs inferido (Logos lo dedujo).
-    const origenBadge = (origen) => origen === 'inferido'
-      ? `<span style="font-size:.62rem; color:#eab308; border:1px solid #eab308; border-radius:3px; padding:1px 5px; margin-left:6px; white-space:nowrap;">🟡 Inferencia de Logos</span>`
-      : `<span style="font-size:.62rem; color:#22c55e; border:1px solid #22c55e; border-radius:3px; padding:1px 5px; margin-left:6px; white-space:nowrap;">🟢 Explícito</span>`;
+  function renderClaimId(id) {
+    return id ? `<span style="font-size:.62rem; color:rgba(229,231,235,.35); font-family:monospace; margin-right:6px;">${escapeHtml(id)}</span>` : '';
+  }
 
-    const renderReconstruccionDetalle = (recon, etiqueta) => {
-      if (!recon) return '';
-      const argumentos = recon.argumentos || [];
-      const evidencia = recon.evidencia || [];
-      const supuestos = recon.supuestos || [];
-      return `
-        <div class="s-card">
-          <div class="s-card-title">Posición ${etiqueta} — detalle</div>
-          ${argumentos.length ? `
-            <div style="font-size:.68rem; color:rgba(229,231,235,.45); text-transform:uppercase; margin:8px 0 4px 0;">Argumentos</div>
-            <ul style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.6; padding-left:18px; margin:0;">
-              ${argumentos.map(a => `<li>${escapeHtml(a.texto)}${origenBadge(a.origen)}</li>`).join('')}
-            </ul>` : ''}
-          ${evidencia.length ? `
-            <div style="font-size:.68rem; color:rgba(229,231,235,.45); text-transform:uppercase; margin:10px 0 4px 0;">Evidencia citada</div>
-            <ul style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.6; padding-left:18px; margin:0;">
-              ${evidencia.map(e => `<li>${escapeHtml(e.texto)}${origenBadge(e.origen)}</li>`).join('')}
-            </ul>` : ''}
-          ${supuestos.length ? `
-            <div style="font-size:.68rem; color:rgba(229,231,235,.45); text-transform:uppercase; margin:10px 0 4px 0;">Supuestos (siempre inferidos)</div>
-            <ul style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.6; padding-left:18px; margin:0;">
-              ${supuestos.map(s => `<li>${escapeHtml(s.texto)}</li>`).join('')}
-            </ul>` : ''}
-        </div>`;
-    };
+  function renderReconstruccionDetalle(recon, etiqueta) {
+    if (!recon) return '';
+    const claims = recon.coreClaims || [];
+    return `
+      <div class="s-card">
+        <div class="s-card-title">Posición ${etiqueta} — reconstrucción</div>
+        ${recon.summary ? `<div class="s-card-body" style="margin-bottom:10px;">${escapeHtml(recon.summary)}</div>` : ''}
+        ${claims.length ? `
+          <div style="font-size:.68rem; color:rgba(229,231,235,.45); text-transform:uppercase; margin:8px 0 4px 0;">Claims reconstruidos</div>
+          <ul style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.7; padding-left:4px; margin:0; list-style:none;">
+            ${claims.map(c => `
+              <li style="margin-bottom:8px; padding-bottom:8px; border-bottom:1px dashed rgba(255,255,255,.06);">
+                ${renderClaimId(c.id)}${escapeHtml(c.text)}${epistemicBadge(c)}
+                ${(c.evidence && c.evidence.length) ? `
+                  <div style="margin-top:4px; padding-left:14px; font-size:.72rem; color:rgba(229,231,235,.5);">
+                    ${c.evidence.map(e => `<div>· "${escapeHtml(e.quote || '')}"${e.source ? ` <span style="opacity:.6;">— ${escapeHtml(e.source)}</span>` : ''}</div>`).join('')}
+                  </div>` : ''}
+              </li>
+            `).join('')}
+          </ul>` : '<div class="s-card-body" style="opacity:.5;">Sin claims reconstruidos.</div>'}
+      </div>`;
+  }
 
-    // ═══ FASE 1 — Reconstrucción + Prueba de Reconstrucción ═══
-    // Esto es TODO lo que se muestra al principio. El resto del análisis
-    // (comprensión, steelman, acuerdos, desacuerdos, síntesis) depende
-    // cognitivamente de que la reconstrucción haya sido revisada primero
-    // (protocolo §6 y §13) — por eso NO se renderiza todavía, ni siquiera
-    // oculto en el DOM: literalmente no se genera su HTML hasta la Fase 2.
+  // ═══ FASE 1 — Reconstrucción + Prueba de Reconstrucción real ═══
+  function renderComparison(data, outEl, sesion) {
+    const recA = (data.reconstructions || {}).a;
+    const recB = (data.reconstructions || {}).b;
+
     outEl.innerHTML = `
-      ${data.sintesis_descriptiva ? `
-        <div class="view-section">
-          <div class="view-section-title">Síntesis descriptiva</div>
-          <div class="card-grid">
-            <div class="s-card"><div class="s-card-title">Posición A</div><div class="s-card-body">${data.sintesis_descriptiva.a || ''}</div></div>
-            <div class="s-card"><div class="s-card-title">Posición B</div><div class="s-card-body">${data.sintesis_descriptiva.b || ''}</div></div>
-          </div>
-        </div>` : ''}
+      <div class="view-section">
+        <div class="view-section-title">Reconstrucción <span style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:none;">(🟢 explícito en el material · 🟡 inferencia de Logos)</span></div>
+        <div class="card-grid">
+          ${renderReconstruccionDetalle(recA, 'A')}
+          ${renderReconstruccionDetalle(recB, 'B')}
+        </div>
+      </div>
 
-      ${data.reconstruccion_completa ? `
-        <div class="view-section">
-          <div class="view-section-title">Reconstrucción detallada <span style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:none;">(🟢 explícito en el material · 🟡 inferencia de Logos)</span></div>
-          <div class="card-grid">
-            ${renderReconstruccionDetalle(data.reconstruccion_completa.a, 'A')}
-            ${renderReconstruccionDetalle(data.reconstruccion_completa.b, 'B')}
-          </div>
-        </div>` : ''}
-
-      <!-- Prueba de Reconstrucción (protocolo §13): la persona confirma,
-           rechaza o precisa la reconstrucción antes de seguir avanzando. -->
+      <!-- Prueba de Reconstrucción real: la persona confirma, rechaza o
+           corrige, y esa decisión bloquea de verdad el resto del análisis
+           (protocolo, sección "Comprensión Mutua" en adelante). -->
       <div class="view-section" id="logos-validacion-section">
         <div class="view-section-title">¿Logos entendió bien tu posición?</div>
-        <p style="font-size:.75rem; color:rgba(229,231,235,.45); margin-bottom:12px;">El resto del análisis (comprensión mutua, acuerdos, desacuerdos, síntesis) todavía no se generó. Confirmá o corregí ambas reconstrucciones para continuar.</p>
+        <p style="font-size:.75rem; color:rgba(229,231,235,.45); margin-bottom:12px;">
+          El resto del análisis (comprensión mutua, acuerdos, desacuerdos, síntesis) todavía no se generó en pantalla.
+          Confirmá o corregí ambas reconstrucciones para continuar.
+        </p>
         <div class="card-grid">
-          ${['a', 'b'].map(lado => `
-            <div class="s-card" id="logos-valid-${lado}">
-              <div class="s-card-title">Posición ${lado.toUpperCase()}</div>
-              <div style="display:flex; gap:8px; margin-top:8px;">
-                <button class="btn-primary logos-valid-btn" data-lado="${lado}" data-valor="confirmada" style="font-size:.75rem; padding:5px 12px;">Sí, es fiel</button>
-                <button class="logos-valid-btn" data-lado="${lado}" data-valor="rechazada" style="font-size:.75rem; padding:5px 12px; background:none; border:1px solid rgba(255,255,255,.2); color:#e5e7eb; border-radius:4px; cursor:pointer;">No, hay algo mal</button>
-              </div>
-              <div id="logos-valid-${lado}-nota" style="display:none; margin-top:8px;">
-                <textarea placeholder="¿Qué está mal en la reconstrucción?" style="width:100%; min-height:50px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px; color:#e5e7eb; font-size:.78rem; padding:6px; box-sizing:border-box;"></textarea>
-                <button class="btn-primary logos-resend-btn" data-lado="${lado}" style="font-size:.72rem; padding:5px 12px; margin-top:6px;">Volver a comparar con esta corrección →</button>
-              </div>
-              <div id="logos-valid-${lado}-status" style="font-size:.72rem; margin-top:6px; color:rgba(229,231,235,.4);"></div>
-            </div>
-          `).join('')}
+          ${['a', 'b'].map(lado => renderTarjetaValidacion(lado, sesion)).join('')}
         </div>
         <div style="margin-top:16px;">
           <button id="logos-continuar-btn" class="btn-primary" disabled style="opacity:.4; cursor:not-allowed;">Ver análisis completo → (confirmá ambas posiciones primero)</button>
@@ -818,104 +899,47 @@
       <div id="logos-fase2-container"></div>
     `;
 
-    _bindValidationButtons(outEl, data);
+    _bindValidationButtons(outEl, data, sesion);
   }
 
-  // ═══ FASE 2 — Análisis completo ═══
-  // Solo se genera y se inserta en el DOM cuando el usuario confirmó (o
-  // rechazó explícitamente y decidió avanzar igual) ambas posiciones.
-  function renderFullAnalysis(data, fase2El) {
-    fase2El.innerHTML = `
-      ${data.comprension_cruzada ? `
-        <div class="view-section">
-          <div class="view-section-title">Comprensión mutua</div>
-          <div class="card-grid">
-            <div class="s-card"><div class="s-card-title">Cómo entiende A a B</div><div class="s-card-body">${data.comprension_cruzada.a_sobre_b || ''}</div></div>
-            <div class="s-card"><div class="s-card-title">Cómo entiende B a A</div><div class="s-card-body">${data.comprension_cruzada.b_sobre_a || ''}</div></div>
-          </div>
-        </div>` : ''}
+  function renderTarjetaValidacion(lado, sesion) {
+    const rv = sesion.reconstructionValidation[lado];
+    const etiqueta = lado.toUpperCase();
 
-      ${data.steelman ? `
-        <div class="view-section">
-          <div class="view-section-title">Steelman dialéctico <span style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:none;">(la mejor versión posible de cada posición)</span></div>
-          <div class="card-grid">
-            <div class="s-card"><div class="s-card-title">Mejor versión de A</div><div class="s-card-body">${data.steelman.a || ''}</div></div>
-            <div class="s-card"><div class="s-card-title">Mejor versión de B</div><div class="s-card-body">${data.steelman.b || ''}</div></div>
-          </div>
-        </div>` : ''}
+    let bannerCambio = '';
+    if (rv.iteration > 1 && rv.lastChangeDetected !== null) {
+      bannerCambio = rv.lastChangeDetected
+        ? `<div style="font-size:.72rem; color:#22c55e; margin-top:6px;">↻ Tu corrección modificó esta reconstrucción. (Iteración ${rv.iteration})</div>`
+        : `<div style="font-size:.72rem; color:#eab308; margin-top:6px;">Logos no detectó un cambio sustancial en la reconstrucción. Revisá si esta versión representa realmente tu posición. (Iteración ${rv.iteration})</div>`;
+    }
 
-      ${(data.acuerdos && data.acuerdos.length) ? `
-        <div class="view-section">
-          <div class="view-section-title">Acuerdos</div>
-          <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${data.acuerdos.map(a => `<li>${a}</li>`).join('')}</ul>
-        </div>` : ''}
-
-      ${(data.desacuerdos && data.desacuerdos.length) ? `
-        <div class="view-section">
-          <div class="view-section-title">Desacuerdos</div>
-          ${data.desacuerdos.map(d => `
-            <div style="background:var(--s-panel); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:8px;">
-              <div style="font-size:.68rem; color:var(--accent); text-transform:uppercase;">${(d.tipo || []).join(', ')}</div>
-              <div style="font-size:.82rem; color:#e5e7eb;">${d.texto}</div>
-            </div>`).join('')}
-        </div>` : ''}
-
-      ${(data.supuestos_compartidos && data.supuestos_compartidos.length) ? `
-        <div class="view-section">
-          <div class="view-section-title">Supuestos compartidos</div>
-          <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${data.supuestos_compartidos.map(s => `<li>${s}</li>`).join('')}</ul>
-        </div>` : ''}
-
-      ${(data.convergencias && data.convergencias.length) ? `
-        <div class="view-section">
-          <div class="view-section-title">Convergencias</div>
-          ${data.convergencias.map(c => `
-            <div style="background:var(--s-panel); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:8px;">
-              <div style="font-size:.68rem; color:var(--accent); text-transform:uppercase;">${c.estado || ''}</div>
-              <div style="font-size:.82rem; color:#e5e7eb;">${c.texto}</div>
-            </div>`).join('')}
-        </div>` : ''}
-
-      ${data.sintesis_relacional ? `
-        <div class="view-section">
-          <div class="view-section-title">Síntesis relacional</div>
-          <p style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${data.sintesis_relacional}</p>
-        </div>` : ''}
-
-      ${(data.sintesis_generativa && data.sintesis_generativa.length) ? `
-        <div class="view-section">
-          <div class="view-section-title">Síntesis generativa <span style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:none;">(propuesta, no conclusión)</span></div>
-          ${data.sintesis_generativa.map(s => `
-            <div class="s-card">
-              <div class="s-card-title">${s.tipo === 'problema' ? 'Reformulación del problema' : 'Propuesta de solución'}</div>
-              <div class="s-card-body">${s.texto}</div>
-            </div>`).join('')}
-        </div>` : ''}
-
-      ${(data.preguntas_deliberativas && data.preguntas_deliberativas.length) ? `
-        <div class="view-section">
-          <div class="view-section-title">Preguntas deliberativas</div>
-          <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${data.preguntas_deliberativas.map(p => `<li>${p}</li>`).join('')}</ul>
-        </div>` : ''}
+    return `
+      <div class="s-card" id="logos-valid-${lado}">
+        <div class="s-card-title">Posición ${etiqueta}</div>
+        ${bannerCambio}
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <button class="btn-primary logos-valid-btn" data-lado="${lado}" data-valor="confirmada" style="font-size:.75rem; padding:5px 12px;">✓ Sí, es fiel</button>
+          <button class="logos-valid-btn" data-lado="${lado}" data-valor="rechazada" style="font-size:.75rem; padding:5px 12px; background:none; border:1px solid rgba(255,255,255,.2); color:#e5e7eb; border-radius:4px; cursor:pointer;">✕ No, hay algo mal</button>
+        </div>
+        <div id="logos-valid-${lado}-nota" style="display:none; margin-top:8px;">
+          <textarea placeholder="¿Qué está mal o qué falta en la reconstrucción?" style="width:100%; min-height:56px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px; color:#e5e7eb; font-size:.78rem; padding:6px; box-sizing:border-box;"></textarea>
+          <button class="btn-primary logos-resend-btn" data-lado="${lado}" style="font-size:.72rem; padding:5px 12px; margin-top:6px;">Corregir reconstrucción →</button>
+        </div>
+        <div id="logos-valid-${lado}-status" style="font-size:.72rem; margin-top:6px; color:rgba(229,231,235,.4);"></div>
+      </div>
     `;
-    _bindLogosFeedback(fase2El, data);
   }
 
-  // ─── Validación de reconstrucción (protocolo §13) ─────
-  function _bindValidationButtons(outEl, data) {
-    if (!data._validacion) data._validacion = { a: null, b: null };
-
-    // Habilita "Ver análisis completo" solo cuando AMBAS posiciones
-    // tienen una decisión tomada (confirmada o rechazada) — es el gate
-    // real que faltaba: antes esto no bloqueaba nada, ahora sí.
+  // ─── Validación de reconstrucción (protocolo, prueba de reconstrucción) ──
+  function _bindValidationButtons(outEl, data, sesion) {
     const actualizarBotonContinuar = () => {
       const continuarBtn = document.getElementById('logos-continuar-btn');
       if (!continuarBtn) return;
-      const ambasDecididas = data._validacion.a && data._validacion.b;
-      continuarBtn.disabled = !ambasDecididas;
-      continuarBtn.style.opacity = ambasDecididas ? '1' : '.4';
-      continuarBtn.style.cursor = ambasDecididas ? 'pointer' : 'not-allowed';
-      continuarBtn.textContent = ambasDecididas
+      const ambasConfirmadas = sesion.reconstructionValidation.a.status === 'CONFIRMED' && sesion.reconstructionValidation.b.status === 'CONFIRMED';
+      continuarBtn.disabled = !ambasConfirmadas;
+      continuarBtn.style.opacity = ambasConfirmadas ? '1' : '.4';
+      continuarBtn.style.cursor = ambasConfirmadas ? 'pointer' : 'not-allowed';
+      continuarBtn.textContent = ambasConfirmadas
         ? 'Ver análisis completo →'
         : 'Ver análisis completo → (confirmá ambas posiciones primero)';
     };
@@ -926,21 +950,19 @@
         const valor = btn.dataset.valor;
         const notaEl = document.getElementById(`logos-valid-${lado}-nota`);
         const statusEl = document.getElementById(`logos-valid-${lado}-status`);
+        const rv = sesion.reconstructionValidation[lado];
 
         if (valor === 'rechazada') {
+          rv.status = 'REJECTED';
           notaEl.style.display = 'block';
-          const textarea = notaEl.querySelector('textarea');
-          statusEl.textContent = 'Contanos qué está mal y tocá "Volver a comparar" para que Logos lo tenga en cuenta.';
+          statusEl.textContent = 'Contanos qué está mal y tocá "Corregir reconstrucción" para que Logos lo tenga en cuenta.';
           statusEl.style.color = '#eab308';
-          textarea.oninput = () => {
-            data._validacion[lado] = { estado: 'rechazada', nota: textarea.value.trim() };
-          };
-          data._validacion[lado] = { estado: 'rechazada', nota: '' };
         } else {
+          rv.status = 'CONFIRMED';
+          rv.correction = null;
           notaEl.style.display = 'none';
           statusEl.textContent = '✓ Confirmada como fiel.';
           statusEl.style.color = '#22c55e';
-          data._validacion[lado] = { estado: 'confirmada', nota: '' };
         }
         actualizarBotonContinuar();
       };
@@ -951,59 +973,203 @@
       continuarBtn.onclick = () => {
         if (continuarBtn.disabled) return;
         const fase2El = document.getElementById('logos-fase2-container');
-        if (fase2El) renderFullAnalysis(data, fase2El);
+        if (fase2El) renderFullAnalysis(data, fase2El, sesion);
         continuarBtn.style.display = 'none';
       };
     }
 
-    // Botón "Volver a comparar con esta corrección →": funcional.
-    // Reconstruye el texto de la posición corregida (original + nota del
-    // usuario) y vuelve a correr TODO el pipeline de comparación — no
-    // solo la reconstrucción de esa posición, porque comprensión cruzada,
-    // mapeo relacional y síntesis dependen de ella y quedarían
-    // desactualizados si solo se corrigiera un fragmento.
+    // "Corregir reconstrucción →": esto SÍ vuelve a llamar al backend (no
+    // hay endpoint de revisión incremental — ver nota de compatibilidad).
+    // Reconstruye el texto de la posición corregida (original + corrección
+    // explícita del usuario) y reprocesa TODO el pipeline, porque
+    // comprensión cruzada, mapeo relacional y síntesis dependen de la
+    // reconstrucción y quedarían construidos sobre una versión que el
+    // usuario acaba de invalidar (protocolo, propagación de cambios).
     outEl.querySelectorAll('.logos-resend-btn').forEach(btn => {
       btn.onclick = async () => {
         const lado = btn.dataset.lado;
         const notaEl = document.getElementById(`logos-valid-${lado}-nota`);
         const textarea = notaEl.querySelector('textarea');
         const nota = textarea.value.trim();
+        const statusEl = document.getElementById(`logos-valid-${lado}-status`);
 
         if (!nota) {
-          const statusEl = document.getElementById(`logos-valid-${lado}-status`);
-          statusEl.textContent = 'Escribí qué está mal antes de reenviar.';
+          statusEl.textContent = 'Escribí qué está mal antes de corregir.';
           statusEl.style.color = '#ef4444';
           return;
         }
 
-        const textoOriginalA = data._posicionA_original || '';
-        const textoOriginalB = data._posicionB_original || '';
+        const rv = sesion.reconstructionValidation[lado];
+        rv.correction = nota;
 
-        const correccion = `\n\n[Corrección del usuario tras revisar la reconstrucción anterior de Logos]: ${nota}`;
+        const textoOriginalA = sesion.posicionA_original || '';
+        const textoOriginalB = sesion.posicionB_original || '';
+
+        // El bloque de corrección queda etiquetado como observación del
+        // participante sobre su propia intención — no como un hecho nuevo.
+        // Esto es lo más cerca que se puede llegar de "incorporar la
+        // corrección" sin un endpoint de revisión incremental en el
+        // backend (ver nota de compatibilidad D en la explicación).
+        const correccion = `\n\n[El participante de la Posición ${lado.toUpperCase()} revisó la reconstrucción anterior de Logos y aclaró lo siguiente sobre lo que efectivamente está queriendo decir — esta aclaración describe su intención, no un hecho verificado]: ${nota}`;
         const nuevaA = lado === 'a' ? textoOriginalA + correccion : textoOriginalA;
         const nuevaB = lado === 'b' ? textoOriginalB + correccion : textoOriginalB;
 
         btn.disabled = true;
-        btn.textContent = 'Reenviando…';
+        btn.textContent = 'Reprocesando…';
 
-        // outEl es el mismo contenedor de siempre — compareWithLogos lo
-        // reemplaza por completo con el resultado corregido cuando termine.
-        // Esto vuelve a arrancar en la Fase 1 (nueva reconstrucción, nueva
-        // validación pendiente) — correcto: una reconstrucción corregida
-        // también necesita su propia confirmación antes de avanzar.
-        await compareWithLogos(nuevaA, nuevaB, outEl);
+        await compareWithLogos(nuevaA, nuevaB, outEl, sesion, lado);
       };
     });
+
+    actualizarBotonContinuar();
+  }
+
+  // ─── Convergencias: encontrada vs. posible (punto 15) ─
+  function convergenciaEtiqueta(status) {
+    const raw = (status || '').toString().toLowerCase();
+    if (raw.includes('encontr') || raw.includes('found')) return { texto: 'Convergencia encontrada', color: '#22c55e' };
+    if (raw.includes('posible') || raw.includes('possible')) return { texto: 'Convergencia posible', color: '#eab308' };
+    return { texto: status ? escapeHtml(status) : 'Estado no especificado', color: 'rgba(229,231,235,.5)' };
+  }
+
+  // ═══ FASE 2 — Comprensión mutua, mapeo relacional y síntesis ═══
+  // Solo se genera cuando ambas reconstrucciones fueron confirmadas — el
+  // gate real vive en _bindValidationButtons/actualizarBotonContinuar, acá
+  // solo se pinta lo que el backend ya calculó.
+  function renderFullAnalysis(data, fase2El, sesion) {
+    const elegibilidad = data.synthesisEligibility || {};
+    const abstuvo = data.state === 'ABSTAINED' || data.status === 'abstained';
+
+    fase2El.innerHTML = `
+      ${data.mutualUnderstanding ? `
+        <div class="view-section">
+          <div class="view-section-title">Comprensión mutua</div>
+          <div class="card-grid">
+            <div class="s-card"><div class="s-card-title">Cómo entiende A a B</div><div class="s-card-body">${escapeHtml(data.mutualUnderstanding.a_understands_b || '')}</div></div>
+            <div class="s-card"><div class="s-card-title">Cómo entiende B a A</div><div class="s-card-body">${escapeHtml(data.mutualUnderstanding.b_understands_a || '')}</div></div>
+          </div>
+        </div>` : ''}
+
+      ${(data.agreements && data.agreements.length) ? `
+        <div class="view-section">
+          <div class="view-section-title">Acuerdos</div>
+          <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${data.agreements.map(a => `<li>${escapeHtml(a)}</li>`).join('')}</ul>
+        </div>` : ''}
+
+      ${(data.sharedAssumptions && data.sharedAssumptions.length) ? `
+        <div class="view-section">
+          <div class="view-section-title">Supuestos compartidos</div>
+          <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${data.sharedAssumptions.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ul>
+        </div>` : ''}
+
+      ${(data.disagreements && data.disagreements.length) ? `
+        <div class="view-section">
+          <div class="view-section-title">Desacuerdos <span style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:none;">(naturaleza del desacuerdo, no un puntaje)</span></div>
+          ${data.disagreements.map(d => `
+            <div style="background:var(--s-panel); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:8px;">
+              <div style="font-size:.68rem; color:var(--accent); text-transform:uppercase;">
+                ${escapeHtml(d.primaryType || '')}${(d.secondaryTypes && d.secondaryTypes.length) ? ` · ${d.secondaryTypes.map(escapeHtml).join(', ')}` : ''}
+              </div>
+              <div style="font-size:.82rem; color:#e5e7eb;">${escapeHtml(d.text || '')}</div>
+              ${(d.basis && ((d.basis.positionAClaims || []).length || (d.basis.positionBClaims || []).length)) ? `
+                <div style="font-size:.68rem; color:rgba(229,231,235,.4); margin-top:4px; font-family:monospace;">
+                  Basado en: ${[...(d.basis.positionAClaims || []), ...(d.basis.positionBClaims || [])].map(escapeHtml).join(', ')}
+                </div>` : ''}
+            </div>`).join('')}
+        </div>` : ''}
+
+      ${(data.convergences && data.convergences.length) ? `
+        <div class="view-section">
+          <div class="view-section-title">Convergencias</div>
+          ${data.convergences.map(c => {
+            const et = convergenciaEtiqueta(c.status);
+            return `
+            <div style="background:var(--s-panel); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:8px;">
+              <div style="font-size:.68rem; color:${et.color}; text-transform:uppercase;">${et.texto}</div>
+              <div style="font-size:.82rem; color:#e5e7eb;">${escapeHtml(c.text || '')}</div>
+              ${c.condition ? `<div style="font-size:.72rem; color:rgba(229,231,235,.5); margin-top:4px;">Condición: ${escapeHtml(c.condition)}</div>` : ''}
+            </div>`;
+          }).join('')}
+        </div>` : ''}
+
+      <div class="view-section">
+        <div class="view-section-title">Elegibilidad para síntesis</div>
+        <p style="font-size:.75rem; color:rgba(229,231,235,.5); margin-bottom:10px;">Estas son condiciones que el motor evaluó de forma determinista — no un puntaje de calidad del diálogo.</p>
+        <div class="card-grid">
+          ${['questionAlignment', 'informationSufficiency', 'conceptualClarity', 'evidenceSufficiency'].map(k => {
+            const c = (elegibilidad.criteria || {})[k];
+            if (!c) return '';
+            return `<div class="s-card"><div class="s-card-title" style="font-size:.72rem;">${k}</div><div class="s-card-body" style="font-size:.78rem;">${escapeHtml(c.status || '')}${c.reason ? ` — ${escapeHtml(c.reason)}` : ''}</div></div>`;
+          }).join('')}
+        </div>
+      </div>
+
+      ${abstuvo ? `
+        <div class="view-section">
+          <div class="s-card" style="border-left:3px solid #eab308;">
+            <div class="view-eyebrow">Logos se abstuvo de generar síntesis</div>
+            <p style="font-size:.82rem; color:#e5e7eb;">${escapeHtml(elegibilidad.reason || 'El motor determinó que no se cumplen las condiciones epistémicas para sintetizar todavía.')}</p>
+            <p style="font-size:.75rem; color:rgba(229,231,235,.5);">Esto no es un error — es el motor respetando el punto 17 del protocolo: no inventa una síntesis cuando la base documental no la sostiene.</p>
+          </div>
+        </div>` : `
+        ${data.synthesis && data.synthesis.relational ? `
+          <div class="view-section">
+            <div class="view-section-title">Síntesis relacional</div>
+            <p style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${escapeHtml(data.synthesis.relational)}</p>
+          </div>` : ''}
+
+        ${(data.synthesis && data.synthesis.generative && data.synthesis.generative.length) ? `
+          <div class="view-section">
+            <div class="view-section-title">Síntesis generativa <span style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:none;">(propuesta, no conclusión)</span></div>
+            ${data.synthesis.generative.map(s => `
+              <div class="s-card">
+                <div class="s-card-title">${s.type === 'problema' ? 'Reformulación del problema' : 'Propuesta de solución'}${s.title ? ` — ${escapeHtml(s.title)}` : ''}</div>
+                <div class="s-card-body">${escapeHtml(s.text || '')}</div>
+                ${s.derivedFrom ? `
+                  <div style="margin-top:8px; font-size:.72rem; color:rgba(229,231,235,.5); font-family:monospace;">
+                    ${(s.derivedFrom.positionAClaims || []).length || (s.derivedFrom.positionBClaims || []).length ? `Surge de: ${[...(s.derivedFrom.positionAClaims || []), ...(s.derivedFrom.positionBClaims || [])].map(escapeHtml).join(', ')}<br>` : ''}
+                    ${(s.derivedFrom.newElements || []).length ? `Nuevos elementos introducidos por Logos: ${s.derivedFrom.newElements.map(escapeHtml).join(', ')}` : ''}
+                  </div>` : ''}
+              </div>`).join('')}
+          </div>` : ''}
+      `}
+
+      ${(data.openQuestions && data.openQuestions.length) ? `
+        <div class="view-section">
+          <div class="view-section-title">Preguntas deliberativas abiertas</div>
+          <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${data.openQuestions.map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>
+        </div>` : ''}
+
+      ${(data.uncertainties && data.uncertainties.length) ? `
+        <div class="view-section">
+          <div class="view-section-title">Incertidumbres declaradas</div>
+          <ul style="font-size:.82rem; color:rgba(229,231,235,.6); line-height:1.6;">${data.uncertainties.map(u => `<li>${escapeHtml(u)}</li>`).join('')}</ul>
+        </div>` : ''}
+
+      <div class="view-section">
+        <details style="font-size:.72rem; color:rgba(229,231,235,.4);">
+          <summary style="cursor:pointer;">Detalle técnico (trazabilidad)</summary>
+          <div style="margin-top:8px; font-family:monospace; line-height:1.7;">
+            protocolVersion: ${escapeHtml(data.protocolVersion || '')}<br>
+            sessionId: ${escapeHtml(data.sessionId || '')}<br>
+            lastCompletedPhase: ${escapeHtml(data.lastCompletedPhase || '')}<br>
+            reconstructionValidation.a: ${escapeHtml(JSON.stringify({status: sesion.reconstructionValidation.a.status, iteration: sesion.reconstructionValidation.a.iteration}))}<br>
+            reconstructionValidation.b: ${escapeHtml(JSON.stringify({status: sesion.reconstructionValidation.b.status, iteration: sesion.reconstructionValidation.b.iteration}))}
+          </div>
+        </details>
+      </div>
+    `;
+    _bindLogosFeedback(fase2El, data, sesion);
   }
 
   // ─── Feedback del usuario sobre el uso de Logos ────────
-  function _bindLogosFeedback(outEl, data) {
+  function _bindLogosFeedback(outEl, data, sesion) {
     const wrapper = document.createElement('div');
     wrapper.style.cssText = 'margin-top:20px; padding:16px; background:var(--s-panel); border:1px dashed rgba(255,255,255,.15); border-radius:4px;';
     wrapper.innerHTML = `
       <div style="font-size:.75rem; color:rgba(229,231,235,.5); text-transform:uppercase; margin-bottom:8px;">¿Qué te pareció esta comparación?</div>
       <p style="font-size:.72rem; color:rgba(229,231,235,.4); margin:0 0 10px 0;">Logos está en desarrollo activo — contanos qué te gustó, qué no, o qué mejorarías.</p>
-      <textarea id="logosFeedbackInput" placeholder="Ej: el steelman de la Posición B no reflejaba bien el argumento principal..." style="width:100%; min-height:60px; background:#0a0a0a; border:1px solid rgba(255,255,255,.1); border-radius:4px; color:#e5e7eb; font-size:.78rem; padding:8px; box-sizing:border-box; resize:vertical;"></textarea>
+      <textarea id="logosFeedbackInput" placeholder="Ej: la reconstrucción de la Posición B no reflejaba bien el argumento principal..." style="width:100%; min-height:60px; background:#0a0a0a; border:1px solid rgba(255,255,255,.1); border-radius:4px; color:#e5e7eb; font-size:.78rem; padding:8px; box-sizing:border-box; resize:vertical;"></textarea>
       <div style="display:flex; justify-content:flex-end; align-items:center; gap:10px; margin-top:8px;">
         <span id="logosFeedbackStatus" style="font-size:.72rem; color:rgba(229,231,235,.4);"></span>
         <button id="logosFeedbackBtn" class="btn-primary" style="font-size:.78rem; padding:6px 14px;">Enviar comentario</button>
@@ -1031,7 +1197,11 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             comentario,
-            validacion: data._validacion || null,
+            reconstructionValidation: {
+              a: { status: sesion.reconstructionValidation.a.status, iteration: sesion.reconstructionValidation.a.iteration },
+              b: { status: sesion.reconstructionValidation.b.status, iteration: sesion.reconstructionValidation.b.iteration }
+            },
+            sessionId: data.sessionId || null,
             timestamp: new Date().toISOString()
           })
         });
@@ -1056,6 +1226,7 @@
   const LOGOS = {
     current: 'comparar',
     _lastComparison: null,
+    _sesionComparar: null,
 
     getLastComparison() {
       return this._lastComparison;
@@ -1117,7 +1288,11 @@
         const original = btn.textContent;
         btn.textContent = 'Comparando…';
         try {
-          await compareWithLogos(a, b, out);
+          // Cada clic en "comparar" desde cero arranca una sesión de
+          // validación nueva — no hereda iteraciones ni correcciones de
+          // una comparación anterior con otro material.
+          this._sesionComparar = nuevaSesion();
+          await compareWithLogos(a, b, out, this._sesionComparar, null);
         } finally {
           btn.disabled = false;
           btn.textContent = original;
