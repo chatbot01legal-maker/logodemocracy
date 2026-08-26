@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   LOGOS.JS — Frontend del instrumento Logos v0.2.2
+   LOGOS.JS — Frontend del instrumento Logos v0.2.3
    Ecosistema LogoDemocracy
 
    Sigue el mismo patrón arquitectónico que sophia.js:
@@ -718,10 +718,11 @@
   function reconstruccionesDifierenSustancialmente(prevClaims, nuevosClaims) {
     if (!prevClaims) return null; // no hay línea de base todavía (primera vez)
     const normalizar = (claims) => (claims || [])
+      .filter(Boolean) // descarta entradas nulas/corruptas sin romper la comparación
       .map(c => JSON.stringify({
         texto: (c.text || '').trim(),
         estado: (c.epistemicStatus || c.status || '').toString().toUpperCase(),
-        evidencia: (c.evidence || []).map(e => (e.quote || '').trim()).sort()
+        evidencia: (c.evidence || []).filter(Boolean).map(e => (e.quote || '').trim()).sort()
       }))
       .sort();
     const a = normalizar(prevClaims);
@@ -759,17 +760,48 @@
 
     const loadingInterval = setInterval(() => {
       phraseIndex = (phraseIndex + 1) % loadingPhrases.length;
-      outEl.innerHTML = renderLoading();
+      // Re-consulta el contenedor real por si la vista fue re-renderizada
+      // mientras esperábamos — nunca escribe sobre un nodo ya desconectado.
+      elementoDestino(outEl).innerHTML = renderLoading();
     }, 20000);
+
+    // Pipelines de varias llamadas a Gemini en serie (reconstrucción A,
+    // reconstrucción B, análisis relacional, síntesis) pueden tardar más de
+    // lo que tolera un proxy intermedio. Sin límite propio, un fetch()
+    // colgado deja al usuario mirando la animación de carga para siempre,
+    // que es indistinguible de "no aparece resultado". 170s da margen a
+    // 4 llamadas secuenciales a Gemini incluso con cold start de Cloud Run.
+    const controlador = new AbortController();
+    const timeoutId = setTimeout(() => controlador.abort(), 170000);
 
     try {
       const res = await fetch('/api/logos/compare', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ posicionA, posicionB })
+        body: JSON.stringify({ posicionA, posicionB }),
+        signal: controlador.signal
       });
       if (!res.ok) throw new Error(`El servidor respondió ${res.status}`);
-      const data = await res.json();
+
+      let cuerpo;
+      try {
+        cuerpo = await res.json();
+      } catch (parseErr) {
+        throw new Error(`La respuesta del backend no es JSON válido (${parseErr.message}).`);
+      }
+
+      const data = desenvolverRespuesta(cuerpo);
+      console.log('[LOGOS DEBUG] Respuesta recibida. Claves de nivel superior:', cuerpo && typeof cuerpo === 'object' ? Object.keys(cuerpo) : typeof cuerpo);
+      if (data !== cuerpo) {
+        console.log('[LOGOS DEBUG] La respuesta venía envuelta en un contenedor — se desenvolvió automáticamente. Claves usadas:', Object.keys(data));
+      }
+
+      if (!data || typeof data !== 'object') {
+        throw new Error('El backend respondió 200 pero el cuerpo estaba vacío o no era un objeto utilizable.');
+      }
+      if (!data.reconstructions) {
+        console.warn('[LOGOS DEBUG] La respuesta no trae "reconstructions". Se mostrará igual todo lo que sí venga presente.');
+      }
 
       const prevData = sesion.data;
       sesion.data = data;
@@ -792,8 +824,14 @@
       }
 
       LOGOS._lastComparison = { posicionA, posicionB, resultado: data, timestamp: new Date().toISOString() };
-      renderComparison(data, outEl, sesion);
+
+      // Nunca escribir sobre un #logos-output que ya no está en el DOM
+      // (p. ej. si el usuario navegó y volvió mientras la respuesta viajaba).
+      renderComparison(data, elementoDestino(outEl), sesion);
     } catch (err) {
+      const motivo = err.name === 'AbortError'
+        ? 'El backend tardó demasiado en responder (más de 170 segundos) y se canceló la espera.'
+        : err.message;
       console.error('❌ Error en compareWithLogos:', err);
       // Punto 28: un error técnico nunca debe leerse como una validación
       // resuelta. Si esto ocurrió durante una corrección, el lado corregido
@@ -801,22 +839,53 @@
       if (ladoCorregido) {
         sesion.reconstructionValidation[ladoCorregido].status = 'PENDING';
       }
-      outEl.innerHTML = `
+      const destino = elementoDestino(outEl);
+      destino.innerHTML = `
         <div style="background:var(--s-panel); border:1px dashed rgba(255,255,255,.15); border-radius:4px; padding:16px; margin-top: 16px;">
           <p style="color:#eab308; font-size:.82rem; margin:0 0 6px 0;">No fue posible generar ${ladoCorregido ? 'la reconstrucción revisada' : 'la comparación'}.</p>
           <p style="color:rgba(229,231,235,.5); font-size:.78rem; margin:0;">
             ${ladoCorregido ? 'Tu validación sigue pendiente — no se dio por confirmada ninguna reconstrucción a partir de este error.' : 'El motor de comparación no respondió correctamente.'}
-            (Detalle técnico: ${escapeHtml(err.message)})
+            (Detalle técnico: ${escapeHtml(motivo)})
           </p>
           <div style="margin-top:10px;">
             <button class="btn-primary logos-retry-btn" style="font-size:.75rem; padding:5px 12px;">Reintentar →</button>
           </div>
         </div>`;
-      const retryBtn = outEl.querySelector('.logos-retry-btn');
+      const retryBtn = destino.querySelector('.logos-retry-btn');
       if (retryBtn) retryBtn.onclick = () => compareWithLogos(posicionA, posicionB, outEl, sesion, ladoCorregido);
     } finally {
+      clearTimeout(timeoutId);
       clearInterval(loadingInterval);
     }
+  }
+
+  // ─── Reintenta ubicar el contenedor real en el DOM ────
+  // Si #logos-output todavía existe y sigue conectado, se usa tal cual.
+  // Si no, se vuelve a buscar por id (por si la vista se re-renderizó
+  // durante la espera) y, en último caso, se cae de vuelta al nodo
+  // original para no lanzar una excepción.
+  function elementoDestino(outEl) {
+    if (outEl && typeof outEl.isConnected === 'boolean' && outEl.isConnected) return outEl;
+    const fresco = document.getElementById('logos-output');
+    return fresco || outEl;
+  }
+
+  // ─── Desenvuelve respuestas que vinieran dentro de un contenedor ──
+  // Si el backend responde {success, result:{...}} o {data:{...}} en vez
+  // del objeto de análisis directamente, esto lo detecta y devuelve el
+  // objeto real sin que el resto del código tenga que saberlo. Si el
+  // objeto recibido YA tiene forma de análisis (trae reconstructions,
+  // mutualUnderstanding, agreements, etc.), se devuelve tal cual.
+  function desenvolverRespuesta(cuerpo) {
+    if (!cuerpo || typeof cuerpo !== 'object') return cuerpo;
+    const pareceAnalisis = (o) => o && typeof o === 'object' && (
+      'reconstructions' in o || 'mutualUnderstanding' in o || 'synthesis' in o || 'agreements' in o
+    );
+    if (pareceAnalisis(cuerpo)) return cuerpo;
+    for (const clave of ['result', 'data', 'response', 'analysis', 'payload']) {
+      if (pareceAnalisis(cuerpo[clave])) return cuerpo[clave];
+    }
+    return cuerpo;
   }
 
   // ─── Badges de estado epistémico (punto 8) ────────────
@@ -843,8 +912,10 @@
   }
 
   function renderReconstruccionDetalle(recon, etiqueta) {
-    if (!recon) return '';
-    const claims = recon.coreClaims || [];
+    if (!recon) return `<div class="s-card"><div class="s-card-title">Posición ${etiqueta} — reconstrucción</div><div class="s-card-body" style="opacity:.5;">El backend no devolvió una reconstrucción para esta posición.</div></div>`;
+    // .filter(Boolean): una entrada nula o corrupta en el array no puede
+    // tumbar toda la reconstrucción de la posición.
+    const claims = (recon.coreClaims || []).filter(Boolean);
     return `
       <div class="s-card">
         <div class="s-card-title">Posición ${etiqueta} — reconstrucción</div>
@@ -855,9 +926,9 @@
             ${claims.map(c => `
               <li style="margin-bottom:8px; padding-bottom:8px; border-bottom:1px dashed rgba(255,255,255,.06);">
                 ${renderClaimId(c.id)}${escapeHtml(c.text)}${epistemicBadge(c)}
-                ${(c.evidence && c.evidence.length) ? `
+                ${(c.evidence && c.evidence.filter(Boolean).length) ? `
                   <div style="margin-top:4px; padding-left:14px; font-size:.72rem; color:rgba(229,231,235,.5);">
-                    ${c.evidence.map(e => `<div>· "${escapeHtml(e.quote || '')}"${e.source ? ` <span style="opacity:.6;">— ${escapeHtml(e.source)}</span>` : ''}</div>`).join('')}
+                    ${c.evidence.filter(Boolean).map(e => `<div>· "${escapeHtml(e.quote || '')}"${e.source ? ` <span style="opacity:.6;">— ${escapeHtml(e.source)}</span>` : ''}</div>`).join('')}
                   </div>` : ''}
               </li>
             `).join('')}
@@ -865,12 +936,34 @@
       </div>`;
   }
 
+  // ─── Aísla cada sección: si UNA falla, las demás igual se muestran ──
+  // Punto 6/17 del encargo: nunca un try/catch vacío que esconda el
+  // error, y nunca dejar que una sección secundaria tumbe todo el
+  // resultado. Acá se loguea el error real y se deja una marca visible
+  // y honesta de qué sección no pudo mostrarse.
+  function seccionSegura(nombre, fn) {
+    try {
+      return fn();
+    } catch (err) {
+      console.error(`[LOGOS] Error renderizando la sección "${nombre}":`, err);
+      return `<div class="view-section"><div class="s-card" style="border-left:3px solid #ef4444;"><div class="s-card-body" style="color:#ef4444; font-size:.78rem;">No se pudo mostrar "${escapeHtml(nombre)}" (ver consola del navegador para el detalle técnico).</div></div></div>`;
+    }
+  }
+
   // ═══ FASE 1 — Reconstrucción + Prueba de Reconstrucción real ═══
   function renderComparison(data, outEl, sesion) {
-    const recA = (data.reconstructions || {}).a;
-    const recB = (data.reconstructions || {}).b;
+    if (!outEl) {
+      console.error('[LOGOS] renderComparison: no hay contenedor de salida — no se puede mostrar el resultado.');
+      return;
+    }
+    // Defensa de última línea: data ya fue validada como objeto en
+    // compareWithLogos, pero si esta función se llama desde otro lugar
+    // (o con datos corruptos) igual mostramos algo en vez de romper.
+    const datosSeguros = (data && typeof data === 'object') ? data : {};
+    const recA = (datosSeguros.reconstructions || {}).a || null;
+    const recB = (datosSeguros.reconstructions || {}).b || null;
 
-    outEl.innerHTML = `
+    const htmlReconstruccion = seccionSegura('Reconstrucción', () => `
       <div class="view-section">
         <div class="view-section-title">Reconstrucción <span style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:none;">(🟢 explícito en el material · 🟡 inferencia de Logos)</span></div>
         <div class="card-grid">
@@ -878,7 +971,9 @@
           ${renderReconstruccionDetalle(recB, 'B')}
         </div>
       </div>
+    `);
 
+    const htmlValidacion = seccionSegura('Validación de la reconstrucción', () => `
       <!-- Prueba de Reconstrucción real: la persona confirma, rechaza o
            corrige, y esa decisión bloquea de verdad el resto del análisis
            (protocolo, sección "Comprensión Mutua" en adelante). -->
@@ -895,11 +990,20 @@
           <button id="logos-continuar-btn" class="btn-primary" disabled style="opacity:.4; cursor:not-allowed;">Ver análisis completo → (confirmá ambas posiciones primero)</button>
         </div>
       </div>
+    `);
 
+    const avisoContratoIncompleto = (!datosSeguros.reconstructions)
+      ? `<div class="view-section"><p style="font-size:.75rem; color:#eab308;">El backend respondió correctamente pero esta respuesta no trae reconstrucciones (ver consola: "[LOGOS DEBUG]"). Se muestra igual lo que sí llegó.</p></div>`
+      : '';
+
+    outEl.innerHTML = `
+      ${avisoContratoIncompleto}
+      ${htmlReconstruccion}
+      ${htmlValidacion}
       <div id="logos-fase2-container"></div>
     `;
 
-    _bindValidationButtons(outEl, data, sesion);
+    _bindValidationButtons(outEl, datosSeguros, sesion);
   }
 
   function renderTarjetaValidacion(lado, sesion) {
@@ -932,6 +1036,7 @@
 
   // ─── Validación de reconstrucción (protocolo, prueba de reconstrucción) ──
   function _bindValidationButtons(outEl, data, sesion) {
+    if (!outEl) return;
     const actualizarBotonContinuar = () => {
       const continuarBtn = document.getElementById('logos-continuar-btn');
       if (!continuarBtn) return;
@@ -1035,63 +1140,84 @@
   // ═══ FASE 2 — Comprensión mutua, mapeo relacional y síntesis ═══
   // Solo se genera cuando ambas reconstrucciones fueron confirmadas — el
   // gate real vive en _bindValidationButtons/actualizarBotonContinuar, acá
-  // solo se pinta lo que el backend ya calculó.
+  // solo se pinta lo que el backend ya calculó. Cada bloque pasa por
+  // seccionSegura(): si UNO falla (p. ej. una forma de dato inesperada),
+  // el resto del análisis igual se muestra.
   function renderFullAnalysis(data, fase2El, sesion) {
-    const elegibilidad = data.synthesisEligibility || {};
-    const abstuvo = data.state === 'ABSTAINED' || data.status === 'abstained';
+    if (!fase2El) {
+      console.error('[LOGOS] renderFullAnalysis: no hay contenedor de salida.');
+      return;
+    }
+    const datosSeguros = (data && typeof data === 'object') ? data : {};
+    const elegibilidad = datosSeguros.synthesisEligibility || {};
+    const abstuvo = datosSeguros.state === 'ABSTAINED' || datosSeguros.status === 'abstained';
 
-    fase2El.innerHTML = `
-      ${data.mutualUnderstanding ? `
-        <div class="view-section">
-          <div class="view-section-title">Comprensión mutua</div>
-          <div class="card-grid">
-            <div class="s-card"><div class="s-card-title">Cómo entiende A a B</div><div class="s-card-body">${escapeHtml(data.mutualUnderstanding.a_understands_b || '')}</div></div>
-            <div class="s-card"><div class="s-card-title">Cómo entiende B a A</div><div class="s-card-body">${escapeHtml(data.mutualUnderstanding.b_understands_a || '')}</div></div>
-          </div>
-        </div>` : ''}
+    const bloques = [];
 
-      ${(data.agreements && data.agreements.length) ? `
-        <div class="view-section">
-          <div class="view-section-title">Acuerdos</div>
-          <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${data.agreements.map(a => `<li>${escapeHtml(a)}</li>`).join('')}</ul>
-        </div>` : ''}
+    bloques.push(seccionSegura('Comprensión mutua', () => !datosSeguros.mutualUnderstanding ? '' : `
+      <div class="view-section">
+        <div class="view-section-title">Comprensión mutua</div>
+        <div class="card-grid">
+          <div class="s-card"><div class="s-card-title">Cómo entiende A a B</div><div class="s-card-body">${escapeHtml(datosSeguros.mutualUnderstanding.a_understands_b || '')}</div></div>
+          <div class="s-card"><div class="s-card-title">Cómo entiende B a A</div><div class="s-card-body">${escapeHtml(datosSeguros.mutualUnderstanding.b_understands_a || '')}</div></div>
+        </div>
+      </div>`));
 
-      ${(data.sharedAssumptions && data.sharedAssumptions.length) ? `
-        <div class="view-section">
-          <div class="view-section-title">Supuestos compartidos</div>
-          <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${data.sharedAssumptions.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ul>
-        </div>` : ''}
+    bloques.push(seccionSegura('Acuerdos', () => {
+      const items = (datosSeguros.agreements || []).filter(Boolean);
+      return !items.length ? '' : `
+      <div class="view-section">
+        <div class="view-section-title">Acuerdos</div>
+        <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${items.map(a => `<li>${escapeHtml(a)}</li>`).join('')}</ul>
+      </div>`;
+    }));
 
-      ${(data.disagreements && data.disagreements.length) ? `
-        <div class="view-section">
-          <div class="view-section-title">Desacuerdos <span style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:none;">(naturaleza del desacuerdo, no un puntaje)</span></div>
-          ${data.disagreements.map(d => `
-            <div style="background:var(--s-panel); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:8px;">
-              <div style="font-size:.68rem; color:var(--accent); text-transform:uppercase;">
-                ${escapeHtml(d.primaryType || '')}${(d.secondaryTypes && d.secondaryTypes.length) ? ` · ${d.secondaryTypes.map(escapeHtml).join(', ')}` : ''}
-              </div>
-              <div style="font-size:.82rem; color:#e5e7eb;">${escapeHtml(d.text || '')}</div>
-              ${(d.basis && ((d.basis.positionAClaims || []).length || (d.basis.positionBClaims || []).length)) ? `
-                <div style="font-size:.68rem; color:rgba(229,231,235,.4); margin-top:4px; font-family:monospace;">
-                  Basado en: ${[...(d.basis.positionAClaims || []), ...(d.basis.positionBClaims || [])].map(escapeHtml).join(', ')}
-                </div>` : ''}
-            </div>`).join('')}
-        </div>` : ''}
+    bloques.push(seccionSegura('Supuestos compartidos', () => {
+      const items = (datosSeguros.sharedAssumptions || []).filter(Boolean);
+      return !items.length ? '' : `
+      <div class="view-section">
+        <div class="view-section-title">Supuestos compartidos</div>
+        <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${items.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ul>
+      </div>`;
+    }));
 
-      ${(data.convergences && data.convergences.length) ? `
-        <div class="view-section">
-          <div class="view-section-title">Convergencias</div>
-          ${data.convergences.map(c => {
-            const et = convergenciaEtiqueta(c.status);
-            return `
-            <div style="background:var(--s-panel); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:8px;">
-              <div style="font-size:.68rem; color:${et.color}; text-transform:uppercase;">${et.texto}</div>
-              <div style="font-size:.82rem; color:#e5e7eb;">${escapeHtml(c.text || '')}</div>
-              ${c.condition ? `<div style="font-size:.72rem; color:rgba(229,231,235,.5); margin-top:4px;">Condición: ${escapeHtml(c.condition)}</div>` : ''}
-            </div>`;
-          }).join('')}
-        </div>` : ''}
+    bloques.push(seccionSegura('Desacuerdos', () => {
+      const items = (datosSeguros.disagreements || []).filter(Boolean);
+      return !items.length ? '' : `
+      <div class="view-section">
+        <div class="view-section-title">Desacuerdos <span style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:none;">(naturaleza del desacuerdo, no un puntaje)</span></div>
+        ${items.map(d => `
+          <div style="background:var(--s-panel); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:8px;">
+            <div style="font-size:.68rem; color:var(--accent); text-transform:uppercase;">
+              ${escapeHtml(d.primaryType || '')}${(d.secondaryTypes && d.secondaryTypes.filter(Boolean).length) ? ` · ${d.secondaryTypes.filter(Boolean).map(escapeHtml).join(', ')}` : ''}
+            </div>
+            <div style="font-size:.82rem; color:#e5e7eb;">${escapeHtml(d.text || '')}</div>
+            ${(d.basis && (((d.basis.positionAClaims || []).filter(Boolean).length) || ((d.basis.positionBClaims || []).filter(Boolean).length))) ? `
+              <div style="font-size:.68rem; color:rgba(229,231,235,.4); margin-top:4px; font-family:monospace;">
+                Basado en: ${[...(d.basis.positionAClaims || []).filter(Boolean), ...(d.basis.positionBClaims || []).filter(Boolean)].map(escapeHtml).join(', ')}
+              </div>` : ''}
+          </div>`).join('')}
+      </div>`;
+    }));
 
+    bloques.push(seccionSegura('Convergencias', () => {
+      const items = (datosSeguros.convergences || []).filter(Boolean);
+      return !items.length ? '' : `
+      <div class="view-section">
+        <div class="view-section-title">Convergencias</div>
+        ${items.map(c => {
+          const et = convergenciaEtiqueta(c.status);
+          return `
+          <div style="background:var(--s-panel); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:8px;">
+            <div style="font-size:.68rem; color:${et.color}; text-transform:uppercase;">${et.texto}</div>
+            <div style="font-size:.82rem; color:#e5e7eb;">${escapeHtml(c.text || '')}</div>
+            ${c.condition ? `<div style="font-size:.72rem; color:rgba(229,231,235,.5); margin-top:4px;">Condición: ${escapeHtml(c.condition)}</div>` : ''}
+          </div>`;
+        }).join('')}
+      </div>`;
+    }));
+
+    bloques.push(seccionSegura('Elegibilidad para síntesis', () => `
       <div class="view-section">
         <div class="view-section-title">Elegibilidad para síntesis</div>
         <p style="font-size:.75rem; color:rgba(229,231,235,.5); margin-bottom:10px;">Estas son condiciones que el motor evaluó de forma determinista — no un puntaje de calidad del diálogo.</p>
@@ -1102,64 +1228,77 @@
             return `<div class="s-card"><div class="s-card-title" style="font-size:.72rem;">${k}</div><div class="s-card-body" style="font-size:.78rem;">${escapeHtml(c.status || '')}${c.reason ? ` — ${escapeHtml(c.reason)}` : ''}</div></div>`;
           }).join('')}
         </div>
-      </div>
+      </div>`));
 
-      ${abstuvo ? `
+    if (abstuvo) {
+      bloques.push(seccionSegura('Abstención de síntesis', () => `
         <div class="view-section">
           <div class="s-card" style="border-left:3px solid #eab308;">
             <div class="view-eyebrow">Logos se abstuvo de generar síntesis</div>
             <p style="font-size:.82rem; color:#e5e7eb;">${escapeHtml(elegibilidad.reason || 'El motor determinó que no se cumplen las condiciones epistémicas para sintetizar todavía.')}</p>
-            <p style="font-size:.75rem; color:rgba(229,231,235,.5);">Esto no es un error — es el motor respetando el punto 17 del protocolo: no inventa una síntesis cuando la base documental no la sostiene.</p>
+            <p style="font-size:.75rem; color:rgba(229,231,235,.5);">Esto no es un error — es el motor no inventando una síntesis cuando la base documental no la sostiene.</p>
           </div>
-        </div>` : `
-        ${data.synthesis && data.synthesis.relational ? `
-          <div class="view-section">
-            <div class="view-section-title">Síntesis relacional</div>
-            <p style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${escapeHtml(data.synthesis.relational)}</p>
-          </div>` : ''}
-
-        ${(data.synthesis && data.synthesis.generative && data.synthesis.generative.length) ? `
-          <div class="view-section">
-            <div class="view-section-title">Síntesis generativa <span style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:none;">(propuesta, no conclusión)</span></div>
-            ${data.synthesis.generative.map(s => `
-              <div class="s-card">
-                <div class="s-card-title">${s.type === 'problema' ? 'Reformulación del problema' : 'Propuesta de solución'}${s.title ? ` — ${escapeHtml(s.title)}` : ''}</div>
-                <div class="s-card-body">${escapeHtml(s.text || '')}</div>
-                ${s.derivedFrom ? `
-                  <div style="margin-top:8px; font-size:.72rem; color:rgba(229,231,235,.5); font-family:monospace;">
-                    ${(s.derivedFrom.positionAClaims || []).length || (s.derivedFrom.positionBClaims || []).length ? `Surge de: ${[...(s.derivedFrom.positionAClaims || []), ...(s.derivedFrom.positionBClaims || [])].map(escapeHtml).join(', ')}<br>` : ''}
-                    ${(s.derivedFrom.newElements || []).length ? `Nuevos elementos introducidos por Logos: ${s.derivedFrom.newElements.map(escapeHtml).join(', ')}` : ''}
-                  </div>` : ''}
-              </div>`).join('')}
-          </div>` : ''}
-      `}
-
-      ${(data.openQuestions && data.openQuestions.length) ? `
+        </div>`));
+    } else {
+      bloques.push(seccionSegura('Síntesis relacional', () => (!datosSeguros.synthesis || !datosSeguros.synthesis.relational) ? '' : `
         <div class="view-section">
-          <div class="view-section-title">Preguntas deliberativas abiertas</div>
-          <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${data.openQuestions.map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>
-        </div>` : ''}
+          <div class="view-section-title">Síntesis relacional</div>
+          <p style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${escapeHtml(datosSeguros.synthesis.relational)}</p>
+        </div>`));
 
-      ${(data.uncertainties && data.uncertainties.length) ? `
+      bloques.push(seccionSegura('Síntesis generativa', () => {
+        const items = (datosSeguros.synthesis && datosSeguros.synthesis.generative || []).filter(Boolean);
+        return !items.length ? '' : `
         <div class="view-section">
-          <div class="view-section-title">Incertidumbres declaradas</div>
-          <ul style="font-size:.82rem; color:rgba(229,231,235,.6); line-height:1.6;">${data.uncertainties.map(u => `<li>${escapeHtml(u)}</li>`).join('')}</ul>
-        </div>` : ''}
+          <div class="view-section-title">Síntesis generativa <span style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:none;">(propuesta, no conclusión)</span></div>
+          ${items.map(s => `
+            <div class="s-card">
+              <div class="s-card-title">${s.type === 'problema' ? 'Reformulación del problema' : 'Propuesta de solución'}${s.title ? ` — ${escapeHtml(s.title)}` : ''}</div>
+              <div class="s-card-body">${escapeHtml(s.text || '')}</div>
+              ${s.derivedFrom ? `
+                <div style="margin-top:8px; font-size:.72rem; color:rgba(229,231,235,.5); font-family:monospace;">
+                  ${((s.derivedFrom.positionAClaims || []).filter(Boolean).length || (s.derivedFrom.positionBClaims || []).filter(Boolean).length) ? `Surge de: ${[...(s.derivedFrom.positionAClaims || []).filter(Boolean), ...(s.derivedFrom.positionBClaims || []).filter(Boolean)].map(escapeHtml).join(', ')}<br>` : ''}
+                  ${(s.derivedFrom.newElements || []).filter(Boolean).length ? `Nuevos elementos introducidos por Logos: ${s.derivedFrom.newElements.filter(Boolean).map(escapeHtml).join(', ')}` : ''}
+                </div>` : ''}
+            </div>`).join('')}
+        </div>`;
+      }));
+    }
 
+    bloques.push(seccionSegura('Preguntas abiertas', () => {
+      const items = (datosSeguros.openQuestions || []).filter(Boolean);
+      return !items.length ? '' : `
+      <div class="view-section">
+        <div class="view-section-title">Preguntas deliberativas abiertas</div>
+        <ul style="font-size:.82rem; color:rgba(229,231,235,.8); line-height:1.6;">${items.map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>
+      </div>`;
+    }));
+
+    bloques.push(seccionSegura('Incertidumbres', () => {
+      const items = (datosSeguros.uncertainties || []).filter(Boolean);
+      return !items.length ? '' : `
+      <div class="view-section">
+        <div class="view-section-title">Incertidumbres declaradas</div>
+        <ul style="font-size:.82rem; color:rgba(229,231,235,.6); line-height:1.6;">${items.map(u => `<li>${escapeHtml(u)}</li>`).join('')}</ul>
+      </div>`;
+    }));
+
+    bloques.push(seccionSegura('Detalle técnico', () => `
       <div class="view-section">
         <details style="font-size:.72rem; color:rgba(229,231,235,.4);">
           <summary style="cursor:pointer;">Detalle técnico (trazabilidad)</summary>
           <div style="margin-top:8px; font-family:monospace; line-height:1.7;">
-            protocolVersion: ${escapeHtml(data.protocolVersion || '')}<br>
-            sessionId: ${escapeHtml(data.sessionId || '')}<br>
-            lastCompletedPhase: ${escapeHtml(data.lastCompletedPhase || '')}<br>
+            protocolVersion: ${escapeHtml(datosSeguros.protocolVersion || '')}<br>
+            sessionId: ${escapeHtml(datosSeguros.sessionId || '')}<br>
+            lastCompletedPhase: ${escapeHtml(datosSeguros.lastCompletedPhase || '')}<br>
             reconstructionValidation.a: ${escapeHtml(JSON.stringify({status: sesion.reconstructionValidation.a.status, iteration: sesion.reconstructionValidation.a.iteration}))}<br>
             reconstructionValidation.b: ${escapeHtml(JSON.stringify({status: sesion.reconstructionValidation.b.status, iteration: sesion.reconstructionValidation.b.iteration}))}
           </div>
         </details>
-      </div>
-    `;
-    _bindLogosFeedback(fase2El, data, sesion);
+      </div>`));
+
+    fase2El.innerHTML = bloques.join('');
+    _bindLogosFeedback(fase2El, datosSeguros, sesion);
   }
 
   // ─── Feedback del usuario sobre el uso de Logos ────────
@@ -1180,6 +1319,13 @@
     const feedbackBtn = wrapper.querySelector('#logosFeedbackBtn');
     const feedbackInput = wrapper.querySelector('#logosFeedbackInput');
     const feedbackStatus = wrapper.querySelector('#logosFeedbackStatus');
+    // Este bloque es secundario (feedback opcional) — si por lo que sea
+    // no se encuentran los nodos recién insertados, no debe tumbar el
+    // resto del análisis que ya se mostró arriba.
+    if (!feedbackBtn || !feedbackInput || !feedbackStatus) {
+      console.error('[LOGOS] _bindLogosFeedback: no se encontraron los controles de feedback recién insertados.');
+      return;
+    }
 
     feedbackBtn.onclick = async () => {
       const comentario = feedbackInput.value.trim();
