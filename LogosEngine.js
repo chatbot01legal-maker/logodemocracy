@@ -134,12 +134,30 @@ class LogosEngine {
   // ─── TAREAS COGNITIVAS CON ESQUEMAS JSON ─────────────────────
 
   async _phaseReconstruct(a, b) {
-    const sys = "Reconstruye neutralmente cada posición. Extrae coreClaims e IDs. No valides verdad factual.";
+    const sys = [
+      "Reconstruye neutralmente cada posición. No valides verdad factual — eso no es tarea tuya.",
+      "Cada coreClaim necesita un id único (A1, A2… para la posición A; B1, B2… para la posición B).",
+      "Cada coreClaim debe llevar epistemicStatus: 'EXPLICIT' si la afirmación aparece efectivamente formulada en el material, o 'INFERRED' si es una inferencia o reconstrucción tuya a partir del material.",
+      "Si epistemicStatus es 'INFERRED', debes declarar inferredFrom con los ids de los coreClaims (de la misma posición) de los que se desprende esa inferencia. Si es 'EXPLICIT', inferredFrom debe ser un arreglo vacío.",
+      "No conviertas una inferencia tuya en una afirmación que parezca haber sido hecha literalmente por la persona: la distinción EXPLICIT/INFERRED debe ser estricta.",
+      "Cada elemento de evidence necesita también un id propio (A1-E1, A1-E2, etc.)."
+    ].join(" ");
+    const claimSchema = {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        text: { type: "string" },
+        epistemicStatus: { type: "string", enum: ["EXPLICIT", "INFERRED"] },
+        inferredFrom: { type: "array", items: { type: "string" } },
+        evidence: { type: "array", items: { type: "object", properties: { id: { type: "string" }, source: { type: "string" }, quote: { type: "string" } } } },
+        status: { type: "string" }
+      }
+    };
     const schema = {
       type: "object",
       properties: {
-        a: { type: "object", properties: { summary: { type: "string" }, coreClaims: { type: "array", items: { type: "object", properties: { id: { type: "string" }, text: { type: "string" }, evidence: { type: "array", items: { type: "object", properties: { source: { type: "string" }, quote: { type: "string" } } } }, status: { type: "string" } } } } } },
-        b: { type: "object", properties: { summary: { type: "string" }, coreClaims: { type: "array", items: { type: "object", properties: { id: { type: "string" }, text: { type: "string" }, evidence: { type: "array", items: { type: "object", properties: { source: { type: "string" }, quote: { type: "string" } } } }, status: { type: "string" } } } } } }
+        a: { type: "object", properties: { summary: { type: "string" }, coreClaims: { type: "array", items: claimSchema } } },
+        b: { type: "object", properties: { summary: { type: "string" }, coreClaims: { type: "array", items: claimSchema } } }
       }
     };
     return await this.ai.executeTask(sys, { positionA: a, positionB: b }, schema);
