@@ -866,7 +866,7 @@ function renderSpeechText(content, messageIndex) {
                     border-radius:10px;
                     font-size:.82rem;
                     line-height:1.45;
-                    white-space:pre-wrap;
+                    white-space: normal;
                     background:${
                       m.role === 'user'
                         ? 'var(--rf-user-bg, #1d4ed8)'
