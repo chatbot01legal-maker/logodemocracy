@@ -11,25 +11,25 @@
   <link rel="stylesheet" href="/assets/css/sophia.css">
 </head>
 <body>
-  <!-- === INICIO: ANIMACIÓN DE CARGA LOGOS/SOPHIA === -->
+
+  <!-- === LOADER AUTO-ACTIVABLE SOPHIA / LOGOS === -->
 <style>
   #logos-loader {
     display: none;
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(4px);
-    z-index: 9999;
+    background: rgba(15, 23, 42, 0.88) !important;
+    backdrop-filter: blur(5px);
+    z-index: 999999 !important;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #e2e8f0;
-    font-family: monospace;
+    color: #f8fafc;
+    font-family: system-ui, -apple-system, sans-serif;
   }
   .sandglass-box {
-    font-size: 48px;
+    font-size: 56px;
     animation: flipHourglass 2s infinite ease-in-out;
-    display: inline-block;
   }
   .loading-dots::after {
     content: '';
@@ -52,23 +52,30 @@
 
 <div id="logos-loader">
   <div class="sandglass-box">⏳</div>
-  <p style="margin-top: 15px; font-size: 1.1rem; font-weight: bold;">
-    Entrenando síntesis cognitiva<span class="loading-dots"></span>
+  <p style="margin-top: 18px; font-size: 1.2rem; font-weight: 600; color: #ffffff;">
+    Procesando análisis cognitivo<span class="loading-dots"></span>
   </p>
-  <small style="color: #94a3b8; margin-top: 5px;">Esto puede tomar unos segundos</small>
+  <small style="color: #94a3b8; margin-top: 6px;">Por favor espera unos segundos...</small>
 </div>
 
 <script>
-  function toggleLoader(activar, mensaje = 'Entrenando síntesis cognitiva') {
-    const el = document.getElementById('logos-loader');
-    if (!el) return;
-    if (mensaje && el.querySelector('p')) {
-      el.querySelector('p').childNodes[0].nodeValue = mensaje;
-    }
-    el.style.display = activar ? 'flex' : 'none';
-  }
+  (function() {
+    // Interceptor automático para mostrar/ocultar la animación durante las peticiones backend
+    const originalFetch = window.fetch;
+    window.fetch = async function(...args) {
+      const loader = document.getElementById('logos-loader');
+      if (loader) loader.style.display = 'flex';
+      try {
+        const response = await originalFetch(...args);
+        return response;
+      } finally {
+        if (loader) loader.style.display = 'none';
+      }
+    };
+  })();
 </script>
-<!-- === FIN: ANIMACIÓN DE CARGA LOGOS/SOPHIA === -->
+<!-- === FIN LOADER AUTO-ACTIVABLE === -->
+  
 
 <div class="page">
 
