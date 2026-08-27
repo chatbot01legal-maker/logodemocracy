@@ -1093,6 +1093,46 @@
       renderLauncher();
     },
 
+    setActiveAsset(cognitiveAsset) {
+      let normalized;
+
+      try {
+        normalized =
+          normalizeCognitiveAsset(
+            cognitiveAsset
+          );
+      } catch (e) {
+        console.error(
+          '❌ ReyFilosofoChat.setActiveAsset():',
+          e.message
+        );
+        return false;
+      }
+
+      /*
+       * Actualizamos únicamente el contexto documental.
+       *
+       * IMPORTANTE:
+       * - No reemplazamos la conversación.
+       * - No generamos una nueva sesión.
+       * - No abrimos ni cerramos el chat.
+       * - No modificamos el estado de voz.
+       *
+       * El siguiente mensaje enviado al backend utilizará
+       * este nuevo activeAsset.
+       */
+      state.activeAsset = normalized;
+
+      /*
+       * Si el panel está abierto, lo redibujamos para que
+       * el estado interno quede sincronizado inmediatamente.
+       */
+      if (state.isOpen) {
+        renderPanel();
+      }
+
+      return true;
+    },
 
     open(cognitiveAsset) {
       let normalized;
