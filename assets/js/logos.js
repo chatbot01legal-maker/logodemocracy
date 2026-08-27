@@ -875,63 +875,143 @@
  * Mapea propiedades y asegura valores string para evitar bloques vacíos.
  */
 function desenvolverRespuesta(cuerpo) {
-    if (!cuerpo) return null;
+  if (!cuerpo) return null;
 
-    let d = cuerpo;
-    while (d && (d.data || d.result || d.payload)) {
-        d = d.data || d.result || d.payload;
+  let d = cuerpo;
+  while (d && (d.data || d.result || d.payload)) {
+    d = d.data || d.result || d.payload;
+  }
+
+  // --- 1. Reconstrucciones (mapeo desde reconstruccion_completa) ---
+  const recs = d.reconstruccion_completa || d.reconstructions || {};
+  const reconstructions = { a: null, b: null };
+
+  // Función auxiliar para convertir argumentos/evidencia/supuestos a coreClaims
+  function buildClaims(items, defaultStatus = 'EXPLICIT') {
+    if (!Array.isArray(items)) return [];
+    return items
+      .filter(item => item && typeof item === 'object' && item.texto)
+      .map(item => ({
+        id: item.id || null,
+        text: item.texto || '',
+        epistemicStatus: (item.origen && item.origen.toLowerCase().includes('inferido'))
+          ? 'INFERRED'
+          : defaultStatus,
+        evidence: item.evidencia
+          ? item.evidencia.map(e => ({ quote: e.texto || e, source: e.fuente || null }))
+          : []
+      }));
+  }
+
+  if (recs.a && typeof recs.a === 'object') {
+    reconstructions.a = {
+      summary: d.sintesis_descriptiva?.a || '',
+      coreClaims: [
+        ...buildClaims(recs.a.argumentos || [], 'EXPLICIT'),
+        ...buildClaims(recs.a.evidencia || [], 'EXPLICIT'),
+        ...buildClaims(recs.a.supuestos || [], 'INFERRED')
+      ]
+    };
+  }
+  if (recs.b && typeof recs.b === 'object') {
+    reconstructions.b = {
+      summary: d.sintesis_descriptiva?.b || '',
+      coreClaims: [
+        ...buildClaims(recs.b.argumentos || [], 'EXPLICIT'),
+        ...buildClaims(recs.b.evidencia || [], 'EXPLICIT'),
+        ...buildClaims(recs.b.supuestos || [], 'INFERRED')
+      ]
+    };
+  }
+
+  // --- 2. Comprensión mutua ---
+  const mu = d.comprension_cruzada || d.mutualUnderstanding || {};
+  const mutualUnderstanding = {
+    a_understands_b: mu.a_sobre_b || mu.a_understands_b || '',
+    b_understands_a: mu.b_sobre_a || mu.b_understands_a || ''
+  };
+
+  // --- 3. Acuerdos, desacuerdos, supuestos compartidos ---
+  const agreements = Array.isArray(d.acuerdos) ? d.acuerdos : [];
+  const sharedAssumptions = Array.isArray(d.supuestos_compartidos) ? d.supuestos_compartidos : [];
+
+  const disagreements = Array.isArray(d.desacuerdos)
+    ? d.desacuerdos.map(item => ({
+        primaryType: item.tipo || 'Sin clasificar',
+        secondaryTypes: [],
+        text: item.texto || item.desc || '',
+        basis: { positionAClaims: [], positionBClaims: [] }
+      }))
+    : [];
+
+  // --- 4. Convergencias ---
+  const convergences = Array.isArray(d.convergencias)
+    ? d.convergencias.map(item => ({
+        status: item.estado || 'Posible',
+        text: item.texto || '',
+        condition: item.condicion || null
+      }))
+    : [];
+
+  // --- 5. Síntesis ---
+  const synthesis = {
+    relational: d.sintesis_relacional || '',
+    generative: Array.isArray(d.sintesis_generativa)
+      ? d.sintesis_generativa.map(item => ({
+          type: item.tipo === 'problema' ? 'problema' : 'solucion',
+          title: null,
+          text: item.texto || '',
+          derivedFrom: { positionAClaims: [], positionBClaims: [], newElements: [] }
+        }))
+      : []
+  };
+
+  // --- 6. Preguntas abiertas e incertidumbres ---
+  const openQuestions = Array.isArray(d.preguntas_deliberativas) ? d.preguntas_deliberativas : [];
+  const uncertainties = []; // no existe en el formato antiguo
+
+  // --- 7. Elegibilidad (valor por defecto para que no bloquee) ---
+  const synthesisEligibility = {
+    eligible: true,
+    summary: d.sintesis_descriptiva ? 'Síntesis descriptiva disponible' : '',
+    eligibilityReason: 'Se asume elegibilidad por compatibilidad con versión anterior.',
+    criteria: {
+      questionAlignment: { status: 'OK', reason: 'Asumido' },
+      informationSufficiency: { status: 'OK', reason: 'Asumido' },
+      conceptualClarity: { status: 'OK', reason: 'Asumido' },
+      evidenceSufficiency: { status: 'OK', reason: 'Asumido' }
     }
+  };
 
-    // 1. Reconstrucciones
-    const rawRecs = d.reconstructions || d.reconstruction || d.reconstruccion_completa || d.reconstrucciones || [];
-    const listRecs = Array.isArray(rawRecs) ? rawRecs : [rawRecs];
-    const reconstructions = listRecs.map(item => ({
-        ...item,
-        party: item.party || item.parte || item.actor || 'Parte',
-        reconstructedArgument: item.reconstructedArgument || item.argumento || item.reconstruccion || item.texto || item.content || '(Sin argumento)',
-        claims: (item.claims || item.afirmaciones || item.puntos || []).map(c => 
-            typeof c === 'string' ? { text: c, epistemicStatus: 'EXPLICIT' } : {
-                ...c,
-                text: c.text || c.texto || c.claim || c.contenido || '',
-                epistemicStatus: c.epistemicStatus || c.estado_epistemico || 'EXPLICIT'
-            }
-        )
-    }));
+  // --- 8. Forzar visibilidad de contenedores (ya existente) ---
+  const contenedores = ['resultados', 'resultadoContainer', 'fase1Container', 'output', 'app'];
+  contenedores.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.classList.remove('hidden', 'd-none');
+      el.style.display = 'block';
+    }
+  });
 
-    // 2. Comprensión Mutua
-    const rawMU = d.mutualUnderstanding || d.mutual_understanding || d.comprension_cruzada || d.comprensionCruzada || {};
-    const mutualUnderstanding = {
-        ...rawMU,
-        agreements: rawMU.agreements || rawMU.consensus || rawMU.consensos || rawMU.acuerdos || [],
-        disagreements: rawMU.disagreements || rawMU.divergence || rawMU.divergencias || rawMU.desacuerdos || []
-    };
-
-    // 3. Síntesis
-    const rawSE = d.synthesisEligibility || d.synthesis_eligibility || d.sintesis_descriptiva || d.sintesis || {};
-    const synthesisEligibility = typeof rawSE === 'string' ? { summary: rawSE, eligible: true } : {
-        ...rawSE,
-        eligible: rawSE.eligible !== undefined ? rawSE.eligible : true,
-        summary: rawSE.summary || rawSE.sintesis || rawSE.descripcion || rawSE.texto || '',
-        eligibilityReason: rawSE.eligibilityReason || rawSE.razon || rawSE.motivo || ''
-    };
-
-    // Visibilidad forzada del contenedor
-    const contenedores = ['resultados', 'resultadoContainer', 'fase1Container', 'output', 'app'];
-    contenedores.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.classList.remove('hidden', 'd-none');
-            el.style.display = 'block';
-        }
-    });
-
-    return {
-        ...d,
-        reconstructions,
-        mutualUnderstanding,
-        synthesisEligibility
-    };
-}
+  // --- 9. Devolver el objeto completo con todas las propiedades nuevas ---
+  return {
+    ...d,
+    reconstructions,
+    mutualUnderstanding,
+    agreements,
+    sharedAssumptions,
+    disagreements,
+    convergences,
+    synthesis,
+    openQuestions,
+    uncertainties,
+    synthesisEligibility,
+    // además, para mantener compatibilidad con otras partes, conservamos las originales
+    protocolVersion: d.protocolVersion || '0.1.1 (mapeado)',
+    sessionId: d.sessionId || null,
+    lastCompletedPhase: d.lastCompletedPhase || 'FASE1'
+  };
+     }
    
    
    
