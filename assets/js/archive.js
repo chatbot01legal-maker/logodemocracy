@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (irdEl) irdEl.innerHTML = `${meta.ird}<span style="font-size: 0.85rem; color: var(--c-faint);">/100</span>`;
       if (riskEl) riskEl.textContent = meta.risk;
 
-      currentActiveAsset = {
+            currentActiveAsset = {
         source: "Academia",
         contractVersion: "1.0",
         objective: `Acompañar en la comprensión del documento: ${meta.title}`,
@@ -168,10 +168,32 @@ document.addEventListener("DOMContentLoaded", () => {
           content: body,
           sophia: { ird: meta.ird, risk: meta.risk }
         },
-        metadata: { originModule: "Academia" }
+        metadata: {
+          originModule: "Academia"
+        }
       };
 
-      evaluateDocumentCached(name, body).catch(e => console.warn("Evaluación en segundo plano falló:", e));
+      // ─────────────────────────────────────────────────
+      // SINCRONIZAR INMEDIATAMENTE EL CONTEXTO DEL
+      // REY FILÓSOFO CON EL DOCUMENTO QUE EL USUARIO
+      // ACABA DE ABRIR.
+      //
+      // Esto evita que ReyFilosofoChat conserve el
+      // documento anterior como activeAsset.
+      // ─────────────────────────────────────────────────
+      if (
+        window.ReyFilosofoChat &&
+        typeof window.ReyFilosofoChat.setActiveAsset === "function"
+      ) {
+        window.ReyFilosofoChat.setActiveAsset(currentActiveAsset);
+      }
+
+      evaluateDocumentCached(name, body).catch(e =>
+        console.warn(
+          "Evaluación en segundo plano falló:",
+          e
+        )
+      );
 
     } catch (err) {
       console.error(err);
