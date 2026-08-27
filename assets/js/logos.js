@@ -871,8 +871,8 @@
   }
 
 /**
- * Normaliza profundamente la respuesta para Logos 10 (v0.2.3).
- * Mapea propiedades internas (ingles/español) para evitar contenedores con texto vacío.
+ * Normalización de respuesta para Logos 10 (v0.2.3)
+ * Mapea propiedades y asegura valores string para evitar bloques vacíos.
  */
 function desenvolverRespuesta(cuerpo) {
     if (!cuerpo) return null;
@@ -882,23 +882,23 @@ function desenvolverRespuesta(cuerpo) {
         d = d.data || d.result || d.payload;
     }
 
-    // 1. Reconstrucciones (mapea party, reconstructedArgument y claims)
+    // 1. Reconstrucciones
     const rawRecs = d.reconstructions || d.reconstruction || d.reconstruccion_completa || d.reconstrucciones || [];
     const listRecs = Array.isArray(rawRecs) ? rawRecs : [rawRecs];
     const reconstructions = listRecs.map(item => ({
         ...item,
-        party: item.party || item.parte || item.actor || item.usuario || 'Parte',
-        reconstructedArgument: item.reconstructedArgument || item.argumento || item.reconstruccion || item.texto || item.content || '',
+        party: item.party || item.parte || item.actor || 'Parte',
+        reconstructedArgument: item.reconstructedArgument || item.argumento || item.reconstruccion || item.texto || item.content || '(Sin argumento)',
         claims: (item.claims || item.afirmaciones || item.puntos || []).map(c => 
             typeof c === 'string' ? { text: c, epistemicStatus: 'EXPLICIT' } : {
                 ...c,
                 text: c.text || c.texto || c.claim || c.contenido || '',
-                epistemicStatus: c.epistemicStatus || c.estado_epistemico || c.tipo || 'EXPLICIT'
+                epistemicStatus: c.epistemicStatus || c.estado_epistemico || 'EXPLICIT'
             }
         )
     }));
 
-    // 2. Comprensión Mutua (mapea acuerdos y divergencias)
+    // 2. Comprensión Mutua
     const rawMU = d.mutualUnderstanding || d.mutual_understanding || d.comprension_cruzada || d.comprensionCruzada || {};
     const mutualUnderstanding = {
         ...rawMU,
@@ -906,7 +906,7 @@ function desenvolverRespuesta(cuerpo) {
         disagreements: rawMU.disagreements || rawMU.divergence || rawMU.divergencias || rawMU.desacuerdos || []
     };
 
-    // 3. Elegibilidad de Síntesis (mapea resumen y motivo)
+    // 3. Síntesis
     const rawSE = d.synthesisEligibility || d.synthesis_eligibility || d.sintesis_descriptiva || d.sintesis || {};
     const synthesisEligibility = typeof rawSE === 'string' ? { summary: rawSE, eligible: true } : {
         ...rawSE,
@@ -915,14 +915,7 @@ function desenvolverRespuesta(cuerpo) {
         eligibilityReason: rawSE.eligibilityReason || rawSE.razon || rawSE.motivo || ''
     };
 
-    const normalizado = {
-        ...d,
-        reconstructions,
-        mutualUnderstanding,
-        synthesisEligibility
-    };
-
-    // Asegurar visibilidad de contenedores
+    // Visibilidad forzada del contenedor
     const contenedores = ['resultados', 'resultadoContainer', 'fase1Container', 'output', 'app'];
     contenedores.forEach(id => {
         const el = document.getElementById(id);
@@ -932,8 +925,14 @@ function desenvolverRespuesta(cuerpo) {
         }
     });
 
-    return normalizado;
+    return {
+        ...d,
+        reconstructions,
+        mutualUnderstanding,
+        synthesisEligibility
+    };
 }
+   
    
    
 
