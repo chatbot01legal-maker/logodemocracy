@@ -871,29 +871,59 @@
   }
 
 /**
- * Normaliza y desenvuelve la respuesta del backend para Logos 10 (v0.2.3)
- * Soporta capas de envoltorio (data, result, payload) y mapea llaves (Español e Inglés).
+ * Normaliza profundamente la respuesta para Logos 10 (v0.2.3).
+ * Mapea propiedades internas (ingles/español) para evitar contenedores con texto vacío.
  */
 function desenvolverRespuesta(cuerpo) {
     if (!cuerpo) return null;
 
-    // 1. Desenvolver capas anidadas de la respuesta (data, result, payload)
     let d = cuerpo;
     while (d && (d.data || d.result || d.payload)) {
         d = d.data || d.result || d.payload;
     }
 
-    // 2. Mapear y normalizar llaves para garantizar compatibilidad con Logos 10
-    const normalizado = {
-        ...d,
-        reconstructions: d.reconstructions || d.reconstruction || d.reconstruccion_completa || d.reconstrucciones || [],
-        mutualUnderstanding: d.mutualUnderstanding || d.mutual_understanding || d.comprension_cruzada || d.comprensionCruzada || null,
-        synthesisEligibility: d.synthesisEligibility || d.synthesis_eligibility || d.sintesis_descriptiva || d.sintesis || null,
-        synthesis: d.synthesis || d.sintesis_descriptiva || d.sintesis || null
+    // 1. Reconstrucciones (mapea party, reconstructedArgument y claims)
+    const rawRecs = d.reconstructions || d.reconstruction || d.reconstruccion_completa || d.reconstrucciones || [];
+    const listRecs = Array.isArray(rawRecs) ? rawRecs : [rawRecs];
+    const reconstructions = listRecs.map(item => ({
+        ...item,
+        party: item.party || item.parte || item.actor || item.usuario || 'Parte',
+        reconstructedArgument: item.reconstructedArgument || item.argumento || item.reconstruccion || item.texto || item.content || '',
+        claims: (item.claims || item.afirmaciones || item.puntos || []).map(c => 
+            typeof c === 'string' ? { text: c, epistemicStatus: 'EXPLICIT' } : {
+                ...c,
+                text: c.text || c.texto || c.claim || c.contenido || '',
+                epistemicStatus: c.epistemicStatus || c.estado_epistemico || c.tipo || 'EXPLICIT'
+            }
+        )
+    }));
+
+    // 2. Comprensión Mutua (mapea acuerdos y divergencias)
+    const rawMU = d.mutualUnderstanding || d.mutual_understanding || d.comprension_cruzada || d.comprensionCruzada || {};
+    const mutualUnderstanding = {
+        ...rawMU,
+        agreements: rawMU.agreements || rawMU.consensus || rawMU.consensos || rawMU.acuerdos || [],
+        disagreements: rawMU.disagreements || rawMU.divergence || rawMU.divergencias || rawMU.desacuerdos || []
     };
 
-    // 3. Asegurar visibilidad del contenedor de resultados en el DOM
-    const contenedores = ['resultados', 'resultadoContainer', 'fase1Container', 'output'];
+    // 3. Elegibilidad de Síntesis (mapea resumen y motivo)
+    const rawSE = d.synthesisEligibility || d.synthesis_eligibility || d.sintesis_descriptiva || d.sintesis || {};
+    const synthesisEligibility = typeof rawSE === 'string' ? { summary: rawSE, eligible: true } : {
+        ...rawSE,
+        eligible: rawSE.eligible !== undefined ? rawSE.eligible : true,
+        summary: rawSE.summary || rawSE.sintesis || rawSE.descripcion || rawSE.texto || '',
+        eligibilityReason: rawSE.eligibilityReason || rawSE.razon || rawSE.motivo || ''
+    };
+
+    const normalizado = {
+        ...d,
+        reconstructions,
+        mutualUnderstanding,
+        synthesisEligibility
+    };
+
+    // Asegurar visibilidad de contenedores
+    const contenedores = ['resultados', 'resultadoContainer', 'fase1Container', 'output', 'app'];
     contenedores.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
@@ -904,6 +934,7 @@ function desenvolverRespuesta(cuerpo) {
 
     return normalizado;
 }
+   
    
 
   // ─── Badges de estado epistémico (punto 8) ────────────
