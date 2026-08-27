@@ -563,43 +563,117 @@
     renderPanel();
   }
 
+   // ═════════════════════════════════════════════════════
+// NORMALIZACIÓN VISUAL DE RESPUESTAS DEL REY FILÓSOFO
+// ═════════════════════════════════════════════════════
+
+function normalizeAssistantText(text) {
+  let value = String(text || '');
+
+  // Normalizar finales de línea
+  value = value
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n');
+
+  /*
+   * Los modelos pueden insertar saltos de línea dentro
+   * de un mismo párrafo. Los convertimos en espacios.
+   *
+   * Se mantienen los saltos dobles como separación
+   * entre párrafos.
+   */
+  value = value
+    .replace(/\n[ \t]*\n+/g, '\n\n')
+    .replace(/[ \t]*\n[ \t]*/g, ' ')
+    .replace(/[ \t]{2,}/g, ' ')
+    .trim();
+
+  return value;
+}
+
+
+function renderAssistantContent(text) {
+  let value = normalizeAssistantText(text);
+
+  /*
+   * Primero escapamos HTML para que el contenido
+   * generado por el modelo nunca pueda interpretarse
+   * como HTML arbitrario.
+   */
+  value = escapeHtml(value);
+
+  /*
+   * Markdown básico: negrita.
+   * **texto** → texto en negrita.
+   */
+  value = value.replace(
+    /\*\*(.+?)\*\*/g,
+    '<strong>$1</strong>'
+  );
+
+  /*
+   * Markdown básico: cursiva.
+   * *texto* → texto en cursiva.
+   */
+  value = value.replace(
+    /(^|[^\*])\*([^*\n]+)\*(?!\*)/g,
+    '$1<em>$2</em>'
+  );
+
+  /*
+   * Los saltos dobles representan separación entre
+   * párrafos.
+   */
+  value = value.replace(
+    /\n\n/g,
+    '<br><br>'
+  );
+
+  return value;
+}
 
   // ─── Construye el texto de una respuesta con resaltado
-  function renderSpeechText(content, messageIndex) {
-    const chunks = splitTextForSpeech(content);
 
-    if (!chunks.length) {
-      return escapeHtml(content);
-    }
+function renderSpeechText(content, messageIndex) {
+  const normalizedText =
+    normalizeAssistantText(content);
 
-    return chunks
-      .map((chunk, index) => {
-        const active =
-          speechState.isSpeaking &&
-          speechState.messageIndex === messageIndex &&
-          speechState.chunkIndex === index;
+  const chunks =
+    splitTextForSpeech(normalizedText);
 
-        const activeStyle = active
-          ? `
-              background:var(--rf-speech-highlight, rgba(59,130,246,.28));
-              border-radius:4px;
-              padding:1px 2px;
-              box-shadow:0 0 0 1px rgba(59,130,246,.18);
-            `
-          : '';
-
-        return `
-          <span
-            data-rf-speech-chunk="true"
-            data-message-index="${messageIndex}"
-            data-chunk-index="${index}"
-            style="${activeStyle}"
-          >${escapeHtml(chunk)}</span>
-        `;
-      })
-      .join(' ');
+  if (!chunks.length) {
+    return renderAssistantContent(
+      normalizedText
+    );
   }
 
+  return chunks
+    .map((chunk, index) => {
+      const active =
+        speechState.isSpeaking &&
+        speechState.messageIndex === messageIndex &&
+        speechState.chunkIndex === index;
+
+      const activeStyle = active
+        ? `
+            background:var(--rf-speech-highlight, rgba(59,130,246,.28));
+            border-radius:4px;
+            padding:1px 2px;
+            box-shadow:0 0 0 1px rgba(59,130,246,.18);
+          `
+        : '';
+
+      return `
+        <span
+          data-rf-speech-chunk="true"
+          data-message-index="${messageIndex}"
+          data-chunk-index="${index}"
+          style="${activeStyle}"
+        >${renderAssistantContent(chunk)}</span>
+      `;
+    })
+    .join(' ');
+}
 
   // ─── Botones de voz de cada respuesta ───────────────
   function renderSpeechControls(messageIndex, message) {
