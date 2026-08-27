@@ -870,23 +870,41 @@
     return fresco || outEl;
   }
 
-  // ─── Desenvuelve respuestas que vinieran dentro de un contenedor ──
-  // Si el backend responde {success, result:{...}} o {data:{...}} en vez
-  // del objeto de análisis directamente, esto lo detecta y devuelve el
-  // objeto real sin que el resto del código tenga que saberlo. Si el
-  // objeto recibido YA tiene forma de análisis (trae reconstructions,
-  // mutualUnderstanding, agreements, etc.), se devuelve tal cual.
-  function desenvolverRespuesta(cuerpo) {
-    if (!cuerpo || typeof cuerpo !== 'object') return cuerpo;
-    const pareceAnalisis = (o) => o && typeof o === 'object' && (
-      'reconstructions' in o || 'mutualUnderstanding' in o || 'synthesis' in o || 'agreements' in o
-    );
-    if (pareceAnalisis(cuerpo)) return cuerpo;
-    for (const clave of ['result', 'data', 'response', 'analysis', 'payload']) {
-      if (pareceAnalisis(cuerpo[clave])) return cuerpo[clave];
+/**
+ * Normaliza y desenvuelve la respuesta del backend para Logos 10 (v0.2.3)
+ * Soporta capas de envoltorio (data, result, payload) y mapea llaves (Español e Inglés).
+ */
+function desenvolverRespuesta(cuerpo) {
+    if (!cuerpo) return null;
+
+    // 1. Desenvolver capas anidadas de la respuesta (data, result, payload)
+    let d = cuerpo;
+    while (d && (d.data || d.result || d.payload)) {
+        d = d.data || d.result || d.payload;
     }
-    return cuerpo;
-  }
+
+    // 2. Mapear y normalizar llaves para garantizar compatibilidad con Logos 10
+    const normalizado = {
+        ...d,
+        reconstructions: d.reconstructions || d.reconstruction || d.reconstruccion_completa || d.reconstrucciones || [],
+        mutualUnderstanding: d.mutualUnderstanding || d.mutual_understanding || d.comprension_cruzada || d.comprensionCruzada || null,
+        synthesisEligibility: d.synthesisEligibility || d.synthesis_eligibility || d.sintesis_descriptiva || d.sintesis || null,
+        synthesis: d.synthesis || d.sintesis_descriptiva || d.sintesis || null
+    };
+
+    // 3. Asegurar visibilidad del contenedor de resultados en el DOM
+    const contenedores = ['resultados', 'resultadoContainer', 'fase1Container', 'output'];
+    contenedores.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.remove('hidden', 'd-none');
+            el.style.display = 'block';
+        }
+    });
+
+    return normalizado;
+}
+   
 
   // ─── Badges de estado epistémico (punto 8) ────────────
   // EXPLICIT: la afirmación aparece efectivamente en el material.
