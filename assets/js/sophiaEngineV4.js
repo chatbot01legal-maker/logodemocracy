@@ -444,8 +444,8 @@
     if (/[""''«»]/.test(text)) return true;
     // Patrones de discurso referido
     var reportedPatterns = [
-      'según', 'de acuerdo con', 'afirmó que', 'dijo que', 'declaró que',
-      'sostiene que', 'argumenta que', 'para', 'en palabras de',
+      'de acuerdo con', 'afirmó que', 'dijo que', 'declaró que',
+      'sostiene que', 'argumenta que', 'en palabras de',
       'citando a', 'como señala', 'como indica', 'como afirma'
     ];
     for (var i = 0; i < reportedPatterns.length; i++) {
@@ -483,7 +483,7 @@
    */
   function detectNegation(text) {
     var lower = text.trim().toLowerCase();
-    var negationWords = ['no', 'nunca', 'jamás', 'tampoco', 'sin', 'ni'];
+    var negationWords = ['no', 'nunca', 'jamás', 'tampoco'];
     var found = [];
     for (var i = 0; i < negationWords.length; i++) {
       // Buscar la palabra como token independiente
