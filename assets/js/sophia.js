@@ -1436,108 +1436,110 @@ inicio: {
     }
   },
   opensource: {
-    title: 'Open Source Cognitivo',
-    render: () => {
-      try {
-        return `
-          <div class="view">
-            <div class="view-eyebrow">Transparencia Radical</div>
-            <h1 class="view-title">Open Source Cognitivo</h1>
-            <div class="view-body">
-              <p>El <strong>Open Source Cognitivo</strong> es el principio fundacional de SOPHIA. Todo el conocimiento que utiliza el sistema para evaluar está documentado, es público y versionable.</p>
-              <p>Esto incluye:</p>
-              <ul style="color:rgba(229,231,235,.6); margin-left:20px; line-height:1.8;">
-                <li><strong>Las 5 fases</strong> y sus 20 criterios.</li>
-                <li><strong>Los 48 átomos cognitivos</strong> con sus definiciones operacionales.</li>
-                <li><strong>Las reglas de interpretación</strong> que determinan las penalizaciones.</li>
-                <li><strong>Las meta‑reglas</strong> que contextualizan la evaluación.</li>
-              </ul>
-              <p><strong>¿Y el algoritmo de IA?</strong> No podemos explicitar completamente la implementación concreta que utiliza el modelo de lenguaje para detectar patrones, porque depende de la arquitectura del modelo y de su entrenamiento. <strong>Pero sí podemos explicitar todo lo que el modelo debe buscar</strong>: los patrones lingüísticos, los umbrales, las relaciones lógicas y las condiciones que activan cada átomo.</p>
-              <p>Esto garantiza que, aunque la IA tenga cierta libertad en la ejecución, el <strong>significado de cada evaluación</strong> es fijo y reproducible. Cualquier persona, con cualquier herramienta, puede replicar el mismo resultado aplicando las mismas reglas.</p>
-              <p>Es decir: <strong>el protocolo es determinista en su definición</strong>, aunque la implementación técnica pueda variar.</p>
-            </div>
-            <div class="view-section">
-              <div class="view-section-title">Transparencia del instrumento</div>
-              <div class="card-grid">
-                <div class="s-card">
-                  <div class="s-card-title">Reglas públicas</div>
-                  <div class="s-card-body">Todos los criterios y átomos están documentados en el código fuente y en la interfaz.</div>
-                </div>
-                <div class="s-card">
-                  <div class="s-card-title">Versionado semántico</div>
-                  <div class="s-card-body">Cada cambio en el protocolo se registra y se puede debatir comunitariamente.</div>
-                </div>
-                <div class="s-card">
-                  <div class="s-card-title">Auditoría ciudadana</div>
-                  <div class="s-card-body">Cualquier persona puede verificar por qué un texto obtuvo una puntuación determinada.</div>
-                </div>
+  title: 'Open Source Cognitivo',
+  render: () => {
+    try {
+      return `
+        <div class="view">
+          <div class="view-eyebrow">Transparencia Radical</div>
+          <h1 class="view-title">Open Source Cognitivo</h1>
+          <div class="view-body">
+            <p>El <strong>Open Source Cognitivo</strong> es el principio fundacional de SOPHIA. Todo el conocimiento que utiliza el sistema para evaluar está documentado, es público y versionable.</p>
+            <p>Esto incluye:</p>
+            <ul style="color:rgba(229,231,235,.6); margin-left:20px; line-height:1.8;">
+              <li><strong>Las 5 fases</strong> y sus 20 criterios.</li>
+              <li><strong>Los 20 átomos semánticos</strong> (uno por criterio), con definiciones operacionales y perfiles contextuales.</li>
+              <li><strong>Las reglas de evaluación contextual</strong>: cada átomo se analiza considerando la negación, citas, preguntas, y se aplican reglas de mitigación (contraindicadores, alcance oración/texto, modos anula/reduce).</li>
+              <li><strong>Lógicas especiales</strong> para detectar conflación causal y petición de principio, que evalúan relaciones entre elementos del texto.</li>
+              <li><strong>Las meta‑reglas</strong> que contextualizan la evaluación.</li>
+            </ul>
+            <p><strong>¿Y el algoritmo de IA?</strong> No podemos explicitar completamente la implementación concreta que utiliza el modelo de lenguaje para detectar patrones, porque depende de la arquitectura del modelo y de su entrenamiento. <strong>Pero sí podemos explicitar todo lo que el modelo debe buscar</strong>: los patrones lingüísticos, los umbrales, las relaciones lógicas y las condiciones que activan cada átomo.</p>
+            <p>Esto garantiza que, aunque la IA tenga cierta libertad en la ejecución, el <strong>significado de cada evaluación</strong> es fijo y reproducible. Cualquier persona, con cualquier herramienta, puede replicar el mismo resultado aplicando las mismas reglas.</p>
+            <p>Es decir: <strong>el protocolo es determinista en su definición</strong>, aunque la implementación técnica pueda variar.</p>
+          </div>
+          <div class="view-section">
+            <div class="view-section-title">Transparencia del instrumento</div>
+            <div class="card-grid">
+              <div class="s-card">
+                <div class="s-card-title">Reglas públicas</div>
+                <div class="s-card-body">Todos los criterios y átomos están documentados en el código fuente y en la interfaz.</div>
+              </div>
+              <div class="s-card">
+                <div class="s-card-title">Versionado semántico</div>
+                <div class="s-card-body">Cada cambio en el protocolo se registra y se puede debatir comunitariamente.</div>
+              </div>
+              <div class="s-card">
+                <div class="s-card-title">Auditoría ciudadana</div>
+                <div class="s-card-body">Cualquier persona puede verificar por qué un texto obtuvo una puntuación determinada.</div>
               </div>
             </div>
           </div>
-        `;
-      } catch (e) {
-        showDebug(`❌ Error en vista opensource: ${e.message}`, true);
-        return `<p>Error al renderizar: ${e.message}</p>`;
-      }
+        </div>
+      `;
+    } catch (e) {
+      showDebug(`❌ Error en vista opensource: ${e.message}`, true);
+      return `<p>Error al renderizar: ${e.message}</p>`;
     }
-  },
+  }
+},
   atomos: {
-    title: 'Átomos Cognitivos',
-    render: () => {
-      try {
-        const todosAtomos = [];
-        PROTOCOL.fases.forEach(f => {
-          f.criterios.forEach(c => {
-            c.atomos.forEach(a => {
-              todosAtomos.push({
-                id: a.id,
-                definicion: a.definicion,
-                patrones: a.patrones,
-                criterio: `${c.id} - ${c.nombre}`,
-                fase: f.nombre
-              });
+  atomos: {
+  title: 'Átomos Cognitivos',
+  render: () => {
+    try {
+      const todosAtomos = [];
+      PROTOCOL.fases.forEach(f => {
+        f.criterios.forEach(c => {
+          c.atomos.forEach(a => {
+            todosAtomos.push({
+              id: a.id,
+              definicion: a.definicion,
+              patrones: a.patrones,
+              criterio: `${c.id} - ${c.nombre}`,
+              fase: f.nombre
             });
           });
         });
+      });
 
-        return `
-          <div class="view">
-            <div class="view-eyebrow">Unidades mínimas de significado</div>
-            <h1 class="view-title">Átomos Cognitivos</h1>
-            <div class="view-body">
-              <p>Los <strong>átomos cognitivos</strong> son las unidades semánticas fundamentales del protocolo SOPHIA. Cada uno representa un concepto operacional que la IA debe detectar en el texto para evaluar su calidad deliberativa.</p>
-              <p>Se organizan en 20 criterios distribuidos en 5 fases. A continuación se muestra el listado completo.</p>
+      return `
+        <div class="view">
+          <div class="view-eyebrow">Unidades mínimas de significado</div>
+          <h1 class="view-title">Átomos Cognitivos</h1>
+          <div class="view-body">
+            <p>El motor determinista de SOPHIA (Capa 1) se basa en <strong>20 átomos semánticos</strong> (uno por criterio), cada uno con definiciones contextuales y reglas de mitigación (negación, citas, contraindicadores, alcance oración/texto).</p>
+            <p>El protocolo local de respaldo contiene un conjunto más granular de <strong>${todosAtomos.length} unidades de análisis</strong> que se utilizan para depuración y para el fallback sin IA. A continuación se muestra el repositorio completo de estas unidades.</p>
+          </div>
+          <div class="view-section">
+            <div class="view-section-title">Repositorio completo de átomos</div>
+            <div style="max-height:400px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
+              ${todosAtomos.map(a => `
+                <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,.05); padding:6px 0;">
+                  <span style="color:var(--accent); font-weight:500; width:120px;">${a.id}</span>
+                  <span style="font-size:.75rem; color:rgba(229,231,235,.6); flex:1; padding:0 10px;">${a.definicion}</span>
+                  <span style="font-size:.6rem; color:rgba(229,231,235,.3); width:140px; text-align:right;">${a.criterio}</span>
+                </div>
+              `).join('')}
             </div>
-            <div class="view-section">
-              <div class="view-section-title">Repositorio completo de átomos</div>
-              <div style="max-height:400px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
-                ${todosAtomos.map(a => `
-                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,.05); padding:6px 0;">
-                    <span style="color:var(--accent); font-weight:500; width:120px;">${a.id}</span>
-                    <span style="font-size:.75rem; color:rgba(229,231,235,.6); flex:1; padding:0 10px;">${a.definicion}</span>
-                    <span style="font-size:.6rem; color:rgba(229,231,235,.3); width:140px; text-align:right;">${a.criterio}</span>
-                  </div>
-                `).join('')}
-              </div>
-              <div style="margin-top:12px; font-size:.7rem; color:rgba(229,231,235,.3);">
-                Total de átomos: ${todosAtomos.length}
-              </div>
-            </div>
-            <div class="view-section">
-              <div class="view-section-title">Función dentro del instrumento</div>
-              <div class="view-body">
-                <p>Cada átomo se activa cuando el texto contiene ciertos patrones lingüísticos (palabras clave, construcciones gramaticales). Su detección contribuye a la penalización del criterio correspondiente, según la severidad asignada y la frecuencia de aparición.</p>
-                <p>Esta arquitectura permite que la evaluación sea <strong>transparente y replicable</strong>: cualquier persona puede inspeccionar qué átomos se activaron y por qué.</p>
-              </div>
+            <div style="margin-top:12px; font-size:.7rem; color:rgba(229,231,235,.3);">
+              Total de unidades de análisis (incluyendo las del fallback): ${todosAtomos.length}
             </div>
           </div>
-        `;
-      } catch (e) {
-        showDebug(`❌ Error en vista atomos: ${e.message}`, true);
-        return `<p>Error al renderizar: ${e.message}</p>`;
-      }
+          <div class="view-section">
+            <div class="view-section-title">Función dentro del instrumento</div>
+            <div class="view-body">
+              <p>Cada átomo se activa cuando el texto contiene ciertos patrones lingüísticos (palabras clave, construcciones gramaticales). Su detección contribuye a la penalización del criterio correspondiente, según la severidad asignada y la frecuencia de aparición.</p>
+              <p>Esta arquitectura permite que la evaluación sea <strong>transparente y replicable</strong>: cualquier persona puede inspeccionar qué átomos se activaron y por qué.</p>
+            </div>
+          </div>
+        </div>
+      `;
+    } catch (e) {
+      showDebug(`❌ Error en vista atomos: ${e.message}`, true);
+      return `<p>Error al renderizar: ${e.message}</p>`;
     }
-  },
+  }
+},
   formula: {
     title: 'Fórmula de Cálculo',
     render: () => {
