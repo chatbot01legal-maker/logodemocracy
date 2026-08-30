@@ -33,10 +33,12 @@ const PROTOCOL = {
           atomos: [
             { id: "discurso", definicion: "El flujo total de enunciados emitidos por el autor.", patrones: [] },
             { id: "proposiciones", definicion: "Enunciados declarativos que afirman o niegan un estado de cosas.", patrones: [] },
-            { id: "excluyentes", definicion: "Propiedad de dos enunciados que no pueden ser ambos verdaderos simultáneamente.", patrones: ["pero", "sin embargo", "no obstante", "aunque"] },
-            { id: "resolucion", definicion: "Explicación lógica que reconcilia dos elementos aparentemente opuestos.", patrones: ["por lo tanto", "en consecuencia", "de modo que"] }
+            { id: "excluyentes", definicion: "Propiedad de dos enunciados que no pueden ser ambos verdaderos simultáneamente.", patrones: ["pero", "sin embargo", "no obstante", "aunque"], polaridad: "riesgo" },
+            { id: "resolucion", definicion: "Explicación lógica que reconcilia dos elementos aparentemente opuestos.", patrones: ["por lo tanto", "en consecuencia", "de modo que"], polaridad: "mitigador" }
           ],
-          severidad: 12.5
+          severidad: 12.5,
+          alcanceMitigacion: "texto",
+          modoMitigacion: "anula"
         },
         {
           id: "1.2",
@@ -47,9 +49,13 @@ const PROTOCOL = {
             { id: "estabilidad", definicion: "Propiedad de mantener una definición constante sin fluctuaciones.", patrones: [] },
             { id: "significado", definicion: "La definición operativa asignada a un término en la primera instancia de uso.", patrones: [] },
             { id: "conceptos", definicion: "Unidades léxicas que portan el peso del contenido temático.", patrones: [] },
-            { id: "argumento", definicion: "La serie encadenada de enunciados que buscan probar una tesis.", patrones: [] }
+            { id: "argumento", definicion: "La serie encadenada de enunciados que buscan probar una tesis.", patrones: [] },
+            { id: "cambio_no_marcado", definicion: "Señal de que un término cambió de sentido sin advertirlo.", patrones: ["en otro sentido", "no me refiero a lo mismo", "cambiando el significado", "en un sentido distinto"], polaridad: "riesgo" },
+            { id: "estabilidad_marcada", definicion: "Señal explícita de que el término se usa de forma consistente con su primera definición.", patrones: ["tal como se definió", "consistente con lo anterior", "en el mismo sentido que antes", "como se dijo antes"], polaridad: "mitigador" }
           ],
-          severidad: 12.5
+          severidad: 12.5,
+          alcanceMitigacion: "texto",
+          modoMitigacion: "reduce"
         },
         {
           id: "1.3",
@@ -57,12 +63,14 @@ const PROTOCOL = {
           constructo: "Reducción de Complejidad",
           definicion: "Verificar si se fuerza una elección binaria ante un problema multidimensional.",
           atomos: [
-            { id: "eleccion", definicion: "Proceso de selección entre opciones presentadas.", patrones: ["o", "o bien", "alternativa"] },
-            { id: "binaria", definicion: "Estructura que reduce el espectro a solo dos posibilidades.", patrones: ["dos opciones", "dos caminos", "dos posibilidades"] },
+            { id: "eleccion", definicion: "Proceso de selección entre opciones presentadas.", patrones: ["o", "o bien", "alternativa"], polaridad: "riesgo" },
+            { id: "binaria", definicion: "Estructura que reduce el espectro a solo dos posibilidades.", patrones: ["dos opciones", "dos caminos", "dos posibilidades"], polaridad: "riesgo" },
             { id: "problema", definicion: "El fenómeno central objeto de análisis.", patrones: [] },
-            { id: "multidimensional", definicion: "Fenómeno que requiere más de dos variables para ser comprendido.", patrones: ["complejo", "múltiples factores", "diversos aspectos"] }
+            { id: "multidimensional", definicion: "Fenómeno que requiere más de dos variables para ser comprendido.", patrones: ["complejo", "múltiples factores", "diversos aspectos"], polaridad: "mitigador" }
           ],
-          severidad: 12.5
+          severidad: 12.5,
+          alcanceMitigacion: "texto",
+          modoMitigacion: "anula"
         },
         {
           id: "1.4",
@@ -72,10 +80,13 @@ const PROTOCOL = {
           atomos: [
             { id: "enunciado", definicion: "Unidad mínima de sentido completo.", patrones: [] },
             { id: "declarativo", definicion: "Que afirma la existencia o realidad de algo.", patrones: [] },
-            { id: "soporte", definicion: "Elemento (dato, premisa, inferencia) que justifica la validez de otro.", patrones: ["porque", "ya que", "dado que"] },
-            { id: "logico", definicion: "Relación de necesidad entre una base y su consecuencia.", patrones: ["si... entonces", "implica", "conlleva"] }
+            { id: "soporte", definicion: "Elemento (dato, premisa, inferencia) que justifica la validez de otro. Su presencia es evidencia de integridad, no una infracción.", patrones: ["porque", "ya que", "dado que"], polaridad: "mitigador" },
+            { id: "logico", definicion: "Relación de necesidad entre una base y su consecuencia.", patrones: ["si... entonces", "implica", "conlleva"], polaridad: "mitigador" },
+            { id: "afirmacion_sin_respaldo", definicion: "Enunciado presentado con máxima certeza sin ningún marcador de soporte en la misma oración.", patrones: ["obviamente", "es un hecho que", "claramente es", "por supuesto es"], polaridad: "riesgo" }
           ],
-          severidad: 12.5
+          severidad: 12.5,
+          alcanceMitigacion: "oracion",
+          modoMitigacion: "anula"
         }
       ]
     },
@@ -101,9 +112,11 @@ const PROTOCOL = {
           nombre: "Causalidad Rigurosa",
           constructo: "Nexo Causal",
           definicion: "Diferenciar la correlación estadística de la causalidad demostrada.",
+          logica: "conflacion_causal",
           atomos: [
-            { id: "correlacion", definicion: "Observación de dos variables que fluctúan simultáneamente.", patrones: ["correlación", "asociación", "relación"] },
-            { id: "causalidad", definicion: "Nexo necesario donde un evento (causa) produce mecánicamente otro (efecto).", patrones: ["causa", "provoca", "genera", "desencadena"] }
+            { id: "correlacion", definicion: "Observación de dos variables que fluctúan simultáneamente.", patrones: ["correlación", "asociación", "relación"], polaridad: "riesgo" },
+            { id: "causalidad", definicion: "Nexo necesario donde un evento (causa) produce mecánicamente otro (efecto).", patrones: ["causa", "provoca", "genera", "desencadena"], polaridad: "riesgo" },
+            { id: "disclaimer", definicion: "Advertencia explícita de que la correlación no implica causalidad.", patrones: ["correlación no implica causalidad", "no necesariamente causal", "no implica causalidad"], polaridad: "mitigador" }
           ],
           severidad: 12.5
         },
@@ -123,9 +136,10 @@ const PROTOCOL = {
           nombre: "Inmunidad a Petición de Principio",
           constructo: "Circularidad Lógica",
           definicion: "Detectar la circularidad cuando la asunción es la misma conclusión.",
+          logica: "peticion_de_principio",
           atomos: [
-            { id: "circularidad", definicion: "Estructura donde el final del argumento repite el inicio sin avanzar.", patrones: ["porque", "ya que", "dado que"] },
-            { id: "asuncion", definicion: "Premisa no demostrada que se introduce como base del razonamiento.", patrones: ["asumiendo", "suponiendo", "dando por sentado"] }
+            { id: "circularidad", definicion: "Estructura donde la cláusula introducida por 'porque/ya que/dado que' repite el contenido de la cláusula que justifica (no el mero uso del conector).", patrones: ["porque", "ya que", "dado que"], polaridad: "riesgo" },
+            { id: "asuncion", definicion: "Premisa no demostrada que se introduce como base del razonamiento.", patrones: ["asumiendo", "suponiendo", "dando por sentado"], polaridad: "riesgo" }
           ],
           severidad: 25.0
         }
@@ -141,12 +155,15 @@ const PROTOCOL = {
           nombre: "Trazabilidad de la Evidencia",
           constructo: "Anclaje Empírico",
           definicion: "Identificar el origen y la verificabilidad de los datos.",
+          logica: "dato_sin_fuente",
           atomos: [
-            { id: "origen", definicion: "Fuente documental o empírica de la información.", patrones: ["según", "fuente", "estudio", "informe"] },
-            { id: "verificabilidad", definicion: "Capacidad de comprobar la información mediante una fuente externa.", patrones: ["verificable", "comprobable", "contrastable"] },
-            { id: "datos", definicion: "Cifras, hechos o registros utilizados como evidencia.", patrones: ["%", "dato", "cifra", "número"] }
+            { id: "origen", definicion: "Fuente documental o empírica de la información. Citar nunca es una infracción.", patrones: ["según", "fuente", "estudio", "informe"], polaridad: "mitigador" },
+            { id: "verificabilidad", definicion: "Capacidad de comprobar la información mediante una fuente externa.", patrones: ["verificable", "comprobable", "contrastable"], polaridad: "mitigador" },
+            { id: "datos", definicion: "Cifras, hechos o registros utilizados como evidencia; riesgo solo si no hay fuente en la misma oración.", patrones: ["%", "dato", "cifra", "número"], polaridad: "riesgo" }
           ],
-          severidad: 12.5
+          severidad: 12.5,
+          alcanceMitigacion: "oracion",
+          modoMitigacion: "anula"
         },
         {
           id: "3.2",
@@ -154,11 +171,14 @@ const PROTOCOL = {
           constructo: "Honestidad Epistémica",
           definicion: "Comparar el matiz del lenguaje con la certeza de la afirmación.",
           atomos: [
-            { id: "matiz", definicion: "Modificador probabilístico (probablemente, posiblemente).", patrones: ["probablemente", "posiblemente", "quizás", "tal vez"] },
+            { id: "matiz", definicion: "Modificador probabilístico; nunca es, por sí mismo, una infracción.", patrones: ["probablemente", "posiblemente", "quizás", "tal vez"], polaridad: "neutral" },
             { id: "lenguaje", definicion: "El conjunto de palabras elegidas para expresar la postura.", patrones: [] },
-            { id: "certeza", definicion: "Ausencia de duda expresada en una predicción o hecho futuro.", patrones: ["es seguro", "indudablemente", "sin duda", "claramente"] }
+            { id: "certeza", definicion: "Afirmación categórica; riesgo solo cuando no hay respaldo en la misma oración.", patrones: ["es seguro", "indudablemente", "sin duda", "claramente"], polaridad: "riesgo" },
+            { id: "respaldo", definicion: "Marcador de fuente que justifica una afirmación categórica.", patrones: ["según", "estudio", "la evidencia indica", "los datos muestran"], polaridad: "mitigador" }
           ],
-          severidad: 12.5
+          severidad: 12.5,
+          alcanceMitigacion: "oracion",
+          modoMitigacion: "anula"
         },
         {
           id: "3.3",
@@ -166,19 +186,22 @@ const PROTOCOL = {
           constructo: "Distinción Epistémica",
           definicion: "Distinguir claramente el hecho empírico del juicio moral.",
           atomos: [
-            { id: "hecho", definicion: "Afirmación sobre un estado de cosas objetivo.", patrones: ["es", "está", "existe"] },
-            { id: "juicio", definicion: "Valoración subjetiva sobre la bondad o maldad de un hecho.", patrones: ["bueno", "malo", "justo", "injusto", "debería"] }
+            { id: "hecho", definicion: "Verbos demasiado genéricos para funcionar como indicador; se mantiene solo como referencia, no penaliza.", patrones: ["es", "está", "existe"], polaridad: "neutral" },
+            { id: "juicio", definicion: "Valoración subjetiva; riesgo solo si se presenta sin marcador de subjetividad en la misma oración.", patrones: ["bueno", "malo", "justo", "injusto", "debería"], polaridad: "riesgo" },
+            { id: "marcador_subjetivo", definicion: "Señal explícita de que el hablante enmarca el juicio como opinión propia, no como hecho.", patrones: ["opino", "considero", "en mi opinión", "me parece", "para mí", "creo que"], polaridad: "mitigador" }
           ],
-          severidad: 12.5
+          severidad: 12.5,
+          alcanceMitigacion: "oracion",
+          modoMitigacion: "anula"
         },
         {
           id: "3.4",
           nombre: "Completitud del Contexto",
           constructo: "Integridad Contextual",
-          definicion: "Auditar la omisión de variables críticas en el entorno del dato.",
+          definicion: "Auditar la omisión de variables críticas en el entorno del dato. Retirado de la Capa 1: detectar una omisión requiere comprender qué variable *debería* estar y no está — eso excede lo que un escaneo léxico puede determinar. Delegado a la Capa 3 (revisión semántica). El criterio permanece visible pero no penaliza en la Beta.",
           atomos: [
-            { id: "variables", definicion: "Elementos que afectan el comportamiento o lectura de un dato.", patrones: ["variable", "factor", "condición"] },
-            { id: "entorno", definicion: "Situación, época o circunstancias que rodean al dato.", patrones: ["contexto", "entorno", "circunstancia"] }
+            { id: "variables", definicion: "Elementos que afectan el comportamiento o lectura de un dato. Mencionarlos es buena práctica, nunca una infracción.", patrones: ["variable", "factor", "condición"], polaridad: "neutral" },
+            { id: "entorno", definicion: "Situación, época o circunstancias que rodean al dato. Mencionarlas es buena práctica, nunca una infracción.", patrones: ["contexto", "entorno", "circunstancia"], polaridad: "neutral" }
           ],
           severidad: 12.5
         }
@@ -195,11 +218,13 @@ const PROTOCOL = {
           constructo: "Alteridad Cognitiva",
           definicion: "Evaluar si el argumento contrario es tratado de forma robusta.",
           atomos: [
-            { id: "argumento", definicion: "Exposición de razones en contra o a favor.", patrones: ["argumento", "razón", "tesis"] },
-            { id: "contrario", definicion: "Postura disidente a la del emisor.", patrones: ["contrario", "opositor", "crítico", "disidente"] },
-            { id: "robusta", definicion: "Versión que conserva toda la fuerza lógica de la postura opuesta.", patrones: ["fortaleza", "sólido", "robusto"] }
+            { id: "argumento", definicion: "Palabra demasiado genérica para funcionar como indicador; se mantiene solo como referencia, no penaliza.", patrones: ["argumento", "razón", "tesis"], polaridad: "neutral" },
+            { id: "contrario", definicion: "Postura disidente a la del emisor; riesgo solo si nunca se la describe con fuerza (steelman ausente en todo el texto).", patrones: ["contrario", "opositor", "crítico", "disidente"], polaridad: "riesgo" },
+            { id: "robusta", definicion: "Versión que conserva toda la fuerza lógica de la postura opuesta. Su presencia es la señal de que sí hubo steelman, no una infracción.", patrones: ["fortaleza", "sólido", "robusto", "válido", "legítimo"], polaridad: "mitigador" }
           ],
-          severidad: 12.5
+          severidad: 12.5,
+          alcanceMitigacion: "texto",
+          modoMitigacion: "anula"
         },
         {
           id: "4.2",
@@ -218,8 +243,9 @@ const PROTOCOL = {
           constructo: "Separación Identidad-Argumento",
           definicion: "Separar la identidad del emisor del argumento presentado.",
           atomos: [
-            { id: "identidad", definicion: "Rasgos, afiliaciones o carácter del sujeto que emite el discurso.", patrones: ["yo", "mi", "nuestro", "ellos"] },
-            { id: "argumento", definicion: "Estructura racional que debe sostenerse por sí misma.", patrones: [] }
+            { id: "identidad", definicion: "Pronombres demasiado genéricos para funcionar como indicador por sí solos; no penalizan por su mera presencia.", patrones: ["yo", "mi", "nuestro", "ellos"], polaridad: "neutral" },
+            { id: "argumento", definicion: "Estructura racional que debe sostenerse por sí misma.", patrones: [] },
+            { id: "descalificacion", definicion: "Ataque a la identidad del emisor contrario en lugar de a su argumento (ad hominem).", patrones: ["esa gente", "típico de", "no me sorprende viniendo de", "esos son"], polaridad: "riesgo" }
           ],
           severidad: 12.5
         },
@@ -227,10 +253,11 @@ const PROTOCOL = {
           id: "4.4",
           nombre: "Claridad Denotativa",
           constructo: "Precisión Léxica",
-          definicion: "Detectar el uso de palabras ambiguas sin definición.",
+          definicion: "Detectar el uso de palabras ambiguas sin definición operacional. Usar el concepto nunca es la infracción. Retirado de la penalización de la Capa 1: decidir si un término se usó de forma genuinamente ambigua (y no solo que pertenece a una lista de palabras 'sensibles') requiere comprensión semántica del contexto, no un escaneo léxico. Delegado a la Capa 3. El criterio permanece visible pero no penaliza en la Beta.",
           atomos: [
             { id: "palabras", definicion: "Unidades léxicas usadas para transmitir conceptos.", patrones: [] },
-            { id: "ambiguas", definicion: "Términos que admiten múltiples interpretaciones (ej: 'justo', 'bueno') sin definición operacional.", patrones: ["justo", "bueno", "libertad", "democracia", "igualdad"] }
+            { id: "ambiguas", definicion: "Términos que admiten múltiples interpretaciones (ej: 'justo', 'bueno'). Usarlos nunca es, por sí solo, una infracción.", patrones: ["justo", "bueno", "libertad", "democracia", "igualdad"], polaridad: "neutral" },
+            { id: "definido", definicion: "Marcador explícito de que el término fue definido operacionalmente en el texto.", patrones: ["entiendo por", "me refiero a", "en el sentido de", "definido como", "que significa"], polaridad: "neutral" }
           ],
           severidad: 12.5
         }
@@ -247,10 +274,12 @@ const PROTOCOL = {
           constructo: "Relevancia Central",
           definicion: "Evitar que una tangente desvíe el núcleo del debate.",
           atomos: [
-            { id: "tangente", definicion: "Tema introducido que no altera lógicamente la conclusión del núcleo.", patrones: ["digresión", "tangente", "fuera de tema"] },
-            { id: "nucleo", definicion: "El problema central definido explícitamente en el inicio del intercambio.", patrones: ["objeto", "propósito", "tema central"] }
+            { id: "tangente", definicion: "Tema introducido que no altera lógicamente la conclusión del núcleo.", patrones: ["digresión", "tangente", "fuera de tema"], polaridad: "riesgo" },
+            { id: "nucleo", definicion: "El problema central reafirmado explícitamente. Nombrar el núcleo mitiga la sospecha de tangente, no la agrava.", patrones: ["objeto", "propósito", "tema central"], polaridad: "mitigador" }
           ],
-          severidad: 12.5
+          severidad: 12.5,
+          alcanceMitigacion: "texto",
+          modoMitigacion: "reduce"
         },
         {
           id: "5.2",
@@ -258,10 +287,12 @@ const PROTOCOL = {
           constructo: "Aportación Propositiva",
           definicion: "Garantizar que toda crítica incluya una propuesta alternativa.",
           atomos: [
-            { id: "critica", definicion: "Señalamiento de un error o falla en el argumento ajeno.", patrones: ["crítica", "objeción", "pero"] },
-            { id: "propuesta", definicion: "Aporte de una visión, solución o vía de acción nueva.", patrones: ["propongo", "sugiero", "alternativa", "solución"] }
+            { id: "critica", definicion: "Señalamiento de un error o falla en el argumento ajeno.", patrones: ["crítica", "objeción", "pero"], polaridad: "riesgo" },
+            { id: "propuesta", definicion: "Aporte de una visión, solución o vía de acción nueva. Su presencia es la conducta deseada, nunca una infracción.", patrones: ["propongo", "sugiero", "alternativa", "solución"], polaridad: "mitigador" }
           ],
-          severidad: 12.5
+          severidad: 12.5,
+          alcanceMitigacion: "texto",
+          modoMitigacion: "anula"
         },
         {
           id: "5.3",
@@ -279,12 +310,15 @@ const PROTOCOL = {
           id: "5.4",
           nombre: "Falsabilidad",
           constructo: "Refutabilidad",
-          definicion: "Exponer el argumento a la evidencia refutadora.",
+          definicion: "Exponer el argumento a la evidencia refutadora. El riesgo real no es mencionar contraejemplos: es blindarse contra ellos.",
           atomos: [
-            { id: "evidencia", definicion: "Información que entra en conflicto directo con la tesis.", patrones: ["contraejemplo", "refutación", "objeción"] },
-            { id: "refutadora", definicion: "Capaz de demostrar la falsedad del argumento.", patrones: ["refutar", "falsear", "desmentir"] }
+            { id: "evidencia", definicion: "Mencionar contraejemplos u objeciones es exponerse a refutación: mitiga, no penaliza.", patrones: ["contraejemplo", "refutación", "objeción"], polaridad: "mitigador" },
+            { id: "refutadora", definicion: "Admitir que el argumento podría ser refutado es la conducta deseada: mitiga, no penaliza.", patrones: ["refutar", "falsear", "desmentir"], polaridad: "mitigador" },
+            { id: "blindaje", definicion: "Lenguaje que cierra explícitamente la puerta a cualquier objeción posible.", patrones: ["innegable", "indiscutible", "no admite objeción", "fuera de discusión", "hecho incuestionable"], polaridad: "riesgo" }
           ],
-          severidad: 25.0
+          severidad: 25.0,
+          alcanceMitigacion: "texto",
+          modoMitigacion: "anula"
         }
       ]
     }
@@ -292,6 +326,216 @@ const PROTOCOL = {
 };
 
 // ─── MECÁNICA DE CÁLCULO (completa) ──────────────────
+// ─── DETECCIÓN DE NEGACIÓN CONTEXTUAL ────────────────
+// Un patrón activado dentro del alcance de un negador no cuenta como
+// infracción: "no es cierto que todos..." no es lo mismo que "todos...".
+const NEGADORES = [
+  "no es cierto que", "no es verdad que", "no creo que", "niego que",
+  "nadie afirma que", "sería falso decir que", "no", "nunca", "jamás", "ni siquiera"
+];
+
+function estaNegado(oracionLower, patron, ventana = 5) {
+  const idx = oracionLower.indexOf(patron);
+  if (idx === -1) return false;
+  const antes = oracionLower.slice(Math.max(0, idx - 40), idx).trim();
+  const ultimasPalabras = antes.split(/\s+/).slice(-ventana).join(' ');
+  return NEGADORES.some(neg => ultimasPalabras.includes(neg));
+}
+
+// ─── MOTOR GENÉRICO: riesgo / mitigador / neutral ────
+// Reemplaza la vieja regla única "patrón encontrado → penaliza" por:
+//   detección → polaridad → alcance de mitigación → puntuación
+// polaridad: 'riesgo' (penaliza), 'mitigador' (reduce/anula riesgo), 'neutral' (nunca penaliza, solo se registra)
+// alcanceMitigacion: 'oracion' (el mitigador debe estar en la misma oración que el riesgo) | 'texto' (basta con que esté en cualquier parte)
+// modoMitigacion: 'anula' (penalización → 0) | 'reduce' (penalización → 30% de su valor)
+function evaluarCriterioGenerico(criterio, oraciones, resultados) {
+  const alcance = criterio.alcanceMitigacion || 'texto';
+  const modo = criterio.modoMitigacion || 'reduce';
+
+  let riesgos = [];       // { idx, atomo, oracion }
+  let idxMitigadores = new Set();
+  let hayMitigadorEnTexto = false;
+
+  criterio.atomos.forEach(atom => {
+    if (!atom.patrones || atom.patrones.length === 0) return;
+    const patrones_unicos = [...new Set(atom.patrones)];
+    const polaridad = atom.polaridad || 'riesgo';
+
+    oraciones.forEach((ora, idx) => {
+      const lower = ora.toLowerCase();
+      const patronActivo = patrones_unicos.find(p => lower.includes(p) && !estaNegado(lower, p));
+      if (!patronActivo) return;
+
+      resultados.debug_scan.push({ criterio: criterio.id, atomo: atom.id, polaridad, oracion: ora.trim() });
+
+      if (polaridad === 'mitigador') {
+        idxMitigadores.add(idx);
+        hayMitigadorEnTexto = true;
+      } else if (polaridad === 'riesgo') {
+        riesgos.push({ idx, atomo: atom.id, oracion: ora.trim() });
+      }
+      // 'neutral': ya quedó registrado en debug_scan, nunca penaliza.
+    });
+  });
+
+  // Filtra los riesgos mitigados según el alcance del criterio
+  const riesgosEfectivos = riesgos.filter(r => {
+    if (alcance === 'oracion') return !idxMitigadores.has(r.idx);
+    return true; // en alcance 'texto' se aplica un factor global más abajo
+  });
+
+  const frecuenciaPorAtomo = {};
+  riesgosEfectivos.forEach(r => {
+    frecuenciaPorAtomo[r.atomo] = (frecuenciaPorAtomo[r.atomo] || 0) + 1;
+    if (!resultados.evidencias.some(e => e.atomo === r.atomo && e.criterio === criterio.id)) {
+      resultados.evidencias.push({ atomo: r.atomo, fragmento: r.oracion, criterio: criterio.id });
+    }
+  });
+
+  const atomos_activados = Object.entries(frecuenciaPorAtomo).map(([atomo, frecuencia]) => {
+    const frecuenciaEfectiva = Math.min(frecuencia, 3); // tope: evita que la repetición infle el puntaje
+    return { atomo, frecuencia: frecuenciaEfectiva, severidad: criterio.severidad };
+  });
+
+  let penalizacion = atomos_activados.reduce((acc, a) => acc + criterio.severidad * a.frecuencia, 0);
+
+  let mitigado = false;
+  if (alcance === 'texto' && hayMitigadorEnTexto && penalizacion > 0) {
+    penalizacion = modo === 'anula' ? 0 : penalizacion * 0.3;
+    mitigado = true;
+  } else if (alcance === 'oracion' && riesgos.length > riesgosEfectivos.length) {
+    mitigado = true; // parte de los riesgos ya se filtró arriba (modo 'anula' por oración)
+    if (modo === 'reduce') {
+      // los riesgos no filtrados por no compartir oración con un mitigador se atenúan igual
+      penalizacion = penalizacion * 0.3;
+    }
+  }
+
+  penalizacion = Math.min(penalizacion, 25);
+  return { penalizacion, atomos_activados, mitigado };
+}
+
+// ─── LÓGICA RELACIONAL: 2.2 Conflación Causal ────────
+// El riesgo no es mencionar "correlación" o "causa" por separado: es que
+// ambas aparezcan en la MISMA oración (sugiriendo que se están fusionando).
+// Un descargo explícito en cualquier parte del texto anula la penalización.
+function evaluarConflacionCausal(criterio, oraciones, resultados) {
+  const atomCorr = criterio.atomos.find(a => a.id === 'correlacion');
+  const atomCausa = criterio.atomos.find(a => a.id === 'causalidad');
+  const atomDisc = criterio.atomos.find(a => a.id === 'disclaimer');
+  const patronesCorr = [...new Set(atomCorr.patrones)];
+  const patronesCausa = [...new Set(atomCausa.patrones)];
+  const patronesDisc = [...new Set(atomDisc.patrones)];
+
+  let hayDisclaimer = false;
+  let conflaciones = [];
+
+  oraciones.forEach(ora => {
+    const lower = ora.toLowerCase();
+    if (patronesDisc.some(p => lower.includes(p))) hayDisclaimer = true;
+
+    const corrActiva = patronesCorr.find(p => lower.includes(p) && !estaNegado(lower, p));
+    const causaActiva = patronesCausa.find(p => lower.includes(p) && !estaNegado(lower, p));
+    if (corrActiva && causaActiva) {
+      conflaciones.push(ora.trim());
+      resultados.debug_scan.push({ criterio: criterio.id, atomo: 'conflacion', polaridad: 'riesgo', oracion: ora.trim() });
+    }
+  });
+
+  if (hayDisclaimer) {
+    resultados.debug_scan.push({ criterio: criterio.id, atomo: 'disclaimer', polaridad: 'mitigador', oracion: '(descargo detectado en el texto)' });
+  }
+
+  if (conflaciones.length === 0 || hayDisclaimer) {
+    return { penalizacion: 0, atomos_activados: [], mitigado: hayDisclaimer && conflaciones.length > 0 };
+  }
+
+  const frecuenciaEfectiva = Math.min(conflaciones.length, 3);
+  resultados.evidencias.push({ atomo: 'conflacion_causal', fragmento: conflaciones[0], criterio: criterio.id });
+  return {
+    penalizacion: Math.min(criterio.severidad * frecuenciaEfectiva, 25),
+    atomos_activados: [{ atomo: 'conflacion_causal', frecuencia: frecuenciaEfectiva, severidad: criterio.severidad }],
+    mitigado: false
+  };
+}
+
+// ─── LÓGICA RELACIONAL: 2.4 Petición de Principio ────
+// "porque/ya que/dado que" NO es el gatillo: lo es que la cláusula
+// posterior al conector repita (en gran medida) las mismas palabras de
+// contenido que la cláusula anterior — es decir, que la "razón" sea, en
+// el fondo, una repetición de lo que se quiere probar.
+const STOPWORDS_ES = new Set(["el","la","los","las","un","una","unos","unas","de","del","al","a","en","y","o","que","es","son","por","para","con","sin","no","se","su","sus","lo","le","les","como","más","muy","ya","este","esta","estos","estas","eso","esa","ese"]);
+
+function palabrasClave(fragmento) {
+  return fragmento
+    .toLowerCase()
+    .replace(/[^\p{L}\s]/gu, '')
+    .split(/\s+/)
+    .filter(w => w.length > 3 && !STOPWORDS_ES.has(w));
+}
+
+function detectaCircularidadEnOracion(oracion) {
+  const conectores = ["porque", "ya que", "dado que"];
+  const lower = oracion.toLowerCase();
+  for (const conector of conectores) {
+    const idx = lower.indexOf(conector);
+    if (idx === -1) continue;
+    const antes = oracion.slice(0, idx);
+    const despues = oracion.slice(idx + conector.length);
+    const clavesAntes = new Set(palabrasClave(antes));
+    const clavesDespues = palabrasClave(despues);
+    const solapadas = clavesDespues.filter(w => clavesAntes.has(w));
+    if (solapadas.length > 0) return { circular: true, solapadas };
+  }
+  return { circular: false };
+}
+
+function evaluarPeticionDePrincipio(criterio, oraciones, resultados) {
+  const atomAsuncion = criterio.atomos.find(a => a.id === 'asuncion');
+  const patronesAsuncion = [...new Set(atomAsuncion.patrones)];
+
+  let circulares = [];
+  let asunciones = [];
+
+  oraciones.forEach(ora => {
+    const { circular } = detectaCircularidadEnOracion(ora);
+    if (circular) {
+      circulares.push(ora.trim());
+      resultados.debug_scan.push({ criterio: criterio.id, atomo: 'circularidad', polaridad: 'riesgo', oracion: ora.trim() });
+    }
+    const lower = ora.toLowerCase();
+    if (patronesAsuncion.some(p => lower.includes(p) && !estaNegado(lower, p))) {
+      asunciones.push(ora.trim());
+      resultados.debug_scan.push({ criterio: criterio.id, atomo: 'asuncion', polaridad: 'riesgo', oracion: ora.trim() });
+    }
+  });
+
+  const atomos_activados = [];
+  let penalizacion = 0;
+  if (circulares.length > 0) {
+    const frecuencia = Math.min(circulares.length, 3);
+    atomos_activados.push({ atomo: 'circularidad', frecuencia, severidad: criterio.severidad });
+    penalizacion += criterio.severidad * frecuencia;
+    resultados.evidencias.push({ atomo: 'circularidad', fragmento: circulares[0], criterio: criterio.id });
+  }
+  if (asunciones.length > 0) {
+    const frecuencia = Math.min(asunciones.length, 3);
+    atomos_activados.push({ atomo: 'asuncion', frecuencia, severidad: criterio.severidad });
+    penalizacion += criterio.severidad * frecuencia;
+    resultados.evidencias.push({ atomo: 'asuncion', fragmento: asunciones[0], criterio: criterio.id });
+  }
+
+  return { penalizacion: Math.min(penalizacion, 25), atomos_activados, mitigado: false };
+}
+
+// Registro de lógicas especiales: criterios cuya definición requiere una
+// relación entre átomos (co-ocurrencia, solapamiento léxico) y no se
+// resuelven con el modelo genérico riesgo/mitigador.
+const LOGICAS_ESPECIALES = {
+  'conflacion_causal': evaluarConflacionCausal,
+  'peticion_de_principio': evaluarPeticionDePrincipio
+};
+
 // ─── ADAPTADOR DE MOTOR: v4.0 (contextual) con fallback a v3.0 ──
 // Prioriza SophiaEngineV4 (clasificación documental + perfiles
 // contextuales + rutas inferenciales). Si el script no cargó por
@@ -322,7 +566,8 @@ function evaluateText(text) {
       evidencias: [],
       puntajes_fase: {},
       IRD_global: 0,
-      riesgo: "Normal"
+      riesgo: "Normal",
+      debug_scan: []       // registro auditable de qué se detectó y con qué polaridad, se haya penalizado o no
     };
 
     let nivel3_count = 0;
@@ -332,42 +577,21 @@ function evaluateText(text) {
       let infracciones_fase = [];
 
       fase.criterios.forEach(criterio => {
-        let penalizacion_criterio = 0;
-        let atomos_activados = [];
+        const logicaEspecial = criterio.logica && LOGICAS_ESPECIALES[criterio.logica];
+        const resultado = logicaEspecial
+          ? logicaEspecial(criterio, oraciones, resultados)
+          : evaluarCriterioGenerico(criterio, oraciones, resultados);
 
-        criterio.atomos.forEach(atom => {
-          if (atom.patrones && atom.patrones.length > 0) {
-            const patrones_unicos = [...new Set(atom.patrones)];
-            let frecuencia = 0;
-            oraciones.forEach(ora => {
-              const lower = ora.toLowerCase();
-              if (patrones_unicos.some(p => lower.includes(p))) {
-                frecuencia++;
-              }
-            });
-            if (frecuencia > 0) {
-              const penalizacion_atomo = criterio.severidad * frecuencia;
-              penalizacion_criterio += penalizacion_atomo;
-              atomos_activados.push({ atomo: atom.id, frecuencia, severidad: criterio.severidad });
-              const evidencia = text.match(new RegExp(`[^.!?]*\\b${patrones_unicos[0]}\\b[^.!?]*[.!?]`, 'i'));
-              if (evidencia) {
-                resultados.evidencias.push({
-                  atomo: atom.id,
-                  fragmento: evidencia[0].trim(),
-                  criterio: criterio.id
-                });
-              }
-            }
-          }
-        });
+        const penalizacion_criterio = resultado.penalizacion;
+        const atomos_activados = resultado.atomos_activados;
 
-        penalizacion_criterio = Math.min(penalizacion_criterio, 25);
         if (penalizacion_criterio > 0) {
           infracciones_fase.push({
             criterio: `${criterio.id} - ${criterio.nombre}`,
             constructo: criterio.constructo,
             penalizacion: penalizacion_criterio,
-            atomos_activados
+            atomos_activados,
+            mitigado_parcialmente: resultado.mitigado || false
           });
           penalizacion_fase += penalizacion_criterio;
           if (penalizacion_criterio === 25) nivel3_count++;
@@ -2311,3 +2535,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Exponer explícitamente para el consumo del Motor Cognitivo (Rey Filósofo)
 window.SOPHIA = SOPHIA;
+
