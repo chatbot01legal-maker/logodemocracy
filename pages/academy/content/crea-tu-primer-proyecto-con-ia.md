@@ -1,27 +1,26 @@
 ---
-
 library: "Alfabetización Digital para humanistas"
-folder: "Curso Inicial"
-title: "Crear tu primer proyecto con inteligencia artificial"
+folder: "Encerar, pulir... no olvidar respirar, muy importante"
+title: "7. Crear tu primer proyecto con inteligencia artificial"
 tags:
-
-  - alfabetizacion-digital
-  - desarrollo
-  - inteligencia-artificial
-  - desarrollo-web
-  - html
-  - css
-  - javascript
-  - termux
-  - github
-  - render
-  - api
-  - google-cloud
-  - cli
-  - copiloto
-  - humanidades-digitales
-    
+- alfabetizacion-digital
+- desarrollo
+- inteligencia-artificial
+- desarrollo-web
+- html
+- css
+- javascript
+- termux
+- github
+- render
+- api
+- google-cloud
+- cli
+- copiloto
+- humanidades-digitales
 ---
+
+<div align="justify">
 
 ## Crear tu primer proyecto con inteligencia artificial
 
@@ -1420,3 +1419,5 @@ Aprender haciendo.
 Construir para aprender.
 Y aprender lo necesario para poder construir lo siguiente.
 ```
+
+</div>

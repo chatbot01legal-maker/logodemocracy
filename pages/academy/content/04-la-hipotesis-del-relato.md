@@ -1,19 +1,23 @@
 ---
-library: "El Modelo"
-folder: "Fundamentos"
-title: "La Hipótesis del Relato: Fundamento Cognitivo de la Deliberación Democrática"
+library: "Logodemocracia"
+folder: "El Modelo"
+title: "4. La Hipótesis del Relato"
 tags:
-  - el-modelo
-  - epistemologia
-  - relato
-  - cognicion
-  - narrativa
-  - filosofia
-  - neurociencia
-  - inteligencia-artificial
-  - pensamiento-critico
-  - fundamentos
+- todo-ciudadano-sabe
+- gregory-bateson
+- pensamiento-sistemico
+- evolucion
+- aprendizaje
+- cambio
+- adaptacion
+- estocasticidad
+- complejidad
+- academia
+- fundamentos
+- hipotesis-del-relato
 ---
+
+<div align="justify">
 
 # La Hipótesis del Relato: Fundamento Cognitivo de la Deliberación Democrática
 
@@ -550,3 +554,5 @@ La inteligencia artificial, en la LogoDemocracia, no es un oráculo que dice la 
 > La LogoDemocracia no diseña un sistema para que los ciudadanos voten mejor. Diseña un ecosistema donde los ciudadanos pueden **reconocer, contrastar y construir relatos** de manera colectiva, informada y responsable, porque asume que **ninguna inteligencia finita puede prescindir de un relato, pero toda inteligencia finita puede aprender a examinarlo.**
 
 ---
+
+</div>

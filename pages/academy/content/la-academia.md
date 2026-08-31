@@ -1,10 +1,8 @@
 ---
-
 library: "Logodemocracia"
-folder: "07-Academia"
-title: "¿Qué es la Academia y cuál es su función en LogoDemocracy?"
+folder: "Plataforma Tecnológica"
+title: "2. ¿Qué es la Academia y cuál es su función en LogoDemocracy?"
 tags:
-
 - academia
 - educacion-civica
 - aprendizaje
@@ -15,8 +13,9 @@ tags:
 - sophia
 - votacion-cuadratica
 - democracia-aumentada
-
 ---
+
+<div align="justify">
 
 ¿Qué es la Academia y cuál es su función en LogoDemocracy?
 
@@ -942,3 +941,5 @@ Debe entenderse como su infraestructura de aprendizaje ciudadano.
 Y su principio rector puede expresarse en una sola frase:
 
 «Un ciudadano no aprende democracia hablando sobre democracia. Aprende democracia practicándola.»
+
+</div>

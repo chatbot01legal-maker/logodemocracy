@@ -1,10 +1,8 @@
 ---
-
 library: "Logodemocracia"
-folder: "08-Rey-Filósofo"
-title: "Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico"
+folder: "Plataforma Tecnológica"
+title: "4. Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico"
 tags:
-
 - rey-filósofo
 - pensamiento-crítico
 - aprendizaje
@@ -14,8 +12,9 @@ tags:
 - ciudadanía
 - academia
 - inteligencia-artificial
-
 ---
+
+<div align="justify">
 
 Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico
 
@@ -340,3 +339,5 @@ La personalización adapta el camino.
 Y el ciudadano realiza el acto fundamental:
 
 «pensar por sí mismo.»
+
+</div>

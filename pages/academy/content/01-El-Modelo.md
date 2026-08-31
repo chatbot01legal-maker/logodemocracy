@@ -1,17 +1,18 @@
 ---
-library: "El Modelo"
-folder: "01-Fundamentos"
-title: "El modelo de LogoDemocracia"
+library: "Logodemocracia"
+folder: "El Modelo"
+title: "1. El modelo de Logo Democracia"
 tags:
-  - el-modelo
-  - logo-democracia
-  - mapa-y-territorio
-  - voto-cuadratico
-  - igde
-  - tutor-cognitivo
-  - congreso-virtual
-  - panel-de-expertos
+- el-modelo
+- logo-democracia
+- mapa-y-territorio
+- voto-cuadratico
+- educacion
+- congreso-virtual
+- panel-de-expertos
 ---
+
+<div align="justify">
 
 # El modelo de LogoDemocracia
 
@@ -153,3 +154,5 @@ La LogoDemocracia no borra el mapa de la democracia; perfecciona la navegación 
 * **Fase 1 (Preferencias):** Se ordenan con **Voto Cuadrático**, midiendo la intensidad real de las prioridades de la sociedad.
 * **Fase 2 (Decisiones Técnicas):** Se resuelven con la **Ecuación Ponderada ($R$)**, articulando la legitimidad política ($P$), la evidencia técnica transparente ($E$) y la ciudadanía capacitada mediante el Tutor Cognitivo ($V$).
 * **Fundamento:** Sustentado por el **IGDE**, un indicador que mide el éxito del país por la madurez y autonomía cívica de su población.
+
+</div>

@@ -1,19 +1,16 @@
 ---
-
 library: "Todo Ciudadano Sabe"
 folder: "01-Todo-Ciudadano-Sabe"
-title: "Causalidad y retroalimentación"
+title: "5. Causalidad y retroalimentación"
 tags:
-
 - todo-ciudadano-sabe
 - gregory-bateson
 - pensamiento-sistemico
 - causalidad
 - retroalimentacion
 - sistemas
+- complejidad
 - aprendizaje
-- pensamiento-critico
-- 
 ---
 
 <div align="justify">
@@ -402,3 +399,5 @@ y comenzar a preguntar:
 
 </div>
 ```
+
+</div>

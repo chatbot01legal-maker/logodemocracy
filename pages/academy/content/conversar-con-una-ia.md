@@ -1,19 +1,16 @@
 ---
-
 library: "Alfabetización Digital para humanistas"
-folder: "Curso Inicial"
-title: "Conversar con una IA: del prompt a la colaboración"
+folder: "Encerar, pulir... no olvidar respirar, muy importante"
+title: "3. Conversar con una IA: del prompt a la colaboración"
 tags:
-
 - alfabetizacion-digital
 - inteligencia-artificial
 - prompts
 - colaboracion
-- pensamiento-critico
-- modelos-de-lenguaje
-- aprendizaje
-- humanidades
-- 
+- dialogo
+- instrucciones
+- contexto
+- humanidades-digitales
 ---
 
 <div align="justify">
@@ -1064,3 +1061,5 @@ Ahí comienza la transición del prompt a la colaboración.
 
 </div>
 ```
+
+</div>

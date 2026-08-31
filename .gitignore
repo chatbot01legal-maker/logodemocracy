@@ -11,3 +11,21 @@ npm-debug.log*
 .env
 credentials/*.key
 backup_old/
+
+# Respaldos de Academia
+pages/academy/content/.academy_backups/
+pages/academy/content.backup-*/
+pages/academy/data/tree.backup-*.json
+
+# Temporales Python
+__pycache__/
+
+# Archivos temporales / diagnósticos locales
+*.backup-*
+sophia-2a39783.js
+sophia-BUENA.js
+sophia-current-backup.js
+sophia-comparacion.diff
+logodemocracy_export_24h.csv
+logos-remoto.js
+test-db-guard.js

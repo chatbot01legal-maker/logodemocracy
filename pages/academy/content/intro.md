@@ -1,3 +1,14 @@
+---
+library: "Logodemocracia"
+folder: "Plataforma Tecnológica"
+title: "5. Introducción"
+tags:
+- Logodemocracia
+- Fundamentos
+---
+
+<div align="justify">
+
 🏛️ Academia de LogoDemocracy
 
 ## 1. Objetivo de la Academia
@@ -38,3 +49,5 @@ La Academia existe como parte de esa resistencia: una resistencia del pensamient
 **“Sapere aude: ¡Atrévete a pensar por ti mismo!”**
 
 — Immanuel Kant, 1784
+
+</div>

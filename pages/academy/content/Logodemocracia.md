@@ -1,10 +1,8 @@
 ---
-
 library: "Logodemocracia"
-folder: "06-LogoDemocracy"
-title: "¿Qué es LogoDemocracy? Arquitectura de la plataforma tecnológica"
+folder: "Plataforma Tecnológica"
+title: "1. ¿Qué es LogoDemocracy? Arquitectura de la plataforma tecnológica"
 tags:
-
 - logodemocracia
 - arquitectura
 - democracia-aumentada
@@ -18,9 +16,7 @@ tags:
 - mythos
 - deliberacion
 - inteligencia-colectiva
-- memoria-colectiva
 - produccion-comunitaria
-  
 ---
 
 <div align="justify">
@@ -1111,3 +1107,5 @@ Pretende construir una infraestructura en la que los ciudadanos puedan seguir ap
 
 </div>
 ```
+
+</div>

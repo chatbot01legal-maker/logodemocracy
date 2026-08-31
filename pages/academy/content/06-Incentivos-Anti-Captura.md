@@ -1,18 +1,19 @@
 ---
-title: "Incentivos, Anti-Captura y Economía del Modelo"
 library: "Logodemocracia"
 folder: "El Modelo"
-file: "04-Incentivos-Anti-Captura.md"
+title: "6. Incentivos, Anti-Captura y Economía del Modelo"
 tags:
-  - el-modelo
-  - logo-democracia
-  - anti-captura
-  - diseno-de-mecanismos
-  - remuneracion
-  - transparencia
-  - lobbying
-  - puertas-giratorias
+- el-modelo
+- logo-democracia
+- anti-captura
+- diseno-de-mecanismos
+- remuneracion
+- transparencia
+- lobbying
+- puertas-giratorias
 ---
+
+<div align="justify">
 
 # Incentivos, Anti-Captura y Economía del Modelo
 
@@ -106,3 +107,5 @@ La infraestructura institucional y los registros de deliberación requieren una 
 2. **Prohibición Total de Donaciones Privadas o Internacionales:** Queda estrictamente prohibido que corporaciones, ONG internacionales o gobiernos extranjeros financien la infraestructura del sistema o las dietas de los expertos.
 3. **Declaración Universal de Vínculos de Lobby Indirecto:** Se establece una cláusula obligatoria que exige a cualquier persona u organización que participe en el debate público o en *think tanks* de influencia registrar y declarar públicamente sus fuentes de financiamiento.
 4. **Registros Transparentes y Auditoría Pública:** Toda la documentación de trazabilidad y los registros de deliberación están sujetos a auditorías públicas continuas para garantizar la integridad institucional.
+
+</div>

@@ -1,20 +1,21 @@
 ---
 library: "Alfabetización Digital para humanistas"
-folder: "Curso Inicial"
-title: "Crear con IA: del texto al proyecto"
+folder: "Encerar, pulir... no olvidar respirar, muy importante"
+title: "4. Crear con IA: del texto al proyecto"
 tags:
-  - alfabetizacion-digital
-  - inteligencia-artificial
-  - desarrollo
-  - programacion
-  - codigo
-  - algoritmos
-  - proyectos
-  - colaboracion
-  - documentacion
-  - humanidades-digitales
-
+- alfabetizacion-digital
+- desarrollo
+- inteligencia-artificial
+- programacion
+- codigo
+- algoritmos
+- proyectos
+- colaboracion
+- documentacion
+- humanidades-digitales
 ---
+
+<div align="justify">
 
 # Crear con IA: del texto al proyecto
 
@@ -800,3 +801,5 @@ Y finalmente:
 «¿Cómo conecto esta pieza con la siguiente?»
 En ese momento ya no estás solamente utilizando inteligencia artificial.
 Estás construyendo con ella.
+
+</div>

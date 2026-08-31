@@ -1,17 +1,20 @@
+---
 library: "Alfabetización Digital para humanistas"
-folder: "Curso Inicial"
-title: "Inteligencia artificial: qué es y qué no es"
+folder: "Encerar, pulir... no olvidar respirar, muy importante"
+title: "1. Inteligencia artificial: qué es y qué no es"
 tags:
-  - alfabetizacion-digital
-  - inteligencia-artificial
-  - humanidades
-  - modelos-de-lenguaje
-  - pensamiento-critico
-  - tecnologia
-  - epistemologia
-  - ia-generativa
+- alfabetizacion-digital
+- inteligencia-artificial
+- humanidades
+- modelos-de-lenguaje
+- pensamiento-critico
+- tecnologia
+- epistemologia
+- ia-generativa
+- humanidades-digitales
+---
 
-
+<div align="justify">
 
 Inteligencia artificial: qué es y qué no es
 Pregunta central
@@ -318,3 +321,5 @@ También debemos preguntar:
 Y una pregunta todavía más importante:
 «¿Qué capacidades humanas necesitamos desarrollar para utilizarla bien?»
 La alfabetización digital comienza cuando dejamos de mirar la tecnología como algo que otros construyen para nosotros y empezamos a comprender cómo podemos trabajar con ella, cuestionarla y utilizarla para ampliar nuestra propia capacidad de comprender y crear.
+
+</div>

@@ -1,10 +1,8 @@
 ---
-
 library: "Todo Ciudadano Sabe"
-folder: "02-Todo-Ciudadano-Sabe"
-title: "La pauta que conecta"
+folder: "01-Todo-Ciudadano-Sabe"
+title: "2. La pauta que conecta"
 tags:
-
 - todo-ciudadano-sabe
 - gregory-bateson
 - pensamiento-sistemico
@@ -13,8 +11,9 @@ tags:
 - relaciones
 - aprendizaje
 - complejidad
-
 ---
+
+<div align="justify">
 
 La pauta que conecta
 
@@ -247,3 +246,5 @@ Puede ayudarnos a comprender una familia, una organización, una economía, un e
 Porque muchas veces, aquello que parece diferente en la superficie comparte una misma lógica en sus relaciones.
 
 Aprender a reconocer esas pautas es aprender a ver conexiones donde antes veíamos solamente cosas separadas.
+
+</div>

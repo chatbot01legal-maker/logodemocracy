@@ -1,20 +1,19 @@
 ---
-
 library: "Todo Ciudadano Sabe"
-folder: "02-Todo-Ciudadano-Sabe"
-title: "Tipos lógicos y niveles de abstracción"
+folder: "01-Todo-Ciudadano-Sabe"
+title: "6. Tipos lógicos y niveles de abstracción"
 tags:
-
 - todo-ciudadano-sabe
 - gregory-bateson
 - pensamiento-sistemico
 - epistemologia
 - tipos-logicos
 - niveles-de-abstraccion
-- pensamiento-critico
+- metacognicion
 - aprendizaje
-
 ---
+
+<div align="justify">
 
 # Tipos lógicos y niveles de abstracción
 
@@ -436,3 +435,5 @@ Comprender los tipos lógicos no consiste solamente en aprender una clasificaci�
 Consiste en adquirir una capacidad intelectual fundamental:
 
 **saber desde qué nivel estamos pensando.**
+
+</div>

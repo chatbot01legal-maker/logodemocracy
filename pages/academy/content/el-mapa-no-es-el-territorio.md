@@ -1,19 +1,19 @@
 ---
-
 library: "Todo Ciudadano Sabe"
 folder: "01-Todo-Ciudadano-Sabe"
-title: "El mapa no es el territorio"
+title: "4. El mapa no es el territorio"
 tags:
-
 - todo-ciudadano-sabe
 - gregory-bateson
 - pensamiento-sistemico
 - epistemologia
+- modelos-mentales
 - representacion
-- modelos
+- percepcion
 - pensamiento-critico
-
 ---
+
+<div align="justify">
 
 El mapa no es el territorio
 
@@ -246,3 +246,5 @@ Este principio se relaciona directamente con otros conceptos fundamentales de To
 - Evidencia y carga de la prueba: los mapas que construimos deben poder contrastarse con el territorio que pretenden representar.
 
 La capacidad de pensar críticamente comienza cuando somos capaces de utilizar nuestros mapas sin olvidar nunca que seguimos buscando el territorio.
+
+</div>

@@ -1,16 +1,18 @@
 ---
-library: "El Modelo"
-folder: "02-Fundamentos"
-title: "Más allá de una persona, un voto"
+library: "Logodemocracia"
+folder: "El Modelo"
+title: "2. Más allá de una persona, un voto"
 tags:
-  - el-modelo
-  - logo-democracia
-  - una-persona-un-voto
-  - voto-censocapacitario
-  - democracia-epistemica
-  - legitimidad
-  - ponderacion
+- el-modelo
+- logo-democracia
+- una-persona-un-voto
+- voto-sensitivo
+- democracia-epistemica
+- legitimidad
+- ponderacion
 ---
+
+<div align="justify">
 
 # Más allá de una persona, un voto
 
@@ -124,3 +126,5 @@ La LogoDemocracia ofrece una síntesis superadora:
 * **Rechaza el voto censocapacitario:** Condicionar el poder de forma permanente a los títulos pasados es elitista e inaceptable.
 * **Supera la fragilidad del "una persona, un voto" no capacitado:** Aplicado a decisiones de alta complejidad técnica, conduce al populismo y la ineficacia.
 * **Introduce la agregación matemática ponderada:** Resuelve la toma de decisiones integrando representación ($P$), evidencia técnica ($E$) e inclusión ciudadana informada ($V$).
+
+</div>

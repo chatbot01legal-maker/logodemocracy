@@ -1,21 +1,20 @@
 ---
-
 library: "Alfabetización Digital para humanistas"
-folder: "Curso Inicial"
-title: "Herramientas de Desarrollo"
+folder: "Encerar, pulir... no olvidar respirar, muy importante"
+title: "5. Herramientas de Desarrollo"
 tags:
-
-  - alfabetizacion-digital
-  - desarrollo
-  - terminal
-  - termux
-  - github
-  - render
-  - cli
-  - herramientas
-  - humanidades-digitales
-
+- alfabetizacion-digital
+- desarrollo
+- terminal
+- termux
+- github
+- render
+- cli
+- herramientas
+- humanidades-digitales
 ---
+
+<div align="justify">
 
 # Herramientas de Desarrollo
 
@@ -925,3 +924,5 @@ Aprendes a preguntar mejor.
 
 Y, mientras creías que simplemente estabas aprendiendo herramientas, estabas aprendiendo algo mucho más importante:
 cómo construir.
+
+</div>

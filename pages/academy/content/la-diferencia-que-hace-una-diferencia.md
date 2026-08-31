@@ -1,10 +1,8 @@
 ---
-
 library: "Todo Ciudadano Sabe"
-folder: "02-Todo-Ciudadano-Sabe"
-title: "La diferencia que hace una diferencia"
+folder: "01-Todo-Ciudadano-Sabe"
+title: "3. La diferencia que hace una diferencia"
 tags:
-
 - todo-ciudadano-sabe
 - gregory-bateson
 - pensamiento-sistemico
@@ -13,8 +11,9 @@ tags:
 - percepcion
 - aprendizaje
 - diferencias
-
 ---
+
+<div align="justify">
 
 La diferencia que hace una diferencia
 
@@ -326,3 +325,5 @@ Por eso, una buena pregunta para comprender el mundo es:
 Y una pregunta todavía más profunda:
 
 ¿Qué diferencia no estoy viendo que podría cambiarlo todo?
+
+</div>

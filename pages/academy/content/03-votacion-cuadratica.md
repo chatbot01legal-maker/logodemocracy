@@ -1,13 +1,18 @@
 ---
-title: Votación Cuadrática
-folder: Fundamentos
+library: "Logodemocracia"
+folder: "El Modelo"
+title: "3. Votación Cuadrática"
 tags:
-  - matematicas
-  - estadistica
-  - teoria-de-juegos
-  - votacion-cuadratica
-  - logodemocracia
+- votacion-cuadratica
+- voto-cuadratico
+- academia
+- fundamentos
+- democracia-aumentada
+- deliberacion
+- inteligencia-colectiva
 ---
+
+<div align="justify">
 
 # Votación Cuadrática: Fundamentos Matemáticos y Teóricos
 
@@ -153,3 +158,5 @@ En entornos prácticos, el equilibrio de Nash teórico enfrenta tres limitacione
 En el modelo de LogoDemocracia, la Votación Cuadrática constituye el motor matemático central para la agregación de preferencias en la asignación de presupuestos participativos, la priorización de la agenda legislativa en el Congreso Virtual y el balance ponderado entre las recomendaciones del Panel de Expertos y la voluntad cívica. Al reemplazar las votaciones binarias polarizantes por una medición precisa de la intensidad ciudadana, LogoDemocracia asegura decisiones que optimizan el bienestar colectivo.
 
 Este documento contiene los fundamentos matemáticos completos. El Rey Filósofo (Tutor Cognitivo de IA) está diseñado para traducir estos conceptos a niveles de abstracción adecuados para cada ciudadano, utilizando ejemplos interactivos, simulaciones y preguntas guiadas. La experiencia de aprendizaje no requiere que el ciudadano memorice las demostraciones, sino que comprenda sus implicaciones prácticas.
+
+</div>

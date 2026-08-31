@@ -1,17 +1,18 @@
 ---
-title: "Gobernanza Constitucional: Pesos, Enmiendas y Válvulas de Escape"
 library: "Logodemocracia"
 folder: "El Modelo"
-file: "03-Gobernanza-Constitucional.md"
+title: "5. Gobernanza Constitucional: Pesos, Enmiendas y Válvulas de Escape"
 tags:
-  - el-modelo
-  - logo-democracia
-  - gobernanza-constitucional
-  - meta-gobernanza
-  - pesos-institucionales
-  - valvulas-de-escape
-  - democracia-epistemica
+- el-modelo
+- logo-democracia
+- gobernanza-constitucional
+- meta-gobernanza
+- pesos-institucionales
+- valvulas-de-escape
+- democracia-epistemica
 ---
+
+<div align="justify">
 
 # Gobernanza Constitucional: Pesos, Enmiendas y Válvulas de Escape
 
@@ -100,3 +101,5 @@ Cuando la votación ponderada resulta en un empate estricto ($V_{total} = 0.5000
 1. **Fase de Recalibración Cognitiva (Tutor Cognitivo):** SOPHIA desglosa los puntos de desacuerdo factuales vs. ideológicos entre las cámaras y genera una *Matriz de Puntos de Convergencia*.
 2. **Votación de Iteración Única:** Las cámaras vuelven a votar tras un periodo obligatorio de deliberación cruzada de 72 horas.
 3. **Resolución por Válvula del Congreso Virtual:** Si el empate persiste, el voto del **Congreso Virtual (Ciudadanía Aleatoria)** rompe el empate de forma categórica, actuando como jurado ciudadano soberano.
+
+</div>

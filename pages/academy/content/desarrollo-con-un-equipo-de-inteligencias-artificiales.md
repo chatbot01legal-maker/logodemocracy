@@ -1,22 +1,20 @@
 ---
 library: "Alfabetización Digital para humanistas"
-folder: "Curso Inicial"
-title: "Desarrollo con un equipo de Inteligencias Artificiales"
+folder: "Encerar, pulir... no olvidar respirar, muy importante"
+title: "6. Desarrollo con un equipo de inteligencias artificiales"
 tags:
-  - alfabetizacion-digital
-  - inteligencia-artificial
-  - desarrollo
-  - pensamiento-critico
-  - auditoria
-  - verificacion
-  - colaboracion
-  - agentes-ia
-  - contratos
-  - contexto
-  - documentacion
-  - humanidades-digitales
-  - 
+- alfabetizacion-digital
+- desarrollo
+- inteligencia-artificial
+- agentes
+- roles
+- arquitectura-de-colaboracion
+- contratos
+- auditoria
+- humanidades-digitales
 ---
+
+<div align="justify">
 
 # Verificar, contrastar y auditar a una IA
 
@@ -723,3 +721,5 @@ Necesitas verificar resultados.
 Necesitas decidir cuándo corregir y cuándo avanzar.
 Y, sobre todo, necesitas mantener algo que ninguna inteligencia artificial puede delegar completamente:
 el criterio sobre qué vale la pena construir y por qué.
+
+</div>

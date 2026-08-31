@@ -1,10 +1,8 @@
 ---
-
 library: "Todo Ciudadano Sabe"
 folder: "01-Todo-Ciudadano-Sabe"
-title: "Todo Ciudadano Sabe: un currículum universal para comprender el mundo"
+title: "1. Todo Ciudadano Sabe: un currículum universal para comprender el mundo"
 tags:
-
 - todo-ciudadano-sabe
 - gregory-bateson
 - pensamiento-sistemico
@@ -14,8 +12,9 @@ tags:
 - educacion-civica
 - academia
 - conocimiento
-
 ---
+
+<div align="justify">
 
 Todo Ciudadano Sabe
 
@@ -617,3 +616,5 @@ comprender mejor para deliberar mejor.
 Deliberar mejor para decidir mejor.
 
 Decidir mejor para construir una democracia mejor.
+
+</div>

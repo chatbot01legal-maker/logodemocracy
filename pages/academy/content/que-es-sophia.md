@@ -1,20 +1,16 @@
 ---
-
 library: "Logodemocracia"
-folder: "09-SOPHIA"
-title: "¿Qué es SOPHIA y cuál es su función en LogoDemocracy?"
+folder: "Plataforma Tecnológica"
+title: "3. ¿Qué es SOPHIA y cuál es su función?"
 tags:
-
 - sophia
 - inteligencia-artificial
 - deliberación
 - epistemología
-- razonamiento
 - democracia-aumentada
-- robustez-deliberativa
-- inteligencia-ciudadana
-
 ---
+
+<div align="justify">
 
 ¿Qué es SOPHIA y cuál es su función en LogoDemocracy?
 
@@ -574,3 +570,5 @@ Constituye una herramienta destinada a fortalecerlo.
 El Rey Filósofo acompaña.
 La comunidad delibera.
 El ciudadano decide.»
+
+</div>

@@ -1,18 +1,18 @@
 ---
 library: "Alfabetización Digital para humanistas"
-folder: "Curso Inicial"
-title: "Pensar con IA sin dejar que la IA piense por ti"
+folder: "Encerar, pulir... no olvidar respirar, muy importante"
+title: "2. Pensar con IA sin dejar que la IA piense por ti"
 tags:
-  - alfabetizacion-digital
-  - inteligencia-artificial
-  - pensamiento-critico
-  - metacognicion
-  - modelos-mentales
-  - colaboracion
-  - epistemologia
-  - humanidades-digitales
-    
+- alfabetizacion-digital
+- inteligencia-artificial
+- pensamiento-critico
+- criterio
+- metacognicion
+- autonomia
+- humanidades-digitales
 ---
+
+<div align="justify">
 
 # Pensar con IA sin dejar que la IA piense por ti
 
@@ -754,3 +754,5 @@ Por eso, una pregunta fundamental antes de utilizar una IA es:
 Y una pregunta todavía más importante:
 
 **Después de utilizar la IA, ¿soy más capaz de pensar por mí mismo o menos?**
+
+</div>

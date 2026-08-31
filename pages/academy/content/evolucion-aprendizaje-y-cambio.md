@@ -1,10 +1,8 @@
 ---
-
 library: "Todo Ciudadano Sabe"
-folder: "02-Todo-Ciudadano-Sabe"
-title: "Evolución, aprendizaje y cambio"
+folder: "01-Todo-Ciudadano-Sabe"
+title: "7. Evolución, aprendizaje y cambio"
 tags:
-
 - todo-ciudadano-sabe
 - gregory-bateson
 - pensamiento-sistemico
@@ -14,8 +12,9 @@ tags:
 - adaptacion
 - estocasticidad
 - complejidad
-
 ---
+
+<div align="justify">
 
 # Evolución, aprendizaje y cambio
 
@@ -433,3 +432,5 @@ En todos los casos aparece una pregunta común:
 Y una pregunta todavía más profunda:
 
 **¿Es capaz de cambiar la manera en que aprende?**
+
+</div>
