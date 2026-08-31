@@ -212,3 +212,295 @@ blockquote {
   --header-color: var(--accent);
 }
 
+
+/* =========================================================
+   ACADEMIA — SISTEMA EDITORIAL MARKDOWN
+   Capa visual para documentos renderizados por Marked
+========================================================= */
+
+/* Contenedor general del documento */
+.content {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  /* IMPORTANTE:
+     Marked ya transforma Markdown en HTML.
+     No debemos conservar los saltos de línea
+     del Markdown como espacios visuales adicionales. */
+  white-space: normal;
+
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #e5e7eb;
+}
+
+/* ---------------------------------------------------------
+   TÍTULOS
+--------------------------------------------------------- */
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+  font-family: "Fraunces", serif;
+  font-weight: 450;
+  line-height: 1.25;
+  color: #f3f4f6;
+  text-align: left;
+}
+
+.content h1 {
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  margin: 0 0 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(34, 197, 94, .22);
+}
+
+.content h2 {
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  margin: 3rem 0 1.2rem;
+}
+
+.content h3 {
+  font-size: 1.25rem;
+  margin: 2.2rem 0 1rem;
+}
+
+.content h4 {
+  font-size: 1.1rem;
+  margin: 1.8rem 0 .8rem;
+}
+
+/* ---------------------------------------------------------
+   PÁRRAFOS
+--------------------------------------------------------- */
+
+.content p {
+  text-align: justify;
+  text-justify: inter-word;
+  margin: 0 0 1.25rem;
+}
+
+/* ---------------------------------------------------------
+   NEGRITA
+   IMPORTANTE: debe seguir siendo inline.
+--------------------------------------------------------- */
+
+.content strong,
+.content b {
+  display: inline;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: normal;
+  font-weight: 600;
+  text-align: inherit;
+  margin: 0;
+  max-width: none;
+}
+
+/* ---------------------------------------------------------
+   ÉNFASIS / CURSIVA
+--------------------------------------------------------- */
+
+.content em,
+.content i {
+  font-family: inherit;
+  font-style: italic;
+}
+
+/* ---------------------------------------------------------
+   LISTAS
+--------------------------------------------------------- */
+
+.content ul,
+.content ol {
+  margin: 1rem 0 1.5rem 1.5rem;
+  padding-left: 1.25rem;
+}
+
+.content li {
+  margin-bottom: .55rem;
+  line-height: 1.7;
+  text-align: left;
+}
+
+.content li > p {
+  margin-bottom: .5rem;
+}
+
+/* ---------------------------------------------------------
+   CITAS
+--------------------------------------------------------- */
+
+.content blockquote {
+  margin: 2rem auto;
+  padding: 1rem 1.5rem;
+  max-width: 760px;
+
+  border-left: 2px solid rgba(34, 197, 94, .55);
+
+  color: rgba(229, 231, 235, .78);
+  font-family: "Fraunces", serif;
+  font-size: 1.12rem;
+  line-height: 1.7;
+  text-align: left;
+  font-style: italic;
+}
+
+.content blockquote p {
+  text-align: left;
+  margin-bottom: .75rem;
+}
+
+/* ---------------------------------------------------------
+   SEPARADORES MARKDOWN
+--------------------------------------------------------- */
+
+.content hr {
+  border: 0;
+  border-top: 1px solid rgba(229, 231, 235, .12);
+  margin: 2.5rem 0;
+}
+
+/* ---------------------------------------------------------
+   ENLACES
+--------------------------------------------------------- */
+
+.content a {
+  color: #22c55e;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(34, 197, 94, .3);
+}
+
+.content a:hover {
+  border-bottom-color: #22c55e;
+}
+
+/* ---------------------------------------------------------
+   CÓDIGO INLINE
+--------------------------------------------------------- */
+
+.content code {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .88em;
+  padding: .15em .35em;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, .06);
+  color: #d1fae5;
+}
+
+/* ---------------------------------------------------------
+   BLOQUES DE CÓDIGO
+--------------------------------------------------------- */
+
+.content pre {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  padding: 1rem 1.2rem;
+
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 5px;
+  background: rgba(0, 0, 0, .35);
+
+  line-height: 1.55;
+}
+
+.content pre code {
+  padding: 0;
+  background: transparent;
+  color: inherit;
+}
+
+/* ---------------------------------------------------------
+   TABLAS
+--------------------------------------------------------- */
+
+.content table {
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: collapse;
+  font-size: .94rem;
+}
+
+.content th,
+.content td {
+  padding: .7rem .8rem;
+  border: 1px solid rgba(255, 255, 255, .1);
+  text-align: left;
+}
+
+.content th {
+  font-weight: 500;
+  color: #f3f4f6;
+  background: rgba(255, 255, 255, .04);
+}
+
+/* ---------------------------------------------------------
+   IMÁGENES
+--------------------------------------------------------- */
+
+.content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 2rem auto;
+}
+
+/* ---------------------------------------------------------
+   ÚLTIMO PÁRRAFO
+   No convertir automáticamente el último párrafo
+   en una firma alineada a la derecha.
+--------------------------------------------------------- */
+
+.content p:last-of-type {
+  text-align: justify;
+  font-size: inherit;
+  opacity: 1;
+  max-width: none;
+  margin: 0 0 1.25rem;
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+--------------------------------------------------------- */
+
+@media (max-width: 700px) {
+
+  .content {
+    font-size: .96rem;
+    line-height: 1.7;
+  }
+
+  .content h1 {
+    font-size: 1.8rem;
+  }
+
+  .content h2 {
+    font-size: 1.45rem;
+    margin-top: 2.3rem;
+  }
+
+  .content h3 {
+    font-size: 1.2rem;
+  }
+
+  .content p {
+    text-align: left;
+  }
+
+  .content blockquote {
+    margin: 1.5rem .25rem;
+    padding-left: 1rem;
+  }
+
+  .content table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
