@@ -635,6 +635,34 @@ function evaluateText(text) {
   }
 }
 
+// ─── VPA — VALE LA PENA PRESTAR ATENCIÓN ──────────────
+// No es una fórmula nueva: es una relectura de los mismos datos que ya
+// produce la Capa 1 (fases[].infracciones). IRD_global seguía siendo el
+// promedio de puntaje_fase; VPA cuenta cuántos hallazgos reales quedaron
+// en pie después de aplicar mitigadores — no reemplaza el cálculo de
+// severidad/mitigación, solo cambia cómo se presenta su resultado.
+function computeVPA(fases) {
+  const puntos = [];
+  (fases || []).forEach(fase => {
+    (fase.infracciones || []).forEach(inf => {
+      puntos.push({
+        fase: fase.nombre || fase.id,
+        criterio: inf.criterio,
+        constructo: inf.constructo,
+        atomos: inf.atomos_activados || [],
+        mitigado: !!inf.mitigado_parcialmente,
+        severidad: inf.penalizacion
+      });
+    });
+  });
+  let categoria;
+  if (puntos.length === 0) categoria = "Sin puntos de atención";
+  else if (puntos.length <= 2) categoria = "Pocos puntos de atención";
+  else if (puntos.length <= 5) categoria = "Varios puntos de atención";
+  else categoria = "Múltiples puntos de atención";
+  return { conteo: puntos.length, categoria, puntos };
+}
+
 // ─── NORMALIZACIÓN DE RESPUESTAS SOPHIA ───────────────
 // El backend híbrido (/api/sophia/evaluate) responde con la forma:
 //   { local: {fases, evidencias, IRD_global, riesgo}, llm_review, ird, risk, ... }
@@ -684,10 +712,15 @@ function normalizeSophiaResult(raw) {
       fases: local.fases || [],
       evidencias: local.evidencias || [],
 
+      // IRD_global se conserva internamente por compatibilidad con
+      // consumidores existentes (Ágora, telemetría, contrato API), pero
+      // deja de ser la métrica principal para el usuario: ver vpa.
       IRD_global:
         raw.ird !== undefined
           ? raw.ird
           : local.IRD_global,
+
+      vpa: computeVPA(local.fases || []),
 
       riesgo:
         raw.risk !== undefined
@@ -732,6 +765,7 @@ function normalizeSophiaResult(raw) {
     evidencias: raw.evidencias || [],
 
     IRD_global: raw.IRD_global,
+    vpa: computeVPA(raw.fases || []),
     riesgo: raw.riesgo,
 
     naturaleza_documental:
@@ -849,10 +883,10 @@ function renderFase(faseId) {
 // instrumento real — nada inventado ni genérico.
 const SOPHIA_LOADING_FACTS = [
   "¿Sabías que? SOPHIA evalúa tu texto en 5 fases: Estructura Lógica, Inferencia, Calibración Epistémica, Transparencia Retórica y Pertinencia Deliberativa.",
-  "¿Sabías que? El Índice de Robustez Deliberativa (IRD) parte de 100 puntos y se descuenta por cada infracción real detectada — nunca se suma por opinión.",
+  "¿Sabías que? SOPHIA no le pone una nota a tu texto. VPA — Vale la Pena prestar Atención — cuenta cuántas señales concretas encontró para revisar, no califica si el texto es bueno o malo.",
   "¿Sabías que? La Capa 1 de SOPHIA (el motor determinista) no usa IA — son reglas públicas y auditables, siempre las mismas para todos.",
   "¿Sabías que? Después del motor determinista, una IA revisa ese mismo resultado buscando falsos positivos: negaciones, ironía, citas o hipótesis mal interpretadas.",
-  "¿Sabías que? SOPHIA distingue entre 'cómo' argumentás (robustez deliberativa) y 'qué' afirmás (confiabilidad factual) — son dos evaluaciones independientes.",
+  "¿Sabías que? SOPHIA distingue entre 'cómo' argumentás (los puntos de atención sobre la estructura) y 'qué' afirmás (la confiabilidad factual de tus datos) — son dos análisis independientes que nunca se mezclan.",
   "¿Sabías que? Para verificar hechos, SOPHIA hace búsquedas reales en internet y solo marca un dato como verificado si encuentra una fuente real que lo respalde.",
   "¿Sabías que? Si SOPHIA no encuentra evidencia suficiente sobre una afirmación, lo dice explícitamente — nunca inventa una fuente para parecer más segura.",
   "¿Sabías que? La fase de Estructura Lógica revisa si tu argumento se contradice a sí mismo o cae en falsas dicotomías (elegir solo entre dos opciones cuando hay más).",
@@ -860,17 +894,17 @@ const SOPHIA_LOADING_FACTS = [
   "¿Sabías que? La fase de Calibración Epistémica evalúa si tu nivel de certeza ('creo que' vs. 'es un hecho que') es proporcional a la evidencia que presentás.",
   "¿Sabías que? La fase de Transparencia Retórica busca lenguaje cargado emocionalmente que reemplace argumentos en vez de acompañarlos.",
   "¿Sabías que? La fase de Pertinencia Deliberativa mide si tu texto representa de forma justa a quienes piensan distinto (el llamado 'steelmaning').",
-  "¿Sabías que? Todo el proceso de SOPHIA queda registrado por capas — podés ver exactamente qué detectó cada una, no solo el puntaje final.",
-  "¿Sabías que? Un IRD alto no garantiza que los datos citados sean ciertos — por eso SOPHIA siempre muestra ambas cosas por separado.",
+  "¿Sabías que? Todo el proceso de SOPHIA queda registrado por capas — podés ver exactamente qué detectó cada una, no solo el resultado final.",
+  "¿Sabías que? Que SOPHIA no marque puntos de atención estructurales no garantiza que los datos citados sean ciertos — por eso SOPHIA siempre muestra ambas cosas por separado.",
   "¿Sabías que? La interpretación final que arma SOPHIA usa como contexto obligatorio los resultados de las tres capas anteriores, nunca analiza el texto desde cero.",
   "¿Sabías que? SOPHIA es parte de LogoDemocracy, un ecosistema que busca mejorar la calidad de la deliberación pública con herramientas abiertas.",
   "¿Sabías que? Las 'meta-reglas' de SOPHIA pueden mitigar una penalización si otra fase ya demostró suficiente rigor — el sistema no evalúa cada criterio de forma aislada.",
-  "¿Sabías que? Cada infracción que detecta SOPHIA cita el fragmento exacto de tu texto que la originó — nada queda sin evidencia mostrable.",
-  "¿Sabías que? SOPHIA fue diseñada para señalar problemas de razonamiento, no para decirte si tu opinión es correcta o incorrecta.",
+  "¿Sabías que? Cada punto de atención que detecta SOPHIA cita el fragmento exacto de tu texto que lo originó — nada queda sin evidencia mostrable.",
+  "¿Sabías que? SOPHIA fue diseñada para señalar aspectos del razonamiento que vale la pena examinar, no para decirte si tu opinión es correcta o incorrecta.",
   "¿Sabías que? Un texto puede tener errores factuales y aun así una estructura argumentativa impecable — SOPHIA te muestra esa tensión en vez de esconderla.",
   "¿Sabías que? El protocolo de SOPHIA es público: cualquiera puede revisar exactamente qué reglas se aplican y por qué.",
-  "¿Sabías que? SOPHIA busca ayudarte a pulir una idea antes de publicarla o defenderla, no solo calificarla después de escrita.",
-  "¿Sabías que? La ambigüedad léxica (usar palabras que admiten muchas interpretaciones, como 'bueno' o 'justo' sin definirlas) es una de las infracciones más comunes que detecta SOPHIA.",
+  "¿Sabías que? SOPHIA busca ayudarte a pulir una idea antes de publicarla o defenderla, mostrándote qué examinar, no calificándola después de escrita.",
+  "¿Sabías que? La ambigüedad léxica (usar palabras que admiten muchas interpretaciones, como 'bueno' o 'justo' sin definirlas) es una de las señales más comunes que detecta SOPHIA.",
   "¿Sabías que? SOPHIA revisa si tu conclusión es proporcional al tamaño real de tus premisas, o si estás sacando una conclusión más grande de lo que tu evidencia sostiene.",
   "¿Sabías que? El sistema de verificación de SOPHIA nunca decide si algo es verdadero basándose en su propio conocimiento — siempre busca una fuente externa primero.",
   "¿Sabías que? SOPHIA todavía está en etapa beta — cada evaluación que hacés ayuda a mejorar el instrumento.",
@@ -940,8 +974,8 @@ const VIEWS = {
             </div>
 
             <div class="s-card" style="margin:0;">
-              <div class="view-eyebrow">IRD</div>
-              <strong style="font-size:1.5rem;">100/100</strong>
+              <div class="view-eyebrow">VPA</div>
+              <strong style="font-size:1.5rem;">0 <span style="font-size:.7rem; font-weight:400; color:rgba(229,231,235,.5);">puntos de atención</span></strong>
             </div>
 
             <div class="s-card" style="margin:0;">
@@ -958,14 +992,14 @@ const VIEWS = {
 
           <div style="margin-top:24px;">
 
-            <div class="view-eyebrow">Puntaje por fase</div>
+            <div class="view-eyebrow">¿Dónde encontró SOPHIA algo que examinar?</div>
 
             <ul>
-              <li><strong>Estructura Lógica:</strong> 100/100</li>
-              <li><strong>Inferencia:</strong> 100/100</li>
-              <li><strong>Calibración Epistémica:</strong> 100/100</li>
-              <li><strong>Transparencia Retórica:</strong> 100/100</li>
-              <li><strong>Pertinencia Deliberativa:</strong> 100/100</li>
+              <li><strong>Estructura Lógica:</strong> Sin puntos de atención</li>
+              <li><strong>Inferencia:</strong> Sin puntos de atención</li>
+              <li><strong>Calibración Epistémica:</strong> Sin puntos de atención</li>
+              <li><strong>Transparencia Retórica:</strong> Sin puntos de atención</li>
+              <li><strong>Pertinencia Deliberativa:</strong> Sin puntos de atención</li>
             </ul>
 
           </div>
@@ -985,16 +1019,15 @@ const VIEWS = {
           <div class="view-eyebrow">La observación central</div>
 
           <h2 class="view-subtitle">
-            Robustez no significa verdad
+            No encontrar señales no significa que sea verdad
           </h2>
 
           <p>
-            SOPHIA otorgó al argumento un
-            <strong>Índice de Robustez Deliberativa de 100/100</strong>.
-            Esto significa que, desde el punto de vista de su estructura,
-            el argumento presenta una organización coherente entre sus
+            SOPHIA no identificó <strong>puntos de atención</strong> en la estructura
+            de este argumento (VPA: 0). Esto significa que, desde el punto de vista de
+            su construcción, el argumento presenta una organización coherente entre sus
             afirmaciones, inferencias, recursos retóricos y propósito
-            deliberativo.
+            deliberativo — no que su contenido sea correcto ni verdadero.
           </p>
 
           <p>
@@ -1230,9 +1263,9 @@ const VIEWS = {
 
           <p>
             En este caso, ambas respuestas son muy diferentes:
-            <strong>la estructura argumentativa obtuvo 100/100, mientras varias
-            premisas fácticas centrales fueron refutadas o quedaron sin
-            evidencia suficiente.</strong>
+            <strong>SOPHIA no encontró puntos de atención en la estructura del
+            argumento (VPA: 0), mientras varias premisas fácticas centrales
+            fueron refutadas o quedaron sin evidencia suficiente.</strong>
           </p>
 
           <p>
@@ -1389,24 +1422,25 @@ inicio: {
               <p style="font-size:.82rem; color:rgba(229,231,235,.65); margin-bottom:14px; line-height:1.5;">
                 El motor determinista de arriba es solo la primera de cuatro capas independientes.
                 Cada una responde una pregunta distinta, y ninguna modifica el resultado de las demás
-                — el Índice de Robustez Deliberativa (IRD) siempre proviene únicamente de la Capa 1.
+                — VPA (Vale la Pena Prestar Atención), el conteo de señales detectadas, siempre
+                proviene únicamente de la Capa 1.
               </p>
               <div class="card-grid">
                 <div class="s-card">
                   <div class="s-card-title">Capa 1 · Motor Determinista</div>
-                  <div class="s-card-body">Aplica las 5 fases y sus criterios mediante reglas públicas, sin IA. Produce el IRD, el nivel de riesgo y las áreas de revisión detectadas. Es el único resultado que nunca se modifica.</div>
+                  <div class="s-card-body">Aplica las 5 fases y sus criterios mediante reglas públicas, sin IA. Produce VPA (los puntos de atención detectados), el nivel de riesgo y las áreas de revisión. Es el único resultado que nunca se modifica.</div>
                 </div>
                 <div class="s-card">
                   <div class="s-card-title">Capa 2 · Auditoría Factual</div>
-                  <div class="s-card-body">Extrae afirmaciones verificables del texto y clasifica cada una: verificada, refutada, en conflicto o con evidencia insuficiente. No altera el IRD — evalúa la confiabilidad de los hechos citados, no la calidad del razonamiento.</div>
+                  <div class="s-card-body">Extrae afirmaciones verificables del texto y clasifica cada una: verificada, refutada, en conflicto o con evidencia insuficiente. No altera VPA — evalúa la confiabilidad de los hechos citados, no la construcción del razonamiento.</div>
                 </div>
                 <div class="s-card">
                   <div class="s-card-title">Capa 3 · Revisión de Falsos Positivos</div>
-                  <div class="s-card-body">Una IA revisa exclusivamente el resultado de la Capa 1 — no el documento desde cero — para detectar activaciones cuestionables: negaciones, ironía, citas, hipótesis o usos metalingüísticos que el motor determinista pudo malinterpretar. Solo produce observaciones; nunca cambia los puntajes.</div>
+                  <div class="s-card-body">Una IA revisa exclusivamente el resultado de la Capa 1 — no el documento desde cero — para detectar activaciones cuestionables: negaciones, ironía, citas, hipótesis o usos metalingüísticos que el motor determinista pudo malinterpretar. Solo produce observaciones; nunca elimina ni agrega puntos de atención.</div>
                 </div>
                 <div class="s-card">
                   <div class="s-card-title">Capa 4 · Interpretación Semántica Integral</div>
-                  <div class="s-card-body">Con el resultado de las tres capas anteriores como contexto obligatorio, una IA construye una interpretación global: qué significa el puntaje, cómo interactúan forma y contenido, y qué preguntas reflexivas propone. Es la única capa narrativa — el resto del pipeline es estructural.</div>
+                  <div class="s-card-body">Con el resultado de las tres capas anteriores como contexto obligatorio, una IA construye una interpretación global: qué significan los puntos de atención detectados, cómo interactúan forma y contenido, y qué preguntas reflexivas propone. Es la única capa narrativa — el resto del pipeline es estructural.</div>
                 </div>
               </div>
             </div>
@@ -1423,7 +1457,7 @@ inicio: {
                 </div>
                 <div class="s-card">
                   <div class="s-card-title">Auditoría Permanente</div>
-                  <div class="s-card-body">Cualquier ciudadano puede verificar por qué un texto obtuvo su puntuación.</div>
+                  <div class="s-card-body">Cualquier ciudadano puede verificar por qué SOPHIA marcó — o no marcó — un punto de atención en un texto.</div>
                 </div>
               </div>
             </div>
@@ -1436,110 +1470,113 @@ inicio: {
     }
   },
   opensource: {
-  title: 'Open Source Cognitivo',
-  render: () => {
-    try {
-      return `
-        <div class="view">
-          <div class="view-eyebrow">Transparencia Radical</div>
-          <h1 class="view-title">Open Source Cognitivo</h1>
-          <div class="view-body">
-            <p>El <strong>Open Source Cognitivo</strong> es el principio fundacional de SOPHIA. Todo el conocimiento que utiliza el sistema para evaluar está documentado, es público y versionable.</p>
-            <p>Esto incluye:</p>
-            <ul style="color:rgba(229,231,235,.6); margin-left:20px; line-height:1.8;">
-              <li><strong>Las 5 fases</strong> y sus 20 criterios.</li>
-              <li><strong>Los 20 átomos semánticos</strong> (uno por criterio), con definiciones operacionales y perfiles contextuales.</li>
-              <li><strong>Las reglas de evaluación contextual</strong>: cada átomo se analiza considerando la negación, citas, preguntas, y se aplican reglas de mitigación (contraindicadores, alcance oración/texto, modos anula/reduce).</li>
-              <li><strong>Lógicas especiales</strong> para detectar conflación causal y petición de principio, que evalúan relaciones entre elementos del texto.</li>
-              <li><strong>Las meta‑reglas</strong> que contextualizan la evaluación.</li>
-            </ul>
-            <p><strong>¿Y el algoritmo de IA?</strong> No podemos explicitar completamente la implementación concreta que utiliza el modelo de lenguaje para detectar patrones, porque depende de la arquitectura del modelo y de su entrenamiento. <strong>Pero sí podemos explicitar todo lo que el modelo debe buscar</strong>: los patrones lingüísticos, los umbrales, las relaciones lógicas y las condiciones que activan cada átomo.</p>
-            <p>Esto garantiza que, aunque la IA tenga cierta libertad en la ejecución, el <strong>significado de cada evaluación</strong> es fijo y reproducible. Cualquier persona, con cualquier herramienta, puede replicar el mismo resultado aplicando las mismas reglas.</p>
-            <p>Es decir: <strong>el protocolo es determinista en su definición</strong>, aunque la implementación técnica pueda variar.</p>
-          </div>
-          <div class="view-section">
-            <div class="view-section-title">Transparencia del instrumento</div>
-            <div class="card-grid">
-              <div class="s-card">
-                <div class="s-card-title">Reglas públicas</div>
-                <div class="s-card-body">Todos los criterios y átomos están documentados en el código fuente y en la interfaz.</div>
-              </div>
-              <div class="s-card">
-                <div class="s-card-title">Versionado semántico</div>
-                <div class="s-card-body">Cada cambio en el protocolo se registra y se puede debatir comunitariamente.</div>
-              </div>
-              <div class="s-card">
-                <div class="s-card-title">Auditoría ciudadana</div>
-                <div class="s-card-body">Cualquier persona puede verificar por qué un texto obtuvo una puntuación determinada.</div>
+    title: 'Open Source Cognitivo',
+    render: () => {
+      try {
+        return `
+          <div class="view">
+            <div class="view-eyebrow">Transparencia Radical</div>
+            <h1 class="view-title">Open Source Cognitivo</h1>
+            <div class="view-body">
+              <p>El <strong>Open Source Cognitivo</strong> es el principio fundacional de SOPHIA. Todo el conocimiento que utiliza el sistema para evaluar está documentado, es público y versionable.</p>
+              <p>Esto incluye:</p>
+              <ul style="color:rgba(229,231,235,.6); margin-left:20px; line-height:1.8;">
+                <li><strong>Las 5 fases</strong> y sus 20 criterios.</li>
+                <li><strong>Los 20 átomos cognitivos</strong> del motor de producción (uno por criterio, con su polaridad: riesgo, mitigador o neutral) con sus definiciones operacionales.</li>
+                <li><strong>Las reglas de interpretación</strong> que determinan cuándo un átomo genera, reduce o anula un punto de atención (VPA).</li>
+                <li><strong>Las meta‑reglas</strong> que contextualizan la evaluación.</li>
+              </ul>
+              <p><strong>¿Y el algoritmo de IA?</strong> No podemos explicitar completamente la implementación concreta que utiliza el modelo de lenguaje para detectar patrones, porque depende de la arquitectura del modelo y de su entrenamiento. <strong>Pero sí podemos explicitar todo lo que el modelo debe buscar</strong>: los patrones lingüísticos, los umbrales, las relaciones lógicas y las condiciones que activan cada átomo.</p>
+              <p>Esto garantiza que, aunque la IA tenga cierta libertad en la ejecución, el <strong>significado de cada evaluación</strong> es fijo y reproducible. Cualquier persona, con cualquier herramienta, puede replicar el mismo resultado aplicando las mismas reglas.</p>
+              <p>Es decir: <strong>el protocolo es determinista en su definición</strong>, aunque la implementación técnica pueda variar.</p>
+            </div>
+            <div class="view-section">
+              <div class="view-section-title">Transparencia del instrumento</div>
+              <div class="card-grid">
+                <div class="s-card">
+                  <div class="s-card-title">Reglas públicas</div>
+                  <div class="s-card-body">Todos los criterios y átomos están documentados en el código fuente y en la interfaz.</div>
+                </div>
+                <div class="s-card">
+                  <div class="s-card-title">Versionado semántico</div>
+                  <div class="s-card-body">Cada cambio en el protocolo se registra y se puede debatir comunitariamente.</div>
+                </div>
+                <div class="s-card">
+                  <div class="s-card-title">Auditoría ciudadana</div>
+                  <div class="s-card-body">Cualquier persona puede verificar por qué SOPHIA identificó — o no — un punto de atención en un texto determinado.</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      `;
-    } catch (e) {
-      showDebug(`❌ Error en vista opensource: ${e.message}`, true);
-      return `<p>Error al renderizar: ${e.message}</p>`;
+        `;
+      } catch (e) {
+        showDebug(`❌ Error en vista opensource: ${e.message}`, true);
+        return `<p>Error al renderizar: ${e.message}</p>`;
+      }
     }
-  }
-},
+  },
   atomos: {
-  atomos: {
-  title: 'Átomos Cognitivos',
-  render: () => {
-    try {
-      const todosAtomos = [];
-      PROTOCOL.fases.forEach(f => {
-        f.criterios.forEach(c => {
-          c.atomos.forEach(a => {
-            todosAtomos.push({
-              id: a.id,
-              definicion: a.definicion,
-              patrones: a.patrones,
-              criterio: `${c.id} - ${c.nombre}`,
-              fase: f.nombre
+    title: 'Átomos Cognitivos',
+    render: () => {
+      try {
+        const todosAtomos = [];
+        PROTOCOL.fases.forEach(f => {
+          f.criterios.forEach(c => {
+            c.atomos.forEach(a => {
+              todosAtomos.push({
+                id: a.id,
+                definicion: a.definicion,
+                patrones: a.patrones,
+                polaridad: a.polaridad || 'riesgo',
+                criterio: `${c.id} - ${c.nombre}`,
+                fase: f.nombre
+              });
             });
           });
         });
-      });
 
-      return `
-        <div class="view">
-          <div class="view-eyebrow">Unidades mínimas de significado</div>
-          <h1 class="view-title">Átomos Cognitivos</h1>
-          <div class="view-body">
-            <p>El motor determinista de SOPHIA (Capa 1) se basa en <strong>20 átomos semánticos</strong> (uno por criterio), cada uno con definiciones contextuales y reglas de mitigación (negación, citas, contraindicadores, alcance oración/texto).</p>
-            <p>El protocolo local de respaldo contiene un conjunto más granular de <strong>${todosAtomos.length} unidades de análisis</strong> que se utilizan para depuración y para el fallback sin IA. A continuación se muestra el repositorio completo de estas unidades.</p>
-          </div>
-          <div class="view-section">
-            <div class="view-section-title">Repositorio completo de átomos</div>
-            <div style="max-height:400px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
-              ${todosAtomos.map(a => `
-                <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,.05); padding:6px 0;">
-                  <span style="color:var(--accent); font-weight:500; width:120px;">${a.id}</span>
-                  <span style="font-size:.75rem; color:rgba(229,231,235,.6); flex:1; padding:0 10px;">${a.definicion}</span>
-                  <span style="font-size:.6rem; color:rgba(229,231,235,.3); width:140px; text-align:right;">${a.criterio}</span>
-                </div>
-              `).join('')}
-            </div>
-            <div style="margin-top:12px; font-size:.7rem; color:rgba(229,231,235,.3);">
-              Total de unidades de análisis (incluyendo las del fallback): ${todosAtomos.length}
-            </div>
-          </div>
-          <div class="view-section">
-            <div class="view-section-title">Función dentro del instrumento</div>
+        return `
+          <div class="view">
+            <div class="view-eyebrow">Unidades mínimas de significado</div>
+            <h1 class="view-title">Átomos Cognitivos</h1>
             <div class="view-body">
-              <p>Cada átomo se activa cuando el texto contiene ciertos patrones lingüísticos (palabras clave, construcciones gramaticales). Su detección contribuye a la penalización del criterio correspondiente, según la severidad asignada y la frecuencia de aparición.</p>
-              <p>Esta arquitectura permite que la evaluación sea <strong>transparente y replicable</strong>: cualquier persona puede inspeccionar qué átomos se activaron y por qué.</p>
+              <p>Los <strong>átomos cognitivos</strong> son las unidades semánticas fundamentales del protocolo SOPHIA. Cada uno representa un concepto operacional que el motor debe detectar en el texto — no todos representan un problema: cada átomo tiene una <strong>polaridad</strong> (riesgo, mitigador o neutral) que determina si su presencia suma un punto de atención, lo reduce, o simplemente se registra sin penalizar.</p>
+              <p>El motor de producción (<code>SophiaEngineV4</code>) usa <strong>20 átomos formales</strong>, uno por cada criterio (cardinalidad 1:1). El listado que sigue corresponde a los átomos del <strong>motor de respaldo local</strong> que se usa solo si el motor de producción no está disponible; puede tener una granularidad distinta (varios sub-indicadores por criterio) porque cumple una función de contingencia, no la evaluación principal.</p>
+            </div>
+            <div class="view-section">
+              <div class="view-section-title">Repositorio completo de átomos (motor de respaldo)</div>
+              <div style="max-height:400px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
+                ${todosAtomos.map(a => {
+                  const polaridadColor = { riesgo: '#ef4444', mitigador: '#22c55e', neutral: 'rgba(229,231,235,.4)' }[a.polaridad || 'riesgo'];
+                  const polaridadLabel = { riesgo: 'riesgo', mitigador: 'mitigador', neutral: 'neutral' }[a.polaridad || 'riesgo'];
+                  return `
+                  <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,.05); padding:6px 0; gap:8px;">
+                    <span style="color:var(--accent); font-weight:500; width:120px; flex-shrink:0;">${a.id}</span>
+                    <span style="font-size:.75rem; color:rgba(229,231,235,.6); flex:1;">${a.definicion}</span>
+                    <span style="font-size:.6rem; color:${polaridadColor}; border:1px solid ${polaridadColor}; border-radius:3px; padding:1px 6px; flex-shrink:0;">${polaridadLabel}</span>
+                    <span style="font-size:.6rem; color:rgba(229,231,235,.3); width:100px; text-align:right; flex-shrink:0;">${a.criterio}</span>
+                  </div>
+                `;}).join('')}
+              </div>
+              <div style="margin-top:12px; font-size:.7rem; color:rgba(229,231,235,.3);">
+                Total de átomos (motor de respaldo): ${todosAtomos.length} · Total de átomos (SophiaEngineV4, producción): 20
+              </div>
+            </div>
+            <div class="view-section">
+              <div class="view-section-title">Función dentro del instrumento</div>
+              <div class="view-body">
+                <p>Cada átomo se activa cuando el texto contiene ciertos patrones lingüísticos (palabras clave, construcciones gramaticales). Si su polaridad es <strong>riesgo</strong>, su detección puede sumar un punto de atención al criterio correspondiente, según la severidad y frecuencia. Si es <strong>mitigador</strong>, reduce o anula un punto de atención ya detectado (por ejemplo, citar una fuente mitiga la falta de trazabilidad). Si es <strong>neutral</strong>, se registra pero nunca penaliza.</p>
+                <p>Esta arquitectura permite que la evaluación sea <strong>transparente y replicable</strong>: cualquier persona puede inspeccionar qué átomos se activaron, con qué polaridad, y por qué eso generó — o no — un punto de atención.</p>
+              </div>
             </div>
           </div>
-        </div>
-      `;
-    } catch (e) {
-      showDebug(`❌ Error en vista atomos: ${e.message}`, true);
-      return `<p>Error al renderizar: ${e.message}</p>`;
+        `;
+      } catch (e) {
+        showDebug(`❌ Error en vista atomos: ${e.message}`, true);
+        return `<p>Error al renderizar: ${e.message}</p>`;
+      }
     }
-  }
-},
+  },
   formula: {
     title: 'Fórmula de Cálculo',
     render: () => {
@@ -1561,11 +1598,11 @@ inicio: {
 
         return `
           <div class="view">
-            <div class="view-eyebrow">Mecánica del Puntaje</div>
-            <h1 class="view-title">¿Cómo se calcula el IRD?</h1>
+            <div class="view-eyebrow">Mecánica de Detección</div>
+            <h1 class="view-title">¿Cómo llega SOPHIA a un punto de atención?</h1>
             <div class="view-body">
-              <p>El <strong>Índice de Robustez Deliberativa (IRD)</strong> es un número entre 0 y 100 que refleja la adherencia de un texto al protocolo SOPHIA. Se calcula mediante un proceso jerárquico y determinista.</p>
-              <p>Cada <strong>dimensión</strong> (fase) contiene 4 <strong>criterios</strong>. Cada criterio se evalúa a través de <strong>átomos cognitivos</strong> (unidades semánticas).</p>
+              <p>SOPHIA no le pone una nota al texto. Internamente calcula una severidad por cada señal detectada — es la forma de decidir qué tan prioritario es cada punto de atención y de mantener la trazabilidad — pero lo que se te muestra es <strong>VPA (Vale la Pena Prestar Atención)</strong>: cuántos puntos de atención reales quedaron en pie después de aplicar mitigadores, no un porcentaje de calidad.</p>
+              <p>Cada <strong>dimensión</strong> (fase) contiene 4 <strong>criterios</strong>. Cada criterio se evalúa a través de <strong>átomos cognitivos</strong> (unidades semánticas), y cada átomo tiene una <strong>polaridad</strong>: riesgo (puede generar un punto de atención), mitigador (lo reduce o anula) o neutral (se registra, nunca penaliza).</p>
             </div>
 
             <div class="view-section">
@@ -1575,28 +1612,29 @@ inicio: {
                 <div class="flow-step"><div class="flow-dot">2</div><div class="flow-body"><div class="flow-title">Criterio</div><div class="flow-desc">Ej: 2.1 Suficiencia Inferencial</div></div></div>
                 <div class="flow-step"><div class="flow-dot">3</div><div class="flow-body"><div class="flow-title">Constructo</div><div class="flow-desc">Ej: Escalamiento Inferencial (entidad teórica)</div></div></div>
                 <div class="flow-step"><div class="flow-dot">4</div><div class="flow-body"><div class="flow-title">Átomos Cognitivos</div><div class="flow-desc">Ej: Premisa, Conclusión, Magnitud, Universalización, Extrapolación</div></div></div>
-                <div class="flow-step"><div class="flow-dot">5</div><div class="flow-body"><div class="flow-title">Definición operacional</div><div class="flow-desc">Cada átomo tiene una definición concreta y patrones lingüísticos.</div></div></div>
-                <div class="flow-step"><div class="flow-dot">6</div><div class="flow-body"><div class="flow-title">Reglas de interpretación</div><div class="flow-desc">Lógica IF-THEN que determina penalizaciones.</div></div></div>
+                <div class="flow-step"><div class="flow-dot">5</div><div class="flow-body"><div class="flow-title">Definición operacional</div><div class="flow-desc">Cada átomo tiene una definición concreta, patrones lingüísticos y una polaridad (riesgo / mitigador / neutral).</div></div></div>
+                <div class="flow-step"><div class="flow-dot">6</div><div class="flow-body"><div class="flow-title">Condiciones y mitigación</div><div class="flow-desc">Un átomo de riesgo puede quedar reducido o anulado si un átomo mitigador aparece en la misma oración o en el texto, según el criterio.</div></div></div>
                 <div class="flow-step"><div class="flow-dot">7</div><div class="flow-body"><div class="flow-title">Implementación LLM</div><div class="flow-desc">Patrones de búsqueda (ej: "todos", "siempre").</div></div></div>
-                <div class="flow-step"><div class="flow-dot">8</div><div class="flow-body"><div class="flow-title">Salida obligatoria</div><div class="flow-desc">Mapa de razonamiento con puntaje, átomos activados y evidencias.</div></div></div>
+                <div class="flow-step"><div class="flow-dot">8</div><div class="flow-body"><div class="flow-title">Salida obligatoria</div><div class="flow-desc">Mapa de razonamiento con los puntos de atención (VPA), qué átomo los originó, su severidad, si fueron mitigados, y la evidencia textual.</div></div></div>
               </div>
             </div>
 
             <div class="view-section">
-              <div class="view-section-title">Fórmula de agregación</div>
+              <div class="view-section-title">Trazabilidad de un punto de atención</div>
               <div style="background:var(--s-panel); padding:16px; border:1px solid var(--s-border); font-family:monospace; font-size:.85rem; color:#e5e7eb; margin-bottom:16px;">
-                <div>Penalización<sub>criterio</sub> = min( ∑( Severidad<sub>átomo</sub> × Frecuencia<sub>átomo</sub> ), 25 )</div>
+                <div>Severidad<sub>criterio</sub> = min( ∑( Severidad<sub>átomo de riesgo</sub> × Frecuencia<sub>átomo</sub> ), 25 )</div>
                 <div style="margin-top:8px; color:rgba(229,231,235,.5); font-size:.7rem;">
-                  • Severidad: Nivel 1 (5 pts), Nivel 2 (12.5 pts), Nivel 3 (25 pts)<br>
-                  • Frecuencia: número de oraciones donde el átomo se activa<br>
-                  • Tope: 25 pts por criterio (equivale a una violación Nivel 3)
+                  • Severidad base por átomo: 12.5 o 25 pts, según el criterio<br>
+                  • Frecuencia: número de oraciones donde el átomo de riesgo se activa (tope: 3, para que la repetición no infle el resultado)<br>
+                  • Mitigación: si un átomo mitigador aparece (misma oración o en el texto, según el criterio), la severidad se reduce o se anula por completo<br>
+                  • La severidad decide la prioridad del punto de atención — no se le muestra al usuario como nota
                 </div>
               </div>
               <div style="background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
                 <div style="font-weight:500; color:var(--accent);">Meta‑reglas (contexto)</div>
                 <div style="font-size:.8rem; color:rgba(229,231,235,.6); margin-top:8px;">
-                  <strong>MR-001 (Mitigación):</strong> Si Criterio 3.2 (Incertidumbre) > 80, la penalización por Criterio 4.2 (Emoción) se reduce al 50%.<br>
-                  <strong>MR-002 (Agravamiento):</strong> Si falla 3.1 (Trazabilidad) y 4.1 (Steelman), penalización duplicada (en desarrollo).<br>
+                  <strong>MR-001 (Mitigación):</strong> Si Criterio 3.2 (Incertidumbre) > 80, la severidad por Criterio 4.2 (Emoción) se reduce al 50%.<br>
+                  <strong>MR-002 (Agravamiento):</strong> Si falla 3.1 (Trazabilidad) y 4.1 (Steelman), severidad duplicada (en desarrollo).<br>
                   <strong>MR-003 (Neutralización):</strong> Si el texto es poético/artístico, se anulan criterios retóricos (en desarrollo).
                 </div>
               </div>
@@ -1609,9 +1647,9 @@ inicio: {
                   <strong>Constructo:</strong> Escalamiento Inferencial<br>
                   <strong>Definición:</strong> Propiedad que describe el grado en que una conclusión amplía, mantiene o excede la información contenida en las premisas.<br>
                   <strong>Átomos:</strong> Premisa, Conclusión, Magnitud, Universalización, Extrapolación<br>
-                  <strong>Regla:</strong> Si magnitud(conclusión) > magnitud(premisas) y evidencia adicional = ausente → reducción parcial.<br>
+                  <strong>Regla:</strong> Si magnitud(conclusión) > magnitud(premisas) y evidencia adicional = ausente → punto de atención.<br>
                   <strong>Implementación LLM:</strong> Buscar "todos", "siempre", "inevitablemente", etc. y comparar con evidencia.<br>
-                  <strong>Salida:</strong> { "criterio":"2.1", "constructo":"Escalamiento Inferencial", "puntaje":72, "átomos_activados":["magnitud","universalización"], "justificación":"...", "evidencias":["..."] }
+                  <strong>Salida:</strong> { "criterio":"2.1", "constructo":"Escalamiento Inferencial", "atomo":"magnitud", "severidad":12.5, "mitigado":false, "explicacion":"...", "evidencias":["..."] }
                 </div>
               </div>
             </div>
@@ -1651,13 +1689,13 @@ inicio: {
             <h1 class="view-title">Integración con Academia y Ágora</h1>
             <div class="view-body">
               <p>SOPHIA actúa como el <strong>protocolo de calidad deliberativa</strong> previo al ingreso de documentos a la <strong>Academia</strong>. No certifica la verdad, pero estima si un argumento fue construido con suficiente responsabilidad.</p>
-              <p>Los documentos que superan el umbral mínimo de adherencia (IRD ≥ 75%) pueden ser sometidos a discusión en el <strong>Ágora</strong>, donde la ciudadanía delibera y vota su inclusión en el repositorio académico.</p>
+              <p>Los documentos con pocos puntos de atención sin mitigar pueden ser sometidos a discusión en el <strong>Ágora</strong>, donde la ciudadanía delibera y vota su inclusión en el repositorio académico. Internamente, este umbral de admisibilidad se calcula sobre el mismo campo <code>IRD_global</code> que ya usaba el sistema — se conserva por compatibilidad con Ágora y con la telemetría existente, pero es un mecanismo de filtrado entre módulos, no la métrica que SOPHIA le muestra a la persona que escribió el texto.</p>
             </div>
             <div class="view-section">
-              <div class="view-section-title">Estándar Mínimo de Adherencia</div>
+              <div class="view-section-title">Estándar Mínimo de Admisibilidad (uso interno)</div>
               <div class="score-list">
                 <div class="score-row">
-                  <span class="score-label">IRD Global Mínimo</span>
+                  <span class="score-label">Umbral interno (Ágora)</span>
                   <div class="score-bar-wrap">
                     <div class="score-bar score-bar--mid" style="width:0%" data-target="75%"></div>
                   </div>
@@ -1734,7 +1772,7 @@ inicio: {
             <div class="view-eyebrow">Motor de Evaluación</div>
             <h1 class="view-title">Auditoría de Adherencia</h1>
             <div class="view-body">
-              <p>Ingresa un texto para estimar su <strong>Índice de Robustez Deliberativa (IRD)</strong>. SOPHIA calculará el puntaje basándose en las 5 fases, 20 criterios y 48 átomos del protocolo.</p>
+              <p>Ingresa un texto para que SOPHIA identifique <strong>puntos de atención (VPA)</strong> en su razonamiento. SOPHIA examina las 5 fases y 20 criterios del protocolo, con sus átomos cognitivos correspondientes.</p>
               <p>El resultado es un <strong>mapa de razonamiento</strong> con el desglose por fase, los puntos de revisión detectados y las evidencias textuales.</p>
             </div>
             <div class="eval-tool">
@@ -1996,7 +2034,7 @@ const SOPHIA = {
 
       uploadBtn.addEventListener('click', () => fileInput.click());
       
-      fileInput.addEventListener('change', (e) => {
+    fileInput.addEventListener('change', (e) => {
         if (e.target.files.length > 0) handleFile(e.target.files[0]);
       });
 
@@ -2159,6 +2197,7 @@ const SOPHIA = {
               comentario,
               texto_evaluado: originalText,
               ird_global: evaluationData ? evaluationData.IRD_global : null,
+              vpa_conteo: evaluationData && evaluationData.vpa ? evaluationData.vpa.conteo : null,
               userId: localStorage.getItem('userId') || null,
               timestamp: new Date().toISOString()
             })
@@ -2191,7 +2230,11 @@ const SOPHIA = {
         return;
       }
 
-      const irdGlobal = data.IRD_global !== undefined ? data.IRD_global : 0;
+      // El IRD_global sigue calculándose internamente (compatibilidad con
+      // Ágora/telemetría vía data.IRD_global), pero ya no es lo que se
+      // muestra como resultado principal. VPA es una relectura de los
+      // mismos hallazgos: cuenta señales, no califica al texto.
+      const vpa = data.vpa || computeVPA(data.fases || []);
       const nivelRiesgo = data.riesgo || "Normal";
 
       const riesgoColor = {
@@ -2223,14 +2266,16 @@ const SOPHIA = {
         <div class="view-section">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
             <div>
-              <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">Índice de Robustez Deliberativa</div>
-              <div style="font-size:2.2rem; font-weight:600; color:var(--accent);">${irdGlobal}<span style="font-size:1rem; color:rgba(229,231,235,.4);">/100</span></div>
+              <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">VPA — Vale la Pena Prestar Atención</div>
+              <div style="font-size:1.9rem; font-weight:600; color:var(--accent);">${vpa.conteo} <span style="font-size:1rem; color:rgba(229,231,235,.6); font-weight:400;">${vpa.conteo === 1 ? 'punto de atención' : 'puntos de atención'}</span></div>
+              <div style="font-size:.75rem; color:rgba(229,231,235,.45); margin-top:2px;">${vpa.categoria}</div>
             </div>
             <div style="text-align:right;">
               <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">Nivel de riesgo</div>
               <div style="font-size:1.1rem; font-weight:600; color:${riesgoColor};">${nivelRiesgo}</div>
             </div>
           </div>
+          <div style="font-size:.75rem; color:rgba(229,231,235,.4); margin-top:8px;">SOPHIA no califica si este razonamiento es bueno o malo. Señala qué partes vale la pena examinar con más cuidado.</div>
         </div>
 
         ${esV4 && data.rutas_evaluadas && data.rutas_evaluadas.saltos_detectados.length > 0 ? `
@@ -2240,37 +2285,39 @@ const SOPHIA = {
           ${data.rutas_evaluadas.saltos_detectados.map(s => `
             <div style="background:var(--s-panel); border-left:2px solid #eab308; padding:10px 14px; margin-bottom:8px;">
               <div style="font-size:.8rem; color:#e5e7eb;">${s.descripcion}</div>
-              <div style="font-size:.68rem; color:#eab308; margin-top:2px;">-${s.penalizacion} pts</div>
+              <div style="font-size:.68rem; color:#eab308; margin-top:2px;">señal de atención</div>
             </div>
           `).join('')}
         </div>` : ''}
 
         <div class="view-section">
-          <div class="view-section-title">Puntaje por fase</div>
-          ${fases.map(f => `
+          <div class="view-section-title">¿En qué dimensiones encontró SOPHIA algo que vale la pena examinar?</div>
+          ${fases.map(f => {
+            const n = (f.infracciones || []).length;
+            return `
             <div style="margin-bottom:14px;">
               <div style="display:flex; justify-content:space-between; font-size:.8rem; margin-bottom:4px;">
                 <span style="color:#e5e7eb;">${f.nombre || 'Fase'}</span>
-                <span style="color:rgba(229,231,235,.5);">${f.puntaje !== undefined ? f.puntaje : 0}/100</span>
+                <span style="color:${n === 0 ? 'rgba(229,231,235,.4)' : 'var(--accent)'};">${n === 0 ? 'Sin puntos de atención' : (n === 1 ? '1 punto de atención' : n + ' puntos de atención')}</span>
               </div>
               <div style="background:rgba(255,255,255,.06); height:6px; border-radius:3px; overflow:hidden;">
-                <div class="score-bar" data-target="${f.puntaje !== undefined ? f.puntaje : 0}%" style="display:block; width:0%; height:100%; background:var(--accent); transition:width .6s ease;"></div>
+                <div style="width:${n === 0 ? '0' : '100'}%; height:100%; background:${n === 0 ? 'transparent' : 'var(--accent)'};"></div>
               </div>
             </div>
-          `).join('')}
+          `;}).join('')}
         </div>
 
         ${hayInfracciones ? `
           <div class="view-section">
-            <div class="view-section-title">Puntos de revisión detectados</div>
+            <div class="view-section-title">Puntos de atención</div>
             ${fases.filter(f => (f.infracciones || []).length > 0).map(f => `
               <div style="margin-bottom:16px;">
                 <div style="font-size:.75rem; color:var(--accent); margin-bottom:6px;">${f.nombre}</div>
                 ${f.infracciones.map(inf => `
-                  <div style="background:var(--s-panel); border-left:2px solid #ef4444; padding:10px 14px; margin-bottom:8px;">
+                  <div style="background:var(--s-panel); border-left:2px solid ${inf.mitigado_parcialmente ? '#eab308' : 'var(--accent)'}; padding:10px 14px; margin-bottom:8px;">
                     <div style="display:flex; justify-content:space-between; font-size:.8rem; gap:8px;">
                       <span style="color:#e5e7eb;">${inf.criterio || 'Criterio sin nombre'}</span>
-                      <span style="color:#ef4444; white-space:nowrap;">-${Number(inf.penalizacion || 0).toFixed(1)} pts</span>
+                      <span style="color:rgba(229,231,235,.5); white-space:nowrap;">${inf.mitigado_parcialmente ? 'señal contextualizada' : 'vale la pena examinar'}</span>
                     </div>
                     <div style="font-size:.7rem; color:rgba(229,231,235,.4); margin-top:4px;">Constructo: ${inf.constructo || 'N/A'}</div>
                     ${inf.meta_regla_aplicada ? `<div style="font-size:.65rem; color:#eab308; margin-top:4px;">⚠ ${inf.meta_regla_aplicada}</div>` : ''}
@@ -2281,7 +2328,7 @@ const SOPHIA = {
           </div>
         ` : `
           <div class="view-section">
-            <p style="color:#22c55e;">✅ No se detectaron áreas de revisión de acuerdo al protocolo.</p>
+            <p style="color:#22c55e;">✅ SOPHIA no identificó puntos de atención según el protocolo — no es un veredicto de que el razonamiento sea correcto, solo que no se detectaron las señales que este instrumento busca.</p>
           </div>
         `}
 
@@ -2537,4 +2584,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Exponer explícitamente para el consumo del Motor Cognitivo (Rey Filósofo)
 window.SOPHIA = SOPHIA;
+
 
