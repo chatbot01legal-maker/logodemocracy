@@ -1,6 +1,6 @@
 ---
 library: "El Modelo"
-folder: "02-El-Modelo"
+folder: "02-Fundamentos"
 title: "Más allá de una persona, un voto"
 tags:
   - el-modelo
