@@ -356,6 +356,37 @@
   {
     "library": "Logodemocracia",
     "folder": "El Modelo",
+    "title": "Gobernanza Constitucional: Pesos, Enmiendas y Válvulas de Escape",
+    "file": "03-Gobernanza-Constitucional.md",
+    "tags": [
+      "el-modelo",
+      "logo-democracia",
+      "gobernanza-constitucional",
+      "meta-gobernanza",
+      "pesos-institucionales",
+      "valvulas-de-escape",
+      "democracia-epistemica"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
+    "folder": "El Modelo",
+    "title": "Incentivos, Anti-Captura y Economía del Modelo",
+    "file": "04-Incentivos-Anti-Captura.md",
+    "tags": [
+      "el-modelo",
+      "logo-democracia",
+      "anti-captura",
+      "diseno-de-mecanismos",
+      "remuneracion",
+      "transparencia",
+      "lobbying",
+      "puertas-giratorias"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
+    "folder": "El Modelo",
     "title": "La Hipótesis del Relato",
     "file": "la-hipotesis-del-relato.md",
     "tags": [
