@@ -194,23 +194,6 @@
     ]
   },
   {
-    "library": "Joe Pino",
-    "folder": "Hipótesis",
-    "title": "La Hipótesis del Relato",
-    "file": "la-hipotesis-del-relato.md",
-    "tags": [
-      "todo-ciudadano-sabe",
-      "gregory-bateson",
-      "pensamiento-sistemico",
-      "evolucion",
-      "aprendizaje",
-      "cambio",
-      "adaptacion",
-      "estocasticidad",
-      "complejidad"
-    ]
-  },
-  {
     "library": "Alfabetización Digital para humanistas",
     "folder": "Encerar, pulir... no olvidar respirar, muy importante",
     "title": "1. Inteligencia artificial: qué es y qué no es",
@@ -368,6 +351,41 @@
       "democracia-epistemica",
       "legitimidad",
       "ponderacion"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
+    "folder": "Fundamentos",
+    "title": "La Hipótesis del Relato",
+    "file": "la-hipotesis-del-relato.md",
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "evolucion",
+      "aprendizaje",
+      "cambio",
+      "adaptacion",
+      "estocasticidad",
+      "complejidad",
+      "academia",
+      "fundamentos",
+      "hipotesis-del-relato"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
+    "folder": "Fundamentos",
+    "title": "Votación Cuadrática",
+    "file": "votacion-cuadratica.md",
+    "tags": [
+      "votacion-cuadratica",
+      "voto-cuadratico",
+      "academia",
+      "fundamentos",
+      "democracia-aumentada",
+      "deliberacion",
+      "inteligencia-colectiva"
     ]
   }
 ]
