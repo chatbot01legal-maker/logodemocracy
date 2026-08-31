@@ -357,7 +357,7 @@
     "library": "Logodemocracia",
     "folder": "El Modelo",
     "title": "Gobernanza Constitucional: Pesos, Enmiendas y Válvulas de Escape",
-    "file": "03-Gobernanza-Constitucional.md",
+    "file": "05-Gobernanza-Constitucional.md",
     "tags": [
       "el-modelo",
       "logo-democracia",
@@ -372,7 +372,7 @@
     "library": "Logodemocracia",
     "folder": "El Modelo",
     "title": "Incentivos, Anti-Captura y Economía del Modelo",
-    "file": "04-Incentivos-Anti-Captura.md",
+    "file": "06-Incentivos-Anti-Captura.md",
     "tags": [
       "el-modelo",
       "logo-democracia",
@@ -388,7 +388,7 @@
     "library": "Logodemocracia",
     "folder": "El Modelo",
     "title": "La Hipótesis del Relato",
-    "file": "la-hipotesis-del-relato.md",
+    "file": "04-la-hipotesis-del-relato.md",
     "tags": [
       "todo-ciudadano-sabe",
       "gregory-bateson",
@@ -408,7 +408,7 @@
     "library": "Logodemocracia",
     "folder": "El Modelo",
     "title": "Votación Cuadrática",
-    "file": "votacion-cuadratica.md",
+    "file": "03-votacion-cuadratica.md",
     "tags": [
       "votacion-cuadratica",
       "voto-cuadratico",
