@@ -1,24 +1,22 @@
 ---
 library: "Logodemocracia"
 folder: "Plataforma Tecnológica"
-title: "4. Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico"
+title: "5. Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico"
 tags:
-- rey-filósofo
-- pensamiento-crítico
-- aprendizaje
-- metacognición
-- zona-de-desarrollo-próximo
-- personalización
-- ciudadanía
-- academia
-- inteligencia-artificial
+  - rey-filosofo
+  - pensamiento-critico
+  - aprendizaje
+  - metacognicion
+  - zona-de-desarrollo-proximo
+  - personalizacion
+  - ciudadania
+  - academia
+  - inteligencia-artificial
 ---
 
-<div align="justify">
+# Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico
 
-Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico
-
-1. ¿Qué es el Rey Filósofo?
+## 1. ¿Qué es el Rey Filósofo?
 
 El Rey Filósofo es el tutor cognitivo personalizado de LogoDemocracy.
 
@@ -30,11 +28,11 @@ La inteligencia artificial no debe pensar en lugar del ciudadano.
 
 Debe ayudar al ciudadano a pensar mejor.
 
-«El Rey Filósofo no busca decirle al usuario qué pensar, sino ayudarlo a desarrollar la capacidad para pensar críticamente por sí mismo.»
+> "El Rey Filósofo no busca decirle al usuario qué pensar, sino ayudarlo a desarrollar la capacidad para pensar críticamente por sí mismo."
 
 ---
 
-2. Pensamiento crítico
+## 2. Pensamiento crítico
 
 Para LogoDemocracy, el pensamiento crítico no consiste solamente en detectar falacias.
 
@@ -58,7 +56,7 @@ Por ello, su objetivo no es producir usuarios que simplemente respondan correcta
 
 ---
 
-3. El Rey Filósofo y la Academia
+## 3. El Rey Filósofo y la Academia
 
 La Academia proporciona los objetos de conocimiento.
 
@@ -78,17 +76,15 @@ El tutor podrá adaptar la interacción mediante:
 
 La relación fundamental es:
 
-Academia → conocimiento
-
-Rey Filósofo → aprendizaje
-
-Pensamiento crítico → capacidad desarrollada
+> Academia → conocimiento
+> Rey Filósofo → aprendizaje
+> Pensamiento crítico → capacidad desarrollada
 
 El Rey Filósofo no sustituye el documento ni debe convertir la Academia en una colección de respuestas generadas automáticamente. El documento continúa siendo el objeto de conocimiento y el tutor actúa como mediador pedagógico.
 
 ---
 
-4. Zona de Desarrollo Próximo
+## 4. Zona de Desarrollo Próximo
 
 El diseño pedagógico del Rey Filósofo se inspira, entre otras tradiciones, en la Zona de Desarrollo Próximo de Vygotsky.
 
@@ -108,11 +104,11 @@ Puede:
 
 El objetivo es que aquello que inicialmente requería ayuda pueda posteriormente realizarse de manera autónoma.
 
-«La tutoría debe disminuir a medida que aumenta la autonomía.»
+> "La tutoría debe disminuir a medida que aumenta la autonomía."
 
 ---
 
-5. Personalización del aprendizaje
+## 5. Personalización del aprendizaje
 
 Una de las características fundamentales del Rey Filósofo será la posibilidad de adaptar progresivamente la experiencia de aprendizaje a cada usuario.
 
@@ -140,7 +136,7 @@ La personalización deberá entenderse como un proceso de aprendizaje del propio
 
 ---
 
-6. Microtests y perfil pedagógico
+## 6. Microtests y perfil pedagógico
 
 La construcción inicial del perfil podrá comenzar mediante una serie de microtests cognitivos y pedagógicos.
 
@@ -164,7 +160,7 @@ El perfil pedagógico deberá actualizarse posteriormente mediante la interacci�
 
 ---
 
-7. Una personalización que aprende
+## 7. Una personalización que aprende
 
 El Rey Filósofo no debería asumir que una persona tiene un determinado estilo de aprendizaje simplemente porque respondió de una determinada manera a un test.
 
@@ -181,7 +177,7 @@ A medida que el usuario aprende, el sistema puede observar:
 
 La experiencia pedagógica puede representarse como un proceso:
 
-evaluación inicial → hipótesis pedagógica → interacción → observación → adaptación → nueva interacción
+> evaluación inicial → hipótesis pedagógica → interacción → observación → adaptación → nueva interacción
 
 De esta manera, la personalización no consiste solamente en elegir contenidos diferentes para cada persona.
 
@@ -189,7 +185,7 @@ Consiste también en modificar la manera en que esos contenidos son enseñados.
 
 ---
 
-8. Metacognición
+## 8. Metacognición
 
 El pensamiento crítico requiere también la capacidad de observar el propio pensamiento.
 
@@ -216,7 +212,7 @@ Puede convertirse en una nueva fuente de información pedagógica.
 
 ---
 
-9. Trayectoria de aprendizaje
+## 9. Trayectoria de aprendizaje
 
 Con el tiempo, la interacción entre el usuario, la Academia y el Rey Filósofo permitirá construir una trayectoria de aprendizaje.
 
@@ -239,40 +235,27 @@ A largo plazo, esta trayectoria podría contribuir también a mecanismos de reco
 
 ---
 
-10. El Rey Filósofo dentro de LogoDemocracy
+## 10. El Rey Filósofo dentro de LogoDemocracy
 
 El Rey Filósofo constituye el componente pedagógico del ecosistema.
 
 Su relación con los demás módulos puede resumirse así:
 
-SOPHIA
-Audita la robustez del conocimiento y de los argumentos.
-
-ACADEMIA
-Organiza y proporciona conocimiento.
-
-REY FILÓSOFO
-Transforma ese conocimiento en experiencias de aprendizaje orientadas al pensamiento crítico.
-
-LOGOS
-Facilita la comprensión de desacuerdos y la deliberación.
-
-ALETHEIA
-Ayuda a reconocer mecanismos de manipulación y vulnerabilidad cognitiva.
-
-AGORA
-Permite practicar deliberación y participación política.
-
-MYTHOS
-Amplía la memoria colectiva mediante sistemas capaces de recuperar y relacionar información relevante.
+- **SOPHIA** — Audita la robustez del conocimiento y de los argumentos.
+- **ACADEMIA** — Organiza y proporciona conocimiento.
+- **REY FILÓSOFO** — Transforma ese conocimiento en experiencias de aprendizaje orientadas al pensamiento crítico.
+- **LOGOS** — Facilita la comprensión de desacuerdos y la deliberación.
+- **ALETHEIA** — Ayuda a reconocer mecanismos de manipulación y vulnerabilidad cognitiva.
+- **AGORA** — Permite practicar deliberación y participación política.
+- **MYTHOS** — Amplía la memoria colectiva mediante sistemas capaces de recuperar y relacionar información relevante.
 
 En este ecosistema, el Rey Filósofo cumple una función específica:
 
-«Transformar conocimiento disponible en capacidad cognitiva desarrollada.»
+> "Transformar conocimiento disponible en capacidad cognitiva desarrollada."
 
 ---
 
-11. Desarrollo progresivo
+## 11. Desarrollo progresivo
 
 El Rey Filósofo no será construido como un sistema completamente terminado desde el comienzo.
 
@@ -298,7 +281,7 @@ El sistema deberá aprender qué formas de acompañamiento favorecen efectivamen
 
 ---
 
-12. Principio rector
+## 12. Principio rector
 
 LogoDemocracy no pretende construir una inteligencia artificial que piense por los ciudadanos.
 
@@ -318,26 +301,19 @@ Debe proporcionar el andamiaje necesario para que el usuario pueda enfrentar pro
 
 Por ello:
 
-«El mejor resultado del Rey Filósofo no es que el ciudadano necesite cada vez más al tutor, sino que necesite cada vez menos ayuda para pensar por sí mismo.»
+> "El mejor resultado del Rey Filósofo no es que el ciudadano necesite cada vez más al tutor, sino que necesite cada vez menos ayuda para pensar por sí mismo."
 
 ---
 
-13. Principio pedagógico definitivo
+## 13. Principio pedagógico definitivo
 
 El Rey Filósofo existe para desarrollar pensamiento crítico y autonomía cognitiva.
 
-La Academia proporciona el conocimiento.
+- La Academia proporciona el conocimiento.
+- El Rey Filósofo proporciona el andamiaje.
+- La interacción proporciona la experiencia.
+- La metacognición permite observar el propio aprendizaje.
+- La personalización adapta el camino.
+- Y el ciudadano realiza el acto fundamental:
 
-El Rey Filósofo proporciona el andamiaje.
-
-La interacción proporciona la experiencia.
-
-La metacognición permite observar el propio aprendizaje.
-
-La personalización adapta el camino.
-
-Y el ciudadano realiza el acto fundamental:
-
-«pensar por sí mismo.»
-
-</div>
+> "pensar por sí mismo."
