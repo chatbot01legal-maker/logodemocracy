@@ -55,12 +55,27 @@
       "democracia-aumentada"
     ]
   },
+{
+  "library": "Logodemocracia",
+  "folder": "Plataforma Tecnológica",
+  "title": "4. ¿Qué es LOGOS y cuál es su función?",
+  "file": "que-es-logos.md",
+  "order": 4,
+  "tags": [
+    "logos",
+    "deliberación",
+    "pensamiento-colectivo",
+    "infraestructura-dialectica",
+    "democracia-aumentada"
+  ]
+}
+  
   {
     "library": "Logodemocracia",
     "folder": "Plataforma Tecnológica",
-    "title": "4. Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico",
+    "title": "5. Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico",
     "file": "rey-filosofo.md",
-    "order": 4,
+    "order": 5,
     "tags": [
       "rey-filósofo",
       "pensamiento-crítico",
@@ -76,9 +91,9 @@
   {
     "library": "Logodemocracia",
     "folder": "Plataforma Tecnológica",
-    "title": "5. Introducción",
+    "title": "0. Introducción",
     "file": "intro.md",
-    "order": 5,
+    "order": 0,
     "tags": [
       "Logodemocracia",
       "Fundamentos"
