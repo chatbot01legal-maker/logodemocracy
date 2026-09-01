@@ -1,23 +1,21 @@
 ---
 library: "Todo Ciudadano Sabe"
 folder: "01-Todo-Ciudadano-Sabe"
-title: "3. La diferencia que hace una diferencia"
+title: "La diferencia que hace una diferencia"
 tags:
-- todo-ciudadano-sabe
-- gregory-bateson
-- pensamiento-sistemico
-- epistemologia
-- informacion
-- percepcion
-- aprendizaje
-- diferencias
+  - todo-ciudadano-sabe
+  - gregory-bateson
+  - pensamiento-sistemico
+  - epistemologia
+  - informacion
+  - percepcion
+  - aprendizaje
+  - diferencias
 ---
 
-<div align="justify">
+# La diferencia que hace una diferencia
 
-La diferencia que hace una diferencia
-
-Idea central
+## Idea central
 
 No toda diferencia es información.
 
@@ -25,11 +23,11 @@ Para que una diferencia tenga importancia para nosotros, debe producir alguna di
 
 Esta idea, asociada al pensamiento de Gregory Bateson, permite comprender algo fundamental:
 
-«La información no consiste simplemente en que algo sea diferente. Consiste en una diferencia que puede producir una diferencia.»
+> "La información no consiste simplemente en que algo sea diferente. Consiste en una diferencia que puede producir una diferencia."
 
 ---
 
-El mundo está lleno de diferencias
+## El mundo está lleno de diferencias
 
 Imaginemos que estamos caminando por una calle.
 
@@ -62,7 +60,7 @@ Pero se convirtió en información porque hizo una diferencia en nuestro comport
 
 ---
 
-Percibir es seleccionar
+## Percibir es seleccionar
 
 No vemos todo lo que existe.
 
@@ -90,13 +88,13 @@ Es una selección de diferencias relevantes.
 
 ---
 
-La información depende de un contexto
+## La información depende de un contexto
 
 Una diferencia no tiene necesariamente el mismo significado en todos los contextos.
 
 Imaginemos que alguien dice:
 
-"La temperatura es 10 °C."
+> "La temperatura es 10 °C."
 
 Para una persona que está dentro de una casa puede ser una información poco importante.
 
@@ -112,15 +110,12 @@ Pero su importancia cambia dependiendo del sistema en el que aparece.
 
 Por eso, para comprender una información debemos preguntar también:
 
-¿diferencia respecto de qué?
-
-y
-
-¿diferencia para quién o para qué?
+- ¿diferencia respecto de qué?
+- y ¿diferencia para quién o para qué?
 
 ---
 
-Información y acción
+## Información y acción
 
 Una de las formas más sencillas de reconocer información es observar si puede modificar una decisión.
 
@@ -134,15 +129,15 @@ Esa diferencia modifica su conducta.
 
 Podemos representar el proceso de manera sencilla:
 
-diferencia → percepción → interpretación → acción
+> diferencia → percepción → interpretación → acción
 
 Pero el proceso puede continuar:
 
-acción → consecuencia → nueva información → nueva acción
+> acción → consecuencia → nueva información → nueva acción
 
 Aquí aparece una conexión con el documento anterior:
 
-La pauta que conecta.
+*La pauta que conecta*.
 
 La información puede formar parte de ciclos.
 
@@ -156,7 +151,7 @@ Y esa información puede modificar nuestra siguiente acción.
 
 ---
 
-Lo que no percibimos también importa
+## Lo que no percibimos también importa
 
 Existe una dificultad todavía más profunda.
 
@@ -172,13 +167,13 @@ Por lo tanto, no puede influir en su razonamiento.
 
 Esto permite comprender una cuestión fundamental para la democracia:
 
-la calidad de nuestras decisiones depende, en parte, de las diferencias que somos capaces de percibir.
+> la calidad de nuestras decisiones depende, en parte, de las diferencias que somos capaces de percibir.
 
 Una ciudadanía que solamente recibe determinada información puede construir una representación muy diferente de una ciudadanía que tiene acceso a múltiples fuentes, perspectivas y evidencias.
 
 ---
 
-La atención es un recurso limitado
+## La atención es un recurso limitado
 
 No podemos prestar atención a todo.
 
@@ -202,11 +197,11 @@ Pero aquello que recibe más atención no necesariamente es aquello que tiene ma
 
 Esta distinción es fundamental:
 
-«Lo que llama nuestra atención no necesariamente es lo que merece nuestra atención.»
+> "Lo que llama nuestra atención no necesariamente es lo que merece nuestra atención."
 
 ---
 
-Información no es lo mismo que conocimiento
+## Información no es lo mismo que conocimiento
 
 Recibir muchas diferencias no significa necesariamente comprender mejor.
 
@@ -230,7 +225,7 @@ La información se convierte en conocimiento cuando podemos incorporarla a un mo
 
 ---
 
-Aprender es cambiar nuestras diferencias relevantes
+## Aprender es cambiar nuestras diferencias relevantes
 
 Aprender no consiste solamente en acumular información.
 
@@ -242,25 +237,25 @@ Un botánico observa diferencias que antes pasaban desapercibidas.
 
 Un estudiante de estadística comienza a distinguir entre:
 
-correlación y causalidad.
+> correlación y causalidad.
 
 Una persona que aprende pensamiento crítico comienza a distinguir entre:
 
-una afirmación y la evidencia que la respalda.
+> una afirmación y la evidencia que la respalda.
 
 Una persona que aprende economía comienza a distinguir:
 
-una intención y sus incentivos.
+> una intención y sus incentivos.
 
 En cada caso, el aprendizaje aumenta la cantidad y calidad de diferencias que la persona puede reconocer como relevantes.
 
 Por eso aprender también puede entenderse como:
 
-«aprender a ver diferencias que antes no veíamos.»
+> "aprender a ver diferencias que antes no veíamos."
 
 ---
 
-La diferencia puede engañarnos
+## La diferencia puede engañarnos
 
 También debemos tener cuidado.
 
@@ -278,41 +273,35 @@ O de una forma incorrecta de medir.
 
 Aquí aparece una conexión directa con otros conceptos de Todo Ciudadano Sabe:
 
-una diferencia observada necesita interpretación y evidencia.
+> una diferencia observada necesita interpretación y evidencia.
 
 Ver una diferencia no demuestra por sí mismo que comprendamos su causa.
 
 ---
 
-Una herramienta para pensar críticamente
+## Una herramienta para pensar críticamente
 
 Podemos transformar la idea de Bateson en una serie de preguntas.
 
 Cuando recibamos una información, podemos preguntar:
 
-¿Qué diferencia estoy observando?
-
-¿Diferencia respecto de qué?
-
-¿Por qué esta diferencia debería importarme?
-
-¿Qué otra diferencia estoy dejando de observar?
-
-¿Quién decidió que esta diferencia era relevante?
-
-¿Qué evidencia demuestra que realmente existe?
-
-¿Esta diferencia cambia mi comprensión o solamente llama mi atención?
+- ¿Qué diferencia estoy observando?
+- ¿Diferencia respecto de qué?
+- ¿Por qué esta diferencia debería importarme?
+- ¿Qué otra diferencia estoy dejando de observar?
+- ¿Quién decidió que esta diferencia era relevante?
+- ¿Qué evidencia demuestra que realmente existe?
+- ¿Esta diferencia cambia mi comprensión o solamente llama mi atención?
 
 Estas preguntas ayudan a distinguir entre información relevante y simple estímulo.
 
 ---
 
-Para recordar
+## Para recordar
 
 La idea fundamental puede resumirse así:
 
-«Una diferencia se convierte en información cuando puede hacer una diferencia en un sistema capaz de percibirla.»
+> "Una diferencia se convierte en información cuando puede hacer una diferencia en un sistema capaz de percibirla."
 
 Aprender significa, en parte, ampliar nuestra capacidad para reconocer diferencias relevantes.
 
@@ -320,10 +309,8 @@ Pensar críticamente significa también preguntarnos si las diferencias que esta
 
 Por eso, una buena pregunta para comprender el mundo es:
 
-¿Qué diferencia estoy viendo y qué diferencia está haciendo?
+> ¿Qué diferencia estoy viendo y qué diferencia está haciendo?
 
 Y una pregunta todavía más profunda:
 
-¿Qué diferencia no estoy viendo que podría cambiarlo todo?
-
-</div>
+> ¿Qué diferencia no estoy viendo que podría cambiarlo todo?
