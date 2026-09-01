@@ -1,23 +1,21 @@
 ---
 library: "Todo Ciudadano Sabe"
 folder: "01-Todo-Ciudadano-Sabe"
-title: "2. La pauta que conecta"
+title: "La pauta que conecta"
 tags:
-- todo-ciudadano-sabe
-- gregory-bateson
-- pensamiento-sistemico
-- epistemologia
-- patrones
-- relaciones
-- aprendizaje
-- complejidad
+  - todo-ciudadano-sabe
+  - gregory-bateson
+  - pensamiento-sistemico
+  - epistemologia
+  - patrones
+  - relaciones
+  - aprendizaje
+  - complejidad
 ---
 
-<div align="justify">
+# La pauta que conecta
 
-La pauta que conecta
-
-Idea central
+## Idea central
 
 Para comprender un fenómeno no basta con observar sus partes.
 
@@ -25,23 +23,21 @@ También debemos aprender a observar las relaciones que existen entre ellas.
 
 Gregory Bateson llamó la atención sobre una pregunta que atraviesa buena parte de su obra:
 
-«¿Qué pauta conecta?»
+> "¿Qué pauta conecta?"
 
 La pregunta cambia nuestra manera de mirar el mundo.
 
 En lugar de preguntar solamente "¿qué es esto?", comenzamos a preguntar:
 
-¿con qué se relaciona?
-
-¿qué patrón se repite?
-
-¿qué relación hace que estas cosas pertenezcan a un mismo sistema?
+- ¿con qué se relaciona?
+- ¿qué patrón se repite?
+- ¿qué relación hace que estas cosas pertenezcan a un mismo sistema?
 
 Esta forma de pensar constituye una de las bases del pensamiento sistémico.
 
 ---
 
-Las cosas no existen completamente aisladas
+## Las cosas no existen completamente aisladas
 
 Imaginemos una persona que está teniendo dificultades para dormir.
 
@@ -55,13 +51,10 @@ Podemos intentar explicar el problema buscando una causa dentro de la persona:
 
 Pero también podemos ampliar la mirada:
 
-¿cómo se relaciona su sueño con su horario de trabajo?
-
-¿cómo afecta su trabajo a su estrés?
-
-¿cómo afecta el estrés a sus hábitos?
-
-¿cómo afectan esos hábitos nuevamente a su sueño?
+- ¿cómo se relaciona su sueño con su horario de trabajo?
+- ¿cómo afecta su trabajo a su estrés?
+- ¿cómo afecta el estrés a sus hábitos?
+- ¿cómo afectan esos hábitos nuevamente a su sueño?
 
 Ahora ya no estamos observando solamente una característica de una persona.
 
@@ -71,7 +64,7 @@ El fenómeno empieza a adquirir otra forma.
 
 ---
 
-Una pauta es una relación que se repite
+## Una pauta es una relación que se repite
 
 Una pauta no es simplemente una cosa.
 
@@ -79,21 +72,21 @@ Es una regularidad en las relaciones.
 
 Podemos encontrar pautas en lugares muy diferentes.
 
-En un ecosistema:
+**En un ecosistema:**
 
-depredadores → presas → vegetación → nutrientes → depredadores
+> depredadores → presas → vegetación → nutrientes → depredadores
 
-En una economía:
+**En una economía:**
 
-precios → incentivos → decisiones → oferta y demanda → precios
+> precios → incentivos → decisiones → oferta y demanda → precios
 
-En una conversación:
+**En una conversación:**
 
-afirmación → interpretación → respuesta → nueva interpretación
+> afirmación → interpretación → respuesta → nueva interpretación
 
-En una sociedad:
+**En una sociedad:**
 
-instituciones → incentivos → conductas → consecuencias → nuevas instituciones
+> instituciones → incentivos → conductas → consecuencias → nuevas instituciones
 
 Los elementos son diferentes.
 
@@ -103,7 +96,7 @@ La capacidad de reconocer esas semejanzas permite trasladar conocimientos de un 
 
 ---
 
-El error de mirar solamente las partes
+## El error de mirar solamente las partes
 
 Cuando estudiamos un fenómeno, es natural dividirlo en partes.
 
@@ -129,7 +122,7 @@ En muchos sistemas, las relaciones entre los elementos producen propiedades que 
 
 ---
 
-La misma pauta puede aparecer en lugares diferentes
+## La misma pauta puede aparecer en lugares diferentes
 
 Esta es una de las intuiciones más poderosas de Bateson.
 
@@ -139,7 +132,7 @@ Por ejemplo, pensemos en la retroalimentación.
 
 Un termostato regula la temperatura mediante un ciclo:
 
-medición → comparación → corrección → nueva medición
+> medición → comparación → corrección → nueva medición
 
 Un organismo regula su temperatura mediante procesos de retroalimentación.
 
@@ -151,37 +144,37 @@ Los sistemas son diferentes.
 
 Sin embargo, existe una pauta relacional semejante:
 
-la información sobre el resultado de una acción vuelve al sistema y modifica la acción siguiente.
+> la información sobre el resultado de una acción vuelve al sistema y modifica la acción siguiente.
 
 Reconocer esta pauta permite aprender algo en un campo y utilizarlo para comprender otro.
 
 ---
 
-Pensar en relaciones cambia la pregunta
+## Pensar en relaciones cambia la pregunta
 
 Frente a un problema podemos preguntar:
 
-¿Quién tiene la culpa?
+> ¿Quién tiene la culpa?
 
 Pero también podemos preguntar:
 
-¿Qué relaciones están produciendo este resultado?
+> ¿Qué relaciones están produciendo este resultado?
 
 Podemos preguntar:
 
-¿Cuál es la causa?
+> ¿Cuál es la causa?
 
 Pero también:
 
-¿Qué ciclo de retroalimentación mantiene este fenómeno?
+> ¿Qué ciclo de retroalimentación mantiene este fenómeno?
 
 Podemos preguntar:
 
-¿Qué hizo esta persona?
+> ¿Qué hizo esta persona?
 
 Pero también:
 
-¿Qué condiciones hicieron posible esa conducta?
+> ¿Qué condiciones hicieron posible esa conducta?
 
 Estas preguntas no eliminan la responsabilidad individual.
 
@@ -189,7 +182,7 @@ La complementan con una mirada más amplia.
 
 ---
 
-La pauta que conecta y el conocimiento
+## La pauta que conecta y el conocimiento
 
 Buscar pautas no significa inventar conexiones donde no existen.
 
@@ -209,35 +202,29 @@ Y luego preguntarnos si esas conexiones están realmente respaldadas por la evid
 
 ---
 
-Una herramienta para comprender el mundo
+## Una herramienta para comprender el mundo
 
 Podemos convertir la pregunta de Bateson en una herramienta cotidiana.
 
 Ante cualquier fenómeno complejo, podemos detenernos y preguntar:
 
-¿Qué elementos están involucrados?
-
-¿Cómo se relacionan?
-
-¿Qué patrón aparece entre ellos?
-
-¿Ese patrón se repite en el tiempo?
-
-¿Qué ocurre cuando cambia uno de los elementos?
-
-¿Existen ciclos de retroalimentación?
-
-¿La misma pauta aparece en otro contexto?
+- ¿Qué elementos están involucrados?
+- ¿Cómo se relacionan?
+- ¿Qué patrón aparece entre ellos?
+- ¿Ese patrón se repite en el tiempo?
+- ¿Qué ocurre cuando cambia uno de los elementos?
+- ¿Existen ciclos de retroalimentación?
+- ¿La misma pauta aparece en otro contexto?
 
 Estas preguntas ayudan a pasar de una mirada fragmentada a una mirada relacional.
 
 ---
 
-Para recordar
+## Para recordar
 
 La idea fundamental puede resumirse así:
 
-«Comprender un sistema no consiste solamente en conocer sus partes. Consiste también en reconocer la pauta de relaciones que las conecta.»
+> "Comprender un sistema no consiste solamente en conocer sus partes. Consiste también en reconocer la pauta de relaciones que las conecta."
 
 La pregunta "¿qué pauta conecta?" puede convertirse en una herramienta intelectual para recorrer disciplinas muy diferentes.
 
@@ -246,5 +233,3 @@ Puede ayudarnos a comprender una familia, una organización, una economía, un e
 Porque muchas veces, aquello que parece diferente en la superficie comparte una misma lógica en sus relaciones.
 
 Aprender a reconocer esas pautas es aprender a ver conexiones donde antes veíamos solamente cosas separadas.
-
-</div>
