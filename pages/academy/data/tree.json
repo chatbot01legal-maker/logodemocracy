@@ -457,8 +457,8 @@
     {
   "library": "Joe Pino",
   "folder": "Bases",
-  "title": "¿Qué es Joe Pino y cuál es su función en la Academia?",
-  "file": "1. joe-pino.md",
+  "title": "1. ¿Qué será Joe Pino y cuál es su función en la Academia?",
+  "file": "joe-pino.md",
   "order": 1,
   "tags": [
     "joe-pino",
