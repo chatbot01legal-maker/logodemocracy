@@ -1,27 +1,25 @@
 ---
 library: "Todo Ciudadano Sabe"
 folder: "01-Todo-Ciudadano-Sabe"
-title: "4. El mapa no es el territorio"
+title: "El mapa no es el territorio"
 tags:
-- todo-ciudadano-sabe
-- gregory-bateson
-- pensamiento-sistemico
-- epistemologia
-- modelos-mentales
-- representacion
-- percepcion
-- pensamiento-critico
+  - todo-ciudadano-sabe
+  - gregory-bateson
+  - pensamiento-sistemico
+  - epistemologia
+  - modelos-mentales
+  - representacion
+  - percepcion
+  - pensamiento-critico
 ---
 
-<div align="justify">
+# El mapa no es el territorio
 
-El mapa no es el territorio
-
-Pregunta central
+## Pregunta central
 
 ¿Qué ocurre cuando confundimos nuestras representaciones de la realidad con la realidad que intentamos representar?
 
-Idea central
+## Idea central
 
 Un mapa no es el territorio.
 
@@ -35,7 +33,7 @@ El problema aparece cuando olvidamos que son mapas.
 
 ---
 
-El mundo y sus representaciones
+## El mundo y sus representaciones
 
 Cuando utilizamos un mapa para encontrar una dirección, sabemos que el mapa no es literalmente el lugar que representa. Una línea sobre el papel puede representar una carretera, pero no contiene la carretera.
 
@@ -43,19 +41,19 @@ Lo mismo ocurre con nuestras representaciones mentales.
 
 Cuando decimos:
 
-««La economía está creciendo.»»
+> "La economía está creciendo."
 
 estamos utilizando una representación construida a partir de determinados indicadores.
 
 Cuando decimos:
 
-««Esta persona es inteligente.»»
+> "Esta persona es inteligente."
 
 estamos utilizando una categoría que resume una enorme cantidad de características posibles.
 
 Cuando decimos:
 
-««La sociedad piensa esto.»»
+> "La sociedad piensa esto."
 
 estamos utilizando una generalización que necesariamente simplifica una realidad mucho más diversa.
 
@@ -63,7 +61,7 @@ En todos estos casos existe una diferencia entre lo representado y la representa
 
 ---
 
-Todo mapa selecciona
+## Todo mapa selecciona
 
 Un mapa no puede contenerlo todo.
 
@@ -81,15 +79,15 @@ Un mapa que intentara contener absolutamente todos los detalles del territorio s
 
 Por eso, la pregunta no debería ser:
 
-«¿Este mapa contiene toda la realidad?»
+> "¿Este mapa contiene toda la realidad?"
 
 Sino:
 
-«¿Para qué problema sirve este mapa y qué aspectos de la realidad deja fuera?»
+> "¿Para qué problema sirve este mapa y qué aspectos de la realidad deja fuera?"
 
 ---
 
-Los modelos son herramientas
+## Los modelos son herramientas
 
 Las ciencias utilizan modelos porque la realidad es demasiado compleja para ser representada completamente.
 
@@ -109,13 +107,13 @@ Un modelo puede ser extraordinariamente útil para una pregunta y completamente 
 
 ---
 
-Cuando el mapa se convierte en territorio
+## Cuando el mapa se convierte en territorio
 
 Uno de los errores cognitivos más importantes ocurre cuando comenzamos a tratar nuestras categorías como si fueran propiedades absolutas de la realidad.
 
 Por ejemplo:
 
-«La economía», «la sociedad», «la inteligencia», «la izquierda», «la derecha», «el mercado» o «la opinión pública» son conceptos que nos permiten organizar información.
+> "La economía", "la sociedad", "la inteligencia", "la izquierda", "la derecha", "el mercado" o "la opinión pública" son conceptos que nos permiten organizar información.
 
 Pero los conceptos no existen de la misma manera que existen los fenómenos que intentamos comprender.
 
@@ -125,7 +123,7 @@ Cuando olvidamos esto, podemos comenzar a defender el mapa en lugar de estudiar 
 
 ---
 
-El mismo territorio puede necesitar muchos mapas
+## El mismo territorio puede necesitar muchos mapas
 
 Una realidad compleja puede requerir diferentes representaciones.
 
@@ -159,19 +157,15 @@ A veces necesitamos varios mapas superpuestos.
 
 ---
 
-La pregunta crítica
+## La pregunta crítica
 
 Cuando encontramos una explicación convincente, una buena práctica consiste en preguntarnos:
 
-¿Qué está mostrando este modelo?
-
-¿Qué está dejando fuera?
-
-¿Qué supuestos necesita?
-
-¿En qué condiciones funciona?
-
-¿Podría existir otro modelo que explicara los mismos hechos de una manera diferente?
+- ¿Qué está mostrando este modelo?
+- ¿Qué está dejando fuera?
+- ¿Qué supuestos necesita?
+- ¿En qué condiciones funciona?
+- ¿Podría existir otro modelo que explicara los mismos hechos de una manera diferente?
 
 Estas preguntas no destruyen el conocimiento.
 
@@ -179,7 +173,7 @@ Lo hacen más robusto.
 
 ---
 
-Una herramienta para pensar
+## Una herramienta para pensar
 
 Reconocer que el mapa no es el territorio no significa caer en un relativismo donde «todo depende del punto de vista».
 
@@ -189,7 +183,7 @@ Una representación puede ser más precisa, estar mejor respaldada por evidencia
 
 La distinción importante es otra:
 
-una representación puede ser mejor o peor sin convertirse por ello en la realidad misma.
+> una representación puede ser mejor o peor sin convertirse por ello en la realidad misma.
 
 Esta diferencia permite mantener simultáneamente dos capacidades:
 
@@ -197,7 +191,7 @@ utilizar modelos con confianza cuando están bien justificados y mantener humild
 
 ---
 
-Implicaciones para la ciudadanía
+## Implicaciones para la ciudadanía
 
 Esta idea adquiere especial importancia en una sociedad saturada de información.
 
@@ -205,23 +199,18 @@ Gráficos, estadísticas, titulares, encuestas, categorías políticas, modelos 
 
 Aprender a leerlos significa aprender a preguntar:
 
-¿Qué realidad está representando?
-
-¿Cómo fue construida esta representación?
-
-¿Qué información selecciona?
-
-¿Qué información omite?
-
-¿Qué supuestos contiene?
-
-¿Qué otras representaciones podrían ayudarnos a comprender el mismo fenómeno?
+- ¿Qué realidad está representando?
+- ¿Cómo fue construida esta representación?
+- ¿Qué información selecciona?
+- ¿Qué información omite?
+- ¿Qué supuestos contiene?
+- ¿Qué otras representaciones podrían ayudarnos a comprender el mismo fenómeno?
 
 La alfabetización crítica comienza, en parte, cuando dejamos de confundir nuestras representaciones con aquello que intentamos comprender.
 
 ---
 
-Límite
+## Límite
 
 La metáfora del mapa tiene también un límite.
 
@@ -235,16 +224,14 @@ Significa aprender a utilizarlos conscientemente.
 
 ---
 
-Conexiones
+## Conexiones
 
 Este principio se relaciona directamente con otros conceptos fundamentales de Todo Ciudadano Sabe:
 
-- La pauta que conecta: diferentes mapas pueden revelar patrones comunes entre fenómenos aparentemente separados.
-- La diferencia que hace una diferencia: toda representación depende de qué diferencias consideramos relevantes.
-- Correlación y causalidad: una representación estadística puede mostrar una relación sin explicar necesariamente su mecanismo causal.
-- Sesgos cognitivos: nuestras propias representaciones pueden estar condicionadas por atajos y errores sistemáticos del pensamiento.
-- Evidencia y carga de la prueba: los mapas que construimos deben poder contrastarse con el territorio que pretenden representar.
+- **La pauta que conecta:** diferentes mapas pueden revelar patrones comunes entre fenómenos aparentemente separados.
+- **La diferencia que hace una diferencia:** toda representación depende de qué diferencias consideramos relevantes.
+- **Correlación y causalidad:** una representación estadística puede mostrar una relación sin explicar necesariamente su mecanismo causal.
+- **Sesgos cognitivos:** nuestras propias representaciones pueden estar condicionadas por atajos y errores sistemáticos del pensamiento.
+- **Evidencia y carga de la prueba:** los mapas que construimos deben poder contrastarse con el territorio que pretenden representar.
 
 La capacidad de pensar críticamente comienza cuando somos capaces de utilizar nuestros mapas sin olvidar nunca que seguimos buscando el territorio.
-
-</div>
