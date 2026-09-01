@@ -1,7 +1,7 @@
 --- 
 library: "Logodemocracia"
 folder: "El Modelo"
-title: "Voluntad colectiva: pensar juntos aquello que nos importa"
+title: "3. Voluntad colectiva: pensar juntos aquello que nos importa"
 tags:
   - voluntad-colectiva
   - atencion
