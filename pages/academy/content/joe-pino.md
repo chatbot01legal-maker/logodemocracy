@@ -1,7 +1,7 @@
 ---
 library: "Logodemocracia"
 folder: "Plataforma Tecnológica"
-title: "¿Qué es Joe Pino y cuál es su función en la Academia?"
+title: "¿Qué es Joe Pino y cuál será su función en la Academia?"
 tags:
   - joe-pino
   - academia
@@ -11,7 +11,7 @@ tags:
   - participacion
 ---
 
-# ¿Qué es Joe Pino y cuál es su función en la Academia?
+# ¿Qué es Joe Pino y cuál será su función en la Academia?
 
 ## Una cuestión de inspiración
 
@@ -23,7 +23,7 @@ Joe Pino rinde homenaje a **31 Minutos**, ese brillante programa infantil chilen
 
 ## Estado de desarrollo
 
-> **Nota:** Esta librería se encuentra actualmente en fase de desarrollo y **abrirá próximamente** a la comunidad. Su implementación plena requiere que otras piezas de la plataforma (Academia, Rey Filósofo, SOPHIA, LOGOS) estén operativas, ya que Joe Pino se articula con todas ellas: los documentos producidos aquí podrán ser examinados por SOPHIA, acompañados por el Rey Filósofo, y eventualmente nutrir los procesos deliberativos de LOGOS. Por ahora, este documento describe su diseño conceptual y sus principios fundacionales.
+> **Nota:** Esta librería se encuentra actualmente en fase de desarrollo y **abrirá próximamente** a la comunidad. Su implementación plena requiere que otras piezas de la plataforma estén operativas.
 
 ---
 
