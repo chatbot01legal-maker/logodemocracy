@@ -603,7 +603,7 @@ body {
 /* ─── S4 SIMULACIÓN TUTOR COGNITIVO (ACADEMIA) ───────── */
 .chat-sim-container {
   border: 1px solid var(--c-border);
-  border-radius: 1px;
+  border-radius: 3px;
   background: rgba(5, 10, 18, 0.9);
   overflow: hidden;
   font-family: var(--f-sans);
@@ -663,7 +663,7 @@ body {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--c-border);
   padding: 0.75rem 1rem;
-  border-radius: 2px;
+  border-radius: 3px;
   font-size: 0.85rem;
   line-height: 1.6;
   color: var(--c-text);
@@ -2196,42 +2196,51 @@ body {
 
         </div>
 
-        <div class="chat-sim-container" id="academia-chat-sim">
-  <div class="chat-sim-header">
-    <span class="panel-dot" style="background:var(--c-rey)"></span>
-    <span>Rey Filósofo · Tutor Cognitivo en tiempo real</span>
+        
+
+    <div class="chat-popup-container" id="academia-chat-widget">
+  <div class="chat-popup-header">
+    <div class="chat-header-info">
+      <span class="status-indicator active"></span>
+      <h3>Rey Filósofo</h3>
+      <span class="role-badge">Tutor Cognitivo</span>
+    </div>
   </div>
 
-  <div class="chat-sim-messages" id="chat-sim-body">
-    <div class="chat-msg chat-msg--rey">
-      <div class="chat-avatar">RF</div>
-      <div class="chat-bubble">
+  <div class="chat-popup-messages" id="chatMessages">
+    <div class="message-bubble message-rey">
+      <div class="message-content">
         Hola. Soy el Rey Filósofo. ¿Qué concepto o texto de la Academia te gustaría examinar hoy?
       </div>
     </div>
 
-    <div class="chat-msg chat-msg--user">
-      <div class="chat-avatar">U</div>
-      <div class="chat-bubble">
+    <div class="message-bubble message-user">
+      <div class="message-content">
         Quiero entender cómo la Inteligencia Artificial puede ayudarme a evaluar la coherencia de mis argumentos.
       </div>
     </div>
 
-    <div class="chat-msg chat-msg--rey">
-      <div class="chat-avatar">RF</div>
-      <div class="chat-bubble">
+    <div class="message-bubble message-rey">
+      <div class="message-content">
         Descomponemos tu razonamiento: identificamos las premisas, evidenciamos supuestos implícitos y verificamos si la conclusión se sostiene sin falacias.
       </div>
     </div>
 
-    <div class="chat-typing">
+    <div class="chat-typing-indicator" id="chatTyping" style="display: none;">
       <span>Rey Filósofo analizando</span>
-      <div class="chat-typing-dot"></div>
-      <div class="chat-typing-dot"></div>
-      <div class="chat-typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
     </div>
   </div>
-        </div>
+
+  <div class="chat-popup-input-area">
+    <input type="text" id="chatInput" placeholder="Escribe tu consulta epistémica..." autocomplete="off">
+    <button type="button" id="chatSendBtn" class="send-btn">
+      <span>Enviar</span>
+    </button>
+  </div>
+    </div>
         
         
 
