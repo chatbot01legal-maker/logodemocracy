@@ -15,7 +15,7 @@ tags:
 
 ## Una cuestión de inspiración
 
-Si el mejor lenguaje de programación del mundo fue bautizado en honor a un programa de televisión como *Monty Python* —un grupo de británicos excéntricos que enseñaron al mundo que el humor y la inteligencia podían caminar juntos—, entonces esta librería no podía ser menos.
+Si uno de los mejores lenguajes de programación del mundo fue bautizado en honor a un programa de televisión como *Monty Python* —un grupo de británicos excéntricos que enseñaron al mundo que el humor y la inteligencia podían caminar juntos—, entonces esta librería no podía ser menos.
 
 Joe Pino rinde homenaje a **31 Minutos**, ese brillante programa infantil chileno que, bajo una estética de titiriteros y noticias absurdas, supo construir una de las obras más lúcidas, críticas y profundamente humanas de la televisión iberoamericana. 
 
