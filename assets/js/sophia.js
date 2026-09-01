@@ -1538,67 +1538,107 @@ inicio: {
     }
   },
   atomos: {
-    title: 'Átomos Cognitivos',
-    render: () => {
-      try {
-        const todosAtomos = [];
-        PROTOCOL.fases.forEach(f => {
-          f.criterios.forEach(c => {
-            c.atomos.forEach(a => {
-              todosAtomos.push({
-                id: a.id,
-                definicion: a.definicion,
-                patrones: a.patrones,
-                polaridad: a.polaridad || 'riesgo',
-                criterio: `${c.id} - ${c.nombre}`,
-                fase: f.nombre
-              });
-            });
-          });
-        });
+  title: 'Átomos Cognitivos',
+  render: () => {
+    try {
+      // Mapeo explícito de los 20 átomos formales del motor de producción (SophiaEngineV4)
+      // Uno por cada criterio. Se extraen sus definiciones del PROTOCOL (respaldo) para mantener coherencia.
+      const atomosFormales = [
+        { criterioId: '1.1', atomoId: 'excluyentes' },
+        { criterioId: '1.2', atomoId: 'cambio_no_marcado' },
+        { criterioId: '1.3', atomoId: 'binaria' },
+        { criterioId: '1.4', atomoId: 'afirmacion_sin_respaldo' },
+        { criterioId: '2.1', atomoId: 'magnitud' },
+        { criterioId: '2.2', atomoId: 'causalidad' },
+        { criterioId: '2.3', atomoId: 'regla' },
+        { criterioId: '2.4', atomoId: 'circularidad' },
+        { criterioId: '3.1', atomoId: 'datos' },
+        { criterioId: '3.2', atomoId: 'certeza' },
+        { criterioId: '3.3', atomoId: 'juicio' },
+        { criterioId: '3.4', atomoId: 'variables' },
+        { criterioId: '4.1', atomoId: 'contrario' },
+        { criterioId: '4.2', atomoId: 'adjetivos' },
+        { criterioId: '4.3', atomoId: 'descalificacion' },
+        { criterioId: '4.4', atomoId: 'ambiguas' },
+        { criterioId: '5.1', atomoId: 'tangente' },
+        { criterioId: '5.2', atomoId: 'critica' },
+        { criterioId: '5.3', atomoId: 'estandar' },
+        { criterioId: '5.4', atomoId: 'blindaje' }
+      ];
 
-        return `
-          <div class="view">
-            <div class="view-eyebrow">Unidades mínimas de significado</div>
-            <h1 class="view-title">Átomos Cognitivos</h1>
-            <div class="view-body">
-              <p>Los <strong>átomos cognitivos</strong> son las unidades semánticas fundamentales del protocolo SOPHIA. Cada uno representa un concepto operacional que el motor debe detectar en el texto — no todos representan un problema: cada átomo tiene una <strong>polaridad</strong> (riesgo, mitigador o neutral) que determina si su presencia suma un punto de atención, lo reduce, o simplemente se registra sin penalizar.</p>
-              <p>El motor de producción (<code>SophiaEngineV4</code>) usa <strong>20 átomos formales</strong>, uno por cada criterio (cardinalidad 1:1). El listado que sigue corresponde a los átomos del <strong>motor de respaldo local</strong> que se usa solo si el motor de producción no está disponible; puede tener una granularidad distinta (varios sub-indicadores por criterio) porque cumple una función de contingencia, no la evaluación principal.</p>
+      const todosAtomos = atomosFormales.map(({ criterioId, atomoId }) => {
+        let faseNombre = '';
+        let criterioNombre = '';
+        let definicion = 'Definición no encontrada';
+        let patrones = [];
+        let polaridad = 'riesgo';
+
+        for (const fase of PROTOCOL.fases) {
+          const criterio = fase.criterios.find(c => c.id === criterioId);
+          if (criterio) {
+            faseNombre = fase.nombre;
+            criterioNombre = `${criterio.id} - ${criterio.nombre}`;
+            const atomo = criterio.atomos.find(a => a.id === atomoId);
+            if (atomo) {
+              definicion = atomo.definicion;
+              patrones = atomo.patrones || [];
+              polaridad = atomo.polaridad || 'riesgo';
+            }
+            break;
+          }
+        }
+        return {
+          id: atomoId,
+          definicion: definicion,
+          patrones: patrones,
+          polaridad: polaridad,
+          criterio: criterioNombre,
+          fase: faseNombre
+        };
+      });
+
+      return `
+        <div class="view">
+          <div class="view-eyebrow">Unidades mínimas de significado</div>
+          <h1 class="view-title">Átomos Cognitivos</h1>
+          <div class="view-body">
+            <p>Los <strong>átomos cognitivos</strong> son las unidades semánticas fundamentales del protocolo SOPHIA. Cada uno representa un concepto operacional que el motor debe detectar en el texto — no todos representan un problema: cada átomo tiene una <strong>polaridad</strong> (riesgo, mitigador o neutral) que determina si su presencia suma un punto de atención, lo reduce, o simplemente se registra sin penalizar.</p>
+            <p>Esta lista corresponde a los <strong>20 átomos formales del motor de producción <code>SophiaEngineV4</code></strong>, exactamente uno por cada criterio del protocolo. Es la arquitectura que se usa en la evaluación diaria.</p>
+          </div>
+          <div class="view-section">
+            <div class="view-section-title">Repositorio formal de átomos (Producción)</div>
+            <div style="max-height:400px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
+              ${todosAtomos.map(a => {
+                const polaridadColor = { riesgo: '#ef4444', mitigador: '#22c55e', neutral: 'rgba(229,231,235,.4)' }[a.polaridad || 'riesgo'];
+                const polaridadLabel = { riesgo: 'riesgo', mitigador: 'mitigador', neutral: 'neutral' }[a.polaridad || 'riesgo'];
+                return `
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,.05); padding:6px 0; gap:8px;">
+                  <span style="color:var(--accent); font-weight:500; width:120px; flex-shrink:0;">${a.id}</span>
+                  <span style="font-size:.75rem; color:rgba(229,231,235,.6); flex:1;">${a.definicion}</span>
+                  <span style="font-size:.6rem; color:${polaridadColor}; border:1px solid ${polaridadColor}; border-radius:3px; padding:1px 6px; flex-shrink:0;">${polaridadLabel}</span>
+                  <span style="font-size:.6rem; color:rgba(229,231,235,.3); width:100px; text-align:right; flex-shrink:0;">${a.criterio}</span>
+                </div>
+              `;}).join('')}
             </div>
-            <div class="view-section">
-              <div class="view-section-title">Repositorio completo de átomos (motor de respaldo)</div>
-              <div style="max-height:400px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
-                ${todosAtomos.map(a => {
-                  const polaridadColor = { riesgo: '#ef4444', mitigador: '#22c55e', neutral: 'rgba(229,231,235,.4)' }[a.polaridad || 'riesgo'];
-                  const polaridadLabel = { riesgo: 'riesgo', mitigador: 'mitigador', neutral: 'neutral' }[a.polaridad || 'riesgo'];
-                  return `
-                  <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,.05); padding:6px 0; gap:8px;">
-                    <span style="color:var(--accent); font-weight:500; width:120px; flex-shrink:0;">${a.id}</span>
-                    <span style="font-size:.75rem; color:rgba(229,231,235,.6); flex:1;">${a.definicion}</span>
-                    <span style="font-size:.6rem; color:${polaridadColor}; border:1px solid ${polaridadColor}; border-radius:3px; padding:1px 6px; flex-shrink:0;">${polaridadLabel}</span>
-                    <span style="font-size:.6rem; color:rgba(229,231,235,.3); width:100px; text-align:right; flex-shrink:0;">${a.criterio}</span>
-                  </div>
-                `;}).join('')}
-              </div>
-              <div style="margin-top:12px; font-size:.7rem; color:rgba(229,231,235,.3);">
-                Total de átomos (motor de respaldo): ${todosAtomos.length} · Total de átomos (SophiaEngineV4, producción): 20
-              </div>
-            </div>
-            <div class="view-section">
-              <div class="view-section-title">Función dentro del instrumento</div>
-              <div class="view-body">
-                <p>Cada átomo se activa cuando el texto contiene ciertos patrones lingüísticos (palabras clave, construcciones gramaticales). Si su polaridad es <strong>riesgo</strong>, su detección puede sumar un punto de atención al criterio correspondiente, según la severidad y frecuencia. Si es <strong>mitigador</strong>, reduce o anula un punto de atención ya detectado (por ejemplo, citar una fuente mitiga la falta de trazabilidad). Si es <strong>neutral</strong>, se registra pero nunca penaliza.</p>
-                <p>Esta arquitectura permite que la evaluación sea <strong>transparente y replicable</strong>: cualquier persona puede inspeccionar qué átomos se activaron, con qué polaridad, y por qué eso generó — o no — un punto de atención.</p>
-              </div>
+            <div style="margin-top:12px; font-size:.7rem; color:rgba(229,231,235,.3);">
+              Total de átomos formales (SophiaEngineV4): ${todosAtomos.length} · Coincide 1:1 con los 20 criterios del protocolo.
             </div>
           </div>
-        `;
-      } catch (e) {
-        showDebug(`❌ Error en vista atomos: ${e.message}`, true);
-        return `<p>Error al renderizar: ${e.message}</p>`;
-      }
+          <div class="view-section">
+            <div class="view-section-title">Función dentro del instrumento</div>
+            <div class="view-body">
+              <p>Cada átomo se activa cuando el texto contiene ciertos patrones lingüísticos (palabras clave, construcciones gramaticales). Si su polaridad es <strong>riesgo</strong>, su detección puede sumar un punto de atención al criterio correspondiente, según la severidad y frecuencia. Si es <strong>mitigador</strong>, reduce o anula un punto de atención ya detectado (por ejemplo, citar una fuente mitiga la falta de trazabilidad). Si es <strong>neutral</strong>, se registra pero nunca penaliza.</p>
+              <p>Esta arquitectura permite que la evaluación sea <strong>transparente y replicable</strong>: cualquier persona puede inspeccionar qué átomos se activaron, con qué polaridad, y por qué eso generó — o no — un punto de atención.</p>
+            </div>
+          </div>
+        </div>
+      `;
+    } catch (e) {
+      showDebug(`❌ Error en vista atomos: ${e.message}`, true);
+      return `<p>Error al renderizar: ${e.message}</p>`;
     }
-  },
+  }
+},
   formula: {
     title: 'Fórmula de Cálculo',
     render: () => {
