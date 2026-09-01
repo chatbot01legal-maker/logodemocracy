@@ -1,10 +1,22 @@
 [
+{
+    "library": "Logodemocracia",
+    "folder": "Plataforma Tecnológica",
+    "title": "1. Introducción",
+    "file": "intro.md",
+    "order": 1,
+    "tags": [
+      "Logodemocracia",
+      "Fundamentos"
+    ]
+  },
+
   {
     "library": "Logodemocracia",
     "folder": "Plataforma Tecnológica",
-    "title": "1. ¿Qué es LogoDemocracy? Arquitectura de la plataforma tecnológica",
+    "title": "2. ¿Qué es LogoDemocracy? Arquitectura de la plataforma tecnológica",
     "file": "Logodemocracia.md",
-    "order": 1,
+    "order": 2,
     "tags": [
       "logodemocracia",
       "arquitectura",
@@ -25,9 +37,9 @@
   {
     "library": "Logodemocracia",
     "folder": "Plataforma Tecnológica",
-    "title": "2. ¿Qué es la Academia y cuál es su función en LogoDemocracy?",
+    "title": "3. ¿Qué es la Academia y cuál es su función en LogoDemocracy?",
     "file": "la-academia.md",
-    "order": 2,
+    "order": 3,
     "tags": [
       "academia",
       "educacion-civica",
@@ -44,9 +56,9 @@
   {
     "library": "Logodemocracia",
     "folder": "Plataforma Tecnológica",
-    "title": "3. ¿Qué es SOPHIA y cuál es su función?",
+    "title": "4. ¿Qué es SOPHIA y cuál es su función?",
     "file": "que-es-sophia.md",
-    "order": 3,
+    "order": 4,
     "tags": [
       "sophia",
       "inteligencia-artificial",
@@ -58,9 +70,9 @@
 {
   "library": "Logodemocracia",
   "folder": "Plataforma Tecnológica",
-  "title": "4. ¿Qué es LOGOS y cuál es su función?",
+  "title": "5. ¿Qué es LOGOS y cuál es su función?",
   "file": "que-es-logos.md",
-  "order": 4,
+  "order": 5,
   "tags": [
     "logos",
     "deliberación",
@@ -73,9 +85,9 @@
   {
     "library": "Logodemocracia",
     "folder": "Plataforma Tecnológica",
-    "title": "5. Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico",
+    "title": "6. Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico",
     "file": "rey-filosofo.md",
-    "order": 5,
+    "order": 6,
     "tags": [
       "rey-filósofo",
       "pensamiento-crítico",
@@ -88,17 +100,7 @@
       "inteligencia-artificial"
     ]
   },
-  {
-    "library": "Logodemocracia",
-    "folder": "Plataforma Tecnológica",
-    "title": "0. Introducción",
-    "file": "intro.md",
-    "order": 0,
-    "tags": [
-      "Logodemocracia",
-      "Fundamentos"
-    ]
-  },
+  
   {
     "library": "Todo Ciudadano Sabe",
     "folder": "01-Todo-Ciudadano-Sabe",
