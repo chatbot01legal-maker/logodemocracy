@@ -663,6 +663,28 @@ function computeVPA(fases) {
   return { conteo: puntos.length, categoria, puntos };
 }
 
+// ─── PARCHE DE PRESENTACIÓN: lenguaje heredado en texto del LLM ──
+// El backend (gemini_review) puede seguir generando narrativa con
+// lenguaje de puntaje ("IRD 99", "Índice de Robustez Deliberativa",
+// "máxima puntuación") si su prompt no fue actualizado. Esta función
+// traduce esas menciones al VPA real ya calculado del lado del
+// cliente, sin alterar el resto del texto. Es un parche temporal:
+// lo correcto es actualizar el prompt en origen; ver limitaciones.
+function sanitizeVPALanguage(texto, vpaConteo) {
+  if (!texto || typeof texto !== 'string') return texto;
+  const conteoTexto = vpaConteo === 0
+    ? 'sin puntos de atención'
+    : `${vpaConteo} punto${vpaConteo === 1 ? '' : 's'} de atención (VPA)`;
+  return texto
+    .replace(/\(?\bIRD\s*(de\s*|:\s*)?\d{1,3}\)?/gi, `(${conteoTexto})`)
+    .replace(/Índice de Robustez Deliberativa \(IRD\)/gi, 'VPA (Vale la Pena Prestar Atención)')
+    .replace(/Índice de Robustez Deliberativa/gi, 'VPA (Vale la Pena Prestar Atención)')
+    .replace(/\b(la|una)\s+máxima puntuación\b/gi, 'el mínimo de puntos de atención posible')
+    .replace(/\bmáxima puntuación\b/gi, 'el mínimo de puntos de atención posible')
+    .replace(/\b(la|una)\s+alta puntuación\b/gi, 'pocos puntos de atención')
+    .replace(/\balta puntuación\b/gi, 'pocos puntos de atención');
+}
+
 // ─── NORMALIZACIÓN DE RESPUESTAS SOPHIA ───────────────
 // El backend híbrido (/api/sophia/evaluate) responde con la forma:
 //   { local: {fases, evidencias, IRD_global, riesgo}, llm_review, ird, risk, ... }
@@ -1589,6 +1611,7 @@ inicio: {
                 id: a.id,
                 definicion: a.definicion,
                 patrones: a.patrones,
+                polaridad: a.polaridad || 'riesgo',
                 criterio: `${c.id} - ${c.nombre}`,
                 fase: f.nombre
               });
@@ -1656,14 +1679,23 @@ inicio: {
 
             <div class="view-section">
               <div class="view-section-title">Glosario completo de Átomos</div>
+              <p style="font-size:.72rem; color:rgba(229,231,235,.45); margin-bottom:8px;">
+                El motor de producción (<code>SophiaEngineV4</code>) usa <strong>20 átomos</strong>, uno por criterio. El listado siguiente es el del motor de respaldo local (usado solo si el motor de producción no responde), con una granularidad distinta.
+              </p>
               <div style="max-height:300px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
-                ${todosAtomos.map(a => `
-                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,.05); padding:4px 0;">
+                ${todosAtomos.map(a => {
+                  const polaridadColor = { riesgo: '#ef4444', mitigador: '#22c55e', neutral: 'rgba(229,231,235,.4)' }[a.polaridad || 'riesgo'];
+                  return `
+                  <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,.05); padding:4px 0; gap:6px;">
                     <span style="color:var(--accent); font-weight:500;">${a.id}</span>
-                    <span style="font-size:.7rem; color:rgba(229,231,235,.5);">${a.definicion}</span>
+                    <span style="font-size:.7rem; color:rgba(229,231,235,.5); flex:1; padding:0 8px;">${a.definicion}</span>
+                    <span style="font-size:.55rem; color:${polaridadColor}; border:1px solid ${polaridadColor}; border-radius:3px; padding:0 4px;">${a.polaridad || 'riesgo'}</span>
                     <span style="font-size:.6rem; color:rgba(229,231,235,.3);">${a.criterio}</span>
                   </div>
-                `).join('')}
+                `;}).join('')}
+              </div>
+              <div style="margin-top:8px; font-size:.65rem; color:rgba(229,231,235,.3);">
+                Total (motor de respaldo): ${todosAtomos.length} · Total (SophiaEngineV4, producción): 20
               </div>
             </div>
           </div>
@@ -1688,7 +1720,7 @@ inicio: {
             <div class="view-eyebrow">Flujo Institucional</div>
             <h1 class="view-title">Integración con Academia y Ágora</h1>
             <div class="view-body">
-              <p>SOPHIA actúa como el <strong>protocolo de calidad deliberativa</strong> previo al ingreso de documentos a la <strong>Academia</strong>. No certifica la verdad, pero estima si un argumento fue construido con suficiente responsabilidad.</p>
+              <p>Antes de que un documento llegue a discutirse en el <strong>Ágora</strong>, SOPHIA lo examina como <strong>instrumento de pensamiento crítico</strong>: no decide si el argumento es correcto ni le pone una nota — identifica qué partes de su razonamiento vale la pena que la ciudadanía revise con más cuidado antes de deliberar sobre él.</p>
               <p>Los documentos con pocos puntos de atención sin mitigar pueden ser sometidos a discusión en el <strong>Ágora</strong>, donde la ciudadanía delibera y vota su inclusión en el repositorio académico. Internamente, este umbral de admisibilidad se calcula sobre el mismo campo <code>IRD_global</code> que ya usaba el sistema — se conserva por compatibilidad con Ágora y con la telemetría existente, pero es un mecanismo de filtrado entre módulos, no la métrica que SOPHIA le muestra a la persona que escribió el texto.</p>
             </div>
             <div class="view-section">
@@ -2034,7 +2066,7 @@ const SOPHIA = {
 
       uploadBtn.addEventListener('click', () => fileInput.click());
       
-    fileInput.addEventListener('change', (e) => {
+      fileInput.addEventListener('change', (e) => {
         if (e.target.files.length > 0) handleFile(e.target.files[0]);
       });
 
@@ -2524,20 +2556,20 @@ ${data.gemini_review ? `
       ${data.gemini_review.interpretacion ? `
         <div style="margin-bottom:12px;">
           <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Interpretación</div>
-          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.interpretacion}</div>
+          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${sanitizeVPALanguage(data.gemini_review.interpretacion, data.vpa ? data.vpa.conteo : undefined)}</div>
         </div>` : ''}
       ${data.gemini_review.contexto ? `
         <div style="margin-bottom:12px;">
           <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Contexto</div>
-          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.contexto}</div>
+          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${sanitizeVPALanguage(data.gemini_review.contexto, data.vpa ? data.vpa.conteo : undefined)}</div>
         </div>` : ''}
       ${data.gemini_review.observaciones ? `
         <div style="margin-bottom:12px;">
           <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Observaciones</div>
           <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
             ${Array.isArray(data.gemini_review.observaciones)
-              ? data.gemini_review.observaciones.map(o => `<div style="margin-bottom: 6px;"><strong style="color:#e5e7eb;">${o.tipo}:</strong> ${o.detalle}</div>`).join('')
-              : data.gemini_review.observaciones}
+              ? data.gemini_review.observaciones.map(o => `<div style="margin-bottom: 6px;"><strong style="color:#e5e7eb;">${o.tipo}:</strong> ${sanitizeVPALanguage(o.detalle, data.vpa ? data.vpa.conteo : undefined)}</div>`).join('')
+              : sanitizeVPALanguage(data.gemini_review.observaciones, data.vpa ? data.vpa.conteo : undefined)}
           </div>
         </div>` : ''}
       ${(data.gemini_review.preguntas_reflexivas && Array.isArray(data.gemini_review.preguntas_reflexivas) && data.gemini_review.preguntas_reflexivas.length > 0) ? `
