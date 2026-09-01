@@ -519,6 +519,7 @@ body {
 }
 
 /* ─── S2.5 ATENCIÓN Y PENSAMIENTO COLECTIVO ──────────── */
+/* ─── S2.5 ATENCIÓN Y PENSAMIENTO COLECTIVO ──────────── */
 .atencion-card {
   position: relative;
   background: rgba(255, 255, 255, 0.02);
@@ -536,13 +537,13 @@ body {
   width: 400px;
   height: 400px;
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(242,181,68,0.1) 0%, rgba(139,92,246,0.05) 50%, transparent 75%);
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, rgba(59, 130, 246, 0.05) 50%, transparent 75%);
   pointer-events: none;
 }
 
 .atencion-lead {
   font-family: var(--f-mono);
-  color: var(--c-hope);
+  color: var(--c-sophia);
   font-size: clamp(1.1rem, 2vw, 1.4rem);
   margin-bottom: var(--space-sm);
   font-weight: 400;
@@ -564,15 +565,15 @@ body {
 }
 
 .atencion-node:hover {
-  border-color: var(--c-hope);
-  background: rgba(242, 181, 68, 0.06);
+  border-color: var(--c-sophia);
+  background: rgba(139, 92, 246, 0.08);
   transform: translateY(-2px);
 }
 
 .atencion-node-title {
   font-family: var(--f-mono);
   font-size: 0.75rem;
-  color: var(--c-hope);
+  color: var(--c-sophia);
   display: block;
   margin-bottom: 0.3em;
 }
@@ -587,14 +588,17 @@ body {
   font-family: var(--f-mono);
   font-size: 0.85rem;
   background: rgba(5, 10, 18, 0.8);
-  border: 1px solid rgba(242, 181, 68, 0.3);
-  border-left: 3px solid var(--c-hope);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-left: 3px solid var(--c-sophia);
   padding: 1rem 1.25rem;
   color: var(--c-text);
   margin-top: var(--space-md);
   border-radius: 1px;
   line-height: 1.6;
 }
+    
+
+
 
 /* ─── S4 SIMULACIÓN TUTOR COGNITIVO (ACADEMIA) ───────── */
 .chat-sim-container {
@@ -1792,62 +1796,74 @@ body {
   <div class="container">
     <div class="atencion-card">
       <div class="atencion-glow" aria-hidden="true"></div>
-      
-      <h3 class="atencion-lead">¿Y si pudiéramos pensar juntos?</h3>
-      
+
+      <h3 class="atencion-lead" style="font-size: 2.5rem; text-align: center;">
+        ¿Y si pudiéramos pensar juntos?
+      </h3>
+
       <p class="section-sub" style="max-width: 100%; margin-bottom: 1rem;">
-        Nuestra atención es limitada. No podemos mirar todos los problemas al mismo tiempo. No podemos conocer todas las perspectivas. No podemos detectar todos nuestros propios puntos ciegos.
+        <strong>Nuestra atención es limitada.</strong>
       </p>
 
       <p class="section-sub" style="max-width: 100%; margin-bottom: 1rem;">
-        Por eso, aquello que una sociedad consigue mirar también importa.
+        No podemos verlo todo. No podemos saberlo todo. No podemos estar atentos a todos los problemas al mismo tiempo. Y, mientras miramos una cosa, otras pueden quedar fuera de nuestro campo de atención.
+      </p>
+
+      <p class="section-sub" style="max-width: 100%; margin-bottom: 1.5rem;">
+        También tenemos puntos ciegos. Podemos pasar por alto una información importante, no advertir una contradicción, aceptar una explicación demasiado rápido o no darnos cuenta de cuándo alguien está intentando dirigir nuestra atención hacia donde le conviene.
       </p>
 
       <div class="atencion-grid">
         <div class="atencion-node">
-          <span class="atencion-node-title">Una experiencia</span>
+          <span class="atencion-node-title">Tú ves algo</span>
           <p class="atencion-node-desc">
-            Puede revelar un problema que permanecía invisible para los demás.
+            Una experiencia, un dato, una contradicción o un problema que para otros puede pasar inadvertido.
           </p>
         </div>
 
         <div class="atencion-node">
-          <span class="atencion-node-title">Una perspectiva</span>
+          <span class="atencion-node-title">Otros ven lo que tú no ves</span>
           <p class="atencion-node-desc">
-            Puede ampliar nuestra comprensión de aquello que estamos mirando juntos.
+            Cada persona observa desde una posición diferente y puede iluminar una parte del problema que quedó fuera de tu atención.
           </p>
         </div>
 
         <div class="atencion-node">
-          <span class="atencion-node-title">Una duda</span>
+          <span class="atencion-node-title">La atención se vuelve colectiva</span>
           <p class="atencion-node-desc">
-            Puede cuestionar aquello que parecía evidente y hacer visible un punto ciego.
+            Cuando muchas miradas se encuentran, podemos descubrir conexiones, puntos ciegos e intereses que permanecían ocultos.
           </p>
         </div>
       </div>
 
       <div class="atencion-genkidama">
         <p>
-          Muchas personas pueden aportar voluntariamente su atención, su experiencia,
-          su conocimiento y su capacidad para preguntar, iluminar diferentes partes
-          de un mismo problema y construir una comprensión que ningún individuo
-          podría producir por sí solo.
+          <strong>Cuando nuestras atenciones se encuentran, ocurre algo que una sola persona difícilmente puede conseguir:</strong>
+          podemos iluminar aquello que permanecía en la oscuridad.
+        </p>
+
+        <p>
+          Podemos ver lo que no habíamos visto. Podemos hacer preguntas que no habíamos pensado. Podemos reconocer cuándo una explicación no se sostiene, cuándo existe un interés detrás de una propuesta o cuándo alguien intenta hacernos mirar hacia otro lado.
         </p>
       </div>
 
       <p class="section-sub" style="max-width: 100%; margin-top: 1.5rem;">
-        No para pensar igual. No para eliminar el desacuerdo.
-        Para poder pensar mejor juntos.
+        No se trata de pensar todos igual.
+        Se trata de que <strong>nadie tenga que depender únicamente de aquello que puede ver por sí mismo.</strong>
       </p>
 
-      <p class="section-sub" style="max-width: 100%; margin-top: 1.5rem; font-weight: 500;">
-        ¿Qué pasaría si la tecnología pudiera ayudarnos a decidir no solamente qué queremos,
-        sino también qué merece nuestra atención?
+      <p class="section-sub" style="max-width: 100%; margin-top: 1.5rem;">
+        Una sociedad que consigue sumar sus miradas puede ser más lúcida que cualquiera de sus individuos por separado.
+      </p>
+
+      <p class="section-sub" style="max-width: 100%; margin-top: 1.5rem; font-weight: 600; text-align: center;">
+        ¿Qué pasaría si la tecnología pudiera ayudarnos a decidir no solamente qué queremos, sino también qué merece nuestra atención?
       </p>
     </div>
   </div>
   </section>
 
+        
   
   <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
   
