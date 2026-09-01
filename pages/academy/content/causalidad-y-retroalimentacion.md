@@ -1,27 +1,25 @@
 ---
 library: "Todo Ciudadano Sabe"
 folder: "01-Todo-Ciudadano-Sabe"
-title: "5. Causalidad y retroalimentación"
+title: "Causalidad y retroalimentación"
 tags:
-- todo-ciudadano-sabe
-- gregory-bateson
-- pensamiento-sistemico
-- causalidad
-- retroalimentacion
-- sistemas
-- complejidad
-- aprendizaje
+  - todo-ciudadano-sabe
+  - gregory-bateson
+  - pensamiento-sistemico
+  - causalidad
+  - retroalimentacion
+  - sistemas
+  - complejidad
+  - aprendizaje
 ---
 
-<div align="justify">
+# Causalidad y retroalimentación
 
-## Causalidad y retroalimentación
-
-### Pregunta central
+## Pregunta central
 
 ¿Cómo podemos comprender las causas de un fenómeno cuando sus efectos pueden modificar aquello que los produjo?
 
-### Idea central
+## Idea central
 
 No todas las relaciones causales funcionan como una cadena lineal de causa y efecto.
 
@@ -37,17 +35,13 @@ Comprender estos ciclos permite reconocer que, en un sistema, una causa puede co
 
 Una de las formas más sencillas de pensar la causalidad es mediante una secuencia:
 
-```
-
-A → B
-
-```
+> A → B
 
 A produce B.
 
 Por ejemplo:
 
-> «Presiono el interruptor → se enciende la luz.»
+> "Presiono el interruptor → se enciende la luz."
 
 Este modelo resulta útil para muchas situaciones.
 
@@ -73,11 +67,7 @@ El proceso puede repetirse hasta producir un fuerte chillido.
 
 Podemos representarlo así:
 
-```
-
-A → B → A → B → A...
-
-```
+> A → B → A → B → A...
 
 La salida del sistema vuelve a ingresar como información que modifica su comportamiento.
 
@@ -113,11 +103,7 @@ Por ejemplo:
 
 Podemos representarlo:
 
-```
-
-A ↑ → B ↑ → A ↑ → B ↑
-
-```
+> A ↑ → B ↑ → A ↑ → B ↑
 
 El proceso puede generar crecimiento acelerado.
 
@@ -147,11 +133,7 @@ Cuando la temperatura aumenta hasta determinado nivel, la calefacción se apaga.
 
 Podemos representarlo:
 
-```
-
-temperatura ↓ → calefacción ↑ → temperatura ↑ → calefacción ↓
-
-```
+> temperatura ↓ → calefacción ↑ → temperatura ↑ → calefacción ↓
 
 El sistema utiliza información sobre su propio estado para mantenerse dentro de determinados límites.
 
@@ -163,31 +145,24 @@ La retroalimentación, en este caso, contribuye a la estabilidad.
 
 Una cadena causal puede representarse así:
 
-```
-
-A → B → C → D
-
-```
+> A → B → C → D
 
 Un sistema con retroalimentación puede representarse:
-
-```
 
 A → B → C
 ↑         ↓
 └─────────┘
 
-```
 
 La segunda representación obliga a cambiar nuestra manera de pensar.
 
 Ya no preguntamos solamente:
 
-> «¿Qué causó esto?»
+> "¿Qué causó esto?"
 
 También preguntamos:
 
-> «¿Cómo está influyendo este resultado sobre las condiciones que lo produjeron?»
+> "¿Cómo está influyendo este resultado sobre las condiciones que lo produjeron?"
 
 Esta segunda pregunta puede revelar dinámicas que permanecen ocultas cuando buscamos una única causa inicial.
 
@@ -207,8 +182,6 @@ La persona recibe menos interacción y confirma su impresión inicial de que los
 
 Podemos representar el ciclo:
 
-```
-
 temor al rechazo
 ↓
 menos participación
@@ -219,7 +192,6 @@ percepción de rechazo
 ↓
 mayor temor al rechazo
 
-```
 
 No existe necesariamente una única causa que explique todo el fenómeno.
 
@@ -233,7 +205,7 @@ Una dinámica semejante puede aparecer cuando una creencia sobre el futuro modif
 
 Por ejemplo:
 
-> «Nadie me escuchará.»
+> "Nadie me escuchará."
 
 Esa creencia puede hacer que una persona exponga su posición con menor claridad o abandone rápidamente la conversación.
 
@@ -253,11 +225,11 @@ Significa que algunas creencias pueden formar parte de ciclos causales que influ
 
 En sistemas complejos es frecuente preguntar:
 
-> «¿Quién tiene la culpa?»
+> "¿Quién tiene la culpa?"
 
 o:
 
-> «¿Cuál es la causa del problema?»
+> "¿Cuál es la causa del problema?"
 
 Estas preguntas pueden ser insuficientes.
 
@@ -265,11 +237,7 @@ Un problema puede mantenerse porque diferentes factores se refuerzan mutuamente.
 
 Por ejemplo:
 
-```
-
-desconfianza → menor cooperación → peores resultados → mayor desconfianza
-
-```
+> desconfianza → menor cooperación → peores resultados → mayor desconfianza
 
 Si solamente buscamos el primer elemento de la cadena, podemos perder de vista el mecanismo que mantiene funcionando el problema.
 
@@ -297,11 +265,7 @@ Vuelve a intentarlo.
 
 Podemos representarlo:
 
-```
-
-acción → resultado → información → ajuste → nueva acción
-
-```
+> acción → resultado → información → ajuste → nueva acción
 
 Aprender implica, en parte, incorporar los resultados de nuestras propias acciones para modificar acciones futuras.
 
@@ -323,8 +287,6 @@ Esa información puede modificar sus preferencias y decisiones futuras.
 
 Podemos representarlo:
 
-```
-
 decisión ciudadana
 ↓
 política pública
@@ -339,7 +301,6 @@ nueva deliberación
 ↓
 nueva decisión
 
-```
 
 Cuando la información sobre los resultados es pobre, tardía o manipulada, la capacidad del sistema para aprender también puede disminuir.
 
@@ -391,13 +352,8 @@ Pensar en términos de retroalimentación significa aprender a mirar no solament
 
 Porque en muchos sistemas complejos, comprender lo que ocurre exige dejar de preguntar solamente:
 
-> «¿Qué causó esto?»
+> "¿Qué causó esto?"
 
 y comenzar a preguntar:
 
-> «¿Cómo lo que ocurrió está modificando aquello que lo produjo?»
-
-</div>
-```
-
-</div>
+> "¿Cómo lo que ocurrió está modificando aquello que lo produjo?"
