@@ -17,7 +17,7 @@ tags:
 
 <div align="justify">
 
-¿Qué es la Academia y cuál es su función en LogoDemocracy?
+# ¿Qué es la Academia y cuál es su función en Logodemocracy.tech?
 
 Pregunta central
 
