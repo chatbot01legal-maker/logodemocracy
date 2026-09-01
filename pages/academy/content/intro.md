@@ -11,7 +11,8 @@ tags:
 
 🏛️ Academia de LogoDemocracy
 
-## 1. Objetivo de la Academia
+# 1. Objetivo de la Academia
+
 La Academia de LogoDemocracy existe para desarrollar una capacidad básica pero decisiva en cualquier sociedad democrática: aprender a pensar con mayor claridad, rigor y autonomía. Su objetivo no es entregar respuestas definitivas, sino entregar herramientas para que cualquier persona pueda analizar información, formar criterios propios y participar de manera más consciente en la vida pública.
 
 **“Aquí no se exige geometría, solo el deseo de pensar como Ciudadano.”**
