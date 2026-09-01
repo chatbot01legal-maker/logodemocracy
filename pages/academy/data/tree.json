@@ -453,5 +453,20 @@
       "lobbying",
       "puertas-giratorias"
     ]
-  }
+  },
+    {
+  "library": "Joe Pino",
+  "folder": "Bases",
+  "title": "¿Qué es Joe Pino y cuál es su función en la Academia?",
+  "file": "1. joe-pino.md",
+  "order": 1,
+  "tags": [
+    "joe-pino",
+    "academia",
+    "conocimiento",
+    "comunidad",
+    "inteligencia-colectiva",
+    "participacion"
+  ]
+    }
 ]
