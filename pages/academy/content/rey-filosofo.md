@@ -1,7 +1,7 @@
 ---
 library: "Logodemocracia"
 folder: "Plataforma Tecnológica"
-title: "5. Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico"
+title: "6. Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico"
 tags:
   - rey-filosofo
   - pensamiento-critico
