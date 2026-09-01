@@ -145,20 +145,18 @@ body {
 /* ─── ESTILOS PARA LA FIRMA ──────────────────────────── */
 .boot-text .boot-signature {
   color: #ffffff;
-  font-style: italic;          /* Solo cursiva */
+  font-style: italic;
 }
 
 .boot-text .boot-author {
   color: #ffffff;
-  font-weight: bold;           /* Solo negrita, sin cursiva */
+  font-weight: bold;
 }
 .boot-text .boot-spacer {
   display: block;
   height: 1.85em;
 }
     
-/* ────────────────────────────────────────────────────── */
-
 .boot-cursor {
   display: inline-block;
   width: 0.5em;
@@ -597,154 +595,104 @@ body {
 }
 
 /* ─── S4 SIMULACIÓN TUTOR COGNITIVO (ACADEMIA) ───────── */
-.chat-popup-container {
+.chat-sim-container {
   border: 1px solid var(--c-border);
   border-radius: 3px;
   background: rgba(5, 10, 18, 0.9);
   overflow: hidden;
   font-family: var(--f-sans);
-  display: flex;
-  flex-direction: column;
 }
 
-.chat-popup-header {
+.chat-sim-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
+  gap: 0.5em;
+  padding: 0.6em 1em;
   border-bottom: 1px solid var(--c-border);
   background: rgba(255,255,255,0.025);
-}
-
-.chat-header-info {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.chat-header-info h3 {
   font-family: var(--f-mono);
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--c-text);
-  margin: 0;
+  font-size: 0.65rem;
+  color: var(--c-faint);
 }
 
-.status-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--c-muted);
-}
-.status-indicator.active {
-  background: var(--c-academia);
-  box-shadow: 0 0 6px var(--c-academia);
-}
-
-.role-badge {
-  font-family: var(--f-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.05em;
-  color: var(--c-rey);
-  border: 1px solid rgba(217, 119, 6, 0.3);
-  padding: 1px 6px;
-  border-radius: 2px;
-}
-
-.chat-popup-messages {
+.chat-sim-messages {
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  min-height: 280px;
-  max-height: 360px;
+  min-height: 320px;
+  max-height: 380px;
   overflow-y: auto;
 }
 
-.message-bubble {
-  max-width: 85%;
+.chat-msg {
+  display: flex;
+  gap: 0.75rem;
+  max-width: 90%;
+  animation: revealFade 0.4s ease forwards;
+}
+
+.chat-msg--user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.chat-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.chat-msg--user .chat-avatar { background: var(--c-sophia); color: #fff; }
+.chat-msg--rey .chat-avatar { background: var(--c-rey); color: #fff; }
+
+.chat-bubble {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--c-border);
   padding: 0.75rem 1rem;
   border-radius: 3px;
   font-size: 0.85rem;
   line-height: 1.6;
-  border: 1px solid var(--c-border);
-}
-
-.message-rey {
-  align-self: flex-start;
-  background: rgba(217, 119, 6, 0.08);
-  border-color: rgba(217, 119, 6, 0.25);
   color: var(--c-text);
 }
 
-.message-user {
-  align-self: flex-end;
+.chat-msg--user .chat-bubble {
   background: rgba(59, 130, 246, 0.08);
   border-color: rgba(59, 130, 246, 0.25);
-  color: var(--c-text);
 }
 
-.chat-typing-indicator {
+.chat-msg--rey .chat-bubble {
+  background: rgba(217, 119, 6, 0.08);
+  border-color: rgba(217, 119, 6, 0.25);
+}
+
+.chat-typing {
   display: flex;
   align-items: center;
   gap: 6px;
+  padding: 0.5rem 1rem;
   font-family: var(--f-mono);
   font-size: 0.72rem;
   color: var(--c-rey);
 }
 
-.typing-dot {
+.chat-typing-dot {
   width: 4px;
   height: 4px;
   border-radius: 50%;
   background: var(--c-rey);
   animation: blink 1.2s infinite ease-in-out;
 }
-.typing-dot:nth-child(1) { animation-delay: 0s; }
-.typing-dot:nth-child(2) { animation-delay: 0.2s; }
-.typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-.chat-popup-input-area {
-  display: flex;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  border-top: 1px solid var(--c-border);
-  background: rgba(255,255,255,0.015);
-}
-
-.chat-popup-input-area input {
-  flex: 1;
-  background: rgba(0,0,0,0.3);
-  border: 1px solid var(--c-border);
-  border-radius: 2px;
-  padding: 0.5rem 0.75rem;
-  color: var(--c-text);
-  font-family: var(--f-sans);
-  font-size: 0.82rem;
-}
-
-.chat-popup-input-area input:focus {
-  outline: none;
-  border-color: var(--c-rey);
-}
-
-.send-btn {
-  font-family: var(--f-mono);
-  font-size: 0.75rem;
-  background: rgba(217,119,6,0.15);
-  border: 1px solid rgba(217,119,6,0.4);
-  color: var(--c-rey);
-  padding: 0.5rem 1rem;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: background 200ms, border-color 200ms;
-}
-
-.send-btn:hover {
-  background: rgba(217,119,6,0.3);
-  border-color: var(--c-rey);
-}
-
+.chat-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.chat-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    
 /* ─── S3 AGENTES ─────────────────────────────────────── */
 .agentes-grid {
   display: grid;
@@ -1909,8 +1857,8 @@ body {
   </section>
 
   <div class="divider-line" aria-hidden="true"><span class="divider-dot"></span></div>
-
-  <!-- ═══════════════════════════════════════════════════════
+  
+    <!-- ═══════════════════════════════════════════════════════
        S3 — AGENTES COGNITIVOS
   ══════════════════════════════════════════════════════════ -->
   <section class="section agentes" id="agentes">
@@ -1961,7 +1909,6 @@ body {
           </span>
         </article>
 
-
         <!-- LOGOS -->
         <article class="agent-card" data-agent="logos">
           <div class="agent-header">
@@ -1992,7 +1939,6 @@ body {
             Explorar Logos →
           </a>
         </article>
-
 
         <!-- REY FILÓSOFO -->
         <article class="agent-card" data-agent="rey">
@@ -2025,7 +1971,6 @@ body {
           </a>
         </article>
 
-
         <!-- SOPHIA -->
         <article class="agent-card" data-agent="sophia">
           <div class="agent-header">
@@ -2056,7 +2001,6 @@ body {
             Explorar Sophia →
           </a>
         </article>
-
 
         <!-- MYTHOS -->
         <article
@@ -2096,7 +2040,6 @@ body {
             En desarrollo
           </span>
         </article>
-
 
         <!-- AGORA -->
         <article
@@ -2177,7 +2120,7 @@ body {
             La Academia es una biblioteca viva para aprender, comprender y
             desarrollar ideas. Reúne conocimientos, herramientas y aportaciones
             ciudadanas en un mismo lugar, con la ayuda de inteligencia artificial
-            para mejorar la comprensión de lectura y facilitar el aprendizaje.
+            para  mejorar la comprensión de lectura y facilitar el aprendizaje.
           </p>
 
           <p>
@@ -2188,95 +2131,66 @@ body {
           </p>
 
           <ul class="academia-features">
-
             <li>
-              <span
-                class="feature-dot"
-                style="background:var(--c-academia)"
-              ></span>
+              <span class="feature-dot" style="background:var(--c-academia)"></span>
               Aprende con bibliotecas creadas para ciudadanos
             </li>
-
             <li>
-              <span
-                class="feature-dot"
-                style="background:var(--c-rey)"
-              ></span>
+              <span class="feature-dot" style="background:var(--c-rey)"></span>
               Lee acompañado por el Rey Filósofo
             </li>
-
             <li>
-              <span
-                class="feature-dot"
-                style="background:var(--c-sophia)"
-              ></span>
+              <span class="feature-dot" style="background:var(--c-sophia)"></span>
               Examina tus ideas con Sophia
             </li>
-
             <li>
-              <span
-                class="feature-dot"
-                style="background:var(--c-logos)"
-              ></span>
+              <span class="feature-dot" style="background:var(--c-logos)"></span>
               Comparte y desarrolla tus propias ideas
             </li>
-
             <li>
-              <span
-                class="feature-dot"
-                style="background:var(--c-aletheia)"
-              ></span>
+              <span class="feature-dot" style="background:var(--c-aletheia)"></span>
               Aprende a pensar críticamente en el mundo digital
             </li>
-
           </ul>
 
         </div>
 
-        <div class="chat-popup-container" id="academia-chat-widget">
-          <div class="chat-popup-header">
-            <div class="chat-header-info">
-              <span class="status-indicator active"></span>
-              <h3>Rey Filósofo</h3>
-              <span class="role-badge">Tutor Cognitivo</span>
-            </div>
+        <div class="chat-sim-container" id="academia-chat-widget">
+          <div class="chat-sim-header">
+            <span class="status-indicator active" style="width:8px;height:8px;background:#22c55e;border-radius:50%;"></span>
+            Rey Filósofo — Tutor Cognitivo
           </div>
 
-          <div class="chat-popup-messages" id="chatMessages">
-            <div class="message-bubble message-rey">
-              <div class="message-content">
-                Hola. Soy el Rey Filósofo. ¿Qué concepto o texto de la Academia te gustaría examinar hoy?
-              </div>
+          <div class="chat-sim-messages" id="chatMessages">
+            <div class="chat-msg chat-msg--rey">
+              <div class="chat-avatar">RF</div>
+              <div class="chat-bubble">Hola. Soy el Rey Filósofo. ¿Qué concepto o texto de la Academia te gustaría examinar hoy?</div>
             </div>
 
-            <div class="message-bubble message-user">
-              <div class="message-content">
-                Quiero entender cómo la Inteligencia Artificial puede ayudarme a evaluar la coherencia de mis argumentos.
-              </div>
+            <div class="chat-msg chat-msg--user">
+              <div class="chat-avatar">TÚ</div>
+              <div class="chat-bubble">Quiero entender cómo la Inteligencia Artificial puede ayudarme a evaluar la coherencia de mis argumentos.</div>
             </div>
 
-            <div class="message-bubble message-rey">
-              <div class="message-content">
-                Descomponemos tu razonamiento: identificamos las premisas, evidenciamos supuestos implícitos y verificamos si la conclusión se sostiene sin falacias.
-              </div>
+            <div class="chat-msg chat-msg--rey">
+              <div class="chat-avatar">RF</div>
+              <div class="chat-bubble">Descomponemos tu razonamiento: identificamos las premisas, evidenciamos supuestos implícitos y verificamos si la conclusión se sostiene sin falacias.</div>
             </div>
 
-            <div class="chat-typing-indicator" id="chatTyping" style="display: none;">
+            <div class="chat-typing" id="chatTyping">
               <span>Rey Filósofo analizando</span>
-              <div class="typing-dot"></div>
-              <div class="typing-dot"></div>
-              <div class="typing-dot"></div>
+              <div class="chat-typing-dot"></div>
+              <div class="chat-typing-dot"></div>
+              <div class="chat-typing-dot"></div>
             </div>
           </div>
 
-          <div class="chat-popup-input-area">
-            <input type="text" id="chatInput" placeholder="Escribe tu consulta epistémica..." autocomplete="off">
-            <button type="button" id="chatSendBtn" class="send-btn">
-              <span>Enviar</span>
-            </button>
+          <div class="chat-popup-input-area" style="display:flex; padding: 1rem; border-top: 1px solid var(--c-border); background: rgba(255,255,255,0.02);">
+            <input type="text" id="chatInput" placeholder="Escribe tu consulta epistémica..." autocomplete="off" style="flex:1; background:transparent; border:none; color:white; font-family:var(--f-sans); outline:none;">
+            <button type="button" id="chatSendBtn" class="send-btn" style="background-color: #000000; color: #ffffff; border: 1px solid var(--c-border); padding: 0.5rem 1rem; border-radius: 2px; cursor: pointer; font-family: var(--f-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; transition: opacity 200ms;">Enviar</button>
           </div>
         </div>
-
+        
       </div>
     </div>
   </section>
@@ -2320,11 +2234,7 @@ body {
           <div class="tl-content tl-content--right">
             <span class="tl-step">01 · Pensar</span>
             <h4 class="tl-title">Instrumentos cognitivos</h4>
-            <p class="tl-desc">
-              El ciudadano utiliza Sophia, Logos, Rey Filósofo, Aletheia
-              y los demás módulos para analizar información, comprender
-              argumentos, detectar problemas y desarrollar sus propias ideas.
-            </p>
+            <p class="tl-desc">El ciudadano utiliza Sophia, Logos, Rey Filósofo, Aletheia y los demás módulos para analizar información, comprender argumentos, detectar problemas y desarrollar sus propias ideas.</p>
           </div>
         </div>
 
@@ -2335,11 +2245,7 @@ body {
           <div class="tl-content tl-content--left">
             <span class="tl-step">02 · Generar</span>
             <h4 class="tl-title">Resultados que pueden compartirse</h4>
-            <p class="tl-desc">
-              Los análisis, comparaciones, evaluaciones y otros resultados
-              producidos por los instrumentos pueden convertirse en contenido
-              público que el ciudadano decide compartir con la comunidad.
-            </p>
+            <p class="tl-desc">Los análisis, comparaciones, evaluaciones y otros resultados producidos por los instrumentos pueden convertirse en contenido público que el ciudadano decide compartir con la comunidad.</p>
           </div>
         </div>
 
@@ -2350,11 +2256,7 @@ body {
           <div class="tl-content tl-content--right">
             <span class="tl-step">03 · Identidad</span>
             <h4 class="tl-title">Cada ciudadano tiene un espacio propio</h4>
-            <p class="tl-desc">
-              Cada persona cuenta con una identidad dentro de la plataforma:
-              perfil, historial de aprendizaje, actividad y los resultados
-              que decide compartir.
-            </p>
+            <p class="tl-desc">Cada persona cuenta con una identidad dentro de la plataforma: perfil, historial de aprendizaje, actividad y los resultados que decide compartir.</p>
           </div>
         </div>
 
@@ -2365,12 +2267,7 @@ body {
           <div class="tl-content tl-content--left">
             <span class="tl-step">04 · Compartir</span>
             <h4 class="tl-title">Un muro construido por la comunidad</h4>
-            <p class="tl-desc">
-              El muro público reúne resultados de Sophia, Logos y los demás
-              instrumentos, junto con ideas y documentos compartidos por
-              los propios ciudadanos. La conversación ocurre sobre contenido
-              que puede ser examinado, no solamente sobre opiniones aisladas.
-            </p>
+            <p class="tl-desc">El muro público reúne resultados de Sophia, Logos y los demás instrumentos, junto con ideas y documentos compartidos por los propios ciudadanos. La conversación ocurre sobre contenido que puede ser examinado, no solamente sobre opiniones aisladas.</p>
           </div>
         </div>
 
@@ -2381,11 +2278,7 @@ body {
           <div class="tl-content tl-content--right">
             <span class="tl-step">05 · Deliberar</span>
             <h4 class="tl-title">Comentarios y discusión pública</h4>
-            <p class="tl-desc">
-              Los ciudadanos pueden comentar y discutir los contenidos
-              compartidos, confrontando ideas y construyendo conversaciones
-              públicas alrededor de los resultados de los instrumentos.
-            </p>
+            <p class="tl-desc">Los ciudadanos pueden comentar y discutir los contenidos compartidos, confrontando ideas y construyendo conversaciones públicas alrededor de los resultados de los instrumentos.</p>
           </div>
         </div>
 
@@ -2396,12 +2289,7 @@ body {
           <div class="tl-content tl-content--left">
             <span class="tl-step">06 · Priorizar</span>
             <h4 class="tl-title">La comunidad decide qué merece atención</h4>
-            <p class="tl-desc">
-              La votación cuadrática permite expresar no solamente qué
-              contenidos gustan, sino cuánto valor les atribuye la comunidad,
-              evitando que la plataforma tenga que decidir por sí sola
-              qué debe ver cada ciudadano.
-            </p>
+            <p class="tl-desc">La votación cuadrática permite expresar no solamente qué contenidos gustan, sino cuánto valor les atribuye la comunidad, evitando que la plataforma tenga que decidir por sí sola qué debe ver cada ciudadano.</p>
           </div>
         </div>
 
@@ -2411,12 +2299,7 @@ body {
           <div class="tl-content tl-content--right">
             <span class="tl-step">07 · Aprender</span>
             <h4 class="tl-title">Una red social que aprende</h4>
-            <p class="tl-desc">
-              Los contenidos, deliberaciones, evaluaciones y aprendizajes
-              acumulados forman una memoria colectiva. La plataforma no
-              solamente conecta personas: construye progresivamente el
-              contexto necesario para que una comunidad pueda pensar mejor.
-            </p>
+            <p class="tl-desc">Los contenidos, deliberaciones, evaluaciones y aprendizajes acumulados forman una memoria colectiva. La plataforma no solamente conecta personas: construye progresivamente el contexto necesario para que una comunidad pueda pensar mejor.</p>
           </div>
         </div>
 
@@ -2432,50 +2315,14 @@ body {
        S6 — LABORATORIO CÍVICO
   ══════════════════════════════════════════════════════════ -->
   <section class="section laboratorio" id="laboratorio">
-
     <div class="container">
-
       <div class="laboratorio-layout">
-
         <div class="laboratorio-content">
-
-          <span
-            class="section-label"
-            style="--label-color:var(--c-lab)"
-          >
-            Investigación
-          </span>
-
-          <h2 class="section-title">
-            Laboratorio Cívico<br />
-            de Pensamiento Colectivo
-          </h2>
-
-          <p>
-            Cada microtest respondido, cada documento auditado por Sophia,
-            cada deliberación mediada por Logos y cada sesión de tutoría
-            con el Rey Filósofo deja un rastro. Ese rastro,
-            <strong>despojado de nombre y de identidad</strong>, es la
-            materia prima de este laboratorio.
-          </p>
-
-          <p>
-            El objetivo no es vigilar al ciudadano: es entender, agregada
-            y anónimamente, cómo aprende una ciudadanía asistida por
-            inteligencia artificial. Qué estilos de aprendizaje predominan,
-            dónde se atascan los conceptos difíciles y qué formas de
-            andamiaje realmente elevan la calidad deliberativa.
-          </p>
-
-          <p>
-            Esa comprensión colectiva permite que Sophia, Logos, Aletheia
-            y el Rey Filósofo mejoren con el tiempo: un
-            <strong>open source cognitivo</strong> que se perfecciona con
-            el uso mismo de la plataforma. Es, en ese sentido, tan
-            fundamental para la Democracia Aumentada como el voto o la
-            deliberación misma.
-          </p>
-
+          <span class="section-label" style="--label-color:var(--c-lab)">Investigación</span>
+          <h2 class="section-title">Laboratorio Cívico<br />de Pensamiento Colectivo</h2>
+          <p>Cada microtest respondido, cada documento auditado por Sophia, cada deliberación mediada por Logos y cada sesión de tutoría con el Rey Filósofo deja un rastro. Ese rastro, <strong>despojado de nombre y de identidad</strong>, es la materia prima de este laboratorio.</p>
+          <p>El objetivo no es vigilar al ciudadano: es entender, agregada y anónimamente, cómo aprende una ciudadanía asistida por inteligencia artificial. Qué estilos de aprendizaje predominan, dónde se atascan los conceptos difíciles y qué formas de andamiaje realmente elevan la calidad deliberativa.</p>
+          <p>Esa comprensión colectiva permite que Sophia, Logos, Aletheia y el Rey Filósofo mejoren con el tiempo: un <strong>open source cognitivo</strong> que se perfecciona con el uso mismo de la plataforma. Es, en ese sentido, tan fundamental para la Democracia Aumentada como el voto o la deliberación misma.</p>
           <ul class="laboratorio-features">
             <li>Curvas y estilos de aprendizaje, agregados y anónimos</li>
             <li>Puntos de fricción por tipo de contenido</li>
@@ -2483,7 +2330,6 @@ body {
             <li>Mejora continua de Sophia, Logos, Aletheia y Rey Filósofo</li>
             <li>Insumo para investigación pública sobre IA y democracia</li>
           </ul>
-
           <span class="lab-anon-badge">
             <span class="dot"></span>
             Sin nombre, sin identidad, solo patrones
@@ -2499,51 +2345,16 @@ body {
           </div>
 
           <div class="panel-body">
-            <div class="panel-line panel-line--comment">
-              # Evento anonimizado recibido
-            </div>
-
-            <div class="panel-line">
-              <span class="p-slate">→</span>
-              módulo:
-              <span class="p-green">rey_filosofo</span>
-            </div>
-
-            <div class="panel-line">
-              <span class="p-slate">→</span>
-              tipo:
-              <span class="p-cyan">microtest_completado</span>
-            </div>
-
-            <div class="panel-line">
-              <span class="p-slate">→</span>
-              usuario:
-              <span class="p-amber">a91f3e...(hash)</span>
-            </div>
-
-            <div class="panel-line panel-line--gap">
-              <span class="p-slate">✓</span>
-              sin nombre almacenado
-            </div>
-
-            <div class="panel-line">
-              <span class="p-slate">✓</span>
-              sin email almacenado
-            </div>
-
-            <div class="panel-line">
-              <span class="p-slate">✓</span>
-              agregado a estudio longitudinal
-            </div>
-
-            <div class="panel-line panel-line--comment">
-              # Pregunta de investigación activa
-            </div>
-
+            <div class="panel-line panel-line--comment"># Evento anonimizado recibido</div>
+            <div class="panel-line"><span class="p-slate">→</span> módulo: <span class="p-green">rey_filosofo</span></div>
+            <div class="panel-line"><span class="p-slate">→</span> tipo: <span class="p-cyan">microtest_completado</span></div>
+            <div class="panel-line"><span class="p-slate">→</span> usuario: <span class="p-amber">a91f3e...(hash)</span></div>
+            <div class="panel-line panel-line--gap"><span class="p-slate">✓</span> sin nombre almacenado</div>
+            <div class="panel-line"><span class="p-slate">✓</span> sin email almacenado</div>
+            <div class="panel-line"><span class="p-slate">✓</span> agregado a estudio longitudinal</div>
+            <div class="panel-line panel-line--comment"># Pregunta de investigación activa</div>
             <div class="panel-line panel-line--cursor">
-              <span class="p-violet">
-                ¿Cómo aprende una ciudadanía asistida por IA?
-              </span>
+              <span class="p-violet">¿Cómo aprende una ciudadanía asistida por IA?</span>
             </div>
           </div>
         </div>
@@ -2560,37 +2371,13 @@ body {
   ══════════════════════════════════════════════════════════ -->
   <section class="section cuadratica" id="cuadratica">
     <div class="container">
-
       <div class="cuadratica-layout">
-
         <div class="cuadratica-content">
           <span class="section-label">Mecanismo</span>
-
-          <h2 class="section-title">
-            Votación Cuadrática
-          </h2>
-
-          <p>
-            La votación cuadrática permite expresar la
-            <em>intensidad</em> de las preferencias, no solo su dirección.
-            Cuantos más votos concentras en un tema, mayor es el costo
-            exponencial.
-          </p>
-
-          <p>
-            En LogoDemocracy, este mecanismo puede utilizarse para que
-            la comunidad determine qué contenidos, ideas y deliberaciones
-            merecen mayor atención colectiva, en lugar de dejar esa
-            decisión exclusivamente en manos de un algoritmo diseñado
-            para maximizar la permanencia del usuario.
-          </p>
-
-          <p>
-            La plataforma no busca mostrarte únicamente lo que ya te gusta.
-            Busca construir un espacio donde la comunidad pueda expresar
-            qué considera valioso para todos.
-          </p>
-
+          <h2 class="section-title">Votación Cuadrática</h2>
+          <p>La votación cuadrática permite expresar la <em>intensidad</em> de las preferencias, no solo su dirección. Cuantos más votos concentras en un tema, mayor es el costo exponencial.</p>
+          <p>En LogoDemocracy, este mecanismo puede utilizarse para que la comunidad determine qué contenidos, ideas y deliberaciones merecen mayor atención colectiva, en lugar de dejar esa decisión exclusivamente en manos de un algoritmo diseñado para maximizar la permanencia del usuario.</p>
+          <p>La plataforma no busca mostrarte únicamente lo que ya te gusta. Busca construir un espacio donde la comunidad pueda expresar qué considera valioso para todos.</p>
           <ul class="cuadratica-props">
             <li>Priorización colectiva</li>
             <li>Expresión de intensidad</li>
@@ -2600,49 +2387,25 @@ body {
         </div>
 
         <div class="cuadratica-chart">
-          <div class="chart-title">
-            Costo de votos cuadráticos
-          </div>
-
+          <div class="chart-title">Costo de votos cuadráticos</div>
           <div class="chart-rows">
-
             <div class="chart-row">
               <span class="chart-label">1 voto</span>
-
               <div class="chart-bar-wrap">
-                <div
-                  class="chart-bar"
-                  style="width:12.5%">
-                </div>
+                <div class="chart-bar" style="width:12.5%"></div>
               </div>
-
-              <span class="chart-cost">
-                1 crédito
-              </span>
+              <span class="chart-cost">1 crédito</span>
             </div>
-
             <div class="chart-row">
               <span class="chart-label">4 votos</span>
-
               <div class="chart-bar-wrap">
-                <div
-                  class="chart-bar"
-                  style="width:100%">
-                </div>
+                <div class="chart-bar" style="width:100%"></div>
               </div>
-
-              <span class="chart-cost">
-                16 créditos
-              </span>
+              <span class="chart-cost">16 créditos</span>
             </div>
-
           </div>
-
-          <p class="chart-note">
-            Costo = n² votos. La intensidad tiene precio.
-          </p>
+          <p class="chart-note">Costo = n² votos. La intensidad tiene precio.</p>
         </div>
-
       </div>
     </div>
   </section>
@@ -2656,125 +2419,48 @@ body {
   ══════════════════════════════════════════════════════════ -->
   <section class="section modelo" id="modelo">
     <div class="container">
-
       <div class="section-header">
-
-        <span class="section-label">
-          Hipótesis institucional
-        </span>
-
-        <h2 class="section-title">
-          El Modelo LogoDemocracy
-        </h2>
-
-        <p class="section-sub">
-          Una propuesta para integrar representación tradicional,
-          conocimiento experto y participación ciudadana capacitada
-          en una sola función de decisión.
-        </p>
-
+        <span class="section-label">Hipótesis institucional</span>
+        <h2 class="section-title">El Modelo LogoDemocracy</h2>
+        <p class="section-sub">Una propuesta para integrar representación tradicional, conocimiento experto y participación ciudadana capacitada en una sola función de decisión.</p>
       </div>
 
       <div class="formula-wrapper">
-
         <div class="formula-display">
-
-          <div class="formula-lhs">
-            R
-          </div>
-
-          <div class="formula-eq-sign">
-            =
-          </div>
-
+          <div class="formula-lhs">R</div>
+          <div class="formula-eq-sign">=</div>
           <div class="formula-rhs">
-
-            <div class="formula-numerator">
-              P · n<sub>P</sub> + E · n<sub>E</sub> + V · n<sub>V</sub>
-            </div>
-
+            <div class="formula-numerator">P · n<sub>P</sub> + E · n<sub>E</sub> + V · n<sub>V</sub></div>
             <div class="formula-bar"></div>
-
-            <div class="formula-denominator">
-              n<sub>P</sub> + n<sub>E</sub> + n<sub>V</sub>
-            </div>
-
+            <div class="formula-denominator">n<sub>P</sub> + n<sub>E</sub> + n<sub>V</sub></div>
           </div>
-
         </div>
       </div>
 
       <div class="modelo-variables">
-
         <div class="var-block" data-var="P">
-
-          <div class="var-letter">
-            P
-          </div>
-
+          <div class="var-letter">P</div>
           <div class="var-info">
-
-            <h4 class="var-name">
-              Congreso Tradicional
-            </h4>
-
-            <p class="var-desc">
-              Representantes electos. Legitimidad democrática directa.
-              Ponderación nP definida institucionalmente.
-            </p>
-
+            <h4 class="var-name">Congreso Tradicional</h4>
+            <p class="var-desc">Representantes electos. Legitimidad democrática directa. Ponderación nP definida institucionalmente.</p>
           </div>
         </div>
-
         <div class="var-block" data-var="E">
-
-          <div class="var-letter">
-            E
-          </div>
-
+          <div class="var-letter">E</div>
           <div class="var-info">
-
-            <h4 class="var-name">
-              Panel de Expertos
-            </h4>
-
-            <p class="var-desc">
-              Conocimiento técnico y científico independiente.
-              Ponderación nE proporcional a la complejidad del tema.
-            </p>
-
+            <h4 class="var-name">Panel de Expertos</h4>
+            <p class="var-desc">Conocimiento técnico y científico independiente. Ponderación nE proporcional a la complejidad del tema.</p>
           </div>
         </div>
-
         <div class="var-block" data-var="V">
-
-          <div class="var-letter">
-            V
-          </div>
-
+          <div class="var-letter">V</div>
           <div class="var-info">
-
-            <h4 class="var-name">
-              Congreso Virtual
-            </h4>
-
-            <p class="var-desc">
-              Ciudadanos formados en la Academia.
-              Participación capacitada y deliberativa.
-              Ponderación nV creciente.
-            </p>
-
+            <h4 class="var-name">Congreso Virtual</h4>
+            <p class="var-desc">Ciudadanos formados en la Academia. Participación capacitada y deliberativa. Ponderación nV creciente.</p>
           </div>
         </div>
-
       </div>
-
-      <p class="modelo-nota">
-        Esta es una hipótesis institucional, no una propuesta cerrada.
-        El modelo invita a la experimentación, la crítica y la mejora
-        colectiva.
-      </p>
-
+      <p class="modelo-nota">Esta es una hipótesis institucional, no una propuesta cerrada. El modelo invita a la experimentación, la crítica y la mejora colectiva.</p>
     </div>
   </section>
 
@@ -2787,19 +2473,10 @@ body {
   ══════════════════════════════════════════════════════════ -->
   <section class="section cierre" id="cierre">
     <div class="container">
-
       <blockquote class="cierre-quote js-reveal-node">
-
-        <p class="cierre-line cierre-line--light">
-          La democracia no necesita ciudadanos perfectos.
-        </p>
-
-        <p class="cierre-line cierre-line--accent">
-          Necesita ciudadanos que nunca dejen de aprender.
-        </p>
-
+        <p class="cierre-line cierre-line--light">La democracia no necesita ciudadanos perfectos.</p>
+        <p class="cierre-line cierre-line--accent">Necesita ciudadanos que nunca dejen de aprender.</p>
       </blockquote>
-
     </div>
   </section>
 
@@ -2807,95 +2484,41 @@ body {
      FOOTER
 ══════════════════════════════════════════════════════════ -->
 <footer class="footer">
-
   <div class="container footer-inner">
-
     <div class="footer-brand">
       <span class="footer-logo">LOGODEMOCRACY</span>
-
-      <p class="footer-tagline">
-        Democracia Aumentada · Pensamiento colectivo asistido
-      </p>
+      <p class="footer-tagline">Democracia Aumentada · Pensamiento colectivo asistido</p>
     </div>
-
     <nav class="footer-nav" aria-label="Navegación del ecosistema">
-
       <div class="footer-nav-group">
         <span class="footer-nav-title">Ecosistema</span>
-
-        <a href="/pages/archive-template.html">
-          Academia
-        </a>
-
-        <a href="/pages/logos.html">
-          Logos
-        </a>
-
-        <a href="/pages/sophia.html">
-          Sophia
-        </a>
-
-        <a href="/pages/archive-template.html">
-          Rey Filósofo
-        </a>
+        <a href="/pages/archive-template.html">Academia</a>
+        <a href="/pages/logos.html">Logos</a>
+        <a href="/pages/sophia.html">Sophia</a>
+        <a href="/pages/archive-template.html">Rey Filósofo</a>
       </div>
-
       <div class="footer-nav-group">
         <span class="footer-nav-title">En desarrollo</span>
-
-        <span class="footer-link-disabled">
-          Aletheia
-        </span>
-
-        <span class="footer-link-disabled">
-          Mythos
-        </span>
-
-        <span class="footer-link-disabled">
-          Agora
-        </span>
-
-        <a href="#laboratorio">
-          Laboratorio Cívico
-        </a>
+        <span class="footer-link-disabled">Aletheia</span>
+        <span class="footer-link-disabled">Mythos</span>
+        <span class="footer-link-disabled">Agora</span>
+        <a href="#laboratorio">Laboratorio Cívico</a>
       </div>
-
     </nav>
-
     <div class="footer-contact">
-
-      <span class="footer-nav-title">
-        Contacto
-      </span>
-
-      <a
-        href="mailto:contacto@logodemocracy.tech"
-        class="footer-email"
-      >
-        contacto@logodemocracy.tech
-      </a>
-
-      <p class="footer-contact-note">
-        Una plataforma en construcción abierta.
-      </p>
-
+      <span class="footer-nav-title">Contacto</span>
+      <a href="mailto:contacto@logodemocracy.tech" class="footer-email">contacto@logodemocracy.tech</a>
+      <p class="footer-contact-note">Una plataforma en construcción abierta.</p>
     </div>
-
   </div>
-
   <div class="container footer-bottom">
-
-    <span class="footer-copy">
-      © 2026 LogoDemocracy
-    </span>
-
-    <span class="footer-bottom-text">
-      Democracia Aumentada
-    </span>
-
+    <span class="footer-copy">© 2026 LogoDemocracy</span>
+    <span class="footer-bottom-text">Democracia Aumentada</span>
   </div>
-
 </footer>
+
+</body>
+</html>
 
 <script>
 (function () {
@@ -2916,8 +2539,9 @@ body {
     { text: '', pause: 200, cls: 'boot-spacer' },
     { text: '', pause: 200, cls: 'boot-spacer' },
     { text: 'Confieso que he vivido', pause: 100, cls: 'boot-signature' },
-    { text: '— Pablo Neruda', pause: 0, cls: 'boot-author' }
+    { text: '— Pablo Neruda', pause: 0, cls: 'boot-author' } 
   ];
+  /* ────────────────────────────────────────────────────── */
 
   let heroBgStarted = false;
 
@@ -2951,103 +2575,80 @@ body {
 
     function draw() {
       ctx.clearRect(0, 0, w, h);
-
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 130) {
-            ctx.strokeStyle = `rgba(${nodes[i].c},${0.14 - dist / 1100})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      nodes.forEach((n) => {
-        ctx.fillStyle = `rgba(${n.c},0.65)`;
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, 1.6, 0, Math.PI * 2);
-        ctx.fill();
-
+      nodes.forEach(n => {
         n.x += n.vx;
         n.y += n.vy;
         if (n.x < 0 || n.x > w) n.vx *= -1;
         if (n.y < 0 || n.y > h) n.vy *= -1;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${n.c}, 0.6)`;
+        ctx.fill();
       });
-
       requestAnimationFrame(draw);
     }
-
     draw();
-    requestAnimationFrame(() => heroCanvas.classList.add('is-active'));
   }
 
-  function closeBoot() {
-    if (!bootScreen || bootScreen.classList.contains('fade-out')) return;
+  // Lógica para saltar inmediatamente tocando cualquier punto de la pantalla
+  let bootSkipped = false;
+  function finishBoot() {
+    if (bootSkipped) return;
+    bootSkipped = true;
     bootScreen.classList.add('fade-out');
-    document.body.style.overflow = '';
-    window.scrollTo(0, 0);
-    startHeroBackground();
+    setTimeout(() => {
+      heroCanvas.classList.add('is-active');
+      startHeroBackground();
+    }, 900);
   }
 
-  function typeBoot() {
-    if (!bootText) { startHeroBackground(); return; }
-
-    let li = 0;
-
-    function typeLine() {
-      if (li >= bootLines.length) {
-        bootText.insertAdjacentHTML('beforeend', '<span class="boot-cursor"></span>');
-        setTimeout(closeBoot, 1600);
-        return;
-      }
-
-      const item = bootLines[li];
-      const p = document.createElement('p');
-      if (item.cls) p.className = item.cls;
-
-      if (item.text === '') {
-        bootText.appendChild(p);
-        li++;
-        setTimeout(typeLine, item.pause || 200);
-        return;
-      }
-
-      bootText.appendChild(p);
-      let ci = 0;
-
-      function typeChar() {
-        if (ci < item.text.length) {
-          p.textContent += item.text.charAt(ci);
-          ci++;
-          setTimeout(typeChar, 35);
-        } else {
-          li++;
-          setTimeout(typeLine, item.pause || 400);
-        }
-      }
-
-      typeChar();
-    }
-
-    typeLine();
-  }
-
-  if (bootSkip) {
-    bootSkip.addEventListener('click', closeBoot);
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    document.body.style.overflow = 'hidden';
-    typeBoot();
+  bootScreen.addEventListener('click', finishBoot);
+  bootSkip.addEventListener('click', (e) => {
+    e.stopPropagation();
+    finishBoot();
   });
+
+  // Animación tipo máquina de escribir
+  async function runBootSequence() {
+    bootText.innerHTML = '';
+    for (let i = 0; i < bootLines.length; i++) {
+      if (bootSkipped) return;
+      const lineData = bootLines[i];
+      const span = document.createElement('span');
+      if (lineData.cls) span.className = lineData.cls;
+      bootText.appendChild(span);
+
+      for (let j = 0; j < lineData.text.length; j++) {
+        if (bootSkipped) return;
+        span.textContent += lineData.text[j];
+        await new Promise(r => setTimeout(r, 35));
+      }
+      if (lineData.pause > 0) {
+        await new Promise(r => setTimeout(r, lineData.pause));
+      }
+      if (i < bootLines.length - 1 && !lineData.cls?.includes('spacer')) {
+         bootText.appendChild(document.createElement('br'));
+      }
+    }
+    if (!bootSkipped) {
+      bootSkip.style.opacity = '1';
+      bootSkip.style.pointerEvents = 'auto';
+    }
+  }
+  runBootSequence();
+
+  // Scroll reveals
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.js-reveal-node, .js-reveal, .reveal-line').forEach(el => {
+    observer.observe(el);
+  });
+
 })();
 </script>
-
-</body>
-</html>
