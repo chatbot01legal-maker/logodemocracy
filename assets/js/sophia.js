@@ -1639,202 +1639,149 @@ inicio: {
     }
   }
 },
-  formula: {
-    title: 'Fórmula de Cálculo',
-    render: () => {
-      try {
-        const todosAtomos = [];
-        PROTOCOL.fases.forEach(f => {
-          f.criterios.forEach(c => {
-            c.atomos.forEach(a => {
-              todosAtomos.push({
-                id: a.id,
-                definicion: a.definicion,
-                patrones: a.patrones,
-                polaridad: a.polaridad || 'riesgo',
-                criterio: `${c.id} - ${c.nombre}`,
-                fase: f.nombre
-              });
-            });
-          });
-        });
+formula: {
+  title: 'Fórmula de Cálculo',
+  render: () => {
+    try {
+      // Mapeo explícito de los 20 átomos formales (uno por criterio)
+      const atomosFormales = [
+        { criterioId: '1.1', atomoId: 'excluyentes' },
+        { criterioId: '1.2', atomoId: 'cambio_no_marcado' },
+        { criterioId: '1.3', atomoId: 'binaria' },
+        { criterioId: '1.4', atomoId: 'afirmacion_sin_respaldo' },
+        { criterioId: '2.1', atomoId: 'magnitud' },
+        { criterioId: '2.2', atomoId: 'causalidad' },
+        { criterioId: '2.3', atomoId: 'regla' },
+        { criterioId: '2.4', atomoId: 'circularidad' },
+        { criterioId: '3.1', atomoId: 'datos' },
+        { criterioId: '3.2', atomoId: 'certeza' },
+        { criterioId: '3.3', atomoId: 'juicio' },
+        { criterioId: '3.4', atomoId: 'variables' },
+        { criterioId: '4.1', atomoId: 'contrario' },
+        { criterioId: '4.2', atomoId: 'adjetivos' },
+        { criterioId: '4.3', atomoId: 'descalificacion' },
+        { criterioId: '4.4', atomoId: 'ambiguas' },
+        { criterioId: '5.1', atomoId: 'tangente' },
+        { criterioId: '5.2', atomoId: 'critica' },
+        { criterioId: '5.3', atomoId: 'estandar' },
+        { criterioId: '5.4', atomoId: 'blindaje' }
+      ];
 
-        return `
-          <div class="view">
-            <div class="view-eyebrow">Mecánica de Detección</div>
-            <h1 class="view-title">¿Cómo llega SOPHIA a un punto de atención?</h1>
-            <div class="view-body">
-              <p>SOPHIA no le pone una nota al texto. Internamente calcula una severidad por cada señal detectada — es la forma de decidir qué tan prioritario es cada punto de atención y de mantener la trazabilidad — pero lo que se te muestra es <strong>VPA (Vale la Pena Prestar Atención)</strong>: cuántos puntos de atención reales quedaron en pie después de aplicar mitigadores, no un porcentaje de calidad.</p>
-              <p>Cada <strong>dimensión</strong> (fase) contiene 4 <strong>criterios</strong>. Cada criterio se evalúa a través de <strong>átomos cognitivos</strong> (unidades semánticas), y cada átomo tiene una <strong>polaridad</strong>: riesgo (puede generar un punto de atención), mitigador (lo reduce o anula) o neutral (se registra, nunca penaliza).</p>
+      const todosAtomos = atomosFormales.map(({ criterioId, atomoId }) => {
+        let faseNombre = '';
+        let criterioNombre = '';
+        let definicion = 'Definición no encontrada';
+        let polaridad = 'riesgo';
+
+        for (const fase of PROTOCOL.fases) {
+          const criterio = fase.criterios.find(c => c.id === criterioId);
+          if (criterio) {
+            faseNombre = fase.nombre;
+            criterioNombre = `${criterio.id} - ${criterio.nombre}`;
+            const atomo = criterio.atomos.find(a => a.id === atomoId);
+            if (atomo) {
+              definicion = atomo.definicion;
+              polaridad = atomo.polaridad || 'riesgo';
+            }
+            break;
+          }
+        }
+        return {
+          id: atomoId,
+          definicion: definicion,
+          polaridad: polaridad,
+          criterio: criterioNombre,
+          fase: faseNombre
+        };
+      });
+
+      return `
+        <div class="view">
+          <div class="view-eyebrow">Mecánica de Detección</div>
+          <h1 class="view-title">¿Cómo llega SOPHIA a un punto de atención?</h1>
+          <div class="view-body">
+            <p>SOPHIA no le pone una nota al texto. Internamente calcula una severidad por cada señal detectada — es la forma de decidir qué tan prioritario es cada punto de atención y de mantener la trazabilidad — pero lo que se te muestra es <strong>VPA (Vale la Pena Prestar Atención)</strong>: cuántos puntos de atención reales quedaron en pie después de aplicar mitigadores, no un porcentaje de calidad.</p>
+            <p>Cada <strong>dimensión</strong> (fase) contiene 4 <strong>criterios</strong>. Cada criterio se evalúa a través de <strong>átomos cognitivos</strong> (unidades semánticas), y cada átomo tiene una <strong>polaridad</strong>: riesgo (puede generar un punto de atención), mitigador (lo reduce o anula) o neutral (se registra, nunca penaliza).</p>
+          </div>
+
+          <div class="view-section">
+            <div class="view-section-title">Estructura de evaluación</div>
+            <div class="flow-steps">
+              <div class="flow-step"><div class="flow-dot">1</div><div class="flow-body"><div class="flow-title">Dimensión</div><div class="flow-desc">Ej: Fase II — Inferencia</div></div></div>
+              <div class="flow-step"><div class="flow-dot">2</div><div class="flow-body"><div class="flow-title">Criterio</div><div class="flow-desc">Ej: 2.1 Suficiencia Inferencial</div></div></div>
+              <div class="flow-step"><div class="flow-dot">3</div><div class="flow-body"><div class="flow-title">Constructo</div><div class="flow-desc">Ej: Escalamiento Inferencial (entidad teórica)</div></div></div>
+              <div class="flow-step"><div class="flow-dot">4</div><div class="flow-body"><div class="flow-title">Átomos Cognitivos</div><div class="flow-desc">Ej: Premisa, Conclusión, Magnitud, Universalización, Extrapolación</div></div></div>
+              <div class="flow-step"><div class="flow-dot">5</div><div class="flow-body"><div class="flow-title">Definición operacional</div><div class="flow-desc">Cada átomo tiene una definición concreta, patrones lingüísticos y una polaridad (riesgo / mitigador / neutral).</div></div></div>
+              <div class="flow-step"><div class="flow-dot">6</div><div class="flow-body"><div class="flow-title">Condiciones y mitigación</div><div class="flow-desc">Un átomo de riesgo puede quedar reducido o anulado si un átomo mitigador aparece en la misma oración o en el texto, según el criterio.</div></div></div>
+              <div class="flow-step"><div class="flow-dot">7</div><div class="flow-body"><div class="flow-title">Implementación LLM</div><div class="flow-desc">Patrones de búsqueda (ej: "todos", "siempre").</div></div></div>
+              <div class="flow-step"><div class="flow-dot">8</div><div class="flow-body"><div class="flow-title">Salida obligatoria</div><div class="flow-desc">Mapa de razonamiento con los puntos de atención (VPA), qué átomo los originó, su severidad, si fueron mitigados, y la evidencia textual.</div></div></div>
             </div>
+          </div>
 
-            <div class="view-section">
-              <div class="view-section-title">Estructura de evaluación</div>
-              <div class="flow-steps">
-                <div class="flow-step"><div class="flow-dot">1</div><div class="flow-body"><div class="flow-title">Dimensión</div><div class="flow-desc">Ej: Fase II — Inferencia</div></div></div>
-                <div class="flow-step"><div class="flow-dot">2</div><div class="flow-body"><div class="flow-title">Criterio</div><div class="flow-desc">Ej: 2.1 Suficiencia Inferencial</div></div></div>
-                <div class="flow-step"><div class="flow-dot">3</div><div class="flow-body"><div class="flow-title">Constructo</div><div class="flow-desc">Ej: Escalamiento Inferencial (entidad teórica)</div></div></div>
-                <div class="flow-step"><div class="flow-dot">4</div><div class="flow-body"><div class="flow-title">Átomos Cognitivos</div><div class="flow-desc">Ej: Premisa, Conclusión, Magnitud, Universalización, Extrapolación</div></div></div>
-                <div class="flow-step"><div class="flow-dot">5</div><div class="flow-body"><div class="flow-title">Definición operacional</div><div class="flow-desc">Cada átomo tiene una definición concreta, patrones lingüísticos y una polaridad (riesgo / mitigador / neutral).</div></div></div>
-                <div class="flow-step"><div class="flow-dot">6</div><div class="flow-body"><div class="flow-title">Condiciones y mitigación</div><div class="flow-desc">Un átomo de riesgo puede quedar reducido o anulado si un átomo mitigador aparece en la misma oración o en el texto, según el criterio.</div></div></div>
-                <div class="flow-step"><div class="flow-dot">7</div><div class="flow-body"><div class="flow-title">Implementación LLM</div><div class="flow-desc">Patrones de búsqueda (ej: "todos", "siempre").</div></div></div>
-                <div class="flow-step"><div class="flow-dot">8</div><div class="flow-body"><div class="flow-title">Salida obligatoria</div><div class="flow-desc">Mapa de razonamiento con los puntos de atención (VPA), qué átomo los originó, su severidad, si fueron mitigados, y la evidencia textual.</div></div></div>
+          <div class="view-section">
+            <div class="view-section-title">Trazabilidad de un punto de atención</div>
+            <div style="background:var(--s-panel); padding:16px; border:1px solid var(--s-border); font-family:monospace; font-size:.85rem; color:#e5e7eb; margin-bottom:16px;">
+              <div>Severidad<sub>criterio</sub> = min( ∑( Severidad<sub>átomo de riesgo</sub> × Frecuencia<sub>átomo</sub> ), 25 )</div>
+              <div style="margin-top:8px; color:rgba(229,231,235,.5); font-size:.7rem;">
+                • Severidad base por átomo: 12.5 o 25 pts, según el criterio<br>
+                • Frecuencia: número de oraciones donde el átomo de riesgo se activa (tope: 3, para que la repetición no infle el resultado)<br>
+                • Mitigación: si un átomo mitigador aparece (misma oración o en el texto, según el criterio), la severidad se reduce o se anula por completo<br>
+                • La severidad decide la prioridad del punto de atención — no se le muestra al usuario como nota
               </div>
             </div>
-
-            <div class="view-section">
-              <div class="view-section-title">Trazabilidad de un punto de atención</div>
-              <div style="background:var(--s-panel); padding:16px; border:1px solid var(--s-border); font-family:monospace; font-size:.85rem; color:#e5e7eb; margin-bottom:16px;">
-                <div>Severidad<sub>criterio</sub> = min( ∑( Severidad<sub>átomo de riesgo</sub> × Frecuencia<sub>átomo</sub> ), 25 )</div>
-                <div style="margin-top:8px; color:rgba(229,231,235,.5); font-size:.7rem;">
-                  • Severidad base por átomo: 12.5 o 25 pts, según el criterio<br>
-                  • Frecuencia: número de oraciones donde el átomo de riesgo se activa (tope: 3, para que la repetición no infle el resultado)<br>
-                  • Mitigación: si un átomo mitigador aparece (misma oración o en el texto, según el criterio), la severidad se reduce o se anula por completo<br>
-                  • La severidad decide la prioridad del punto de atención — no se le muestra al usuario como nota
-                </div>
-              </div>
-              <div style="background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
-                <div style="font-weight:500; color:var(--accent);">Meta‑reglas (contexto)</div>
-                <div style="font-size:.8rem; color:rgba(229,231,235,.6); margin-top:8px;">
-                  <strong>MR-001 (Mitigación):</strong> Si Criterio 3.2 (Incertidumbre) > 80, la severidad por Criterio 4.2 (Emoción) se reduce al 50%.<br>
-                  <strong>MR-002 (Agravamiento):</strong> Si falla 3.1 (Trazabilidad) y 4.1 (Steelman), severidad duplicada (en desarrollo).<br>
-                  <strong>MR-003 (Neutralización):</strong> Si el texto es poético/artístico, se anulan criterios retóricos (en desarrollo).
-                </div>
-              </div>
-            </div>
-
-            <div class="view-section">
-              <div class="view-section-title">Ejemplo completo: Suficiencia Inferencial (2.1)</div>
-              <div style="background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
-                <div style="font-size:.75rem; color:rgba(229,231,235,.7);">
-                  <strong>Constructo:</strong> Escalamiento Inferencial<br>
-                  <strong>Definición:</strong> Propiedad que describe el grado en que una conclusión amplía, mantiene o excede la información contenida en las premisas.<br>
-                  <strong>Átomos:</strong> Premisa, Conclusión, Magnitud, Universalización, Extrapolación<br>
-                  <strong>Regla:</strong> Si magnitud(conclusión) > magnitud(premisas) y evidencia adicional = ausente → punto de atención.<br>
-                  <strong>Implementación LLM:</strong> Buscar "todos", "siempre", "inevitablemente", etc. y comparar con evidencia.<br>
-                  <strong>Salida:</strong> { "criterio":"2.1", "constructo":"Escalamiento Inferencial", "atomo":"magnitud", "severidad":12.5, "mitigado":false, "explicacion":"...", "evidencias":["..."] }
-                </div>
-              </div>
-            </div>
-
-            <div class="view-section">
-              <div class="view-section-title">Glosario completo de Átomos</div>
-              <p style="font-size:.72rem; color:rgba(229,231,235,.45); margin-bottom:8px;">
-                El motor de producción (<code>SophiaEngineV4</code>) usa <strong>20 átomos</strong>, uno por criterio. El listado siguiente es el del motor de respaldo local (usado solo si el motor de producción no responde), con una granularidad distinta.
-              </p>
-              <div style="max-height:300px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
-                ${todosAtomos.map(a => {
-                  const polaridadColor = { riesgo: '#ef4444', mitigador: '#22c55e', neutral: 'rgba(229,231,235,.4)' }[a.polaridad || 'riesgo'];
-                  return `
-                  <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,.05); padding:4px 0; gap:6px;">
-                    <span style="color:var(--accent); font-weight:500;">${a.id}</span>
-                    <span style="font-size:.7rem; color:rgba(229,231,235,.5); flex:1; padding:0 8px;">${a.definicion}</span>
-                    <span style="font-size:.55rem; color:${polaridadColor}; border:1px solid ${polaridadColor}; border-radius:3px; padding:0 4px;">${a.polaridad || 'riesgo'}</span>
-                    <span style="font-size:.6rem; color:rgba(229,231,235,.3);">${a.criterio}</span>
-                  </div>
-                `;}).join('')}
-              </div>
-              <div style="margin-top:8px; font-size:.65rem; color:rgba(229,231,235,.3);">
-                Total (motor de respaldo): ${todosAtomos.length} · Total (SophiaEngineV4, producción): 20
+            <div style="background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
+              <div style="font-weight:500; color:var(--accent);">Meta‑reglas (contexto)</div>
+              <div style="font-size:.8rem; color:rgba(229,231,235,.6); margin-top:8px;">
+                <strong>MR-001 (Mitigación):</strong> Si Criterio 3.2 (Incertidumbre) > 80, la severidad por Criterio 4.2 (Emoción) se reduce al 50%.<br>
+                <strong>MR-002 (Agravamiento):</strong> Si falla 3.1 (Trazabilidad) y 4.1 (Steelman), severidad duplicada (en desarrollo).<br>
+                <strong>MR-003 (Neutralización):</strong> Si el texto es poético/artístico, se anulan criterios retóricos (en desarrollo).
               </div>
             </div>
           </div>
-        `;
-      } catch (e) {
-        showDebug(`❌ Error en vista formula: ${e.message}`, true);
-        return `<p>Error al renderizar: ${e.message}</p>`;
-      }
-    }
-  },
-  fase1: { title: 'Fase 1: Estructura Lógica', render: () => renderFase('fase1') },
-  fase2: { title: 'Fase 2: Inferencia', render: () => renderFase('fase2') },
-  fase3: { title: 'Fase 3: Calibración Epistémica', render: () => renderFase('fase3') },
-  fase4: { title: 'Fase 4: Transparencia Retórica', render: () => renderFase('fase4') },
-  fase5: { title: 'Fase 5: Pertinencia Deliberativa', render: () => renderFase('fase5') },
-  academia: {
-    title: 'Integración con Academia',
-    render: () => {
-      try {
-        return `
-          <div class="view">
-            <div class="view-eyebrow">Flujo Institucional</div>
-            <h1 class="view-title">Integración con Academia y Ágora</h1>
-            <div class="view-body">
-              <p>Antes de que un documento llegue a discutirse en el <strong>Ágora</strong>, SOPHIA lo examina como <strong>instrumento de pensamiento crítico</strong>: no decide si el argumento es correcto ni le pone una nota — identifica qué partes de su razonamiento vale la pena que la ciudadanía revise con más cuidado antes de deliberar sobre él.</p>
-              <p>Los documentos con pocos puntos de atención sin mitigar pueden ser sometidos a discusión en el <strong>Ágora</strong>, donde la ciudadanía delibera y vota su inclusión en el repositorio académico. Internamente, este umbral de admisibilidad se calcula sobre el mismo campo <code>IRD_global</code> que ya usaba el sistema — se conserva por compatibilidad con Ágora y con la telemetría existente, pero es un mecanismo de filtrado entre módulos, no la métrica que SOPHIA le muestra a la persona que escribió el texto.</p>
-            </div>
-            <div class="view-section">
-              <div class="view-section-title">Estándar Mínimo de Admisibilidad (uso interno)</div>
-              <div class="score-list">
-                <div class="score-row">
-                  <span class="score-label">Umbral interno (Ágora)</span>
-                  <div class="score-bar-wrap">
-                    <div class="score-bar score-bar--mid" style="width:0%" data-target="75%"></div>
-                  </div>
-                  <span class="score-value score-value--mid">75%</span>
-                </div>
+
+          <div class="view-section">
+            <div class="view-section-title">Ejemplo completo: Suficiencia Inferencial (2.1)</div>
+            <div style="background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
+              <div style="font-size:.75rem; color:rgba(229,231,235,.7);">
+                <strong>Constructo:</strong> Escalamiento Inferencial<br>
+                <strong>Definición:</strong> Propiedad que describe el grado en que una conclusión amplía, mantiene o excede la información contenida en las premisas.<br>
+                <strong>Átomos:</strong> Premisa, Conclusión, Magnitud, Universalización, Extrapolación<br>
+                <strong>Regla:</strong> Si magnitud(conclusión) > magnitud(premisas) y evidencia adicional = ausente → punto de atención.<br>
+                <strong>Implementación LLM:</strong> Buscar "todos", "siempre", "inevitablemente", etc. y comparar con evidencia.<br>
+                <strong>Salida:</strong> { "criterio":"2.1", "constructo":"Escalamiento Inferencial", "atomo":"magnitud", "severidad":12.5, "mitigado":false, "explicacion":"...", "evidencias":["..."] }
               </div>
             </div>
           </div>
-        `;
-      } catch (e) {
-        showDebug(`❌ Error en vista academia: ${e.message}`, true);
-        return `<p>Error al renderizar: ${e.message}</p>`;
-      }
-    }
-  },
-  relaciones: {
-    title: 'Ecosistema Deliberativo',
-    render: () => {
-      try {
-        return `
-          <div class="view">
-            <div class="view-eyebrow">Red de Inteligencia Colectiva</div>
-            <h1 class="view-title">Ecosistema Deliberativo</h1>
-            <div class="view-body">
-              <p>SOPHIA no busca producir consenso; busca mejorar las condiciones estructurales bajo las cuales el desacuerdo puede ser intelectualmente fértil.</p>
+
+          <div class="view-section">
+            <div class="view-section-title">Glosario completo de Átomos</div>
+            <p style="font-size:.72rem; color:rgba(229,231,235,.45); margin-bottom:8px;">
+              El motor de producción (<code>SophiaEngineV4</code>) usa <strong>20 átomos</strong>, uno por cada criterio. El listado siguiente refleja exactamente esa arquitectura.
+            </p>
+            <div style="max-height:300px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
+              ${todosAtomos.map(a => {
+                const polaridadColor = { riesgo: '#ef4444', mitigador: '#22c55e', neutral: 'rgba(229,231,235,.4)' }[a.polaridad || 'riesgo'];
+                return `
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,.05); padding:4px 0; gap:6px;">
+                  <span style="color:var(--accent); font-weight:500;">${a.id}</span>
+                  <span style="font-size:.7rem; color:rgba(229,231,235,.5); flex:1; padding:0 8px;">${a.definicion}</span>
+                  <span style="font-size:.55rem; color:${polaridadColor}; border:1px solid ${polaridadColor}; border-radius:3px; padding:0 4px;">${a.polaridad || 'riesgo'}</span>
+                  <span style="font-size:.6rem; color:rgba(229,231,235,.3);">${a.criterio}</span>
+                </div>
+              `;}).join('')}
             </div>
-            <div class="view-section">
-              <div class="view-section-title">Nodos de Interacción</div>
-              <div class="relation-grid">
-                <div class="relation-card relation-card--academia">
-                  <div class="relation-header">
-                    <div class="relation-dot"></div>
-                    <span class="relation-name">Academia & Ágora</span>
-                  </div>
-                  <div class="relation-desc">SOPHIA asegura que los documentos que ingresan a la Academia posean trazabilidad argumentativa mínima para ser debatidos responsablemente.</div>
-                </div>
-                <div class="relation-card relation-card--rey">
-                  <div class="relation-header">
-                    <div class="relation-dot"></div>
-                    <span class="relation-name">Rey Filósofo</span>
-                  </div>
-                  <div class="relation-desc">Cuando un texto presenta baja adherencia, Rey Filósofo actúa como tutor, orientando sobre cómo mejorar la comunicación.</div>
-                </div>
-                <div class="relation-card relation-card--logos">
-                  <div class="relation-header">
-                    <div class="relation-dot"></div>
-                    <span class="relation-name">Logos</span>
-                  </div>
-                  <div class="relation-desc">Logos audita la matriz estructural del código; SOPHIA audita la honestidad de la arquitectura retórica.</div>
-                </div>
-                <div class="relation-card relation-card--aletheia">
-                  <div class="relation-header">
-                    <div class="relation-dot"></div>
-                    <span class="relation-name">Aletheia</span>
-                  </div>
-                  <div class="relation-desc">SOPHIA fiscaliza el rigor formal; Aletheia mapea la veracidad empírica de las fuentes.</div>
-                </div>
-              </div>
+            <div style="margin-top:8px; font-size:.65rem; color:rgba(229,231,235,.3);">
+              Total de átomos (SophiaEngineV4, producción): ${todosAtomos.length} (coincide 1:1 con los 20 criterios).
             </div>
           </div>
-        `;
-      } catch (e) {
-        showDebug(`❌ Error en vista relaciones: ${e.message}`, true);
-        return `<p>Error al renderizar: ${e.message}</p>`;
-      }
+        </div>
+      `;
+    } catch (e) {
+      showDebug(`❌ Error en vista formula: ${e.message}`, true);
+      return `<p>Error al renderizar: ${e.message}</p>`;
     }
-  },
+  }
+},
   informe: {
     title: 'Auditoría de Adherencia',
     render: () => {
