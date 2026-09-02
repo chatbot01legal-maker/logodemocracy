@@ -1,84 +1,26 @@
 const { GoogleGenAI } = require("@google/genai");
 const db = require("./database");
+const {
+  canUseAI
+} = require("./aiUsageGuard");
 
 let vertex = null;
-
-/**
- * ============================================================
- * VERTEX CLIENT — LOGODEMOCRACY
- * ============================================================
- *
- * Contrato público preservado:
- *
- *   getVertex()
- *   askVertex(prompt, model, timeoutMs, generationConfig, stage)
- *   askVertexWithSearch(prompt, model, timeoutMs, stage)
- *
- * Funcionalidades preservadas:
- *
- *   - GoogleGenAI sobre Vertex AI
- *   - ADC
- *   - GOOGLE_APPLICATION_CREDENTIALS_JSON
- *   - GOOGLE_APPLICATION_CREDENTIALS
- *   - timeout
- *   - generationConfig
- *   - Google Search grounding
- *   - extracción de sources
- *   - response.text
- *   - telemetría por consola
- *
- * Nueva funcionalidad:
- *
- *   - registro de cada llamada REAL a Gemini en:
- *       MongoDB → ai_usage
- *
- *   - almacenamiento de:
- *       timestamp
- *       model
- *       stage
- *       inputTokens
- *       outputTokens
- *       thoughtsTokens
- *       totalTokens
- *       estimatedCostUsd
- *
- * IMPORTANTE:
- * Este archivo registra consumo.
- * El bloqueo por límite diario puede ser aplicado
- * posteriormente sobre esta misma infraestructura sin
- * modificar el contrato de las funciones públicas.
- * ============================================================
- */
 
 
 /* ============================================================
    CONFIGURACIÓN DE COSTOS
 ============================================================ */
 
-/**
- * Las tarifas NO se inventan dentro del código.
- *
- * Si están configuradas, se calcula:
- *
- *   estimatedCostUsd
- *
- * mediante:
- *
- *   input tokens  × INPUT_USD_PER_1M
- *   output tokens × OUTPUT_USD_PER_1M
- *
- * Si no están configuradas, el costo queda en 0.
- *
- * Esto permite implementar posteriormente el límite diario
- * sin introducir una tarifa incorrecta en producción.
- */
-
 function getCostRates() {
   const inputRate =
-    Number(process.env.GEMINI_INPUT_USD_PER_1M_TOKENS);
+    Number(
+      process.env.GEMINI_INPUT_USD_PER_1M_TOKENS || "0.30"
+    );
 
   const outputRate =
-    Number(process.env.GEMINI_OUTPUT_USD_PER_1M_TOKENS);
+    Number(
+      process.env.GEMINI_OUTPUT_USD_PER_1M_TOKENS || "2.50"
+    );
 
   return {
     inputRate:
@@ -94,14 +36,6 @@ function getCostRates() {
 }
 
 
-/**
- * Calcula el costo estimado de una llamada.
- *
- * Nunca lanza una excepción.
- *
- * Si no existen tarifas configuradas,
- * devuelve 0.
- */
 function calculateEstimatedCostUsd(
   inputTokens,
   outputTokens
@@ -125,20 +59,9 @@ function calculateEstimatedCostUsd(
 
 
 /* ============================================================
-   TELEMETRÍA DE USO
+   TELEMETRÍA
 ============================================================ */
 
-/**
- * Registra una llamada REAL a Gemini.
- *
- * IMPORTANTE:
- *
- * Esta función nunca debe romper una respuesta válida
- * de Gemini.
- *
- * Si MongoDB falla, solamente se registra el error en
- * consola y la respuesta continúa normalmente.
- */
 async function logAIUsage({
   stage,
   model,
@@ -170,9 +93,11 @@ async function logAIUsage({
       );
 
     const record = {
-      timestamp: new Date(),
+      timestamp:
+        new Date(),
 
-      module: "LogoDemocracy",
+      module:
+        "LogoDemocracy",
 
       stage:
         stage || "unknown",
@@ -204,8 +129,11 @@ async function logAIUsage({
         Boolean(searchEnabled),
 
       metadata: {
-        recordedAt: new Date(),
-        telemetryVersion: "1.0"
+        recordedAt:
+          new Date(),
+
+        telemetryVersion:
+          "1.0"
       }
     };
 
@@ -223,9 +151,6 @@ async function logAIUsage({
     );
 
   } catch (error) {
-    /**
-     * La telemetría nunca debe derribar el pipeline.
-     */
     console.error(
       `[AI-USAGE] ERROR guardando consumo:` +
       ` ${error.message}`
@@ -238,14 +163,9 @@ async function logAIUsage({
    CLIENTE VERTEX
 ============================================================ */
 
-/**
- * Inicializa el cliente Google GenAI sobre Vertex AI.
- *
- * Mantiene el nombre getVertex() para preservar
- * el contrato existente con el resto de LogoDemocracy.
- */
 function getVertex() {
-  if (vertex) return vertex;
+  if (vertex)
+    return vertex;
 
   const rawLocation =
     process.env.GOOGLE_CLOUD_LOCATION;
@@ -265,13 +185,6 @@ function getVertex() {
     location
   };
 
-  /*
-   * Conservamos la compatibilidad con las variables
-   * que ya utilizaba el cliente anterior.
-   *
-   * @google/genai utiliza ADC automáticamente si no
-   * se proporcionan credenciales explícitas.
-   */
   if (
     process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON
   ) {
@@ -359,26 +272,64 @@ function getVertex() {
 
 
 /* ============================================================
-   ASK VERTEX
+   CONTROL GLOBAL DE PRESUPUESTO
 ============================================================ */
 
 /**
- * Llama a Gemini vía Vertex AI.
+ * Verifica el límite ANTES de cualquier llamada a Gemini.
  *
- * CONTRATO PRESERVADO:
+ * Si el límite fue alcanzado:
  *
- * askVertex(
- *   prompt,
- *   model,
- *   timeoutMs,
- *   generationConfig,
- *   stage
- * )
- *
- * RETORNO PRESERVADO:
- *
- *   string
+ *   - NO se inicializa Vertex
+ *   - NO se ejecuta generateContent()
+ *   - NO se consume IA
  */
+async function enforceAILimit(stage) {
+  const status =
+    await canUseAI();
+
+  if (status.allowed)
+    return status;
+
+  const error =
+    new Error(
+      "AI_DAILY_LIMIT_REACHED"
+    );
+
+  error.code =
+    "AI_DAILY_LIMIT_REACHED";
+
+  error.stage =
+    stage;
+
+  error.limitUsd =
+    status.limitUsd;
+
+  error.usedUsd =
+    status.usedUsd;
+
+  error.remainingUsd =
+    status.remainingUsd;
+
+  error.date =
+    status.date;
+
+  console.warn(
+    `[AI-GUARD] BLOQUEADO` +
+    ` stage=${stage}` +
+    ` used_usd=${status.usedUsd}` +
+    ` limit_usd=${status.limitUsd}` +
+    ` date=${status.date}`
+  );
+
+  throw error;
+}
+
+
+/* ============================================================
+   ASK VERTEX
+============================================================ */
+
 async function askVertex(
   prompt,
   model = "gemini-2.5-flash",
@@ -386,6 +337,13 @@ async function askVertex(
   generationConfig = null,
   stage = "unknown"
 ) {
+
+  /*
+   * ==========================================================
+   * LÍMITE DIARIO — ANTES DE GEMINI
+   * ==========================================================
+   */
+  await enforceAILimit(stage);
 
   console.log(
     `[SOPHIA-GENAI] CALL stage=${stage} model=${model}`
@@ -430,14 +388,6 @@ async function askVertex(
         timeoutPromise
       ]);
 
-    /*
-     * @google/genai expone directamente:
-     *
-     * response.text
-     * response.candidates
-     * response.usageMetadata
-     * response.modelVersion
-     */
     const candidates =
       response?.candidates;
 
@@ -459,9 +409,6 @@ async function askVertex(
       );
     }
 
-    /*
-     * Telemetría.
-     */
     const usage =
       response?.usageMetadata || {};
 
@@ -500,13 +447,6 @@ async function askVertex(
       ` model=${responseModel}`
     );
 
-    /*
-     * Registrar consumo REAL.
-     *
-     * No usamos await de manera bloqueante para la respuesta.
-     *
-     * Si MongoDB falla, logAIUsage() absorbe el error.
-     */
     await logAIUsage({
       stage,
       model,
@@ -526,10 +466,6 @@ async function askVertex(
         false
     });
 
-    /*
-     * CONTRATO ORIGINAL:
-     * askVertex devuelve solamente el texto.
-     */
     return textResponse;
 
   } catch (err) {
@@ -552,31 +488,19 @@ async function askVertex(
    ASK VERTEX WITH GOOGLE SEARCH
 ============================================================ */
 
-/**
- * Llama a Gemini CON BÚSQUEDA REAL DE GOOGLE activada.
- *
- * CONTRATO PRESERVADO:
- *
- * askVertexWithSearch(
- *   prompt,
- *   model,
- *   timeoutMs,
- *   stage
- * )
- *
- * RETORNO PRESERVADO:
- *
- * {
- *   text,
- *   sources
- * }
- */
 async function askVertexWithSearch(
   prompt,
   model = "gemini-2.5-flash",
   timeoutMs = 50000,
   stage = "unknown"
 ) {
+
+  /*
+   * ==========================================================
+   * LÍMITE DIARIO — ANTES DE GEMINI
+   * ==========================================================
+   */
+  await enforceAILimit(stage);
 
   console.log(
     `[SOPHIA-GENAI] CALL stage=${stage} model=${model} search=true`
@@ -648,15 +572,6 @@ async function askVertexWithSearch(
       );
     }
 
-    /*
-     * Grounding metadata.
-     *
-     * Conservamos exactamente el objetivo
-     * del cliente anterior:
-     *
-     * extraer URLs y títulos encontrados
-     * por Google Search.
-     */
     const groundingMetadata =
       candidate?.groundingMetadata;
 
@@ -689,9 +604,6 @@ async function askVertexWithSearch(
         );
     }
 
-    /*
-     * Telemetría.
-     */
     const usage =
       response?.usageMetadata || {};
 
@@ -734,9 +646,6 @@ async function askVertexWithSearch(
       ` model=${responseModel}`
     );
 
-    /*
-     * Registrar consumo REAL.
-     */
     await logAIUsage({
       stage,
       model,
@@ -756,14 +665,6 @@ async function askVertexWithSearch(
         true
     });
 
-    /*
-     * CONTRATO ORIGINAL:
-     *
-     * {
-     *   text,
-     *   sources
-     * }
-     */
     return {
       text:
         textResponse,
