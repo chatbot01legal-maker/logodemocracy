@@ -2187,7 +2187,7 @@ body {
 
         </div>
 
-    <div class="chat-sim-container" id="academia-chat-widget">
+<div class="chat-sim-container" id="academia-chat-widget">
   <div class="chat-sim-header">
     <span class="status-indicator active" style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;margin-right:8px;"></span>
     Rey Filósofo — Tutor Cognitivo
@@ -2206,84 +2206,77 @@ body {
     const chatMessages = document.getElementById('chatMessages');
     if (!chatMessages) return;
 
-    // Función para agregar mensaje (sin avatar)
     function addMessage(type, text) {
       const msg = document.createElement('div');
       const isUser = (type === 'user');
       msg.className = `chat-msg ${isUser ? 'chat-msg--user' : 'chat-msg--rey'}`;
-      // No incluimos el avatar, solo la burbuja
       msg.innerHTML = `<div class="chat-bubble">${text}</div>`;
       chatMessages.appendChild(msg);
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // Mensaje inicial del Rey
-    addMessage('rey', '¿Qué te gustaría aprender hoy?');
+    function showTyping() {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'chat-typing';
+      typingDiv.id = 'chatTyping';
+      typingDiv.innerHTML = `
+        <span>Rey Filósofo analizando</span>
+        <div class="chat-typing-dot"></div>
+        <div class="chat-typing-dot"></div>
+        <div class="chat-typing-dot"></div>
+      `;
+      chatMessages.appendChild(typingDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return typingDiv;
+    }
 
-    // Secuencia de mensajes (preguntas y respuestas)
     const sequence = [
-      {
-        type: 'user',
-        text: '¿Qué significa la pauta que conecta?',
-        delay: 1500
-      },
-      {
-        type: 'rey',
-        text: 'Gregory Bateson, en "Espíritu y Naturaleza", llamó "pauta que conecta" al patrón que une todos los seres vivos y sus procesos. No es una idea abstracta, sino un principio que organiza la vida, el aprendizaje y la comunicación. La democracia, como sistema vivo, también tiene una pauta que conecta: las relaciones entre ciudadanos, instituciones y conocimiento. Entenderla nos permite diseñar mejores procesos deliberativos.',
-        delay: 3000
-      },
-      {
-        type: 'user',
-        text: '¿Cómo podemos aplicar esa pauta en la práctica democrática?',
-        delay: 2000
-      },
-      {
-        type: 'rey',
-        text: 'Aplicarla significa reconocer que cada decisión política afecta al todo. La pauta nos invita a diseñar mecanismos que hagan visibles las conexiones: por ejemplo, el Laboratorio Cívico de LogoDemocracy, que anonimiza patrones de aprendizaje para mejorar los agentes cognitivos. También la votación cuadrática, que permite expresar intensidad de preferencias. La tecnología debe ayudarnos a ver y tejer esas conexiones, no a fragmentarlas.',
-        delay: 4000
-      }
+      { type: 'rey', text: '¿Qué te gustaría aprender hoy?', delay: 800 },
+      { type: 'user', text: '¿Qué significa la pauta que conecta?', delay: 1500 },
+      { type: 'rey', text: 'Gregory Bateson, en "Espíritu y Naturaleza", llamó "pauta que conecta" al patrón que une todos los seres vivos y sus procesos. No es una idea abstracta, sino un principio que organiza la vida, el aprendizaje y la comunicación. La democracia, como sistema vivo, también tiene una pauta que conecta: las relaciones entre ciudadanos, instituciones y conocimiento. Entenderla nos permite diseñar mejores procesos deliberativos.', delay: 3000, typing: true },
+      { type: 'user', text: '¿Cómo podemos aplicar esa pauta en la práctica democrática?', delay: 2000 },
+      { type: 'rey', text: 'Aplicarla significa reconocer que cada decisión política afecta al todo. La pauta nos invita a diseñar mecanismos que hagan visibles las conexiones: por ejemplo, el Laboratorio Cívico de LogoDemocracy, que anonimiza patrones de aprendizaje para mejorar los agentes cognitivos. También la votación cuadrática, que permite expresar intensidad de preferencias. La tecnología debe ayudarnos a ver y tejer esas conexiones, no a fragmentarlas.', delay: 4000, typing: true }
     ];
 
-    // Ejecutar la secuencia con delays
-    let totalDelay = 1000; // pequeño retraso inicial
+    let isRunning = false;
 
-    sequence.forEach((item, index) => {
-      totalDelay += item.delay || 1000;
-      setTimeout(() => {
-        // Si es el Rey, primero mostramos indicador de escritura
-        if (item.type === 'rey') {
-          const typingDiv = document.createElement('div');
-          typingDiv.className = 'chat-typing';
-          typingDiv.id = 'chatTyping';
-          typingDiv.innerHTML = `
-            <span>Rey Filósofo analizando</span>
-            <div class="chat-typing-dot"></div>
-            <div class="chat-typing-dot"></div>
-            <div class="chat-typing-dot"></div>
-          `;
-          chatMessages.appendChild(typingDiv);
-          chatMessages.scrollTop = chatMessages.scrollHeight;
+    function runSequence() {
+      if (isRunning) return;
+      isRunning = true;
+      chatMessages.innerHTML = '';
+      let totalDelay = 500;
 
-          // Eliminar el indicador y mostrar la respuesta después de 2s
-          setTimeout(() => {
-            const typingEl = document.getElementById('chatTyping');
-            if (typingEl) typingEl.remove();
-            addMessage('rey', item.text);
-          }, 2000);
-        } else {
-          // Mensaje de usuario directo
-          addMessage('user', item.text);
-        }
-      }, totalDelay);
-    });
+      sequence.forEach((item, index) => {
+        totalDelay += item.delay || 1000;
+        setTimeout(() => {
+          if (item.type === 'rey' && item.typing) {
+            const typingEl = showTyping();
+            setTimeout(() => {
+              if (typingEl.parentNode) typingEl.remove();
+              addMessage('rey', item.text);
+              if (index === sequence.length - 1) {
+                setTimeout(() => {
+                  isRunning = false;
+                  runSequence();
+                }, 3000);
+              }
+            }, 2000);
+          } else {
+            addMessage(item.type, item.text);
+            if (index === sequence.length - 1) {
+              setTimeout(() => {
+                isRunning = false;
+                runSequence();
+              }, 3000);
+            }
+          }
+        }, totalDelay);
+      });
+    }
+
+    runSequence();
   })();
 </script>
-
-        
-        
-      </div>
-    </div>
-  </section>
 
   <div class="divider-line" aria-hidden="true">
     <span class="divider-dot"></span>
