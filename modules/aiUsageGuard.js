@@ -5,24 +5,26 @@ const db = require("./database");
  * LOGODEMOCRACY — AI USAGE GUARD
  * ============================================================
  *
- * Límite interno diario:
- *   US$7 por día
+ * LÍMITE DIARIO GLOBAL:
  *
- * El límite es GLOBAL y compartido por:
+ *   US$8 por día
+ *
+ * Compartido por:
  *   - SOPHIA
  *   - LOGOS
  *   - Rey Filósofo
  *
- * El cálculo se realiza sobre el consumo registrado por las
- * llamadas reales a Vertex/Gemini.
+ * El guard:
  *
- * El valor monetario se obtiene mediante un costo configurable
- * por millón de tokens.
+ *   1. Consulta el consumo acumulado del día.
+ *   2. Autoriza o bloquea ANTES de llamar a Gemini.
+ *   3. Registra el consumo REAL después de la respuesta.
+ *
  * ============================================================
  */
 
 const DAILY_LIMIT_USD = Number(
-  process.env.AI_DAILY_LIMIT_USD || "7"
+  process.env.AI_DAILY_LIMIT_USD || "8"
 );
 
 const COST_PER_MILLION_INPUT_USD = Number(
@@ -32,6 +34,11 @@ const COST_PER_MILLION_INPUT_USD = Number(
 const COST_PER_MILLION_OUTPUT_USD = Number(
   process.env.AI_COST_OUTPUT_PER_MILLION_USD || "2.50"
 );
+
+
+/* ============================================================
+   COSTO
+============================================================ */
 
 function calculateEstimatedCost({
   promptTokens = 0,
@@ -48,34 +55,67 @@ function calculateEstimatedCost({
   return inputCost + outputCost;
 }
 
+
+/* ============================================================
+   AUTORIZACIÓN
+============================================================ */
+
 /**
  * Comprueba si existe presupuesto diario disponible.
  *
  * IMPORTANTE:
- * Esta función NO registra consumo.
- * Solo autoriza o rechaza la llamada.
+ *
+ * Esta función se ejecuta ANTES de realizar la llamada
+ * real a Gemini.
+ *
+ * No registra consumo.
  */
 async function canUseAI() {
-  const usage = await db.getDailyAIUsage();
+  const usage =
+    await db.getDailyAIUsage();
 
-  const currentCost = Number(
-    usage.totalCostUsd || 0
-  );
+  const currentCost =
+    Number(usage.totalCostUsd || 0);
 
   const remaining =
-    Math.max(0, DAILY_LIMIT_USD - currentCost);
+    Math.max(
+      0,
+      DAILY_LIMIT_USD - currentCost
+    );
+
+  const allowed =
+    currentCost < DAILY_LIMIT_USD;
 
   return {
-    allowed: currentCost < DAILY_LIMIT_USD,
-    limitUsd: DAILY_LIMIT_USD,
-    usedUsd: currentCost,
-    remainingUsd: remaining,
-    date: usage.date
+    allowed,
+
+    limitUsd:
+      DAILY_LIMIT_USD,
+
+    usedUsd:
+      currentCost,
+
+    remainingUsd:
+      remaining,
+
+    date:
+      usage.date,
+
+    calls:
+      Number(usage.calls || 0),
+
+    totalTokens:
+      Number(usage.totalTokens || 0)
   };
 }
 
+
+/* ============================================================
+   REGISTRO
+============================================================ */
+
 /**
- * Registra una llamada real a Gemini.
+ * Registra una llamada REAL a Gemini.
  */
 async function registerAIUsage({
   module = "unknown",
@@ -93,10 +133,11 @@ async function registerAIUsage({
   success = true,
   error = null
 }) {
-  const costUsd = calculateEstimatedCost({
-    promptTokens,
-    outputTokens
-  });
+  const costUsd =
+    calculateEstimatedCost({
+      promptTokens,
+      outputTokens
+    });
 
   const record = {
     module,
@@ -106,22 +147,34 @@ async function registerAIUsage({
     userId,
     sessionId,
 
-    promptTokens: Number(promptTokens) || 0,
-    outputTokens: Number(outputTokens) || 0,
-    thoughtsTokens: Number(thoughtsTokens) || 0,
-    totalTokens: Number(totalTokens) || 0,
+    promptTokens:
+      Number(promptTokens) || 0,
 
-    estimatedCostUsd: costUsd,
+    outputTokens:
+      Number(outputTokens) || 0,
+
+    thoughtsTokens:
+      Number(thoughtsTokens) || 0,
+
+    totalTokens:
+      Number(totalTokens) || 0,
+
+    estimatedCostUsd:
+      costUsd,
 
     durationMs:
       durationMs === null
         ? null
         : Number(durationMs),
 
-    success: Boolean(success),
-    error: error || null,
+    success:
+      Boolean(success),
 
-    timestamp: new Date()
+    error:
+      error || null,
+
+    timestamp:
+      new Date()
   };
 
   await db.saveAIUsage(record);
@@ -129,21 +182,33 @@ async function registerAIUsage({
   return record;
 }
 
-/**
- * Información pública del contador.
- */
+
+/* ============================================================
+   ESTADO PÚBLICO
+============================================================ */
+
 async function getAIUsageStatus() {
-  const usage = await db.getDailyAIUsage();
+  const usage =
+    await db.getDailyAIUsage();
 
   const usedUsd =
     Number(usage.totalCostUsd || 0);
 
   return {
-    date: usage.date,
-    limitUsd: DAILY_LIMIT_USD,
+    date:
+      usage.date,
+
+    limitUsd:
+      DAILY_LIMIT_USD,
+
     usedUsd,
+
     remainingUsd:
-      Math.max(0, DAILY_LIMIT_USD - usedUsd),
+      Math.max(
+        0,
+        DAILY_LIMIT_USD - usedUsd
+      ),
+
     blocked:
       usedUsd >= DAILY_LIMIT_USD,
 
@@ -154,6 +219,7 @@ async function getAIUsageStatus() {
       Number(usage.totalTokens || 0)
   };
 }
+
 
 module.exports = {
   DAILY_LIMIT_USD,
