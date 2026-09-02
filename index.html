@@ -1674,6 +1674,38 @@ body {
   }
 
 }
+    /* ─── MENÚ MÓVIL ─────────────────────────────────── */
+.topbar {
+  position: relative; /* necesario para posicionar el menú desplegable */
+}
+
+@media (max-width: 900px) {
+  .topbar .module-nav {
+    display: none; /* oculto por defecto en móvil */
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--c-bg);
+    border-bottom: 1px solid var(--c-border);
+    padding: 1rem 1.5rem;
+    z-index: 1000;
+  }
+
+  .topbar.nav-open .module-nav {
+    display: flex; /* se muestra al hacer clic */
+  }
+
+  .topbar .module-nav a {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .topbar .module-nav a:last-child {
+    border-bottom: none;
+  }
+}
     
 </style>
 </head>
@@ -2155,7 +2187,7 @@ body {
 
         </div>
 
-        <div class="chat-sim-container" id="academia-chat-widget">
+    <div class="chat-sim-container" id="academia-chat-widget">
   <div class="chat-sim-header">
     <span class="status-indicator active" style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;margin-right:8px;"></span>
     Rey Filósofo — Tutor Cognitivo
@@ -2174,56 +2206,79 @@ body {
     const chatMessages = document.getElementById('chatMessages');
     if (!chatMessages) return;
 
-    const initialMsg = document.createElement('div');
-    initialMsg.className = 'chat-msg chat-msg--rey';
-    initialMsg.innerHTML = `
-      <div class="chat-avatar" style="background:var(--c-rey);color:#fff;">R</div>
-      <div class="chat-bubble">¿Qué te gustaría aprender hoy?</div>
-    `;
-    chatMessages.appendChild(initialMsg);
-
-    const sequence = [
-      { type: 'user', text: '¿Qué significa la pauta que conecta?', delay: 1200 },
-      { type: 'rey', text: 'La pauta que conecta es el hilo invisible que une las ideas, las personas y los procesos en una democracia. No se trata de un mecanismo, sino de la comprensión de que cada decisión, cada diálogo y cada aprendizaje afecta al conjunto. La tecnología, bien usada, puede hacer visible esa pauta y ayudarnos a tejerla con más conciencia.', delay: 1800 }
-    ];
-
+    // Función para agregar mensaje (sin avatar)
     function addMessage(type, text) {
       const msg = document.createElement('div');
       const isUser = (type === 'user');
       msg.className = `chat-msg ${isUser ? 'chat-msg--user' : 'chat-msg--rey'}`;
-      const avatar = isUser ? 'U' : 'R';
-      const bgColor = isUser ? 'var(--c-sophia)' : 'var(--c-rey)';
-      msg.innerHTML = `
-        <div class="chat-avatar" style="background:${bgColor};color:#fff;">${avatar}</div>
-        <div class="chat-bubble">${text}</div>
-      `;
+      // No incluimos el avatar, solo la burbuja
+      msg.innerHTML = `<div class="chat-bubble">${text}</div>`;
       chatMessages.appendChild(msg);
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    setTimeout(() => {
-      addMessage('user', sequence[0].text);
+    // Mensaje inicial del Rey
+    addMessage('rey', '¿Qué te gustaría aprender hoy?');
+
+    // Secuencia de mensajes (preguntas y respuestas)
+    const sequence = [
+      {
+        type: 'user',
+        text: '¿Qué significa la pauta que conecta?',
+        delay: 1500
+      },
+      {
+        type: 'rey',
+        text: 'Gregory Bateson, en "Espíritu y Naturaleza", llamó "pauta que conecta" al patrón que une todos los seres vivos y sus procesos. No es una idea abstracta, sino un principio que organiza la vida, el aprendizaje y la comunicación. La democracia, como sistema vivo, también tiene una pauta que conecta: las relaciones entre ciudadanos, instituciones y conocimiento. Entenderla nos permite diseñar mejores procesos deliberativos.',
+        delay: 3000
+      },
+      {
+        type: 'user',
+        text: '¿Cómo podemos aplicar esa pauta en la práctica democrática?',
+        delay: 2000
+      },
+      {
+        type: 'rey',
+        text: 'Aplicarla significa reconocer que cada decisión política afecta al todo. La pauta nos invita a diseñar mecanismos que hagan visibles las conexiones: por ejemplo, el Laboratorio Cívico de LogoDemocracy, que anonimiza patrones de aprendizaje para mejorar los agentes cognitivos. También la votación cuadrática, que permite expresar intensidad de preferencias. La tecnología debe ayudarnos a ver y tejer esas conexiones, no a fragmentarlas.',
+        delay: 4000
+      }
+    ];
+
+    // Ejecutar la secuencia con delays
+    let totalDelay = 1000; // pequeño retraso inicial
+
+    sequence.forEach((item, index) => {
+      totalDelay += item.delay || 1000;
       setTimeout(() => {
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'chat-typing';
-        typingDiv.id = 'chatTyping';
-        typingDiv.innerHTML = `
-          <span>Rey Filósofo analizando</span>
-          <div class="chat-typing-dot"></div>
-          <div class="chat-typing-dot"></div>
-          <div class="chat-typing-dot"></div>
-        `;
-        chatMessages.appendChild(typingDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        setTimeout(() => {
-          const typingEl = document.getElementById('chatTyping');
-          if (typingEl) typingEl.remove();
-          addMessage('rey', sequence[1].text);
-        }, 2000);
-      }, 1000);
-    }, 800);
+        // Si es el Rey, primero mostramos indicador de escritura
+        if (item.type === 'rey') {
+          const typingDiv = document.createElement('div');
+          typingDiv.className = 'chat-typing';
+          typingDiv.id = 'chatTyping';
+          typingDiv.innerHTML = `
+            <span>Rey Filósofo analizando</span>
+            <div class="chat-typing-dot"></div>
+            <div class="chat-typing-dot"></div>
+            <div class="chat-typing-dot"></div>
+          `;
+          chatMessages.appendChild(typingDiv);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+
+          // Eliminar el indicador y mostrar la respuesta después de 2s
+          setTimeout(() => {
+            const typingEl = document.getElementById('chatTyping');
+            if (typingEl) typingEl.remove();
+            addMessage('rey', item.text);
+          }, 2000);
+        } else {
+          // Mensaje de usuario directo
+          addMessage('user', item.text);
+        }
+      }, totalDelay);
+    });
   })();
 </script>
+
         
         
       </div>
