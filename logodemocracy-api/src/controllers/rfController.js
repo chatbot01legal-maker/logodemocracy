@@ -94,10 +94,23 @@ const rfController = {
       console.error("Mensaje:", error.message);
       console.error("Stack:", error.stack);
 
+      if (
+        error?.code === "AI_DAILY_LIMIT_REACHED"
+      ) {
+        return res.status(429).json({
+          ok: false,
+          code: "AI_DAILY_LIMIT_REACHED",
+          resetAt: error.resetAt
+        });
+      }
+
       return res.status(500).json({
         error: "Error interno en el procesamiento del Rey Filósofo.",
         requestId,
-        detail: process.env.NODE_ENV === "development" ? error.message : undefined
+        detail:
+          process.env.NODE_ENV === "development"
+            ? error.message
+            : undefined
       });
     }
   }
