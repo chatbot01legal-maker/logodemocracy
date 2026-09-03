@@ -2075,8 +2075,8 @@ ${data.gemini_review ? `
           <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Observaciones</div>
           <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
             ${Array.isArray(data.gemini_review.observaciones)
-              ? data.gemini_review.observaciones.map(o => `<div style="margin-bottom: 6px;"><strong style="color:#e5e7eb;">${o.tipo}:</strong> ${sanitizeVPALanguage(o.detalle, data.vpa ? data.vpa.conteo : undefined)}</div>`).join('')
-              : sanitizeVPALanguage(data.gemini_review.observaciones, data.vpa ? data.vpa.conteo : undefined)}
+              ? data.gemini_review.observaciones.map(o => `<div style="margin-bottom: 6px;">${typeof o === 'string' ? sanitizeVPALanguage(o, data.vpa ? data.vpa.conteo : undefined) : `<strong style="color:#e5e7eb;">${o.tipo || ''}${o.tipo ? ':' : ''}</strong> ${sanitizeVPALanguage(o.detalle || o.texto || JSON.stringify(o), data.vpa ? data.vpa.conteo : undefined)}`}</div>`).join('')
+               : sanitizeVPALanguage(data.gemini_review.observaciones, data.vpa ? data.vpa.conteo : undefined)}
           </div>
         </div>` : ''}
       ${(data.gemini_review.preguntas_reflexivas && Array.isArray(data.gemini_review.preguntas_reflexivas) && data.gemini_review.preguntas_reflexivas.length > 0) ? `
