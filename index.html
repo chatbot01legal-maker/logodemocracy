@@ -2239,12 +2239,12 @@ body {
   }
 
   // Secuencia intercalada con tiempos más lentos
-  const sequence = [
+    const sequence = [
     { type: 'rey',  text: '¿Qué te gustaría aprender hoy?', delay: 2500 },
     { type: 'user', text: '¿Qué significa la pauta que conecta?', delay: 3500 },
-    { type: 'rey',  text: 'Gregory Bateson, en "Espíritu y Naturaleza", llamó "pauta que conecta" al patrón que une todos los seres vivos y sus procesos. No es una idea abstracta, sino un principio que organiza la vida, el aprendizaje y la comunicación. La democracia, como sistema vivo, también tiene una pauta que conecta: las relaciones entre ciudadanos, instituciones y conocimiento. Entenderla nos permite diseñar mejores procesos deliberativos.', delay: 6000, typing: true, typingDuration: 4500 },
-    { type: 'user', text: '¿Cómo podemos aplicar esa pauta en la práctica democrática?', delay: 4000 },
-    { type: 'rey',  text: 'Aplicarla significa reconocer que cada decisión política afecta al todo. La pauta nos invita a diseñar mecanismos que hagan visibles las conexiones: por ejemplo, el Laboratorio Cívico de LogoDemocracy, que anonimiza patrones de aprendizaje para mejorar los agentes cognitivos. También la votación cuadrática, que permite expresar intensidad de preferencias. La tecnología debe ayudarnos a ver y tejer esas conexiones, no a fragmentarlas.', delay: 7000, typing: true, typingDuration: 5500 }
+    { type: 'rey',  text: 'Es una idea de Gregory Bateson que nos invita a mirar cómo se relacionan las cosas. Una pauta es un patrón que se repite en esas relaciones. Por eso, para entender algo, no basta con mirar cada parte por separado: también hay que observar cómo se conectan entre sí.', delay: 6000, typing: true, typingDuration: 4500 },
+    { type: 'user', text: '¿Y eso de qué me sirve?', delay: 4000 },
+    { type: 'rey',  text: 'Te sirve para entender mejor lo que pasa a tu alrededor. Cuando algo parece complicado, puedes dejar de mirar solo cada cosa por separado y preguntarte cómo se relacionan. A veces, al mirar esas conexiones, aparece una explicación que antes no podías ver.', delay: 7000, typing: true, typingDuration: 5500 }
   ];
 
   async function runSequence() {
