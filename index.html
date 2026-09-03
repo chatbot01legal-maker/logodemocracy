@@ -1674,14 +1674,37 @@ body {
   }
 
 }
-    /* ─── MENÚ MÓVIL ─────────────────────────────────── */
+
+/* ─── MENÚ MÓVIL ─────────────────────────────────── */
 .topbar {
-  position: relative; /* necesario para posicionar el menú desplegable */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: var(--c-bg);
+  border-bottom: 1px solid var(--c-border);
+  position: relative;
+}
+
+.mobile-menu-btn {
+  display: none; /* oculto por defecto en escritorio */
+  background: none;
+  border: none;
+  color: var(--c-text);
+  cursor: pointer;
+  padding: 0.25rem;
+  z-index: 1001;
 }
 
 @media (max-width: 900px) {
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .topbar .module-nav {
-    display: none; /* oculto por defecto en móvil */
+    display: none;
     flex-direction: column;
     position: absolute;
     top: 100%;
@@ -1694,12 +1717,16 @@ body {
   }
 
   .topbar.nav-open .module-nav {
-    display: flex; /* se muestra al hacer clic */
+    display: flex;
   }
 
   .topbar .module-nav a {
     padding: 0.5rem 0;
     border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: var(--c-text);
+    text-decoration: none;
+    font-family: var(--f-sans);
+    font-size: 0.9rem;
   }
 
   .topbar .module-nav a:last-child {
