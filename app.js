@@ -815,7 +815,17 @@ app.post(
         error
       );
 
-      res.status(500).json({
+      if (
+        error?.code === "AI_DAILY_LIMIT_REACHED"
+      ) {
+        return res.status(429).json({
+          ok: false,
+          code: "AI_DAILY_LIMIT_REACHED",
+          resetAt: error.resetAt
+        });
+      }
+
+      return res.status(500).json({
         error: "Error interno del servidor"
       });
     }
