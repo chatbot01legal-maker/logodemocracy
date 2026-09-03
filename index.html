@@ -1675,65 +1675,12 @@ body {
 
 }
 
-/* ─── MENÚ MÓVIL ─────────────────────────────────── */
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1.5rem;
-  background: var(--c-bg);
-  border-bottom: 1px solid var(--c-border);
-  position: relative;
-}
-
-.mobile-menu-btn {
-  display: none; /* oculto por defecto en escritorio */
-  background: none;
-  border: none;
-  color: var(--c-text);
-  cursor: pointer;
-  padding: 0.25rem;
-  z-index: 1001;
-}
-
-@media (max-width: 900px) {
-  .mobile-menu-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
+    /* Escritorio: menú visible */
+@media (min-width: 901px) {
   .topbar .module-nav {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: var(--c-bg);
-    border-bottom: 1px solid var(--c-border);
-    padding: 1rem 1.5rem;
-    z-index: 1000;
+    display: flex !important;
   }
-
-  .topbar.nav-open .module-nav {
-    display: flex;
-  }
-
-  .topbar .module-nav a {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    color: var(--c-text);
-    text-decoration: none;
-    font-family: var(--f-sans);
-    font-size: 0.9rem;
-  }
-
-  .topbar .module-nav a:last-child {
-    border-bottom: none;
-  }
-}
-    
+    }
 </style>
 </head>
 <body>
@@ -2834,16 +2781,15 @@ body {
   });
 
 })();
-</script>
 <script>
-  // Menú hamburguesa para móvil
+  // Menú hamburguesa para móvil (unificado con base-layout.css)
   (function() {
     const menuBtn = document.getElementById('mobileMenuBtn');
-    const header = document.querySelector('.topbar');
-    if (menuBtn && header) {
+    const nav = document.querySelector('.topbar .module-nav');
+    if (menuBtn && nav) {
       menuBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        header.classList.toggle('nav-open');
+        nav.classList.toggle('open');
       });
     }
   })();
