@@ -1595,10 +1595,26 @@ const SOPHIA = {
         if (btn.disabled) return;
 
         const text = input ? input.value.trim() : '';
-        if (!text) {
-          out.innerHTML = `<p style="color:#ef4444;">El texto es requerido.</p>`;
-          return;
-        }
+
+if (!text) {
+  out.innerHTML = `<p style="color:#ef4444;">El texto es requerido.</p>`;
+  return;
+}
+
+if (text.length > 5000) {
+  out.innerHTML = `
+    <div style="margin-top:16px; padding:16px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px;">
+      <p style="color:#ef4444; font-size:.82rem; margin:0 0 8px 0;">
+        El texto supera el límite permitido.
+      </p>
+      <p style="color:rgba(229,231,235,.65); font-size:.78rem; line-height:1.5; margin:0;">
+        SOPHIA permite analizar documentos de hasta 5.000 caracteres.
+        Tu texto contiene ${text.length.toLocaleString('es-CL')} caracteres.
+        Reduce el texto e inténtalo nuevamente.
+      </p>
+    </div>`;
+  return;
+}
 
         btn.disabled = true;
         const originalBtnText = btn.textContent;
