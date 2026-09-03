@@ -185,7 +185,30 @@
       });
 
       if (!response.ok) {
-        throw new Error(`El servidor respondió ${response.status}`);
+  let errorData = null;
+
+  try {
+    errorData = await response.json();
+  } catch (_) {
+    // Si la respuesta no es JSON, se mantiene el manejo genérico.
+  }
+
+  if (
+    response.status === 429 &&
+    errorData &&
+    errorData.code === 'AI_DAILY_LIMIT_REACHED'
+  ) {
+    const limitError = new Error(
+      'Límite diario de procesamiento alcanzado.'
+    );
+
+    limitError.code = 'AI_DAILY_LIMIT_REACHED';
+    limitError.resetAt = errorData.resetAt;
+
+    throw limitError;
+  }
+
+  throw new Error(`El servidor respondió ${response.status}`);
       }
 
       const data = await response.json();
