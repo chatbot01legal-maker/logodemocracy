@@ -224,7 +224,23 @@
         timestamp: new Date().toISOString()
       });
 
-    } catch (error) {
+       } catch (error) {
+
+      if (error?.code === 'AI_DAILY_LIMIT_REACHED') {
+        state.conversation.push({
+          role: 'assistant',
+          content:
+            'LogoDemocracy está en etapa Beta.\n\n' +
+            'Estamos desarrollando y calibrando nuestros instrumentos de inteligencia artificial con recursos propios. Para mantener controlado el uso mientras realizamos esta etapa de calibración, existe un límite diario de procesamiento.\n\n' +
+            'El límite de hoy ya fue alcanzado.\n\n' +
+            'Puedes volver a utilizar este instrumento a partir de las 00:00 horas del próximo día.\n\n' +
+            'Gracias por ayudarnos a desarrollar y calibrar LogoDemocracy.',
+          timestamp: new Date().toISOString()
+        });
+
+        return;
+      }
+
       console.error(
         '❌ ReyFilosofoChat.sendMessage:',
         error.message
@@ -237,7 +253,7 @@
         timestamp: new Date().toISOString(),
         isError: true
       });
-
+    
     } finally {
       state.isSending = false;
       renderPanel();
