@@ -663,6 +663,15 @@ app.post(
       ) {
         return res.status(400).json({
           error: "Texto requerido"
+                if (text.trim().length > 5000) {
+        return res.status(400).json({
+          ok: false,
+          code: "SOPHIA_INPUT_TOO_LONG",
+          error: "El texto supera el límite de 5.000 caracteres.",
+          maxCharacters: 5000,
+          receivedCharacters: text.trim().length
+        });
+        }
         });
       }
 
