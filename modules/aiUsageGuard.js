@@ -35,7 +35,6 @@ const COST_PER_MILLION_OUTPUT_USD = Number(
   process.env.AI_COST_OUTPUT_PER_MILLION_USD || "2.50"
 );
 
-
 /* ============================================================
    COSTO
 ============================================================ */
@@ -55,6 +54,19 @@ function calculateEstimatedCost({
   return inputCost + outputCost;
 }
 
+/* ============================================================
+   PRÓXIMO REINICIO
+============================================================ */
+
+function getNextResetAt() {
+  const now = new Date();
+
+  const reset = new Date(now);
+
+  reset.setHours(24, 0, 0, 0);
+
+  return reset.toISOString();
+}
 
 /* ============================================================
    AUTORIZACIÓN
@@ -64,12 +76,12 @@ function calculateEstimatedCost({
  * Comprueba si existe presupuesto diario disponible.
  *
  * IMPORTANTE:
- *
  * Esta función se ejecuta ANTES de realizar la llamada
  * real a Gemini.
  *
  * No registra consumo.
  */
+
 async function canUseAI() {
   const usage =
     await db.getDailyAIUsage();
@@ -109,6 +121,51 @@ async function canUseAI() {
   };
 }
 
+/* ============================================================
+   ENFORCEMENT
+============================================================ */
+
+/**
+ * Bloquea la llamada a Gemini cuando el límite diario
+ * ya fue alcanzado.
+ *
+ * Este error es intencional y controlado.
+ * Los endpoints lo transforman en HTTP 429.
+ */
+
+async function enforceAILimit(stage = "unknown") {
+  const status =
+    await canUseAI();
+
+  if (status.allowed) {
+    return status;
+  }
+
+  const error =
+    new Error(
+      "El límite diario de procesamiento de IA ha sido alcanzado."
+    );
+
+  error.code =
+    "AI_DAILY_LIMIT_REACHED";
+
+  error.stage =
+    stage;
+
+  error.limitUsd =
+    status.limitUsd;
+
+  error.usedUsd =
+    status.usedUsd;
+
+  error.remainingUsd =
+    status.remainingUsd;
+
+  error.resetAt =
+    getNextResetAt();
+
+  throw error;
+}
 
 /* ============================================================
    REGISTRO
@@ -117,6 +174,7 @@ async function canUseAI() {
 /**
  * Registra una llamada REAL a Gemini.
  */
+
 async function registerAIUsage({
   module = "unknown",
   stage = "unknown",
@@ -182,7 +240,6 @@ async function registerAIUsage({
   return record;
 }
 
-
 /* ============================================================
    ESTADO PÚBLICO
 ============================================================ */
@@ -216,15 +273,27 @@ async function getAIUsageStatus() {
       Number(usage.calls || 0),
 
     totalTokens:
-      Number(usage.totalTokens || 0)
+      Number(usage.totalTokens || 0),
+
+    resetAt:
+      getNextResetAt()
   };
 }
 
+/* ============================================================
+   EXPORTS
+============================================================ */
 
 module.exports = {
   DAILY_LIMIT_USD,
+
   calculateEstimatedCost,
+
   canUseAI,
+
+  enforceAILimit,
+
   registerAIUsage,
+
   getAIUsageStatus
 };
