@@ -1635,14 +1635,127 @@ const SOPHIA = {
             });
 
             if (response.ok) {
-              const resultado = await response.json();
-              data = normalizeSophiaResult(resultado);
-              if (data && data.metadata && data.metadata.module_versions && data.metadata.module_versions.protocol) {
-                SOPHIA_BACKEND_VERSION = data.metadata.module_versions.protocol;
-              }
-              console.log("📥 Datos recibidos del servidor:", data);
-            } else {
-              console.warn(`⚠️ /api/sophia/evaluate respondió ${response.status}, usando motor local.`);
+  const resultado = await response.json();
+  data = normalizeSophiaResult(resultado);
+
+  if (
+    data &&
+    data.metadata &&
+    data.metadata.module_versions &&
+    data.metadata.module_versions.protocol
+  ) {
+    SOPHIA_BACKEND_VERSION =
+      data.metadata.module_versions.protocol;
+  }
+
+  console.log(
+    "📥 Datos recibidos del servidor:",
+    data
+  );
+
+} else {
+
+  let errorData = null;
+
+  try {
+    errorData = await response.json();
+  } catch (parseError) {
+    console.warn(
+      "⚠️ La respuesta de error no contiene JSON válido."
+    );
+  }
+
+  /*
+   * ==========================================================
+   * LÍMITE DIARIO DE IA
+   * ==========================================================
+   *
+   * IMPORTANTE:
+   * Este caso NO debe activar el motor local.
+   */
+
+  if (
+    response.status === 429 &&
+    errorData &&
+    errorData.code === "AI_DAILY_LIMIT_REACHED"
+  ) {
+
+    console.warn(
+      "⚠️ Límite diario de IA alcanzado."
+    );
+
+    out.innerHTML = `
+      <div style="
+        margin-top:16px;
+        padding:20px;
+        background:var(--s-panel);
+        border:1px solid var(--s-border);
+        border-radius:4px;
+        line-height:1.6;
+      ">
+        <p style="
+          color:var(--accent);
+          font-size:1rem;
+          margin:0 0 14px 0;
+          font-weight:600;
+        ">
+          LogoDemocracy está en etapa Beta.
+        </p>
+
+        <p style="
+          color:rgba(229,231,235,.85);
+          font-size:.9rem;
+          margin:0 0 12px 0;
+        ">
+          Estamos desarrollando y calibrando nuestros instrumentos
+          de inteligencia artificial con recursos propios. Para
+          mantener controlado el uso mientras realizamos esta etapa
+          de calibración, existe un límite diario de procesamiento.
+        </p>
+
+        <p style="
+          color:rgba(229,231,235,.85);
+          font-size:.9rem;
+          margin:0 0 12px 0;
+        ">
+          El límite de hoy ya fue alcanzado.
+        </p>
+
+        <p style="
+          color:rgba(229,231,235,.85);
+          font-size:.9rem;
+          margin:0 0 12px 0;
+        ">
+          Puedes volver a utilizar este instrumento a partir de las
+          00:00 horas del próximo día.
+        </p>
+
+        <p style="
+          color:rgba(229,231,235,.85);
+          font-size:.9rem;
+          margin:0;
+        ">
+          Gracias por ayudarnos a desarrollar y calibrar LogoDemocracy.
+        </p>
+      </div>
+    `;
+
+    /*
+     * Salir inmediatamente del flujo interno.
+     * Esto evita que data quede null y active
+     * evaluateWithBestAvailableEngine().
+     */
+    return;
+  }
+
+  /*
+   * Para otros errores HTTP se conserva el comportamiento anterior:
+   * SOPHIA podrá utilizar el motor local.
+   */
+
+  console.warn(
+    `⚠️ /api/sophia/evaluate respondió ${response.status}, usando motor local.`
+  );
             }
           } catch (networkError) {
             console.warn('⚠️ No se pudo contactar /api/sophia/evaluate, usando motor local:', networkError.message);
