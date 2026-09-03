@@ -887,6 +887,47 @@
   const motivo = err.name === 'AbortError'
     ? 'El backend tardó demasiado en responder (más de 170 segundos) y se canceló la espera.'
     : err.message;
+
+  console.error('❌ Error en compareWithLogos:', err);
+
+  if (ladoCorregido) {
+    sesion.reconstructionValidation[ladoCorregido].status = 'PENDING';
+  }
+
+  const destino = elementoDestino(outEl);
+
+  destino.innerHTML = `
+    <div style="background:var(--s-panel); border:1px dashed rgba(255,255,255,.15); border-radius:4px; padding:16px; margin-top:16px;">
+      <p style="color:#eab308; font-size:.82rem; margin:0 0 6px 0;">
+        No fue posible generar ${ladoCorregido ? 'la reconstrucción revisada' : 'la comparación'}.
+      </p>
+
+      <p style="color:rgba(229,231,235,.5); font-size:.78rem; margin:0;">
+        ${ladoCorregido ? 'Tu validación sigue pendiente — no se dio por confirmada ninguna reconstrucción a partir de este error.' : 'El motor de comparación no respondió correctamente.'}
+        (Detalle técnico: ${escapeHtml(motivo)})
+      </p>
+
+      <div style="margin-top:10px;">
+        <button class="btn-primary logos-retry-btn" style="font-size:.75rem; padding:5px 12px;">
+          Reintentar →
+        </button>
+      </div>
+    </div>`;
+
+  const retryBtn = destino.querySelector('.logos-retry-btn');
+
+  if (retryBtn) {
+    retryBtn.onclick = () =>
+      compareWithLogos(
+        posicionA,
+        posicionB,
+        outEl,
+        sesion,
+        ladoCorregido
+      );
+  }
+
+    }
     } finally {
       clearTimeout(timeoutId);
       clearInterval(loadingInterval);
