@@ -926,8 +926,6 @@
         ladoCorregido
       );
   }
-
-    }
     } finally {
       clearTimeout(timeoutId);
       clearInterval(loadingInterval);
