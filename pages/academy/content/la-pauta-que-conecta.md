@@ -23,7 +23,7 @@ También debemos aprender a observar las relaciones que existen entre ellas.
 
 Gregory Bateson llamó la atención sobre una pregunta que atraviesa buena parte de su obra:
 
-> "¿Qué pauta conecta?"
+> "¿Cuál es la pauta conecta?"
 
 La pregunta cambia nuestra manera de mirar el mundo.
 
