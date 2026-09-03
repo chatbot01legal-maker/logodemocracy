@@ -781,7 +781,32 @@
         body: JSON.stringify({ posicionA, posicionB }),
         signal: controlador.signal
       });
-      if (!res.ok) throw new Error(`El servidor respondió ${res.status}`);
+      if (!res.ok) {
+  let errorData = null;
+
+  try {
+    errorData = await res.json();
+  } catch (_) {
+    // Si la respuesta no es JSON, se mantiene el manejo genérico.
+  }
+
+  if (
+    res.status === 429 &&
+    errorData &&
+    errorData.code === 'AI_DAILY_LIMIT_REACHED'
+  ) {
+    const limitError = new Error(
+      'Límite diario de procesamiento alcanzado.'
+    );
+
+    limitError.code = 'AI_DAILY_LIMIT_REACHED';
+    limitError.resetAt = errorData.resetAt;
+
+    throw limitError;
+  }
+
+  throw new Error(`El servidor respondió ${res.status}`);
+      }
 
       let cuerpo;
       try {
@@ -828,31 +853,40 @@
       // Nunca escribir sobre un #logos-output que ya no está en el DOM
       // (p. ej. si el usuario navegó y volvió mientras la respuesta viajaba).
       renderComparison(data, elementoDestino(outEl), sesion);
-    } catch (err) {
-      const motivo = err.name === 'AbortError'
-        ? 'El backend tardó demasiado en responder (más de 170 segundos) y se canceló la espera.'
-        : err.message;
-      console.error('❌ Error en compareWithLogos:', err);
-      // Punto 28: un error técnico nunca debe leerse como una validación
-      // resuelta. Si esto ocurrió durante una corrección, el lado corregido
-      // se deja explícitamente en PENDIENTE (no confirmado, no perdido).
-      if (ladoCorregido) {
-        sesion.reconstructionValidation[ladoCorregido].status = 'PENDING';
-      }
-      const destino = elementoDestino(outEl);
-      destino.innerHTML = `
-        <div style="background:var(--s-panel); border:1px dashed rgba(255,255,255,.15); border-radius:4px; padding:16px; margin-top: 16px;">
-          <p style="color:#eab308; font-size:.82rem; margin:0 0 6px 0;">No fue posible generar ${ladoCorregido ? 'la reconstrucción revisada' : 'la comparación'}.</p>
-          <p style="color:rgba(229,231,235,.5); font-size:.78rem; margin:0;">
-            ${ladoCorregido ? 'Tu validación sigue pendiente — no se dio por confirmada ninguna reconstrucción a partir de este error.' : 'El motor de comparación no respondió correctamente.'}
-            (Detalle técnico: ${escapeHtml(motivo)})
-          </p>
-          <div style="margin-top:10px;">
-            <button class="btn-primary logos-retry-btn" style="font-size:.75rem; padding:5px 12px;">Reintentar →</button>
-          </div>
-        </div>`;
-      const retryBtn = destino.querySelector('.logos-retry-btn');
-      if (retryBtn) retryBtn.onclick = () => compareWithLogos(posicionA, posicionB, outEl, sesion, ladoCorregido);
+} catch (err) {
+
+  if (err?.code === 'AI_DAILY_LIMIT_REACHED') {
+    const destino = elementoDestino(outEl);
+
+    destino.innerHTML = `
+      <div style="background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px; padding:16px; margin-top:16px;">
+        <p style="color:var(--accent); font-size:.85rem; margin:0 0 10px 0;">
+          LogoDemocracy está en etapa Beta.
+        </p>
+
+        <p style="color:rgba(229,231,235,.75); font-size:.78rem; line-height:1.55; margin:0 0 10px 0;">
+          Estamos desarrollando y calibrando nuestros instrumentos de inteligencia artificial con recursos propios. Para mantener controlado el uso mientras realizamos esta etapa de calibración, existe un límite diario de procesamiento.
+        </p>
+
+        <p style="color:rgba(229,231,235,.75); font-size:.78rem; line-height:1.55; margin:0 0 10px 0;">
+          El límite de hoy ya fue alcanzado.
+        </p>
+
+        <p style="color:rgba(229,231,235,.75); font-size:.78rem; line-height:1.55; margin:0 0 10px 0;">
+          Puedes volver a utilizar este instrumento a partir de las 00:00 horas del próximo día.
+        </p>
+
+        <p style="color:rgba(229,231,235,.75); font-size:.78rem; line-height:1.55; margin:0;">
+          Gracias por ayudarnos a desarrollar y calibrar LogoDemocracy.
+        </p>
+      </div>`;
+
+    return;
+  }
+
+  const motivo = err.name === 'AbortError'
+    ? 'El backend tardó demasiado en responder (más de 170 segundos) y se canceló la espera.'
+    : err.message;
     } finally {
       clearTimeout(timeoutId);
       clearInterval(loadingInterval);
