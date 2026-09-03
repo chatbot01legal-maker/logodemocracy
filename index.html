@@ -2228,85 +2228,151 @@ body {
           </div>
         </div> <!-- /.chat-sim-container -->
 
-        <script>
-          (function() {
-            const chatMessages = document.getElementById('chatMessages');
-            if (!chatMessages) return;
+      <script>
+(function() {
+  const chatMessages = document.getElementById('chatMessages');
+  if (!chatMessages) return;
 
-            function addMessage(type, text) {
-              const msg = document.createElement('div');
-              const isUser = (type === 'user');
-              msg.className = `chat-msg ${isUser ? 'chat-msg--user' : 'chat-msg--rey'}`;
-              // Sin avatar, solo burbuja
-              msg.innerHTML = `<div class="chat-bubble">${text}</div>`;
-              chatMessages.appendChild(msg);
-              chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
+  // Estado
+  let isRunning = false;
+  let isVisible = false;
+  let runToken = 0;
+  let timeouts = [];
 
-            function showTyping() {
-              const typingDiv = document.createElement('div');
-              typingDiv.className = 'chat-typing';
-              typingDiv.id = 'chatTyping';
-              typingDiv.innerHTML = `
-                <span>Rey Filósofo analizando</span>
-                <div class="chat-typing-dot"></div>
-                <div class="chat-typing-dot"></div>
-                <div class="chat-typing-dot"></div>
-              `;
-              chatMessages.appendChild(typingDiv);
-              chatMessages.scrollTop = chatMessages.scrollHeight;
-              return typingDiv;
-            }
+  // Timeout cancelable (permite detener la animación limpiamente)
+  function addCancellableTimeout(ms) {
+    return new Promise(resolve => {
+      let timeoutId;
+      const entry = {
+        id: null,
+        resolve: () => {
+          clearTimeout(timeoutId);
+          resolve();
+        }
+      };
+      timeoutId = setTimeout(() => {
+        timeouts = timeouts.filter(t => t !== entry);
+        resolve();
+      }, ms);
+      entry.id = timeoutId;
+      timeouts.push(entry);
+    });
+  }
 
-            // Secuencia de mensajes (intercalados)
-            const sequence = [
-              { type: 'rey', text: '¿Qué te gustaría aprender hoy?', delay: 1000 },
-              { type: 'user', text: '¿Qué significa la pauta que conecta?', delay: 2000 },
-              { type: 'rey', text: 'Gregory Bateson, en "Espíritu y Naturaleza", llamó "pauta que conecta" al patrón que une todos los seres vivos y sus procesos. No es una idea abstracta, sino un principio que organiza la vida, el aprendizaje y la comunicación. La democracia, como sistema vivo, también tiene una pauta que conecta: las relaciones entre ciudadanos, instituciones y conocimiento. Entenderla nos permite diseñar mejores procesos deliberativos.', delay: 4000, typing: true },
-              { type: 'user', text: '¿Cómo podemos aplicar esa pauta en la práctica democrática?', delay: 2500 },
-              { type: 'rey', text: 'Aplicarla significa reconocer que cada decisión política afecta al todo. La pauta nos invita a diseñar mecanismos que hagan visibles las conexiones: por ejemplo, el Laboratorio Cívico de LogoDemocracy, que anonimiza patrones de aprendizaje para mejorar los agentes cognitivos. También la votación cuadrática, que permite expresar intensidad de preferencias. La tecnología debe ayudarnos a ver y tejer esas conexiones, no a fragmentarlas.', delay: 5000, typing: true }
-            ];
+  function clearAllTimeouts() {
+    timeouts.forEach(entry => {
+      clearTimeout(entry.id);
+      entry.resolve(); // desbloquea los await pendientes
+    });
+    timeouts = [];
+  }
 
-            let isRunning = false;
+  function addMessage(type, text) {
+    const msg = document.createElement('div');
+    const isUser = (type === 'user');
+    msg.className = `chat-msg ${isUser ? 'chat-msg--user' : 'chat-msg--rey'}`;
+    msg.innerHTML = `<div class="chat-bubble">${text}</div>`;
+    chatMessages.appendChild(msg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
 
-            function runSequence() {
-              if (isRunning) return;
-              isRunning = true;
-              chatMessages.innerHTML = ''; // limpia para reiniciar
-              let totalDelay = 800;
+  function showTyping() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'chat-typing';
+    typingDiv.id = 'chatTyping';
+    typingDiv.innerHTML = `
+      <span>Rey Filósofo analizando</span>
+      <div class="chat-typing-dot"></div>
+      <div class="chat-typing-dot"></div>
+      <div class="chat-typing-dot"></div>
+    `;
+    chatMessages.appendChild(typingDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return typingDiv;
+  }
 
-              sequence.forEach((item, index) => {
-                totalDelay += item.delay || 1000;
-                setTimeout(() => {
-                  if (item.type === 'rey' && item.typing) {
-                    const typingEl = showTyping();
-                    setTimeout(() => {
-                      if (typingEl.parentNode) typingEl.remove();
-                      addMessage('rey', item.text);
-                      // Si es el último mensaje, esperar y reiniciar
-                      if (index === sequence.length - 1) {
-                        setTimeout(() => {
-                          isRunning = false;
-                          runSequence();
-                        }, 4000); // pausa antes de repetir
-                      }
-                    }, 2500); // tiempo de "escritura"
-                  } else {
-                    addMessage(item.type, item.text);
-                    if (index === sequence.length - 1) {
-                      setTimeout(() => {
-                        isRunning = false;
-                        runSequence();
-                      }, 4000);
-                    }
-                  }
-                }, totalDelay);
-              });
-            }
+  // Secuencia intercalada con tiempos más lentos
+  const sequence = [
+    { type: 'rey',  text: '¿Qué te gustaría aprender hoy?', delay: 2500 },
+    { type: 'user', text: '¿Qué significa la pauta que conecta?', delay: 3500 },
+    { type: 'rey',  text: 'Gregory Bateson, en "Espíritu y Naturaleza", llamó "pauta que conecta" al patrón que une todos los seres vivos y sus procesos. No es una idea abstracta, sino un principio que organiza la vida, el aprendizaje y la comunicación. La democracia, como sistema vivo, también tiene una pauta que conecta: las relaciones entre ciudadanos, instituciones y conocimiento. Entenderla nos permite diseñar mejores procesos deliberativos.', delay: 6000, typing: true, typingDuration: 4500 },
+    { type: 'user', text: '¿Cómo podemos aplicar esa pauta en la práctica democrática?', delay: 4000 },
+    { type: 'rey',  text: 'Aplicarla significa reconocer que cada decisión política afecta al todo. La pauta nos invita a diseñar mecanismos que hagan visibles las conexiones: por ejemplo, el Laboratorio Cívico de LogoDemocracy, que anonimiza patrones de aprendizaje para mejorar los agentes cognitivos. También la votación cuadrática, que permite expresar intensidad de preferencias. La tecnología debe ayudarnos a ver y tejer esas conexiones, no a fragmentarlas.', delay: 7000, typing: true, typingDuration: 5500 }
+  ];
 
-            runSequence();
-          })();
-        </script>
+  async function runSequence() {
+    if (isRunning) return;
+    isRunning = true;
+    const myToken = ++runToken;
+    chatMessages.innerHTML = '';
+
+    try {
+      // Pausa inicial para dar tiempo al usuario a notar el chat
+      await addCancellableTimeout(1500);
+      if (myToken !== runToken) return;
+
+      for (const item of sequence) {
+        // Espera antes de mostrar el mensaje
+        await addCancellableTimeout(item.delay);
+        if (myToken !== runToken) return;
+
+        if (item.typing) {
+          const typingEl = showTyping();
+          await addCancellableTimeout(item.typingDuration || 3000);
+          if (myToken !== runToken) return;
+          if (typingEl.parentNode) typingEl.remove();
+          addMessage('rey', item.text);
+        } else {
+          addMessage(item.type, item.text);
+        }
+
+        // Pequeña pausa adicional después de cada mensaje
+        await addCancellableTimeout(800);
+        if (myToken !== runToken) return;
+      }
+
+      // Pausa final antes de reiniciar el bucle
+      await addCancellableTimeout(6000);
+      if (myToken !== runToken) return;
+
+    } finally {
+      if (myToken === runToken) {
+        isRunning = false;
+        // Si el chat sigue visible, reiniciar
+        if (isVisible) {
+          runSequence();
+        }
+      }
+    }
+  }
+
+  // Observador de visibilidad: inicia/detiene la animación según viewport
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        isVisible = true;
+        if (!isRunning) {
+          runSequence();
+        }
+      } else {
+        isVisible = false;
+        if (isRunning) {
+          // Cancelar la animación actual limpiamente
+          runToken++;
+          clearAllTimeouts();
+          isRunning = false;
+          chatMessages.innerHTML = '';
+        }
+      }
+    });
+  }, { threshold: 0.3 }); // se activa cuando al menos el 30% es visible
+
+  observer.observe(chatMessages);
+})();
+      </script>
+        
+            
+
 
       </div> <!-- /.academia-layout -->
     </div> <!-- /.container -->
