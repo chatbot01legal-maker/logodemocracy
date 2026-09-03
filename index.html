@@ -1675,12 +1675,15 @@ body {
 
 }
 
-    /* Escritorio: menú visible */
-@media (min-width: 901px) {
-  .topbar .module-nav {
-    display: flex !important;
-  }
-    }
+/* Ocultar enlaces siempre, solo mostrar al abrir el menú */
+.topbar .module-nav {
+  display: none !important;
+}
+
+.topbar .module-nav.open {
+  display: flex !important;
+}
+    
 </style>
 </head>
 <body>
@@ -2240,11 +2243,11 @@ body {
 
   // Secuencia intercalada con tiempos más lentos
     const sequence = [
-    { type: 'rey',  text: '¿Qué te gustaría aprender hoy?', delay: 2500 },
-    { type: 'user', text: '¿Qué significa la pauta que conecta?', delay: 3500 },
-    { type: 'rey',  text: 'Es una idea de Gregory Bateson que nos invita a mirar cómo se relacionan las cosas. Una pauta es un patrón que se repite en esas relaciones. Por eso, para entender algo, no basta con mirar cada parte por separado: también hay que observar cómo se conectan entre sí.', delay: 6000, typing: true, typingDuration: 4500 },
-    { type: 'user', text: '¿Y eso de qué me sirve?', delay: 4000 },
-    { type: 'rey',  text: 'Te sirve para entender mejor lo que pasa a tu alrededor. Cuando algo parece complicado, puedes dejar de mirar solo cada cosa por separado y preguntarte cómo se relacionan. A veces, al mirar esas conexiones, aparece una explicación que antes no podías ver.', delay: 7000, typing: true, typingDuration: 5500 }
+    { type: 'rey',  text: '¿Qué te gustaría aprender hoy?', delay: 1500 },
+    { type: 'user', text: '¿Qué significa la pauta que conecta?', delay: 1500 },
+    { type: 'rey',  text: 'Es una idea de Gregory Bateson que nos invita a mirar cómo se relacionan las cosas. Una pauta es un patrón que se repite en esas relaciones. Por eso, para entender algo, no basta con mirar cada parte por separado: también hay que observar cómo se conectan entre sí.', delay: 6000, typing: true, typingDuration: 6500 },
+    { type: 'user', text: '¿Y eso de qué me sirve?', delay: 1500 },
+    { type: 'rey',  text: 'Te sirve para entender mejor lo que pasa a tu alrededor. Cuando algo parece complicado, puedes dejar de mirar solo cada cosa por separado y preguntarte cómo se relacionan. A veces, al mirar esas conexiones, aparece una explicación que antes no podías ver.', delay: 7000, typing: true, typingDuration: 6500 }
   ];
 
   async function runSequence() {
