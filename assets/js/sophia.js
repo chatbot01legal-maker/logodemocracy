@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════
    SOPHIA.JS — Protocolo Abierto de Comunicación Deliberativa
-   v3.0 — Ontología Pública de la Deliberación (Corregido)
+   v4.0 — Motor único: SophiaEngineV4 (20 átomos cognitivos)
    ═══════════════════════════════════════════════════════ */
 
 // ─── DEPURACIÓN VISIBLE ────────────────────────────────
@@ -16,626 +16,91 @@ function showDebug(msg, isError = false) {
   }
 }
 
-// ─── PROTOCOLO SOPHIA v3.0 ────────────────────────────
-const PROTOCOL = {
-  version: "4.0",
-  fases: [
-    {
-      id: "fase1",
-      nombre: "Estructura Lógica",
-      descripcion: "Integridad de la arquitectura base del argumento.",
-      criterios: [
-        {
-          id: "1.1",
-          nombre: "No Contradicción",
-          constructo: "Consistencia Interna",
-          definicion: "Determinar si el discurso presenta proposiciones excluyentes sin resolución.",
-          atomos: [
-            { id: "discurso", definicion: "El flujo total de enunciados emitidos por el autor.", patrones: [] },
-            { id: "proposiciones", definicion: "Enunciados declarativos que afirman o niegan un estado de cosas.", patrones: [] },
-            { id: "excluyentes", definicion: "Propiedad de dos enunciados que no pueden ser ambos verdaderos simultáneamente.", patrones: ["pero", "sin embargo", "no obstante", "aunque"], polaridad: "riesgo" },
-            { id: "resolucion", definicion: "Explicación lógica que reconcilia dos elementos aparentemente opuestos.", patrones: ["por lo tanto", "en consecuencia", "de modo que"], polaridad: "mitigador" }
-          ],
-          severidad: 12.5,
-          alcanceMitigacion: "texto",
-          modoMitigacion: "anula"
-        },
-        {
-          id: "1.2",
-          nombre: "Continuidad Semántica",
-          constructo: "Estabilidad Conceptual",
-          definicion: "Evaluar la estabilidad del significado de los conceptos a lo largo del argumento.",
-          atomos: [
-            { id: "estabilidad", definicion: "Propiedad de mantener una definición constante sin fluctuaciones.", patrones: [] },
-            { id: "significado", definicion: "La definición operativa asignada a un término en la primera instancia de uso.", patrones: [] },
-            { id: "conceptos", definicion: "Unidades léxicas que portan el peso del contenido temático.", patrones: [] },
-            { id: "argumento", definicion: "La serie encadenada de enunciados que buscan probar una tesis.", patrones: [] },
-            { id: "cambio_no_marcado", definicion: "Señal de que un término cambió de sentido sin advertirlo.", patrones: ["en otro sentido", "no me refiero a lo mismo", "cambiando el significado", "en un sentido distinto"], polaridad: "riesgo" },
-            { id: "estabilidad_marcada", definicion: "Señal explícita de que el término se usa de forma consistente con su primera definición.", patrones: ["tal como se definió", "consistente con lo anterior", "en el mismo sentido que antes", "como se dijo antes"], polaridad: "mitigador" }
-          ],
-          severidad: 12.5,
-          alcanceMitigacion: "texto",
-          modoMitigacion: "reduce"
-        },
-        {
-          id: "1.3",
-          nombre: "Ausencia de Falsas Dicotomías",
-          constructo: "Reducción de Complejidad",
-          definicion: "Verificar si se fuerza una elección binaria ante un problema multidimensional.",
-          atomos: [
-            { id: "eleccion", definicion: "Proceso de selección entre opciones presentadas.", patrones: ["o", "o bien", "alternativa"], polaridad: "riesgo" },
-            { id: "binaria", definicion: "Estructura que reduce el espectro a solo dos posibilidades.", patrones: ["dos opciones", "dos caminos", "dos posibilidades"], polaridad: "riesgo" },
-            { id: "problema", definicion: "El fenómeno central objeto de análisis.", patrones: [] },
-            { id: "multidimensional", definicion: "Fenómeno que requiere más de dos variables para ser comprendido.", patrones: ["complejo", "múltiples factores", "diversos aspectos"], polaridad: "mitigador" }
-          ],
-          severidad: 12.5,
-          alcanceMitigacion: "texto",
-          modoMitigacion: "anula"
-        },
-        {
-          id: "1.4",
-          nombre: "Integridad de las Premisas",
-          constructo: "Anclaje Inferencial",
-          definicion: "Asegurar que cada enunciado declarativo tenga un soporte lógico.",
-          atomos: [
-            { id: "enunciado", definicion: "Unidad mínima de sentido completo.", patrones: [] },
-            { id: "declarativo", definicion: "Que afirma la existencia o realidad de algo.", patrones: [] },
-            { id: "soporte", definicion: "Elemento (dato, premisa, inferencia) que justifica la validez de otro. Su presencia es evidencia de integridad, no una infracción.", patrones: ["porque", "ya que", "dado que"], polaridad: "mitigador" },
-            { id: "logico", definicion: "Relación de necesidad entre una base y su consecuencia.", patrones: ["si... entonces", "implica", "conlleva"], polaridad: "mitigador" },
-            { id: "afirmacion_sin_respaldo", definicion: "Enunciado presentado con máxima certeza sin ningún marcador de soporte en la misma oración.", patrones: ["obviamente", "es un hecho que", "claramente es", "por supuesto es"], polaridad: "riesgo" }
-          ],
-          severidad: 12.5,
-          alcanceMitigacion: "oracion",
-          modoMitigacion: "anula"
-        }
-      ]
-    },
-    {
-      id: "fase2",
-      nombre: "Inferencia",
-      descripcion: "Ingeniería de la derivación argumentativa.",
-      criterios: [
-        {
-          id: "2.1",
-          nombre: "Suficiencia Inferencial",
-          constructo: "Escalamiento Inferencial",
-          definicion: "Medir si la conclusión es proporcional a la magnitud de las premisas.",
-          atomos: [
-            { id: "conclusion", definicion: "Resultado final derivado de un proceso de razonamiento.", patrones: ["en conclusión", "por lo tanto", "así pues"] },
-            { id: "magnitud", definicion: "Alcance cuantitativo o cualitativo de la afirmación (particular vs. universal).", patrones: ["todos", "siempre", "nunca", "nadie"] },
-            { id: "premisas", definicion: "Enunciados base tomados como ciertos para derivar la conclusión.", patrones: [] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "2.2",
-          nombre: "Causalidad Rigurosa",
-          constructo: "Nexo Causal",
-          definicion: "Diferenciar la correlación estadística de la causalidad demostrada.",
-          logica: "conflacion_causal",
-          atomos: [
-            { id: "correlacion", definicion: "Observación de dos variables que fluctúan simultáneamente.", patrones: ["correlación", "asociación", "relación"], polaridad: "riesgo" },
-            { id: "causalidad", definicion: "Nexo necesario donde un evento (causa) produce mecánicamente otro (efecto).", patrones: ["causa", "provoca", "genera", "desencadena"], polaridad: "riesgo" },
-            { id: "disclaimer", definicion: "Advertencia explícita de que la correlación no implica causalidad.", patrones: ["correlación no implica causalidad", "no necesariamente causal", "no implica causalidad"], polaridad: "mitigador" }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "2.3",
-          nombre: "Proporcionalidad Generalizadora",
-          constructo: "Generalización Justificada",
-          definicion: "Evitar que una anécdota se convierta en una regla universal.",
-          atomos: [
-            { id: "anecdota", definicion: "Registro de un caso singular o no representativo.", patrones: ["por ejemplo", "como en el caso de", "una vez"] },
-            { id: "regla", definicion: "Afirmación que pretende validez para todos los casos de un conjunto.", patrones: ["siempre", "nunca", "todos", "ninguno"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "2.4",
-          nombre: "Inmunidad a Petición de Principio",
-          constructo: "Circularidad Lógica",
-          definicion: "Detectar la circularidad cuando la asunción es la misma conclusión.",
-          logica: "peticion_de_principio",
-          atomos: [
-            { id: "circularidad", definicion: "Estructura donde la cláusula introducida por 'porque/ya que/dado que' repite el contenido de la cláusula que justifica (no el mero uso del conector).", patrones: ["porque", "ya que", "dado que"], polaridad: "riesgo" },
-            { id: "asuncion", definicion: "Premisa no demostrada que se introduce como base del razonamiento.", patrones: ["asumiendo", "suponiendo", "dando por sentado"], polaridad: "riesgo" }
-          ],
-          severidad: 25.0
-        }
-      ]
-    },
-    {
-      id: "fase3",
-      nombre: "Calibración Epistémica",
-      descripcion: "Relación con el conocimiento y la evidencia.",
-      criterios: [
-        {
-          id: "3.1",
-          nombre: "Trazabilidad de la Evidencia",
-          constructo: "Anclaje Empírico",
-          definicion: "Identificar el origen y la verificabilidad de los datos.",
-          logica: "dato_sin_fuente",
-          atomos: [
-            { id: "origen", definicion: "Fuente documental o empírica de la información. Citar nunca es una infracción.", patrones: ["según", "fuente", "estudio", "informe"], polaridad: "mitigador" },
-            { id: "verificabilidad", definicion: "Capacidad de comprobar la información mediante una fuente externa.", patrones: ["verificable", "comprobable", "contrastable"], polaridad: "mitigador" },
-            { id: "datos", definicion: "Cifras, hechos o registros utilizados como evidencia; riesgo solo si no hay fuente en la misma oración.", patrones: ["%", "dato", "cifra", "número"], polaridad: "riesgo" }
-          ],
-          severidad: 12.5,
-          alcanceMitigacion: "oracion",
-          modoMitigacion: "anula"
-        },
-        {
-          id: "3.2",
-          nombre: "Declaración de Incertidumbre",
-          constructo: "Honestidad Epistémica",
-          definicion: "Comparar el matiz del lenguaje con la certeza de la afirmación.",
-          atomos: [
-            { id: "matiz", definicion: "Modificador probabilístico; nunca es, por sí mismo, una infracción.", patrones: ["probablemente", "posiblemente", "quizás", "tal vez"], polaridad: "neutral" },
-            { id: "lenguaje", definicion: "El conjunto de palabras elegidas para expresar la postura.", patrones: [] },
-            { id: "certeza", definicion: "Afirmación categórica; riesgo solo cuando no hay respaldo en la misma oración.", patrones: ["es seguro", "indudablemente", "sin duda", "claramente"], polaridad: "riesgo" },
-            { id: "respaldo", definicion: "Marcador de fuente que justifica una afirmación categórica.", patrones: ["según", "estudio", "la evidencia indica", "los datos muestran"], polaridad: "mitigador" }
-          ],
-          severidad: 12.5,
-          alcanceMitigacion: "oracion",
-          modoMitigacion: "anula"
-        },
-        {
-          id: "3.3",
-          nombre: "Delimitación Hecho-Valor",
-          constructo: "Distinción Epistémica",
-          definicion: "Distinguir claramente el hecho empírico del juicio moral.",
-          atomos: [
-            { id: "hecho", definicion: "Verbos demasiado genéricos para funcionar como indicador; se mantiene solo como referencia, no penaliza.", patrones: ["es", "está", "existe"], polaridad: "neutral" },
-            { id: "juicio", definicion: "Valoración subjetiva; riesgo solo si se presenta sin marcador de subjetividad en la misma oración.", patrones: ["bueno", "malo", "justo", "injusto", "debería"], polaridad: "riesgo" },
-            { id: "marcador_subjetivo", definicion: "Señal explícita de que el hablante enmarca el juicio como opinión propia, no como hecho.", patrones: ["opino", "considero", "en mi opinión", "me parece", "para mí", "creo que"], polaridad: "mitigador" }
-          ],
-          severidad: 12.5,
-          alcanceMitigacion: "oracion",
-          modoMitigacion: "anula"
-        },
-        {
-          id: "3.4",
-          nombre: "Completitud del Contexto",
-          constructo: "Integridad Contextual",
-          definicion: "Auditar la omisión de variables críticas en el entorno del dato. Retirado de la Capa 1: detectar una omisión requiere comprender qué variable *debería* estar y no está — eso excede lo que un escaneo léxico puede determinar. Delegado a la Capa 3 (revisión semántica). El criterio permanece visible pero no penaliza en la Beta.",
-          atomos: [
-            { id: "variables", definicion: "Elementos que afectan el comportamiento o lectura de un dato. Mencionarlos es buena práctica, nunca una infracción.", patrones: ["variable", "factor", "condición"], polaridad: "neutral" },
-            { id: "entorno", definicion: "Situación, época o circunstancias que rodean al dato. Mencionarlas es buena práctica, nunca una infracción.", patrones: ["contexto", "entorno", "circunstancia"], polaridad: "neutral" }
-          ],
-          severidad: 12.5
-        }
-      ]
-    },
-    {
-      id: "fase4",
-      nombre: "Transparencia Retórica",
-      descripcion: "Limpieza y honestidad comunicativa.",
-      criterios: [
-        {
-          id: "4.1",
-          nombre: "Representación Justa (Steelman)",
-          constructo: "Alteridad Cognitiva",
-          definicion: "Evaluar si el argumento contrario es tratado de forma robusta.",
-          atomos: [
-            { id: "argumento", definicion: "Palabra demasiado genérica para funcionar como indicador; se mantiene solo como referencia, no penaliza.", patrones: ["argumento", "razón", "tesis"], polaridad: "neutral" },
-            { id: "contrario", definicion: "Postura disidente a la del emisor; riesgo solo si nunca se la describe con fuerza (steelman ausente en todo el texto).", patrones: ["contrario", "opositor", "crítico", "disidente"], polaridad: "riesgo" },
-            { id: "robusta", definicion: "Versión que conserva toda la fuerza lógica de la postura opuesta. Su presencia es la señal de que sí hubo steelman, no una infracción.", patrones: ["fortaleza", "sólido", "robusto", "válido", "legítimo"], polaridad: "mitigador" }
-          ],
-          severidad: 12.5,
-          alcanceMitigacion: "texto",
-          modoMitigacion: "anula"
-        },
-        {
-          id: "4.2",
-          nombre: "Neutralidad Emocional",
-          constructo: "Sustitución Argumental por Activación Emocional",
-          definicion: "Identificar adjetivos que cargan la intención del texto.",
-          atomos: [
-            { id: "adjetivos", definicion: "Modificadores que cualifican sustantivos con carga subjetiva.", patrones: ["terrible", "maravilloso", "horrible", "excelente", "lamentable"] },
-            { id: "intencion", definicion: "Propósito subyacente de manipular la reacción del lector.", patrones: ["manipulación", "engaño", "sesgo"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "4.3",
-          nombre: "Despersonalización del Debate",
-          constructo: "Separación Identidad-Argumento",
-          definicion: "Separar la identidad del emisor del argumento presentado.",
-          atomos: [
-            { id: "identidad", definicion: "Pronombres demasiado genéricos para funcionar como indicador por sí solos; no penalizan por su mera presencia.", patrones: ["yo", "mi", "nuestro", "ellos"], polaridad: "neutral" },
-            { id: "argumento", definicion: "Estructura racional que debe sostenerse por sí misma.", patrones: [] },
-            { id: "descalificacion", definicion: "Ataque a la identidad del emisor contrario en lugar de a su argumento (ad hominem).", patrones: ["esa gente", "típico de", "no me sorprende viniendo de", "esos son"], polaridad: "riesgo" }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "4.4",
-          nombre: "Claridad Denotativa",
-          constructo: "Precisión Léxica",
-          definicion: "Detectar el uso de palabras ambiguas sin definición operacional. Usar el concepto nunca es la infracción. Retirado de la penalización de la Capa 1: decidir si un término se usó de forma genuinamente ambigua (y no solo que pertenece a una lista de palabras 'sensibles') requiere comprensión semántica del contexto, no un escaneo léxico. Delegado a la Capa 3. El criterio permanece visible pero no penaliza en la Beta.",
-          atomos: [
-            { id: "palabras", definicion: "Unidades léxicas usadas para transmitir conceptos.", patrones: [] },
-            { id: "ambiguas", definicion: "Términos que admiten múltiples interpretaciones (ej: 'justo', 'bueno'). Usarlos nunca es, por sí solo, una infracción.", patrones: ["justo", "bueno", "libertad", "democracia", "igualdad"], polaridad: "neutral" },
-            { id: "definido", definicion: "Marcador explícito de que el término fue definido operacionalmente en el texto.", patrones: ["entiendo por", "me refiero a", "en el sentido de", "definido como", "que significa"], polaridad: "neutral" }
-          ],
-          severidad: 12.5
-        }
-      ]
-    },
-    {
-      id: "fase5",
-      nombre: "Pertinencia Deliberativa",
-      descripcion: "Valor cívico y utilidad pública.",
-      criterios: [
-        {
-          id: "5.1",
-          nombre: "Focalización Temática",
-          constructo: "Relevancia Central",
-          definicion: "Evitar que una tangente desvíe el núcleo del debate.",
-          atomos: [
-            { id: "tangente", definicion: "Tema introducido que no altera lógicamente la conclusión del núcleo.", patrones: ["digresión", "tangente", "fuera de tema"], polaridad: "riesgo" },
-            { id: "nucleo", definicion: "El problema central reafirmado explícitamente. Nombrar el núcleo mitiga la sospecha de tangente, no la agrava.", patrones: ["objeto", "propósito", "tema central"], polaridad: "mitigador" }
-          ],
-          severidad: 12.5,
-          alcanceMitigacion: "texto",
-          modoMitigacion: "reduce"
-        },
-        {
-          id: "5.2",
-          nombre: "Responsabilidad Constructiva",
-          constructo: "Aportación Propositiva",
-          definicion: "Garantizar que toda crítica incluya una propuesta alternativa.",
-          atomos: [
-            { id: "critica", definicion: "Señalamiento de un error o falla en el argumento ajeno.", patrones: ["crítica", "objeción", "pero"], polaridad: "riesgo" },
-            { id: "propuesta", definicion: "Aporte de una visión, solución o vía de acción nueva. Su presencia es la conducta deseada, nunca una infracción.", patrones: ["propongo", "sugiero", "alternativa", "solución"], polaridad: "mitigador" }
-          ],
-          severidad: 12.5,
-          alcanceMitigacion: "texto",
-          modoMitigacion: "anula"
-        },
-        {
-          id: "5.3",
-          nombre: "Universalidad (Simetría)",
-          constructo: "Equidad Epistémica",
-          definicion: "Aplicar el mismo estándar de prueba para ambos lados.",
-          atomos: [
-            { id: "estandar", definicion: "Nivel de exigencia requerido para aceptar una evidencia.", patrones: ["estándar", "criterio", "exigencia"] },
-            { id: "prueba", definicion: "Elemento de juicio que sostiene una afirmación.", patrones: ["prueba", "evidencia", "demostración"] },
-            { id: "pluralidad", definicion: "Reconocimiento de la diversidad de enfoques metodológicos legítimos.", patrones: ["pluralidad", "diversidad", "múltiples perspectivas"] }
-          ],
-          severidad: 12.5
-        },
-        {
-          id: "5.4",
-          nombre: "Falsabilidad",
-          constructo: "Refutabilidad",
-          definicion: "Exponer el argumento a la evidencia refutadora. El riesgo real no es mencionar contraejemplos: es blindarse contra ellos.",
-          atomos: [
-            { id: "evidencia", definicion: "Mencionar contraejemplos u objeciones es exponerse a refutación: mitiga, no penaliza.", patrones: ["contraejemplo", "refutación", "objeción"], polaridad: "mitigador" },
-            { id: "refutadora", definicion: "Admitir que el argumento podría ser refutado es la conducta deseada: mitiga, no penaliza.", patrones: ["refutar", "falsear", "desmentir"], polaridad: "mitigador" },
-            { id: "blindaje", definicion: "Lenguaje que cierra explícitamente la puerta a cualquier objeción posible.", patrones: ["innegable", "indiscutible", "no admite objeción", "fuera de discusión", "hecho incuestionable"], polaridad: "riesgo" }
-          ],
-          severidad: 25.0,
-          alcanceMitigacion: "texto",
-          modoMitigacion: "anula"
-        }
-      ]
-    }
-  ]
+// ─── METADATOS DE LAS 5 FASES Y 20 CRITERIOS ───────────
+// Los nombres de fase/criterio son estables (parte del protocolo público),
+// por eso se declaran aquí. Las DEFINICIONES de cada átomo, en cambio,
+// NUNCA se copian a mano: se leen en vivo de window.SophiaEngineV4.ATOM_DICTIONARY
+// más abajo (getSophiaGlosario), para que la documentación no pueda
+// desincronizarse del motor real — que es justamente lo que pasó con el
+// motor v3.0 legacy (48, luego 62 átomos, mientras producción usaba 20).
+const FASE_NOMBRE = {
+  fase1: 'Estructura Lógica', fase2: 'Inferencia', fase3: 'Calibración Epistémica',
+  fase4: 'Transparencia Retórica', fase5: 'Pertinencia Deliberativa'
+};
+const FASE_DESCRIPCION = {
+  fase1: 'Integridad de la arquitectura base del argumento: ¿las piezas del razonamiento son compatibles entre sí?',
+  fase2: 'Ingeniería de la derivación argumentativa: ¿la conclusión se sigue realmente de las premisas, sin saltos ni atajos?',
+  fase3: 'Relación con el conocimiento y la evidencia: ¿el nivel de certeza expresado es proporcional al respaldo presentado?',
+  fase4: 'Limpieza y honestidad comunicativa: ¿el lenguaje persuade con razones o sustituye la razón por otra cosa?',
+  fase5: 'Valor cívico y utilidad pública: ¿el texto aporta a una deliberación colectiva en vez de desviarla?'
+};
+const CRITERIO_NOMBRE = {
+  '1.1': 'No Contradicción', '1.2': 'Continuidad Semántica', '1.3': 'Ausencia de Falsas Dicotomías', '1.4': 'Integridad de las Premisas',
+  '2.1': 'Suficiencia Inferencial', '2.2': 'Causalidad Rigurosa', '2.3': 'Proporcionalidad Generalizadora', '2.4': 'Inmunidad a Petición de Principio',
+  '3.1': 'Trazabilidad de la Evidencia', '3.2': 'Declaración de Incertidumbre', '3.3': 'Delimitación Hecho-Valor', '3.4': 'Completitud del Contexto',
+  '4.1': 'Representación Justa (Steelman)', '4.2': 'Neutralidad Emocional', '4.3': 'Despersonalización del Debate', '4.4': 'Claridad Denotativa',
+  '5.1': 'Focalización Temática', '5.2': 'Responsabilidad Constructiva', '5.3': 'Universalidad (Simetría)', '5.4': 'Falsabilidad'
 };
 
-// ─── MECÁNICA DE CÁLCULO (completa) ──────────────────
-// ─── DETECCIÓN DE NEGACIÓN CONTEXTUAL ────────────────
-// Un patrón activado dentro del alcance de un negador no cuenta como
-// infracción: "no es cierto que todos..." no es lo mismo que "todos...".
-const NEGADORES = [
-  "no es cierto que", "no es verdad que", "no creo que", "niego que",
-  "nadie afirma que", "sería falso decir que", "no", "nunca", "jamás", "ni siquiera"
-];
-
-function estaNegado(oracionLower, patron, ventana = 5) {
-  const idx = oracionLower.indexOf(patron);
-  if (idx === -1) return false;
-  const antes = oracionLower.slice(Math.max(0, idx - 40), idx).trim();
-  const ultimasPalabras = antes.split(/\s+/).slice(-ventana).join(' ');
-  return NEGADORES.some(neg => ultimasPalabras.includes(neg));
+// ─── GLOSARIO EN VIVO: los 20 átomos de SophiaEngineV4 ─
+// Fuente única de verdad. Si SophiaEngineV4 no cargó, devuelve un
+// glosario vacío (las vistas lo manejan mostrando un aviso, nunca
+// datos inventados ni de un motor distinto).
+function getSophiaGlosario() {
+  const dict = (typeof window !== 'undefined' && window.SophiaEngineV4 && window.SophiaEngineV4.ATOM_DICTIONARY) || null;
+  if (!dict) return [];
+  return Object.keys(dict).map(id => {
+    const a = dict[id];
+    return {
+      id,
+      criterio: a.criterio,
+      nombreCriterio: CRITERIO_NOMBRE[a.criterio] || a.criterio,
+      fase: a.fase,
+      nombreFase: FASE_NOMBRE[a.fase] || a.fase,
+      definicion: a.definicion_base,
+      perfiles: a.perfiles || {}
+    };
+  }).sort((x, y) => x.criterio.localeCompare(y.criterio));
 }
 
-// ─── MOTOR GENÉRICO: riesgo / mitigador / neutral ────
-// Reemplaza la vieja regla única "patrón encontrado → penaliza" por:
-//   detección → polaridad → alcance de mitigación → puntuación
-// polaridad: 'riesgo' (penaliza), 'mitigador' (reduce/anula riesgo), 'neutral' (nunca penaliza, solo se registra)
-// alcanceMitigacion: 'oracion' (el mitigador debe estar en la misma oración que el riesgo) | 'texto' (basta con que esté en cualquier parte)
-// modoMitigacion: 'anula' (penalización → 0) | 'reduce' (penalización → 30% de su valor)
-function evaluarCriterioGenerico(criterio, oraciones, resultados) {
-  const alcance = criterio.alcanceMitigacion || 'texto';
-  const modo = criterio.modoMitigacion || 'reduce';
-
-  let riesgos = [];       // { idx, atomo, oracion }
-  let idxMitigadores = new Set();
-  let hayMitigadorEnTexto = false;
-
-  criterio.atomos.forEach(atom => {
-    if (!atom.patrones || atom.patrones.length === 0) return;
-    const patrones_unicos = [...new Set(atom.patrones)];
-    const polaridad = atom.polaridad || 'riesgo';
-
-    oraciones.forEach((ora, idx) => {
-      const lower = ora.toLowerCase();
-      const patronActivo = patrones_unicos.find(p => lower.includes(p) && !estaNegado(lower, p));
-      if (!patronActivo) return;
-
-      resultados.debug_scan.push({ criterio: criterio.id, atomo: atom.id, polaridad, oracion: ora.trim() });
-
-      if (polaridad === 'mitigador') {
-        idxMitigadores.add(idx);
-        hayMitigadorEnTexto = true;
-      } else if (polaridad === 'riesgo') {
-        riesgos.push({ idx, atomo: atom.id, oracion: ora.trim() });
-      }
-      // 'neutral': ya quedó registrado en debug_scan, nunca penaliza.
-    });
-  });
-
-  // Filtra los riesgos mitigados según el alcance del criterio
-  const riesgosEfectivos = riesgos.filter(r => {
-    if (alcance === 'oracion') return !idxMitigadores.has(r.idx);
-    return true; // en alcance 'texto' se aplica un factor global más abajo
-  });
-
-  const frecuenciaPorAtomo = {};
-  riesgosEfectivos.forEach(r => {
-    frecuenciaPorAtomo[r.atomo] = (frecuenciaPorAtomo[r.atomo] || 0) + 1;
-    if (!resultados.evidencias.some(e => e.atomo === r.atomo && e.criterio === criterio.id)) {
-      resultados.evidencias.push({ atomo: r.atomo, fragmento: r.oracion, criterio: criterio.id });
-    }
-  });
-
-  const atomos_activados = Object.entries(frecuenciaPorAtomo).map(([atomo, frecuencia]) => {
-    const frecuenciaEfectiva = Math.min(frecuencia, 3); // tope: evita que la repetición infle el puntaje
-    return { atomo, frecuencia: frecuenciaEfectiva, severidad: criterio.severidad };
-  });
-
-  let penalizacion = atomos_activados.reduce((acc, a) => acc + criterio.severidad * a.frecuencia, 0);
-
-  let mitigado = false;
-  if (alcance === 'texto' && hayMitigadorEnTexto && penalizacion > 0) {
-    penalizacion = modo === 'anula' ? 0 : penalizacion * 0.3;
-    mitigado = true;
-  } else if (alcance === 'oracion' && riesgos.length > riesgosEfectivos.length) {
-    mitigado = true; // parte de los riesgos ya se filtró arriba (modo 'anula' por oración)
-    if (modo === 'reduce') {
-      // los riesgos no filtrados por no compartir oración con un mitigador se atenúan igual
-      penalizacion = penalizacion * 0.3;
-    }
-  }
-
-  penalizacion = Math.min(penalizacion, 25);
-  return { penalizacion, atomos_activados, mitigado };
+// ─── BANNER BETA (reutilizable) ────────────────────────
+// SOPHIA está en período de prueba: tanto el motor determinista como
+// las capas semánticas se siguen calibrando. Se muestra en las vistas
+// documentales para que nadie confunda "resultado actual" con "versión
+// final del instrumento".
+function renderBetaBanner() {
+  return `
+    <div style="display:flex; align-items:center; gap:8px; background:rgba(217,119,6,.08); border:1px solid rgba(217,119,6,.3); padding:8px 12px; border-radius:4px; margin-bottom:16px; font-size:.72rem; color:#d97706;">
+      <strong>BETA</strong>
+      <span style="color:rgba(229,231,235,.6);">SOPHIA está en período de prueba. El motor determinista y las capas semánticas se siguen calibrando — los criterios, severidades y ejemplos de esta página pueden cambiar.</span>
+    </div>`;
 }
 
-// ─── LÓGICA RELACIONAL: 2.2 Conflación Causal ────────
-// El riesgo no es mencionar "correlación" o "causa" por separado: es que
-// ambas aparezcan en la MISMA oración (sugiriendo que se están fusionando).
-// Un descargo explícito en cualquier parte del texto anula la penalización.
-function evaluarConflacionCausal(criterio, oraciones, resultados) {
-  const atomCorr = criterio.atomos.find(a => a.id === 'correlacion');
-  const atomCausa = criterio.atomos.find(a => a.id === 'causalidad');
-  const atomDisc = criterio.atomos.find(a => a.id === 'disclaimer');
-  const patronesCorr = [...new Set(atomCorr.patrones)];
-  const patronesCausa = [...new Set(atomCausa.patrones)];
-  const patronesDisc = [...new Set(atomDisc.patrones)];
-
-  let hayDisclaimer = false;
-  let conflaciones = [];
-
-  oraciones.forEach(ora => {
-    const lower = ora.toLowerCase();
-    if (patronesDisc.some(p => lower.includes(p))) hayDisclaimer = true;
-
-    const corrActiva = patronesCorr.find(p => lower.includes(p) && !estaNegado(lower, p));
-    const causaActiva = patronesCausa.find(p => lower.includes(p) && !estaNegado(lower, p));
-    if (corrActiva && causaActiva) {
-      conflaciones.push(ora.trim());
-      resultados.debug_scan.push({ criterio: criterio.id, atomo: 'conflacion', polaridad: 'riesgo', oracion: ora.trim() });
-    }
-  });
-
-  if (hayDisclaimer) {
-    resultados.debug_scan.push({ criterio: criterio.id, atomo: 'disclaimer', polaridad: 'mitigador', oracion: '(descargo detectado en el texto)' });
-  }
-
-  if (conflaciones.length === 0 || hayDisclaimer) {
-    return { penalizacion: 0, atomos_activados: [], mitigado: hayDisclaimer && conflaciones.length > 0 };
-  }
-
-  const frecuenciaEfectiva = Math.min(conflaciones.length, 3);
-  resultados.evidencias.push({ atomo: 'conflacion_causal', fragmento: conflaciones[0], criterio: criterio.id });
-  return {
-    penalizacion: Math.min(criterio.severidad * frecuenciaEfectiva, 25),
-    atomos_activados: [{ atomo: 'conflacion_causal', frecuencia: frecuenciaEfectiva, severidad: criterio.severidad }],
-    mitigado: false
-  };
-}
-
-// ─── LÓGICA RELACIONAL: 2.4 Petición de Principio ────
-// "porque/ya que/dado que" NO es el gatillo: lo es que la cláusula
-// posterior al conector repita (en gran medida) las mismas palabras de
-// contenido que la cláusula anterior — es decir, que la "razón" sea, en
-// el fondo, una repetición de lo que se quiere probar.
-const STOPWORDS_ES = new Set(["el","la","los","las","un","una","unos","unas","de","del","al","a","en","y","o","que","es","son","por","para","con","sin","no","se","su","sus","lo","le","les","como","más","muy","ya","este","esta","estos","estas","eso","esa","ese"]);
-
-function palabrasClave(fragmento) {
-  return fragmento
-    .toLowerCase()
-    .replace(/[^\p{L}\s]/gu, '')
-    .split(/\s+/)
-    .filter(w => w.length > 3 && !STOPWORDS_ES.has(w));
-}
-
-function detectaCircularidadEnOracion(oracion) {
-  const conectores = ["porque", "ya que", "dado que"];
-  const lower = oracion.toLowerCase();
-  for (const conector of conectores) {
-    const idx = lower.indexOf(conector);
-    if (idx === -1) continue;
-    const antes = oracion.slice(0, idx);
-    const despues = oracion.slice(idx + conector.length);
-    const clavesAntes = new Set(palabrasClave(antes));
-    const clavesDespues = palabrasClave(despues);
-    const solapadas = clavesDespues.filter(w => clavesAntes.has(w));
-    if (solapadas.length > 0) return { circular: true, solapadas };
-  }
-  return { circular: false };
-}
-
-function evaluarPeticionDePrincipio(criterio, oraciones, resultados) {
-  const atomAsuncion = criterio.atomos.find(a => a.id === 'asuncion');
-  const patronesAsuncion = [...new Set(atomAsuncion.patrones)];
-
-  let circulares = [];
-  let asunciones = [];
-
-  oraciones.forEach(ora => {
-    const { circular } = detectaCircularidadEnOracion(ora);
-    if (circular) {
-      circulares.push(ora.trim());
-      resultados.debug_scan.push({ criterio: criterio.id, atomo: 'circularidad', polaridad: 'riesgo', oracion: ora.trim() });
-    }
-    const lower = ora.toLowerCase();
-    if (patronesAsuncion.some(p => lower.includes(p) && !estaNegado(lower, p))) {
-      asunciones.push(ora.trim());
-      resultados.debug_scan.push({ criterio: criterio.id, atomo: 'asuncion', polaridad: 'riesgo', oracion: ora.trim() });
-    }
-  });
-
-  const atomos_activados = [];
-  let penalizacion = 0;
-  if (circulares.length > 0) {
-    const frecuencia = Math.min(circulares.length, 3);
-    atomos_activados.push({ atomo: 'circularidad', frecuencia, severidad: criterio.severidad });
-    penalizacion += criterio.severidad * frecuencia;
-    resultados.evidencias.push({ atomo: 'circularidad', fragmento: circulares[0], criterio: criterio.id });
-  }
-  if (asunciones.length > 0) {
-    const frecuencia = Math.min(asunciones.length, 3);
-    atomos_activados.push({ atomo: 'asuncion', frecuencia, severidad: criterio.severidad });
-    penalizacion += criterio.severidad * frecuencia;
-    resultados.evidencias.push({ atomo: 'asuncion', fragmento: asunciones[0], criterio: criterio.id });
-  }
-
-  return { penalizacion: Math.min(penalizacion, 25), atomos_activados, mitigado: false };
-}
-
-// Registro de lógicas especiales: criterios cuya definición requiere una
-// relación entre átomos (co-ocurrencia, solapamiento léxico) y no se
-// resuelven con el modelo genérico riesgo/mitigador.
-const LOGICAS_ESPECIALES = {
-  'conflacion_causal': evaluarConflacionCausal,
-  'peticion_de_principio': evaluarPeticionDePrincipio
-};
-
-// ─── ADAPTADOR DE MOTOR: v4.0 (contextual) con fallback a v3.0 ──
+// ─── MOTOR DETERMINISTA: SophiaEngineV4 (20 átomos, 1:1 por criterio) ──
+// El motor v3.0 legacy (PROTOCOL, 62 átomos) fue retirado por completo.
+// SOPHIA corre exclusivamente sobre SophiaEngineV4 — el único motor
+// determinista soportado a partir de esta versión Beta.
+// ─── ADAPTADOR DE MOTOR (solo SophiaEngineV4) ──
 // Prioriza SophiaEngineV4 (clasificación documental + perfiles
 // contextuales + rutas inferenciales). Si el script no cargó por
-// algún motivo, usa el motor v3.0 legacy para no dejar al usuario
-// sin evaluación — el mismo patrón de resiliencia que ya usamos
-// para la revisión semántica de Gemini.
+// El motor determinista de SOPHIA es exclusivamente SophiaEngineV4. Si no
+// está cargado o falla, SOPHIA lo dice honestamente en vez de sustituirlo
+// por un motor distinto y más pobre — eso fue justo lo que generaba
+// resultados inconsistentes en versiones anteriores (48/62 átomos vs 20).
 function evaluateWithBestAvailableEngine(text) {
   if (typeof window !== 'undefined' && window.SophiaEngineV4 && typeof window.SophiaEngineV4.evaluate === 'function') {
     try {
       const resultV4 = window.SophiaEngineV4.evaluate(text);
       if (resultV4) return resultV4;
     } catch (e) {
-      console.warn('⚠️ SophiaEngineV4 falló, usando motor v3.0 legacy:', e.message);
+      console.warn('⚠️ SophiaEngineV4 falló:', e.message);
+      return { motor_no_disponible: true, motivo: 'error', detalle: e.message, fases: [], evidencias: [], IRD_global: 0, riesgo: 'Desconocido' };
     }
-  } else {
-    console.warn('⚠️ SophiaEngineV4 no está cargado (falta <script src=".../sophiaEngineV4.js">). Usando motor v3.0 legacy.');
   }
-  return evaluateText(text);
+  console.warn('⚠️ SophiaEngineV4 no está cargado (falta <script src=".../sophiaEngineV4.js">).');
+  return { motor_no_disponible: true, motivo: 'no_cargado', fases: [], evidencias: [], IRD_global: 0, riesgo: 'Desconocido' };
 }
 
-function evaluateText(text) {
-  try {
-    if (!text || text.trim().length === 0) return null;
-
-    const oraciones = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
-    const resultados = {
-      fases: [],
-      evidencias: [],
-      puntajes_fase: {},
-      IRD_global: 0,
-      riesgo: "Normal",
-      debug_scan: []       // registro auditable de qué se detectó y con qué polaridad, se haya penalizado o no
-    };
-
-    let nivel3_count = 0;
-
-    PROTOCOL.fases.forEach(fase => {
-      let penalizacion_fase = 0;
-      let infracciones_fase = [];
-
-      fase.criterios.forEach(criterio => {
-        const logicaEspecial = criterio.logica && LOGICAS_ESPECIALES[criterio.logica];
-        const resultado = logicaEspecial
-          ? logicaEspecial(criterio, oraciones, resultados)
-          : evaluarCriterioGenerico(criterio, oraciones, resultados);
-
-        const penalizacion_criterio = resultado.penalizacion;
-        const atomos_activados = resultado.atomos_activados;
-
-        if (penalizacion_criterio > 0) {
-          infracciones_fase.push({
-            criterio: `${criterio.id} - ${criterio.nombre}`,
-            constructo: criterio.constructo,
-            penalizacion: penalizacion_criterio,
-            atomos_activados,
-            mitigado_parcialmente: resultado.mitigado || false
-          });
-          penalizacion_fase += penalizacion_criterio;
-          if (penalizacion_criterio === 25) nivel3_count++;
-        }
-      });
-
-      // Meta-regla MR-001: mitigación por incertidumbre
-      if (fase.id === "fase4" && resultados.puntajes_fase["fase3"] && resultados.puntajes_fase["fase3"] > 80) {
-        const infra42 = infracciones_fase.find(inf => inf.criterio.startsWith("4.2"));
-        if (infra42) {
-          infra42.penalizacion = infra42.penalizacion * 0.5;
-          infra42.meta_regla_aplicada = "MR-001 (Mitigación por Incertidumbre)";
-          penalizacion_fase = infracciones_fase.reduce((acc, inf) => acc + inf.penalizacion, 0);
-        }
-      }
-
-      let puntaje_fase = Math.max(0, 100 - penalizacion_fase);
-      if (infracciones_fase.length === 0) puntaje_fase = 100;
-      resultados.puntajes_fase[fase.id] = Math.round(puntaje_fase);
-      resultados.fases.push({
-        id: fase.id,
-        nombre: fase.nombre,
-        puntaje: Math.round(puntaje_fase),
-        infracciones: infracciones_fase
-      });
-    });
-
-    const puntajes = Object.values(resultados.puntajes_fase);
-    const ird = puntajes.reduce((a, b) => a + b, 0) / puntajes.length;
-    resultados.IRD_global = Math.round(ird);
-
-    if (nivel3_count >= 4) resultados.riesgo = "Riesgo Extremo";
-    else if (nivel3_count >= 3) resultados.riesgo = "Alta Fragilidad";
-    else if (nivel3_count >= 2) resultados.riesgo = "Atención";
-    else resultados.riesgo = "Normal";
-
-    return resultados;
-  } catch (e) {
-    showDebug(`❌ Error en evaluateText: ${e.message}\n\n${e.stack}`, true);
-    return null;
-  }
-}
-
-// ─── VPA — VALE LA PENA PRESTAR ATENCIÓN ──────────────
 // No es una fórmula nueva: es una relectura de los mismos datos que ya
 // produce la Capa 1 (fases[].infracciones). IRD_global seguía siendo el
 // promedio de puntaje_fase; VPA cuenta cuántos hallazgos reales quedaron
@@ -693,6 +158,24 @@ function sanitizeVPALanguage(texto, vpaConteo) {
 // Esta función unifica ambas en un solo objeto para el render.
 function normalizeSophiaResult(raw) {
   if (!raw) return null;
+
+  // ─── Motor no disponible ─────────────────────────────
+  // evaluateWithBestAvailableEngine puede devolver este estado si
+  // SophiaEngineV4 no cargó o falló. Es distinto de "evaluó y no
+  // encontró nada": VPA:0 real significa "sin puntos de atención",
+  // esto significa "no se pudo evaluar". Nunca se deben mostrar igual.
+  if (raw.motor_no_disponible) {
+    return {
+      motor_no_disponible: true,
+      motivo: raw.motivo,
+      detalle: raw.detalle,
+      fases: [],
+      evidencias: [],
+      IRD_global: null,
+      vpa: null,
+      riesgo: null
+    };
+  }
 
   // ─── Forma híbrida / caché MongoDB ──────────────────
   // El backend puede entregar:
@@ -824,11 +307,12 @@ function normalizeSophiaResult(raw) {
 
 // ─── VERSIÓN DEL PROTOCOLO (dinámica) ──────────────────
 // Se actualiza con metadata.module_versions.protocol tras cada evaluación
-// contra el backend. Si aún no hubo ninguna evaluación, cae al PROTOCOL.version
-// local (legacy) definido arriba. Nunca queda un número escrito a mano.
+// contra el backend. Si aún no hubo ninguna evaluación, cae a la versión
+// que declara SophiaEngineV4. Nunca queda un número escrito a mano.
 let SOPHIA_BACKEND_VERSION = null;
 function getSophiaVersion() {
-  return SOPHIA_BACKEND_VERSION || (PROTOCOL && PROTOCOL.version) || '4.0';
+  const v4Version = (typeof window !== 'undefined' && window.SophiaEngineV4 && window.SophiaEngineV4.version) || null;
+  return SOPHIA_BACKEND_VERSION || v4Version || '4.0';
 }
 
 // ─── SISTEMA DE POPUPS ─────────────────────────────────
@@ -858,37 +342,61 @@ function showDefinitionPopup(title, definition) {
 // ─── RENDER DE FASES ─────────────────────────────────────
 function renderFase(faseId) {
   try {
-    const fase = PROTOCOL.fases.find(f => f.id === faseId);
-    if (!fase) return "<p>Fase no encontrada.</p>";
+    const glosario = getSophiaGlosario();
+    if (glosario.length === 0) {
+      return `
+        <div class="view">
+          <div class="view-eyebrow">${FASE_NOMBRE[faseId] || faseId}</div>
+          <h1 class="view-title">Motor no disponible</h1>
+          <div class="view-body">
+            <p>Esta página describe los criterios de SophiaEngineV4, el motor determinista de SOPHIA. No se pudo cargar (<code>window.SophiaEngineV4</code> no está disponible), así que no hay datos reales que mostrar. Intenta recargar la página.</p>
+          </div>
+        </div>`;
+    }
+    const atomosDeFase = glosario.filter(a => a.fase === faseId).sort((x, y) => x.criterio.localeCompare(y.criterio));
+    if (atomosDeFase.length === 0) return "<p>Fase no encontrada.</p>";
+
+    const PERFIL_NOMBRE = { SC: 'Texto científico/técnico', ARG: 'Ensayo argumentativo', POL: 'Discurso político/deliberativo', INF: 'Texto informativo', NORM: 'Texto normativo/propositivo' };
+
     return `
       <div class="view">
-        <div class="view-eyebrow">Fase ${faseId.charAt(faseId.length-1)} del Protocolo</div>
-        <h1 class="view-title">${fase.nombre}</h1>
+        ${renderBetaBanner()}
+        <div class="view-eyebrow">Fase ${faseId.charAt(faseId.length - 1)} del Protocolo · SophiaEngineV4</div>
+        <h1 class="view-title">${FASE_NOMBRE[faseId]}</h1>
         <div class="view-body">
-          <p>${fase.descripcion}</p>
-          <p><strong>Constructos clave:</strong> ${fase.criterios.map(c => c.constructo).join(' • ')}</p>
+          <p>${FASE_DESCRIPCION[faseId]}</p>
+          <p style="font-size:.78rem; color:rgba(229,231,235,.55);">Esta fase agrupa 4 criterios. Cada criterio corresponde a exactamente <strong>un átomo cognitivo</strong> — SOPHIA no le pone una nota a cada uno: los usa para identificar <strong>puntos de atención (VPA)</strong> que vale la pena que revises con más cuidado, no errores confirmados.</p>
         </div>
         <div class="view-section">
-          <div class="view-section-title">Criterios y Átomos</div>
-          ${fase.criterios.map(c => `
+          <div class="view-section-title">Criterios y su átomo</div>
+          ${atomosDeFase.map(a => {
+            const perfiles = Object.keys(a.perfiles);
+            return `
             <div style="margin-bottom: 20px; background: var(--s-panel); padding: 14px; border-left: 2px solid var(--accent);">
               <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-weight: 500; color: #e5e7eb;">${c.id} — ${c.nombre}</span>
-                <span style="font-size: 0.7rem; color: rgba(229,231,235,.4);">Severidad: ${c.severidad}</span>
+                <span style="font-weight: 500; color: #e5e7eb;">${a.criterio} — ${a.nombreCriterio}</span>
+                <span style="font-size: 0.7rem; color: rgba(229,231,235,.4); cursor:pointer;" data-atomo="${a.id}">${a.id}</span>
               </div>
-              <div style="font-size: 0.8rem; color: rgba(229,231,235,.5); margin: 6px 0;">${c.definicion}</div>
-              <div style="font-size: 0.7rem; color: rgba(229,231,235,.35);">
-                Constructo: <strong style="color: var(--accent); cursor: pointer;" data-constructo="${c.constructo}">${c.constructo}</strong>
+              <div style="font-size: 0.8rem; color: rgba(229,231,235,.6); margin: 8px 0;">${a.definicion}</div>
+              <div style="font-size: 0.72rem; color: rgba(229,231,235,.4); margin-bottom: 8px;">
+                SOPHIA lee este átomo distinto según el tipo de documento (${perfiles.length} perfil${perfiles.length === 1 ? '' : 'es'} definido${perfiles.length === 1 ? '' : 's'}) — lo que cuenta como señal de riesgo en un texto científico no es lo mismo que en un discurso político.
               </div>
-              <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
-                ${c.atomos.map(a => `
-                  <span style="background: rgba(59,130,246,.12); padding: 2px 8px; border-radius: 12px; font-size: 0.6rem; color: #d97706; cursor: pointer;" data-atomo="${a.id}">
-                    ${a.id}
-                  </span>
-                `).join('')}
-              </div>
+              ${perfiles.map(p => {
+                const perfil = a.perfiles[p];
+                return `
+                <div style="background:rgba(255,255,255,.02); border:1px solid var(--s-border); padding:10px 12px; margin-bottom:8px; border-radius:4px;">
+                  <div style="display:flex; justify-content:space-between; font-size:.68rem; color:var(--accent); margin-bottom:4px;">
+                    <span><strong>${PERFIL_NOMBRE[p] || p}</strong></span>
+                    <span style="color:rgba(229,231,235,.4);">severidad base: ${perfil.severidad_base}</span>
+                  </div>
+                  <div style="font-size:.75rem; color:rgba(229,231,235,.65); margin-bottom:6px;">${perfil.definicion_contextual}</div>
+                  ${perfil.indicadores && perfil.indicadores.length ? `<div style="font-size:.68rem; margin-bottom:3px;"><span style="color:#ef4444;">Indicadores (riesgo):</span> <span style="color:rgba(229,231,235,.5);">${perfil.indicadores.map(i => `"${i}"`).join(', ')}</span></div>` : ''}
+                  ${perfil.contraindicadores && perfil.contraindicadores.length ? `<div style="font-size:.68rem; margin-bottom:3px;"><span style="color:#22c55e;">Contraindicadores (mitigan):</span> <span style="color:rgba(229,231,235,.5);">${perfil.contraindicadores.map(i => `"${i}"`).join(', ')}</span></div>` : ''}
+                  <div style="font-size:.65rem; color:rgba(229,231,235,.35);">Evidencia que lo resolvería: ${perfil.evidencia_esperada}</div>
+                </div>`;
+              }).join('')}
             </div>
-          `).join('')}
+          `;}).join('')}
         </div>
       </div>
     `;
@@ -1420,21 +928,22 @@ inicio: {
       try {
         return `
           <div class="view">
+            ${renderBetaBanner()}
             <div class="view-eyebrow">Instrumento de Pensamiento Crítico · v${getSophiaVersion()}</div>
             <h1 class="view-title">¿Qué es SOPHIA?</h1>
             <div class="view-body">
               <p>SOPHIA es una herramienta de inteligencia artificial diseñada para ayudarte a <strong>examinar tu propio razonamiento</strong>. No pretende decirte qué pensar ni decidir si tienes razón. Su propósito es hacer visible aquello que normalmente permanece oculto cuando razonamos: nuestras premisas, evidencias, inferencias, supuestos, niveles de confianza y posibles errores.</p>
               <p>SOPHIA reconstruye tu razonamiento y te permite recorrerlo paso a paso. Puedes ver qué detectó, qué evidencia utilizó, qué fue comprobado, qué permanece incierto y dónde podría incluso haberse equivocado el propio instrumento. Porque pensar críticamente no consiste solamente en encontrar errores en las ideas de los demás. También consiste en aprender a examinar las propias.</p>
-              <p>Su salida no es un veredicto, sino un <strong>mapa de razonamiento</strong> que muestra caminos sólidos, caminos inciertos, saltos, supuestos y zonas que requieren revisión. <strong>SOPHIA no piensa por ti. Te ayuda a mirar cómo estás pensando.</strong></p>
+              <p>Su salida no es un veredicto, sino un <strong>mapa de razonamiento</strong> que muestra caminos sólidos, caminos inciertos, saltos, supuestos y zonas que requieren revisión. <strong>SOPHIA no piensa por ti. Te ayuda a mirar cómo estás pensando.</strong> No usa una nota (VPA no es un porcentaje de calidad): cuenta cuántos puntos de atención concretos encontró para que examines.</p>
               <p><strong>Un instrumento abierto y auditable:</strong> SOPHIA no es una caja negra. Sus criterios, mecanismos de evaluación y límites están documentados y pueden ser examinados, discutidos y modificados. No tienes que creerle a SOPHIA; puedes examinar cómo llegó a lo que te está mostrando y cuestionar sus propias evaluaciones.</p>
             </div>
             <div class="view-section">
-              <div class="view-section-title">Las 5 Fases del Protocolo (Capa 1 · Motor Determinista)</div>
+              <div class="view-section-title">Las 5 Fases del Protocolo (Capa 1 · Motor Determinista — SophiaEngineV4)</div>
               <div class="card-grid">
-                ${PROTOCOL.fases.map(f => `
+                ${Object.keys(FASE_NOMBRE).map(faseId => `
                   <div class="s-card">
-                    <div class="s-card-title">${f.nombre}</div>
-                    <div class="s-card-body">${f.descripcion}</div>
+                    <div class="s-card-title">${FASE_NOMBRE[faseId]}</div>
+                    <div class="s-card-body">${FASE_DESCRIPCION[faseId]}</div>
                   </div>
                 `).join('')}
               </div>
@@ -1497,20 +1006,29 @@ inicio: {
       try {
         return `
           <div class="view">
+            ${renderBetaBanner()}
             <div class="view-eyebrow">Transparencia Radical</div>
             <h1 class="view-title">Open Source Cognitivo</h1>
             <div class="view-body">
-              <p>El <strong>Open Source Cognitivo</strong> es el principio fundacional de SOPHIA. Todo el conocimiento que utiliza el sistema para evaluar está documentado, es público y versionable.</p>
+              <p>El <strong>Open Source Cognitivo</strong> es el principio fundacional de SOPHIA. Todo el conocimiento que utiliza el sistema para evaluar está documentado, es público y versionable — no hay una "caja negra" que decida en secreto qué vale la pena examinar en tu texto.</p>
               <p>Esto incluye:</p>
               <ul style="color:rgba(229,231,235,.6); margin-left:20px; line-height:1.8;">
-                <li><strong>Las 5 fases</strong> y sus 20 criterios.</li>
-                <li><strong>Los 20 átomos cognitivos</strong> del motor de producción (uno por criterio, con su polaridad: riesgo, mitigador o neutral) con sus definiciones operacionales.</li>
-                <li><strong>Las reglas de interpretación</strong> que determinan cuándo un átomo genera, reduce o anula un punto de atención (VPA).</li>
-                <li><strong>Las meta‑reglas</strong> que contextualizan la evaluación.</li>
+                <li><strong>Las 5 fases</strong> y sus 20 criterios (ver <a data-view="fase1" style="color:var(--accent); cursor:pointer;">Estructura Lógica</a>, <a data-view="fase2" style="color:var(--accent); cursor:pointer;">Inferencia</a>, <a data-view="fase3" style="color:var(--accent); cursor:pointer;">Calibración Epistémica</a>, <a data-view="fase4" style="color:var(--accent); cursor:pointer;">Transparencia Retórica</a> y <a data-view="fase5" style="color:var(--accent); cursor:pointer;">Pertinencia Deliberativa</a>).</li>
+                <li><strong>Los 20 átomos cognitivos</strong> del motor de producción (uno por criterio) con sus indicadores y contraindicadores, distintos según el tipo de documento — ver <a data-view="atomos" style="color:var(--accent); cursor:pointer;">Átomos Cognitivos</a>.</li>
+                <li><strong>La mecánica de cálculo completa</strong> — severidad, relevancia, mitigación por contraindicador, ruta inferencial — en <a data-view="formula" style="color:var(--accent); cursor:pointer;">Fórmula de Cálculo</a>.</li>
               </ul>
-              <p><strong>¿Y el algoritmo de IA?</strong> No podemos explicitar completamente la implementación concreta que utiliza el modelo de lenguaje para detectar patrones, porque depende de la arquitectura del modelo y de su entrenamiento. <strong>Pero sí podemos explicitar todo lo que el modelo debe buscar</strong>: los patrones lingüísticos, los umbrales, las relaciones lógicas y las condiciones que activan cada átomo.</p>
-              <p>Esto garantiza que, aunque la IA tenga cierta libertad en la ejecución, el <strong>significado de cada evaluación</strong> es fijo y reproducible. Cualquier persona, con cualquier herramienta, puede replicar el mismo resultado aplicando las mismas reglas.</p>
-              <p>Es decir: <strong>el protocolo es determinista en su definición</strong>, aunque la implementación técnica pueda variar.</p>
+              <p><strong>¿Y el algoritmo de IA?</strong> No podemos explicitar completamente la implementación concreta que utiliza el modelo de lenguaje para la interpretación semántica (Capas 3 y 4), porque depende de la arquitectura del modelo y de su entrenamiento. <strong>Pero sí podemos explicitar todo lo que el motor determinista busca</strong>: los indicadores, los contraindicadores, las severidades y las condiciones que activan cada átomo — nada de eso es secreto ni cambia sin que quede documentado.</p>
+              <p>Esto garantiza que, aunque la capa semántica tenga cierta libertad en la interpretación del contexto, el <strong>significado de cada punto de atención detectado</strong> es fijo y reproducible. Cualquier persona, con cualquier herramienta, puede replicar el mismo resultado aplicando las mismas reglas.</p>
+            </div>
+            <div class="view-section">
+              <div class="view-section-title">Ejemplo de transparencia: cómo se explica una activación</div>
+              <div style="background:var(--s-panel); padding:14px; border:1px solid var(--s-border); font-size:.78rem; color:rgba(229,231,235,.7); line-height:1.6;">
+                Texto: <em>"El consumo de helado causa ahogamientos."</em><br>
+                → Átomo <strong>ATOMO_CAUSALIDAD</strong> (criterio 2.2), perfil científico: indicador <code>"causa"</code> detectado, sin contraindicador (<code>"correlación"</code>, <code>"asociado con"</code>) en el mismo segmento → severidad 25 × relevancia 1.0 = <strong>punto de atención</strong>.<br><br>
+                Texto: <em>"Existe una correlación entre el consumo de helado y los ahogamientos."</em><br>
+                → Mismo átomo, pero el segmento activa el contraindicador <code>"correlación"</code> → <strong>sin punto de atención</strong>: el autor ya está siendo preciso.<br><br>
+                Nada de esto es una caja negra: cualquiera puede ver por qué una oración activó un punto de atención y la otra no.
+              </div>
             </div>
             <div class="view-section">
               <div class="view-section-title">Transparencia del instrumento</div>
@@ -1538,250 +1056,247 @@ inicio: {
     }
   },
   atomos: {
-  title: 'Átomos Cognitivos',
-  render: () => {
-    try {
-      // Mapeo explícito de los 20 átomos formales del motor de producción (SophiaEngineV4)
-      // Uno por cada criterio. Se extraen sus definiciones del PROTOCOL (respaldo) para mantener coherencia.
-      const atomosFormales = [
-        { criterioId: '1.1', atomoId: 'excluyentes' },
-        { criterioId: '1.2', atomoId: 'cambio_no_marcado' },
-        { criterioId: '1.3', atomoId: 'binaria' },
-        { criterioId: '1.4', atomoId: 'afirmacion_sin_respaldo' },
-        { criterioId: '2.1', atomoId: 'magnitud' },
-        { criterioId: '2.2', atomoId: 'causalidad' },
-        { criterioId: '2.3', atomoId: 'regla' },
-        { criterioId: '2.4', atomoId: 'circularidad' },
-        { criterioId: '3.1', atomoId: 'datos' },
-        { criterioId: '3.2', atomoId: 'certeza' },
-        { criterioId: '3.3', atomoId: 'juicio' },
-        { criterioId: '3.4', atomoId: 'variables' },
-        { criterioId: '4.1', atomoId: 'contrario' },
-        { criterioId: '4.2', atomoId: 'adjetivos' },
-        { criterioId: '4.3', atomoId: 'descalificacion' },
-        { criterioId: '4.4', atomoId: 'ambiguas' },
-        { criterioId: '5.1', atomoId: 'tangente' },
-        { criterioId: '5.2', atomoId: 'critica' },
-        { criterioId: '5.3', atomoId: 'estandar' },
-        { criterioId: '5.4', atomoId: 'blindaje' }
-      ];
-
-      const todosAtomos = atomosFormales.map(({ criterioId, atomoId }) => {
-        let faseNombre = '';
-        let criterioNombre = '';
-        let definicion = 'Definición no encontrada';
-        let patrones = [];
-        let polaridad = 'riesgo';
-
-        for (const fase of PROTOCOL.fases) {
-          const criterio = fase.criterios.find(c => c.id === criterioId);
-          if (criterio) {
-            faseNombre = fase.nombre;
-            criterioNombre = `${criterio.id} - ${criterio.nombre}`;
-            const atomo = criterio.atomos.find(a => a.id === atomoId);
-            if (atomo) {
-              definicion = atomo.definicion;
-              patrones = atomo.patrones || [];
-              polaridad = atomo.polaridad || 'riesgo';
-            }
-            break;
-          }
+    title: 'Átomos Cognitivos',
+    render: () => {
+      try {
+        const glosario = getSophiaGlosario();
+        if (glosario.length === 0) {
+          return `<div class="view">${renderBetaBanner()}<h1 class="view-title">Motor no disponible</h1><p>No se pudo cargar SophiaEngineV4, así que no hay átomos que listar. Intenta recargar la página.</p></div>`;
         }
-        return {
-          id: atomoId,
-          definicion: definicion,
-          patrones: patrones,
-          polaridad: polaridad,
-          criterio: criterioNombre,
-          fase: faseNombre
-        };
-      });
 
-      return `
-        <div class="view">
-          <div class="view-eyebrow">Unidades mínimas de significado</div>
-          <h1 class="view-title">Átomos Cognitivos</h1>
-          <div class="view-body">
-            <p>Los <strong>átomos cognitivos</strong> son las unidades semánticas fundamentales del protocolo SOPHIA. Cada uno representa un concepto operacional que el motor debe detectar en el texto — no todos representan un problema: cada átomo tiene una <strong>polaridad</strong> (riesgo, mitigador o neutral) que determina si su presencia suma un punto de atención, lo reduce, o simplemente se registra sin penalizar.</p>
-            <p>Esta lista corresponde a los <strong>20 átomos formales del motor de producción <code>SophiaEngineV4</code></strong>, exactamente uno por cada criterio del protocolo. Es la arquitectura que se usa en la evaluación diaria.</p>
-          </div>
-          <div class="view-section">
-            <div class="view-section-title">Repositorio formal de átomos (Producción)</div>
-            <div style="max-height:400px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
-              ${todosAtomos.map(a => {
-                const polaridadColor = { riesgo: '#ef4444', mitigador: '#22c55e', neutral: 'rgba(229,231,235,.4)' }[a.polaridad || 'riesgo'];
-                const polaridadLabel = { riesgo: 'riesgo', mitigador: 'mitigador', neutral: 'neutral' }[a.polaridad || 'riesgo'];
-                return `
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,.05); padding:6px 0; gap:8px;">
-                  <span style="color:var(--accent); font-weight:500; width:120px; flex-shrink:0;">${a.id}</span>
-                  <span style="font-size:.75rem; color:rgba(229,231,235,.6); flex:1;">${a.definicion}</span>
-                  <span style="font-size:.6rem; color:${polaridadColor}; border:1px solid ${polaridadColor}; border-radius:3px; padding:1px 6px; flex-shrink:0;">${polaridadLabel}</span>
-                  <span style="font-size:.6rem; color:rgba(229,231,235,.3); width:100px; text-align:right; flex-shrink:0;">${a.criterio}</span>
-                </div>
-              `;}).join('')}
-            </div>
-            <div style="margin-top:12px; font-size:.7rem; color:rgba(229,231,235,.3);">
-              Total de átomos formales (SophiaEngineV4): ${todosAtomos.length} · Coincide 1:1 con los 20 criterios del protocolo.
-            </div>
-          </div>
-          <div class="view-section">
-            <div class="view-section-title">Función dentro del instrumento</div>
+        return `
+          <div class="view">
+            ${renderBetaBanner()}
+            <div class="view-eyebrow">Unidades mínimas de significado compartido</div>
+            <h1 class="view-title">Átomos Cognitivos</h1>
             <div class="view-body">
-              <p>Cada átomo se activa cuando el texto contiene ciertos patrones lingüísticos (palabras clave, construcciones gramaticales). Si su polaridad es <strong>riesgo</strong>, su detección puede sumar un punto de atención al criterio correspondiente, según la severidad y frecuencia. Si es <strong>mitigador</strong>, reduce o anula un punto de atención ya detectado (por ejemplo, citar una fuente mitiga la falta de trazabilidad). Si es <strong>neutral</strong>, se registra pero nunca penaliza.</p>
-              <p>Esta arquitectura permite que la evaluación sea <strong>transparente y replicable</strong>: cualquier persona puede inspeccionar qué átomos se activaron, con qué polaridad, y por qué eso generó — o no — un punto de atención.</p>
+              <p>Un <strong>átomo cognitivo</strong> no es, en sí mismo, el fondo del instrumento — es el recurso que usa cada <strong>criterio de evaluación</strong> para poder funcionar. SOPHIA tiene <strong>20 criterios</strong> (4 por cada una de las 5 fases) y <strong>20 átomos</strong>, uno por criterio (cardinalidad 1:1). Cada átomo representa un concepto operacional que el motor determinista (<code>SophiaEngineV4</code>) busca en el texto.</p>
+              <p>Ningún átomo es, por defecto, "un error". Cada uno se define con dos listas: <strong style="color:#ef4444;">indicadores</strong> (patrones que sugieren que vale la pena examinar ese punto) y <strong style="color:#22c55e;">contraindicadores</strong> (patrones que, si aparecen, matizan o anulan esa sospecha — por ejemplo, citar una fuente mitiga la falta de trazabilidad). Un átomo nunca resta puntos de un "puntaje" — contribuye a VPA: el conteo de puntos de atención reales que quedan en pie después de aplicar los contraindicadores.</p>
+              <p>Además, SOPHIA clasifica cada documento por naturaleza (Científico, Argumentativo, Político, Informativo, Normativo) antes de evaluar — y cada átomo tiene una <strong>definición distinta por tipo de documento</strong>: lo que cuenta como falta de evidencia en un paper científico no es lo mismo que en un discurso político. Eso es lo que llamamos "perfiles contextuales".</p>
+            </div>
+            <div class="view-section">
+              <div class="view-section-title">Los 20 átomos</div>
+              <div style="max-height:480px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
+                ${glosario.map(a => {
+                  const perfiles = Object.keys(a.perfiles);
+                  return `
+                  <div style="border-bottom:1px solid rgba(255,255,255,.06); padding:10px 0;">
+                    <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px; flex-wrap:wrap;">
+                      <span style="color:var(--accent); font-weight:500; cursor:pointer;" data-atomo="${a.id}">${a.id}</span>
+                      <span style="font-size:.65rem; color:rgba(229,231,235,.35);">${a.criterio} · ${a.nombreFase}</span>
+                    </div>
+                    <div style="font-size:.75rem; color:rgba(229,231,235,.6); margin:4px 0;">${a.definicion}</div>
+                    <div style="font-size:.62rem; color:rgba(229,231,235,.3);">Perfiles definidos: ${perfiles.join(', ')}</div>
+                  </div>
+                `;}).join('')}
+              </div>
+              <div style="margin-top:12px; font-size:.7rem; color:rgba(229,231,235,.3);">
+                Total de átomos: ${glosario.length} (motor único: SophiaEngineV4). Toca cualquier ID para ver su definición completa.
+              </div>
+            </div>
+            <div class="view-section">
+              <div class="view-section-title">Ejemplo trabajado: ATOMO_CAUSALIDAD (criterio 2.2)</div>
+              <div class="view-body">
+                <p>Es el átomo más ilustrativo de por qué la polaridad importa. En un texto <strong>científico</strong>, sus indicadores son palabras como "hipótesis causal", "variable independiente", "causa", "provoca" — pero si en la misma oración aparece un contraindicador como "correlación" o "asociado con", la señal se atenúa: el propio autor está distinguiendo correlación de causalidad, que es justamente la buena práctica que este criterio busca.</p>
+                <p>En un <strong>ensayo argumentativo</strong>, en cambio, la relevancia de este mismo átomo baja de 1.0 a 0.5 y su severidad de 25 a 5 puntos — porque una relación "conceptual" o explicativa entre ideas ("esto se deriva de", "fundamenta") no exige el mismo estándar de prueba que una afirmación empírica. Mismo átomo, mismo criterio, exigencia distinta según qué tipo de texto es.</p>
+              </div>
+            </div>
+            <div class="view-section">
+              <div class="view-section-title">Función dentro del instrumento</div>
+              <div class="view-body">
+                <p>Un átomo se activa cuando SOPHIA encuentra uno de sus indicadores en un segmento del texto. Si además encuentra un contraindicador en un segmento relacionado, la observación queda marcada como mitigada y no se cuenta como punto de atención. Lo que sí se activa queda registrado con severidad y relevancia — internas, para priorizar — pero lo que ves como VPA es el conteo de puntos de atención, no una nota.</p>
+                <p>Esta arquitectura permite que la evaluación sea <strong>transparente y replicable</strong>: cualquier persona puede inspeccionar qué átomo se activó, con qué indicador, si fue mitigado, y por qué eso generó — o no — un punto de atención.</p>
+              </div>
             </div>
           </div>
-        </div>
-      `;
-    } catch (e) {
-      showDebug(`❌ Error en vista atomos: ${e.message}`, true);
-      return `<p>Error al renderizar: ${e.message}</p>`;
+        `;
+      } catch (e) {
+        showDebug(`❌ Error en vista atomos: ${e.message}`, true);
+        return `<p>Error al renderizar: ${e.message}</p>`;
+      }
     }
-  }
-},
-formula: {
-  title: 'Fórmula de Cálculo',
-  render: () => {
-    try {
-      // Mapeo explícito de los 20 átomos formales (uno por criterio)
-      const atomosFormales = [
-        { criterioId: '1.1', atomoId: 'excluyentes' },
-        { criterioId: '1.2', atomoId: 'cambio_no_marcado' },
-        { criterioId: '1.3', atomoId: 'binaria' },
-        { criterioId: '1.4', atomoId: 'afirmacion_sin_respaldo' },
-        { criterioId: '2.1', atomoId: 'magnitud' },
-        { criterioId: '2.2', atomoId: 'causalidad' },
-        { criterioId: '2.3', atomoId: 'regla' },
-        { criterioId: '2.4', atomoId: 'circularidad' },
-        { criterioId: '3.1', atomoId: 'datos' },
-        { criterioId: '3.2', atomoId: 'certeza' },
-        { criterioId: '3.3', atomoId: 'juicio' },
-        { criterioId: '3.4', atomoId: 'variables' },
-        { criterioId: '4.1', atomoId: 'contrario' },
-        { criterioId: '4.2', atomoId: 'adjetivos' },
-        { criterioId: '4.3', atomoId: 'descalificacion' },
-        { criterioId: '4.4', atomoId: 'ambiguas' },
-        { criterioId: '5.1', atomoId: 'tangente' },
-        { criterioId: '5.2', atomoId: 'critica' },
-        { criterioId: '5.3', atomoId: 'estandar' },
-        { criterioId: '5.4', atomoId: 'blindaje' }
-      ];
-
-      const todosAtomos = atomosFormales.map(({ criterioId, atomoId }) => {
-        let faseNombre = '';
-        let criterioNombre = '';
-        let definicion = 'Definición no encontrada';
-        let polaridad = 'riesgo';
-
-        for (const fase of PROTOCOL.fases) {
-          const criterio = fase.criterios.find(c => c.id === criterioId);
-          if (criterio) {
-            faseNombre = fase.nombre;
-            criterioNombre = `${criterio.id} - ${criterio.nombre}`;
-            const atomo = criterio.atomos.find(a => a.id === atomoId);
-            if (atomo) {
-              definicion = atomo.definicion;
-              polaridad = atomo.polaridad || 'riesgo';
-            }
-            break;
-          }
-        }
-        return {
-          id: atomoId,
-          definicion: definicion,
-          polaridad: polaridad,
-          criterio: criterioNombre,
-          fase: faseNombre
-        };
-      });
-
-      return `
-        <div class="view">
-          <div class="view-eyebrow">Mecánica de Detección</div>
-          <h1 class="view-title">¿Cómo llega SOPHIA a un punto de atención?</h1>
-          <div class="view-body">
-            <p>SOPHIA no le pone una nota al texto. Internamente calcula una severidad por cada señal detectada — es la forma de decidir qué tan prioritario es cada punto de atención y de mantener la trazabilidad — pero lo que se te muestra es <strong>VPA (Vale la Pena Prestar Atención)</strong>: cuántos puntos de atención reales quedaron en pie después de aplicar mitigadores, no un porcentaje de calidad.</p>
-            <p>Cada <strong>dimensión</strong> (fase) contiene 4 <strong>criterios</strong>. Cada criterio se evalúa a través de <strong>átomos cognitivos</strong> (unidades semánticas), y cada átomo tiene una <strong>polaridad</strong>: riesgo (puede generar un punto de atención), mitigador (lo reduce o anula) o neutral (se registra, nunca penaliza).</p>
-          </div>
-
-          <div class="view-section">
-            <div class="view-section-title">Estructura de evaluación</div>
-            <div class="flow-steps">
-              <div class="flow-step"><div class="flow-dot">1</div><div class="flow-body"><div class="flow-title">Dimensión</div><div class="flow-desc">Ej: Fase II — Inferencia</div></div></div>
-              <div class="flow-step"><div class="flow-dot">2</div><div class="flow-body"><div class="flow-title">Criterio</div><div class="flow-desc">Ej: 2.1 Suficiencia Inferencial</div></div></div>
-              <div class="flow-step"><div class="flow-dot">3</div><div class="flow-body"><div class="flow-title">Constructo</div><div class="flow-desc">Ej: Escalamiento Inferencial (entidad teórica)</div></div></div>
-              <div class="flow-step"><div class="flow-dot">4</div><div class="flow-body"><div class="flow-title">Átomos Cognitivos</div><div class="flow-desc">Ej: Premisa, Conclusión, Magnitud, Universalización, Extrapolación</div></div></div>
-              <div class="flow-step"><div class="flow-dot">5</div><div class="flow-body"><div class="flow-title">Definición operacional</div><div class="flow-desc">Cada átomo tiene una definición concreta, patrones lingüísticos y una polaridad (riesgo / mitigador / neutral).</div></div></div>
-              <div class="flow-step"><div class="flow-dot">6</div><div class="flow-body"><div class="flow-title">Condiciones y mitigación</div><div class="flow-desc">Un átomo de riesgo puede quedar reducido o anulado si un átomo mitigador aparece en la misma oración o en el texto, según el criterio.</div></div></div>
-              <div class="flow-step"><div class="flow-dot">7</div><div class="flow-body"><div class="flow-title">Implementación LLM</div><div class="flow-desc">Patrones de búsqueda (ej: "todos", "siempre").</div></div></div>
-              <div class="flow-step"><div class="flow-dot">8</div><div class="flow-body"><div class="flow-title">Salida obligatoria</div><div class="flow-desc">Mapa de razonamiento con los puntos de atención (VPA), qué átomo los originó, su severidad, si fueron mitigados, y la evidencia textual.</div></div></div>
+  },
+  formula: {
+    title: 'Fórmula de Cálculo',
+    render: () => {
+      try {
+        return `
+          <div class="view">
+            ${renderBetaBanner()}
+            <div class="view-eyebrow">Mecánica de Detección · SophiaEngineV4</div>
+            <h1 class="view-title">¿Cómo llega SOPHIA a un punto de atención?</h1>
+            <div class="view-body">
+              <p>SOPHIA no le pone una nota al texto. Por dentro calcula una severidad por cada señal — sirve para priorizar y mantener trazabilidad — pero lo único que se te muestra es <strong>VPA (Vale la Pena Prestar Atención)</strong>: cuántos puntos de atención reales quedan en pie después de aplicar los contraindicadores. VPA nunca es un porcentaje de calidad.</p>
             </div>
-          </div>
 
-          <div class="view-section">
-            <div class="view-section-title">Trazabilidad de un punto de atención</div>
-            <div style="background:var(--s-panel); padding:16px; border:1px solid var(--s-border); font-family:monospace; font-size:.85rem; color:#e5e7eb; margin-bottom:16px;">
-              <div>Severidad<sub>criterio</sub> = min( ∑( Severidad<sub>átomo de riesgo</sub> × Frecuencia<sub>átomo</sub> ), 25 )</div>
-              <div style="margin-top:8px; color:rgba(229,231,235,.5); font-size:.7rem;">
-                • Severidad base por átomo: 12.5 o 25 pts, según el criterio<br>
-                • Frecuencia: número de oraciones donde el átomo de riesgo se activa (tope: 3, para que la repetición no infle el resultado)<br>
-                • Mitigación: si un átomo mitigador aparece (misma oración o en el texto, según el criterio), la severidad se reduce o se anula por completo<br>
-                • La severidad decide la prioridad del punto de atención — no se le muestra al usuario como nota
+            <div class="view-section">
+              <div class="view-section-title">Paso 1 — Clasificación documental</div>
+              <div class="view-body">
+                <p>Antes de evaluar nada, SOPHIA clasifica el texto en una de cinco naturalezas: <strong>Científica (SC)</strong>, <strong>Argumentativa (ARG)</strong>, <strong>Política/deliberativa (POL)</strong>, <strong>Informativa (INF)</strong> o <strong>Normativa (NORM)</strong> — puede ser híbrido, con una naturaleza secundaria. Esto importa porque cada átomo tiene una definición y una severidad distintas según el tipo de documento: exigirle a un ensayo filosófico el mismo estándar de evidencia empírica que a un paper científico sería un error de calibración, no de razonamiento.</p>
               </div>
             </div>
-            <div style="background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
-              <div style="font-weight:500; color:var(--accent);">Meta‑reglas (contexto)</div>
-              <div style="font-size:.8rem; color:rgba(229,231,235,.6); margin-top:8px;">
-                <strong>MR-001 (Mitigación):</strong> Si Criterio 3.2 (Incertidumbre) > 80, la severidad por Criterio 4.2 (Emoción) se reduce al 50%.<br>
-                <strong>MR-002 (Agravamiento):</strong> Si falla 3.1 (Trazabilidad) y 4.1 (Steelman), severidad duplicada (en desarrollo).<br>
-                <strong>MR-003 (Neutralización):</strong> Si el texto es poético/artístico, se anulan criterios retóricos (en desarrollo).
+
+            <div class="view-section">
+              <div class="view-section-title">Paso 2 — Segmentación y detección de átomos</div>
+              <div class="view-body">
+                <p>El texto se divide en segmentos (oraciones o cláusulas). Cada uno de los 20 átomos busca sus <strong style="color:#ef4444;">indicadores</strong> (patrones de riesgo) en cada segmento, usando el perfil que corresponde a la naturaleza documental detectada. Si un segmento activa un indicador, SOPHIA revisa si en ese mismo segmento — o uno cercano — también aparece un <strong style="color:#22c55e;">contraindicador</strong>. Si aparece, la observación queda marcada <code>mitigado_por_contraindicador: true</code> y <strong>no se convierte en un punto de atención</strong>.</p>
               </div>
             </div>
-          </div>
 
-          <div class="view-section">
-            <div class="view-section-title">Ejemplo completo: Suficiencia Inferencial (2.1)</div>
-            <div style="background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
-              <div style="font-size:.75rem; color:rgba(229,231,235,.7);">
-                <strong>Constructo:</strong> Escalamiento Inferencial<br>
-                <strong>Definición:</strong> Propiedad que describe el grado en que una conclusión amplía, mantiene o excede la información contenida en las premisas.<br>
-                <strong>Átomos:</strong> Premisa, Conclusión, Magnitud, Universalización, Extrapolación<br>
-                <strong>Regla:</strong> Si magnitud(conclusión) > magnitud(premisas) y evidencia adicional = ausente → punto de atención.<br>
-                <strong>Implementación LLM:</strong> Buscar "todos", "siempre", "inevitablemente", etc. y comparar con evidencia.<br>
-                <strong>Salida:</strong> { "criterio":"2.1", "constructo":"Escalamiento Inferencial", "atomo":"magnitud", "severidad":12.5, "mitigado":false, "explicacion":"...", "evidencias":["..."] }
-              </div>
-            </div>
-          </div>
-
-          <div class="view-section">
-            <div class="view-section-title">Glosario completo de Átomos</div>
-            <p style="font-size:.72rem; color:rgba(229,231,235,.45); margin-bottom:8px;">
-              El motor de producción (<code>SophiaEngineV4</code>) usa <strong>20 átomos</strong>, uno por cada criterio. El listado siguiente refleja exactamente esa arquitectura.
-            </p>
-            <div style="max-height:300px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
-              ${todosAtomos.map(a => {
-                const polaridadColor = { riesgo: '#ef4444', mitigador: '#22c55e', neutral: 'rgba(229,231,235,.4)' }[a.polaridad || 'riesgo'];
-                return `
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,.05); padding:4px 0; gap:6px;">
-                  <span style="color:var(--accent); font-weight:500;">${a.id}</span>
-                  <span style="font-size:.7rem; color:rgba(229,231,235,.5); flex:1; padding:0 8px;">${a.definicion}</span>
-                  <span style="font-size:.55rem; color:${polaridadColor}; border:1px solid ${polaridadColor}; border-radius:3px; padding:0 4px;">${a.polaridad || 'riesgo'}</span>
-                  <span style="font-size:.6rem; color:rgba(229,231,235,.3);">${a.criterio}</span>
+            <div class="view-section">
+              <div class="view-section-title">Paso 3 — Severidad (uso interno, no se muestra como nota)</div>
+              <div style="background:var(--s-panel); padding:16px; border:1px solid var(--s-border); font-family:monospace; font-size:.85rem; color:#e5e7eb; margin-bottom:16px;">
+                <div>severidad(observación) = severidad_base<sub>átomo,perfil</sub> × relevancia<sub>átomo,perfil</sub></div>
+                <div style="margin-top:6px;">severidad(criterio) = min( ∑ severidad(observación), 25 )</div>
+                <div style="margin-top:8px; color:rgba(229,231,235,.5); font-size:.7rem;">
+                  • severidad_base: entre 5 y 25 según el átomo y el perfil documental (más alto en criterios como Causalidad Rigurosa o Falsabilidad en textos científicos)<br>
+                  • relevancia: entre 0.5 y 1.0 — qué tan determinante es ese átomo para ese tipo de documento (ej: Causalidad tiene relevancia 1.0 en textos científicos, pero solo 0.5 en ensayos)<br>
+                  • Un átomo con contraindicador activo nunca llega a sumar severidad — queda descartado antes de este cálculo, no después
                 </div>
-              `;}).join('')}
+              </div>
             </div>
-            <div style="margin-top:8px; font-size:.65rem; color:rgba(229,231,235,.3);">
-              Total de átomos (SophiaEngineV4, producción): ${todosAtomos.length} (coincide 1:1 con los 20 criterios).
+
+            <div class="view-section">
+              <div class="view-section-title">Paso 4 — Ruta inferencial (exclusivo de Fase 2)</div>
+              <div class="view-body">
+                <p>Además de los 20 átomos, SOPHIA reconstruye la <strong>ruta inferencial</strong> del texto: Dato → Interpretación → Causalidad → Generalización → Propuesta. Cada segmento se etiqueta según qué función cumple. Si el texto afirma causalidad o generalización sin que haya segmentos de dato que las sustenten, o propone algo sin fundamento previo, SOPHIA lo marca como un <strong>salto</strong> — no como una mentira, sino como un tramo del razonamiento que conviene revisar.</p>
+                <div style="background:var(--s-panel); padding:12px; border:1px solid var(--s-border); font-size:.72rem; color:rgba(229,231,235,.6);">
+                  <strong>causalidad_sin_dato</strong> (10 pts) · <strong>generalizacion_sin_dato</strong> (10 pts) · <strong>propuesta_sin_fundamento</strong> (15 pts) — tope combinado: 25 pts, igual que cualquier criterio.
+                </div>
+              </div>
+            </div>
+
+            <div class="view-section">
+              <div class="view-section-title">Ejemplo real: Causalidad Rigurosa (2.2) en un texto científico</div>
+              <div style="background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
+                <div style="font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.6;">
+                  <strong>Átomo:</strong> ATOMO_CAUSALIDAD · <strong>Perfil:</strong> Científico (SC)<br>
+                  <strong>Indicadores:</strong> "hipótesis causal", "variable independiente", "causa", "provoca", "genera"<br>
+                  <strong>Contraindicadores:</strong> "correlación", "asociado con", "coincide con"<br>
+                  <strong>severidad_base:</strong> 25 · <strong>relevancia:</strong> 1.0<br><br>
+                  <em>"El consumo de helado causa ahogamientos."</em> → activa "causa" sin contraindicador cerca → severidad = 25 × 1.0 = 25 → <strong>punto de atención</strong>.<br><br>
+                  <em>"Existe una correlación entre el consumo de helado y los ahogamientos."</em> → activa "correlación", que es justamente un contraindicador, no un indicador → <strong>sin punto de atención</strong>. El autor está siendo preciso, no impreciso.
+                </div>
+              </div>
+            </div>
+
+            <div class="view-section">
+              <div class="view-section-title">Los 20 criterios (con severidad base y relevancia por perfil)</div>
+              <p style="font-size:.72rem; color:rgba(229,231,235,.45); margin-bottom:8px;">
+                Motor único: SophiaEngineV4. Ver la sección <strong>Átomos Cognitivos</strong> para el detalle completo de indicadores y contraindicadores de cada uno.
+              </p>
+              ${(() => {
+                const glosario = getSophiaGlosario();
+                if (glosario.length === 0) return `<p style="font-size:.75rem; color:rgba(229,231,235,.4);">Motor no disponible — no se pudo cargar SophiaEngineV4.</p>`;
+                return `<div style="max-height:300px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
+                  ${glosario.map(a => `
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,.05); padding:5px 0; gap:8px;">
+                      <span style="color:var(--accent); font-weight:500; width:110px; flex-shrink:0;">${a.criterio}</span>
+                      <span style="font-size:.72rem; color:rgba(229,231,235,.55); flex:1;">${a.nombreCriterio}</span>
+                      <span style="font-size:.62rem; color:rgba(229,231,235,.35);">${Object.entries(a.perfiles).map(([p, v]) => `${p}:${v.severidad_base}`).join(' · ')}</span>
+                    </div>
+                  `).join('')}
+                </div>
+                <div style="margin-top:8px; font-size:.65rem; color:rgba(229,231,235,.3);">Total: ${glosario.length} criterios / átomos.</div>`;
+              })()}
             </div>
           </div>
-        </div>
-      `;
-    } catch (e) {
-      showDebug(`❌ Error en vista formula: ${e.message}`, true);
-      return `<p>Error al renderizar: ${e.message}</p>`;
+        `;
+      } catch (e) {
+        showDebug(`❌ Error en vista formula: ${e.message}`, true);
+        return `<p>Error al renderizar: ${e.message}</p>`;
+      }
     }
-  }
-},
+  },
+  fase1: { title: 'Fase 1: Estructura Lógica', render: () => renderFase('fase1') },
+  fase2: { title: 'Fase 2: Inferencia', render: () => renderFase('fase2') },
+  fase3: { title: 'Fase 3: Calibración Epistémica', render: () => renderFase('fase3') },
+  fase4: { title: 'Fase 4: Transparencia Retórica', render: () => renderFase('fase4') },
+  fase5: { title: 'Fase 5: Pertinencia Deliberativa', render: () => renderFase('fase5') },
+  academia: {
+    title: 'Integración con Academia',
+    render: () => {
+      try {
+        return `
+          <div class="view">
+            <div class="view-eyebrow">Flujo Institucional</div>
+            <h1 class="view-title">Integración con Academia y Ágora</h1>
+            <div class="view-body">
+              <p>Antes de que un documento llegue a discutirse en el <strong>Ágora</strong>, SOPHIA lo examina como <strong>instrumento de pensamiento crítico</strong>: no decide si el argumento es correcto ni le pone una nota — identifica qué partes de su razonamiento vale la pena que la ciudadanía revise con más cuidado antes de deliberar sobre él.</p>
+              <p>Los documentos con pocos puntos de atención sin mitigar pueden ser sometidos a discusión en el <strong>Ágora</strong>, donde la ciudadanía delibera y vota su inclusión en el repositorio académico. Internamente, este umbral de admisibilidad se calcula sobre el mismo campo <code>IRD_global</code> que ya usaba el sistema — se conserva por compatibilidad con Ágora y con la telemetría existente, pero es un mecanismo de filtrado entre módulos, no la métrica que SOPHIA le muestra a la persona que escribió el texto.</p>
+            </div>
+            <div class="view-section">
+              <div class="view-section-title">Estándar Mínimo de Admisibilidad (uso interno)</div>
+              <div class="score-list">
+                <div class="score-row">
+                  <span class="score-label">Umbral interno (Ágora)</span>
+                  <div class="score-bar-wrap">
+                    <div class="score-bar score-bar--mid" style="width:0%" data-target="75%"></div>
+                  </div>
+                  <span class="score-value score-value--mid">75%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } catch (e) {
+        showDebug(`❌ Error en vista academia: ${e.message}`, true);
+        return `<p>Error al renderizar: ${e.message}</p>`;
+      }
+    }
+  },
+  relaciones: {
+    title: 'Ecosistema Deliberativo',
+    render: () => {
+      try {
+        return `
+          <div class="view">
+            <div class="view-eyebrow">Red de Inteligencia Colectiva</div>
+            <h1 class="view-title">Ecosistema Deliberativo</h1>
+            <div class="view-body">
+              <p>SOPHIA no busca producir consenso; busca mejorar las condiciones estructurales bajo las cuales el desacuerdo puede ser intelectualmente fértil.</p>
+            </div>
+            <div class="view-section">
+              <div class="view-section-title">Nodos de Interacción</div>
+              <div class="relation-grid">
+                <div class="relation-card relation-card--academia">
+                  <div class="relation-header">
+                    <div class="relation-dot"></div>
+                    <span class="relation-name">Academia & Ágora</span>
+                  </div>
+                  <div class="relation-desc">SOPHIA asegura que los documentos que ingresan a la Academia posean trazabilidad argumentativa mínima para ser debatidos responsablemente.</div>
+                </div>
+                <div class="relation-card relation-card--rey">
+                  <div class="relation-header">
+                    <div class="relation-dot"></div>
+                    <span class="relation-name">Rey Filósofo</span>
+                  </div>
+                  <div class="relation-desc">Cuando un texto presenta baja adherencia, Rey Filósofo actúa como tutor, orientando sobre cómo mejorar la comunicación.</div>
+                </div>
+                <div class="relation-card relation-card--logos">
+                  <div class="relation-header">
+                    <div class="relation-dot"></div>
+                    <span class="relation-name">Logos</span>
+                  </div>
+                  <div class="relation-desc">Logos audita la matriz estructural del código; SOPHIA audita la honestidad de la arquitectura retórica.</div>
+                </div>
+                <div class="relation-card relation-card--aletheia">
+                  <div class="relation-header">
+                    <div class="relation-dot"></div>
+                    <span class="relation-name">Aletheia</span>
+                  </div>
+                  <div class="relation-desc">SOPHIA fiscaliza el rigor formal; Aletheia mapea la veracidad empírica de las fuentes.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } catch (e) {
+        showDebug(`❌ Error en vista relaciones: ${e.message}`, true);
+        return `<p>Error al renderizar: ${e.message}</p>`;
+      }
+    }
+  },
   informe: {
     title: 'Auditoría de Adherencia',
     render: () => {
@@ -1878,6 +1393,22 @@ const SOPHIA = {
         el.classList.toggle('active', el.dataset.view === viewId);
       });
 
+      // Enlaces cruzados dentro del contenido (ej: "ver Átomos Cognitivos" en
+      // Open Source). Delegación de eventos: como el contenido se reemplaza
+      // por completo en cada navigate(), un listener fijo en #viewContent
+      // sigue funcionando para cualquier [data-view] que se inyecte después,
+      // sin tener que volver a bindear cada vez.
+      if (!contentArea.dataset.crossLinksBound) {
+        contentArea.addEventListener('click', (e) => {
+          const link = e.target.closest('[data-view]');
+          if (link && contentArea.contains(link)) {
+            e.preventDefault();
+            this.navigate(link.dataset.view);
+          }
+        });
+        contentArea.dataset.crossLinksBound = 'true';
+      }
+
       // Animación de barras (si existe)
       this._animateBars(contentArea);
 
@@ -1916,40 +1447,15 @@ const SOPHIA = {
 
   _bindPopups(root) {
     try {
-      root.querySelectorAll('[data-constructo]').forEach(el => {
-        el.style.cursor = 'pointer';
-        el.style.color = 'var(--accent)';
-        el.addEventListener('click', () => {
-          const constructo = el.dataset.constructo;
-          let def = 'Definición no disponible.';
-          for (const fase of PROTOCOL.fases) {
-            for (const crit of fase.criterios) {
-              if (crit.constructo === constructo) {
-                def = crit.definicion;
-                break;
-              }
-            }
-          }
-          showDefinitionPopup(`Constructo: ${constructo}`, def);
-        });
-      });
       root.querySelectorAll('[data-atomo]').forEach(el => {
         el.style.cursor = 'pointer';
         el.style.color = '#d97706';
         el.addEventListener('click', () => {
-          const atomo = el.dataset.atomo;
-          let def = 'Definición no disponible.';
-          for (const fase of PROTOCOL.fases) {
-            for (const crit of fase.criterios) {
-              for (const a of crit.atomos) {
-                if (a.id === atomo) {
-                  def = a.definicion;
-                  break;
-                }
-              }
-            }
-          }
-          showDefinitionPopup(`Átomo: ${atomo}`, def);
+          const atomoId = el.dataset.atomo;
+          const glosario = getSophiaGlosario();
+          const atomo = glosario.find(a => a.id === atomoId);
+          const def = atomo ? `${atomo.definicion} (criterio ${atomo.criterio} — ${atomo.nombreCriterio})` : 'Definición no disponible (el motor no está cargado o el átomo no existe en SophiaEngineV4).';
+          showDefinitionPopup(`Átomo: ${atomoId}`, def);
         });
       });
     } catch (e) {
@@ -2249,6 +1755,20 @@ const SOPHIA = {
         return;
       }
 
+      if (data.motor_no_disponible) {
+        out.innerHTML = `
+          <div class="view">
+            ${renderBetaBanner()}
+            <div style="background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.3); padding:16px; border-radius:4px;">
+              <div style="font-weight:500; color:#ef4444; margin-bottom:6px;">El motor determinista no está disponible ahora mismo</div>
+              <div style="font-size:.82rem; color:rgba(229,231,235,.7);">
+                No pudimos evaluar este texto porque SophiaEngineV4 ${data.motivo === 'error' ? `falló (${data.detalle || 'error desconocido'})` : 'no se cargó correctamente'}. Esto <strong>no significa</strong> que el texto no tenga puntos de atención — significa que SOPHIA no pudo revisarlo. Intenta de nuevo en unos momentos.
+              </div>
+            </div>
+          </div>`;
+        return;
+      }
+
       // El IRD_global sigue calculándose internamente (compatibilidad con
       // Ágora/telemetría vía data.IRD_global), pero ya no es lo que se
       // muestra como resultado principal. VPA es una relectura de los
@@ -2338,7 +1858,7 @@ const SOPHIA = {
                       <span style="color:#e5e7eb;">${inf.criterio || 'Criterio sin nombre'}</span>
                       <span style="color:rgba(229,231,235,.5); white-space:nowrap;">${inf.mitigado_parcialmente ? 'señal contextualizada' : 'vale la pena examinar'}</span>
                     </div>
-                    <div style="font-size:.7rem; color:rgba(229,231,235,.4); margin-top:4px;">Constructo: ${inf.constructo || 'N/A'}</div>
+                    <div style="font-size:.7rem; color:rgba(229,231,235,.4); margin-top:4px;">Átomo: <span style="cursor:pointer; text-decoration:underline dotted;" data-atomo="${inf.constructo}">${inf.constructo || 'N/A'}</span></div>
                     ${inf.meta_regla_aplicada ? `<div style="font-size:.65rem; color:#eab308; margin-top:4px;">⚠ ${inf.meta_regla_aplicada}</div>` : ''}
                   </div>
                 `).join('')}
