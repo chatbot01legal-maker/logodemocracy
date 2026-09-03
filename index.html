@@ -2660,7 +2660,6 @@ body {
   const heroCanvas = document.getElementById('hero-canvas');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ─── ARRAY CON DOS SALTOS Y CLASES SEPARADAS ────────── */
   const bootLines = [
     { text: 'Salimos perdiendo… Salimos ganando…', pause: 550 },
     { text: 'Se llevaron el oro y nos dejaron el oro…', pause: 550 },
@@ -2671,7 +2670,6 @@ body {
     { text: 'Confieso que he vivido', pause: 100, cls: 'boot-signature' },
     { text: '— Pablo Neruda', pause: 0, cls: 'boot-author' } 
   ];
-  /* ────────────────────────────────────────────────────── */
 
   let heroBgStarted = false;
 
@@ -2720,7 +2718,6 @@ body {
     draw();
   }
 
-  // Lógica para saltar inmediatamente tocando cualquier punto de la pantalla
   let bootSkipped = false;
   function finishBoot() {
     if (bootSkipped) return;
@@ -2738,7 +2735,6 @@ body {
     finishBoot();
   });
 
-  // Animación tipo máquina de escribir
   async function runBootSequence() {
     bootText.innerHTML = '';
     for (let i = 0; i < bootLines.length; i++) {
@@ -2767,7 +2763,6 @@ body {
   }
   runBootSequence();
 
-  // Scroll reveals
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if(entry.isIntersecting) {
@@ -2781,7 +2776,8 @@ body {
   });
 
 })();
-<script>
+</script>
+
 <script>
   // Menú hamburguesa para móvil (unificado con base-layout.css)
   (function() {
@@ -2795,3 +2791,5 @@ body {
     }
   })();
 </script>
+
+    
