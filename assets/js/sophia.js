@@ -412,36 +412,31 @@ function renderFase(faseId) {
 // la espera se sienta informativa en vez de vacía. Todas describen el
 // instrumento real — nada inventado ni genérico.
 const SOPHIA_LOADING_FACTS = [
-  "¿Sabías que? SOPHIA evalúa tu texto en 5 fases: Estructura Lógica, Inferencia, Calibración Epistémica, Transparencia Retórica y Pertinencia Deliberativa.",
-  "¿Sabías que? SOPHIA no le pone una nota a tu texto. VPA — Vale la Pena prestar Atención — cuenta cuántas señales concretas encontró para revisar, no califica si el texto es bueno o malo.",
-  "¿Sabías que? La Capa 1 de SOPHIA (el motor determinista) no usa IA — son reglas públicas y auditables, siempre las mismas para todos.",
-  "¿Sabías que? Después del motor determinista, una IA revisa ese mismo resultado buscando falsos positivos: negaciones, ironía, citas o hipótesis mal interpretadas.",
-  "¿Sabías que? SOPHIA distingue entre 'cómo' argumentás (los puntos de atención sobre la estructura) y 'qué' afirmás (la confiabilidad factual de tus datos) — son dos análisis independientes que nunca se mezclan.",
-  "¿Sabías que? Para verificar hechos, SOPHIA hace búsquedas reales en internet y solo marca un dato como verificado si encuentra una fuente real que lo respalde.",
-  "¿Sabías que? Si SOPHIA no encuentra evidencia suficiente sobre una afirmación, lo dice explícitamente — nunca inventa una fuente para parecer más segura.",
-  "¿Sabías que? La fase de Estructura Lógica revisa si tu argumento se contradice a sí mismo o cae en falsas dicotomías (elegir solo entre dos opciones cuando hay más).",
-  "¿Sabías que? La fase de Inferencia detecta si confundís correlación con causalidad, o si generalizás a partir de un solo ejemplo.",
-  "¿Sabías que? La fase de Calibración Epistémica evalúa si tu nivel de certeza ('creo que' vs. 'es un hecho que') es proporcional a la evidencia que presentás.",
-  "¿Sabías que? La fase de Transparencia Retórica busca lenguaje cargado emocionalmente que reemplace argumentos en vez de acompañarlos.",
-  "¿Sabías que? La fase de Pertinencia Deliberativa mide si tu texto representa de forma justa a quienes piensan distinto (el llamado 'steelmaning').",
-  "¿Sabías que? Todo el proceso de SOPHIA queda registrado por capas — podés ver exactamente qué detectó cada una, no solo el resultado final.",
-  "¿Sabías que? Que SOPHIA no marque puntos de atención estructurales no garantiza que los datos citados sean ciertos — por eso SOPHIA siempre muestra ambas cosas por separado.",
-  "¿Sabías que? La interpretación final que arma SOPHIA usa como contexto obligatorio los resultados de las tres capas anteriores, nunca analiza el texto desde cero.",
-  "¿Sabías que? SOPHIA es parte de LogoDemocracy, un ecosistema que busca mejorar la calidad de la deliberación pública con herramientas abiertas.",
-  "¿Sabías que? Las 'meta-reglas' de SOPHIA pueden mitigar una penalización si otra fase ya demostró suficiente rigor — el sistema no evalúa cada criterio de forma aislada.",
-  "¿Sabías que? Cada punto de atención que detecta SOPHIA cita el fragmento exacto de tu texto que lo originó — nada queda sin evidencia mostrable.",
-  "¿Sabías que? SOPHIA fue diseñada para señalar aspectos del razonamiento que vale la pena examinar, no para decirte si tu opinión es correcta o incorrecta.",
-  "¿Sabías que? Un texto puede tener errores factuales y aun así una estructura argumentativa impecable — SOPHIA te muestra esa tensión en vez de esconderla.",
-  "¿Sabías que? El protocolo de SOPHIA es público: cualquiera puede revisar exactamente qué reglas se aplican y por qué.",
-  "¿Sabías que? SOPHIA busca ayudarte a pulir una idea antes de publicarla o defenderla, mostrándote qué examinar, no calificándola después de escrita.",
-  "¿Sabías que? La ambigüedad léxica (usar palabras que admiten muchas interpretaciones, como 'bueno' o 'justo' sin definirlas) es una de las señales más comunes que detecta SOPHIA.",
-  "¿Sabías que? SOPHIA revisa si tu conclusión es proporcional al tamaño real de tus premisas, o si estás sacando una conclusión más grande de lo que tu evidencia sostiene.",
-  "¿Sabías que? El sistema de verificación de SOPHIA nunca decide si algo es verdadero basándose en su propio conocimiento — siempre busca una fuente externa primero.",
-  "¿Sabías que? SOPHIA todavía está en etapa beta — cada evaluación que hacés ayuda a mejorar el instrumento.",
-  "¿Sabías que? Podés ver el detalle completo de cada fase, no solo el puntaje total, para entender exactamente dónde mejorar tu argumento.",
-  "¿Sabías que? La revisión de falsos positivos existe porque ninguna regla automática es perfecta — por eso una IA vuelve a mirar cada activación antes del resultado final.",
-  "¿Sabías que? SOPHIA separa claramente sus observaciones: unas evalúan tu razonamiento, otras evalúan tus datos, y nunca se mezclan en un solo puntaje.",
-  "¿Sabías que? El objetivo de SOPHIA no es que tu texto 'apruebe', sino que vos entiendas mejor cómo se construye un argumento sólido."
+  "¿Sabías que? SOPHIA no busca decirte si tu opinión es correcta o incorrecta. Busca mostrar qué aspectos de tu razonamiento vale la pena examinar.",
+  "¿Sabías que? VPA significa “Vale la Pena Prestar Atención”. Es la forma en que SOPHIA expresa que encontró una señal que merece una segunda mirada.",
+  "¿Sabías que? SOPHIA analiza cómo se relacionan las premisas, las afirmaciones y las conclusiones de tu texto, en lugar de limitarse a producir una respuesta sobre él.",
+  "¿Sabías que? Un punto de atención no significa automáticamente que exista un error. Primero hay que comprender qué función cumple ese fragmento dentro del argumento.",
+  "¿Sabías que? Una de las características centrales de SOPHIA es la trazabilidad: puedes recorrer desde una observación del resultado hasta el fragmento concreto de tu texto que la originó.",
+  "¿Sabías que? SOPHIA no solo muestra qué encontró. También conserva el criterio y la evidencia textual que permiten entender por qué ese punto apareció en el análisis.",
+  "¿Sabías que? Esto diferencia a SOPHIA de una respuesta generada por una inteligencia artificial de caja negra: aquí puedes examinar el camino que conecta tu texto con las observaciones del instrumento.",
+  "¿Sabías que? La trazabilidad permite preguntarle al resultado de SOPHIA “¿por qué apareció esto?” y volver al fragmento específico que activó la observación.",
+  "¿Sabías que? SOPHIA comienza examinando la estructura del razonamiento: cómo se relacionan las premisas, las afirmaciones y las conclusiones de tu texto.",
+  "¿Sabías que? Una aparente contradicción puede ser en realidad una objeción, una cita, una hipótesis o una estrategia para presentar y luego refutar una idea. El contexto importa.",
+  "¿Sabías que? SOPHIA también examina las conexiones inferenciales: qué pasos utiliza el texto para pasar de sus premisas a sus conclusiones.",
+  "¿Sabías que? Una conclusión puede parecer razonable y, sin embargo, depender de un paso intermedio que el texto no explica suficientemente. Ese tipo de conexión también merece atención.",
+  "¿Sabías que? Otra dimensión del análisis es la calibración epistémica: la relación entre el grado de certeza con que se afirma algo y el respaldo disponible.",
+  "¿Sabías que? Decir “es posible”, “es probable” y “es un hecho” expresa niveles diferentes de certeza. SOPHIA presta atención a esa diferencia.",
+  "¿Sabías que? SOPHIA también examina la transparencia retórica: busca reconocer cuándo el lenguaje acompaña al razonamiento y cuándo puede estar sustituyéndolo.",
+  "¿Sabías que? La pertinencia deliberativa considera cómo se presentan y representan las posiciones diferentes, porque comprender un argumento contrario es parte de deliberar mejor.",
+  "¿Sabías que? SOPHIA incorpora la verificación factual porque la solidez de un razonamiento y la confiabilidad de los datos que utiliza son preguntas diferentes.",
+  "¿Sabías que? Cuando una afirmación puede contrastarse externamente, SOPHIA busca evidencia para determinar qué tan respaldada está, sin confundir esa verificación con la validez de todo el argumento.",
+  "¿Sabías que? La trazabilidad también importa cuando hay incertidumbre: si la evidencia disponible no permite confirmar una afirmación, esa limitación forma parte del resultado en lugar de quedar oculta.",
+  "¿Sabías que? La revisión semántica ayuda a contextualizar las señales encontradas y permite distinguir, por ejemplo, entre una contradicción real y una idea que el autor está presentando para después refutarla.",
+  "¿Sabías que? Las distintas capas de SOPHIA aportan perspectivas diferentes, pero sus resultados quedan relacionados para poder reconstruir cómo se llegó a la interpretación final.",
+  "¿Sabías que? La trazabilidad convierte el resultado de SOPHIA en algo que puedes examinar y discutir: otra persona puede volver a tu texto y revisar de dónde surgió una observación.",
+  "¿Sabías que? SOPHIA no pretende que confíes ciegamente en su resultado. La posibilidad de revisar sus señales, fragmentos y fundamentos forma parte del instrumento.",
+  "¿Sabías que? Un resultado con pocos puntos de atención no significa que un texto sea verdadero, y uno con más puntos tampoco significa que el texto sea simplemente “malo”.",
+  "¿Sabías que? Al terminar, SOPHIA no pretende cerrar la discusión. Te entrega un mapa trazable de aspectos de tu razonamiento que vale la pena examinar para que puedas pensar y deliberar con mayor información."
 ];
 
 const VIEWS = {
@@ -1549,21 +1544,29 @@ if (text.length > 5000) {
         // para que la espera se sienta informativa en vez de un simple spinner.
         const shuffled = [...SOPHIA_LOADING_FACTS].sort(() => Math.random() - 0.5);
         let factIndex = 0;
-const renderLoading = () => {
-  out.innerHTML = `
-    <div style="margin-top:16px; padding:16px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px;">
-      <p style="color:var(--accent); font-size:.8rem; margin:0 0 8px 0;">
-        <span style="display:inline-block; animation: spin 1s linear infinite;">⌛</span>
-        Analizando documento con SOPHIA (Motor Determinista + IA)…
-      </p>
-      <p style="color:rgba(229,231,235,.65); font-size:.78rem; line-height:1.5; margin:0;">${shuffled[factIndex % shuffled.length]}</p>
-    </div>
-    <style>
-      @keyframes spin { 100% { transform: rotate(360deg); } }
-    </style>
-  `;
-  factIndex++;
-};
+        const renderLoading = () => {
+          out.innerHTML = `
+            <div style="margin-top:16px; padding:18px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px;">
+              <div style="display:flex; align-items:center; gap:8px; color:var(--accent); font-size:.8rem; margin-bottom:12px;">
+                <span style="display:inline-block; animation:sophia-hourglass-spin 1s linear infinite; font-size:1rem;">⌛</span>
+                <span>Analizando documento con SOPHIA…</span>
+              </div>
+
+              <div style="padding-top:12px; border-top:1px solid var(--s-border);">
+                <p style="color:rgba(229,231,235,.65); font-size:.78rem; line-height:1.55; margin:0;">
+                  ${shuffled[factIndex % shuffled.length]}
+                </p>
+              </div>
+            </div>
+
+            <style>
+              @keyframes sophia-hourglass-spin {
+                100% { transform: rotate(360deg); }
+              }
+            </style>
+          `;
+          factIndex++;
+        };
         renderLoading();
         const factInterval = setInterval(renderLoading, 20000);
 
