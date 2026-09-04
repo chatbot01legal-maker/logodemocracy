@@ -445,372 +445,300 @@ const SOPHIA_LOADING_FACTS = [
 ];
 
 const VIEWS = {
-  ejemplo: {
-    title: 'Ejemplo',
-    render: () => `
-      <div class="view-eyebrow">Caso real · SOPHIA en acción</div>
+ejemplo: {
+  title: 'Ejemplo',
+  render: () => `
+    <div class="view-eyebrow">Caso real · SOPHIA en acción</div>
 
-      <h1 class="view-title">
-        Un argumento puede ser sólido y, aun así, estar equivocado
-      </h1>
+    <h1 class="view-title">
+      ¿Es razonable poner un límite a la riqueza personal?
+    </h1>
 
-      <div class="view-body">
+    <div class="view-body">
+      <p>
+        <strong>
+          Este es un ejemplo real de cómo SOPHIA analiza un texto argumentativo.
+        </strong>
+      </p>
+      <p>
+        El texto corresponde a un ensayo breve que defiende la idea de establecer
+        un límite a la acumulación de riqueza personal, usando el ejemplo
+        provocador de <strong>“nadie podría tener más de 20 Ferraris”</strong>.
+      </p>
+      <p>
+        El caso es especialmente útil para mostrar cómo SOPHIA distingue entre
+        la <strong>solidez estructural</strong> de un razonamiento y la
+        <strong>veracidad factual</strong> de las afirmaciones que lo sustentan.
+        Aquí el argumento presenta varios puntos de atención en su lógica y
+        en la cadena inferencial, mientras que algunos datos concretos
+        son verificables.
+      </p>
+      <p style="font-size:.78rem; color:rgba(229,231,235,.55);">
+        El resultado que aparece a continuación corresponde a una evaluación
+        real realizada por SOPHIA. La verificación factual es una capa
+        independiente de la evaluación de robustez deliberativa.
+      </p>
+    </div>
 
+    <div class="view-section">
+      <div class="s-card">
+        <div class="view-eyebrow">Resultado de SOPHIA</div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-top:18px;">
+          <div class="s-card" style="margin:0;">
+            <div class="view-eyebrow">Naturaleza documental</div>
+            <strong style="font-size:1.15rem;">Argumentativa</strong>
+            <div style="font-size:.65rem; color:rgba(229,231,235,.4);">Confianza: 0%</div>
+          </div>
+          <div class="s-card" style="margin:0;">
+            <div class="view-eyebrow">VPA</div>
+            <strong style="font-size:1.5rem;">3 <span style="font-size:.7rem; font-weight:400; color:rgba(229,231,235,.5);">puntos de atención</span></strong>
+            <div style="font-size:.65rem; color:rgba(229,231,235,.4);">Varios puntos de atención</div>
+          </div>
+          <div class="s-card" style="margin:0;">
+            <div class="view-eyebrow">Riesgo</div>
+            <strong style="font-size:1.15rem;">Normal</strong>
+          </div>
+          <div class="s-card" style="margin:0;">
+            <div class="view-eyebrow">Revisión semántica</div>
+            <strong style="font-size:1.15rem;">Con observaciones</strong>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;">
+          <div class="view-eyebrow">¿Dónde encontró SOPHIA algo que examinar?</div>
+          <ul>
+            <li><strong>Estructura Lógica:</strong> 2 puntos de atención</li>
+            <li><strong>Inferencia:</strong> 1 punto de atención</li>
+            <li><strong>Calibración Epistémica:</strong> Sin puntos de atención</li>
+            <li><strong>Transparencia Retórica:</strong> Sin puntos de atención</li>
+            <li><strong>Pertinencia Deliberativa:</strong> Sin puntos de atención</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="view-section">
+      <div class="s-card" style="border-left:3px solid var(--accent);">
+        <div class="view-eyebrow">La observación central</div>
+        <h2 class="view-subtitle">Estructura sólida, pero con saltos en la cadena inferencial</h2>
+        <p>
+          SOPHIA detectó <strong>tres puntos de atención</strong> en el razonamiento:
+          dos relacionados con la <strong>Estructura Lógica</strong> (contradicción
+          aparente y soporte de premisas) y uno en la <strong>Ruta Inferencial</strong>
+          (generalización y causalidad sin datos explícitos).
+        </p>
+        <p>
+          La revisión semántica, sin embargo, matiza algunos de estos hallazgos:
+          señala que el autor utiliza la <strong>proslepsis</strong> (anticipar
+          objeciones) para fortalecer su postura, y que el texto funciona como un
+          <strong>experimento mental</strong> donde las generalizaciones se sostienen
+          en principios lógicos y económicos, no en evidencia empírica. Esto no
+          anula los puntos de atención, pero invita a interpretarlos en el contexto
+          de un ensayo argumentativo, no de un estudio científico.
+        </p>
+        <p>
+          Además, dos afirmaciones concretas del texto fueron <strong>verificadas
+          factualmente</strong>, lo que muestra que el autor maneja datos precisos
+          en algunos puntos, aunque la cadena causal global carece de respaldo
+          explícito.
+        </p>
         <p>
           <strong>
-            Este es un ejemplo real de cómo SOPHIA analiza un texto argumentativo.
+            Esta tensión entre forma y contenido es precisamente lo que SOPHIA
+            busca hacer visible: un argumento puede estar bien construido
+            retóricamente y, aun así, presentar debilidades en la conexión entre
+            premisas y conclusiones.
           </strong>
         </p>
-
-        <p>
-          El texto corresponde a un diálogo televisivo entre
-          <strong>Joy Behar</strong> y
-          <strong>Vivek Ramaswamy</strong>,
-          a propósito de la riqueza de Elon Musk y de la responsabilidad que
-          deberían tener las personas extremadamente ricas frente a las
-          necesidades de la sociedad.
-        </p>
-
-        <p>
-          En este caso, SOPHIA analiza la intervención de Ramaswamy después de
-          que Behar cuestionara la acumulación de riqueza de Musk. El ejemplo es
-          especialmente interesante porque muestra una distinción central del
-          instrumento:
-          <strong>
-            un argumento puede presentar una estructura lógica y deliberativa
-            muy robusta sin que sus premisas fácticas sean verdaderas.
-          </strong>
-        </p>
-
-        <p style="font-size:.78rem; color:rgba(229,231,235,.55);">
-          El resultado que aparece a continuación corresponde a una evaluación
-          real realizada por SOPHIA. La verificación factual es una capa
-          independiente de la evaluación de robustez deliberativa.
-        </p>
-
       </div>
+    </div>
 
-      <div class="view-section">
+    <div class="view-section">
+      <div class="view-section-title">Puntos de atención</div>
 
-        <div class="s-card">
-
-          <div class="view-eyebrow">Resultado de SOPHIA</div>
-
-          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-top:18px;">
-
-            <div class="s-card" style="margin:0;">
-              <div class="view-eyebrow">Naturaleza documental</div>
-              <strong style="font-size:1.15rem;">Argumentativa</strong>
-            </div>
-
-            <div class="s-card" style="margin:0;">
-              <div class="view-eyebrow">VPA</div>
-              <strong style="font-size:1.5rem;">0 <span style="font-size:.7rem; font-weight:400; color:rgba(229,231,235,.5);">puntos de atención</span></strong>
-            </div>
-
-            <div class="s-card" style="margin:0;">
-              <div class="view-eyebrow">Riesgo</div>
-              <strong style="font-size:1.15rem;">Normal</strong>
-            </div>
-
-            <div class="s-card" style="margin:0;">
-              <div class="view-eyebrow">Revisión semántica</div>
-              <strong style="font-size:1.15rem;">Sin observaciones</strong>
-            </div>
-
+      <div style="margin-bottom:16px;">
+        <div style="font-size:.75rem; color:var(--accent); margin-bottom:6px;">Estructura Lógica</div>
+        <div style="background:var(--s-panel); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between; font-size:.8rem; gap:8px;">
+            <span style="color:#e5e7eb;">1.1 - No Contradicción</span>
+            <span style="color:rgba(229,231,235,.5); white-space:nowrap;">vale la pena examinar</span>
           </div>
-
-          <div style="margin-top:24px;">
-
-            <div class="view-eyebrow">¿Dónde encontró SOPHIA algo que examinar?</div>
-
-            <ul>
-              <li><strong>Estructura Lógica:</strong> Sin puntos de atención</li>
-              <li><strong>Inferencia:</strong> Sin puntos de atención</li>
-              <li><strong>Calibración Epistémica:</strong> Sin puntos de atención</li>
-              <li><strong>Transparencia Retórica:</strong> Sin puntos de atención</li>
-              <li><strong>Pertinencia Deliberativa:</strong> Sin puntos de atención</li>
-            </ul>
-
+          <div style="font-size:.7rem; color:rgba(229,231,235,.4); margin-top:4px;">Átomo: <span style="cursor:pointer; text-decoration:underline dotted;" data-atomo="ATOMO_CONTRADICCION">ATOMO_CONTRADICCION</span></div>
+        </div>
+        <div style="background:var(--s-panel); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between; font-size:.8rem; gap:8px;">
+            <span style="color:#e5e7eb;">1.4 - Integridad de las Premisas</span>
+            <span style="color:rgba(229,231,235,.5); white-space:nowrap;">vale la pena examinar</span>
           </div>
-
-          <p style="margin-top:20px;">
-            <strong>Confianza de clasificación:</strong> 0%
-          </p>
-
+          <div style="font-size:.7rem; color:rgba(229,231,235,.4); margin-top:4px;">Átomo: <span style="cursor:pointer; text-decoration:underline dotted;" data-atomo="ATOMO_SOPORTE_LOGICO">ATOMO_SOPORTE_LOGICO</span></div>
         </div>
-
       </div>
 
-      <div class="view-section">
-
-        <div class="s-card" style="border-left:3px solid var(--accent);">
-
-          <div class="view-eyebrow">La observación central</div>
-
-          <h2 class="view-subtitle">
-            No encontrar señales no significa que sea verdad
-          </h2>
-
-          <p>
-            SOPHIA no identificó <strong>puntos de atención</strong> en la estructura
-            de este argumento (VPA: 0). Esto significa que, desde el punto de vista de
-            su construcción, el argumento presenta una organización coherente entre sus
-            afirmaciones, inferencias, recursos retóricos y propósito
-            deliberativo — no que su contenido sea correcto ni verdadero.
-          </p>
-
-          <p>
-            Pero eso no significa que todo lo que afirma sea verdadero.
-          </p>
-
-          <p>
-            De hecho, la verificación factual encontró afirmaciones centrales
-            que fueron <strong>refutadas</strong> o para las cuales existía
-            <strong>evidencia insuficiente</strong>.
-          </p>
-
-          <p>
-            Esta diferencia es precisamente una de las funciones más importantes
-            de SOPHIA:
-            <strong>
-              separar la calidad estructural de un razonamiento de la verdad
-              de las afirmaciones sobre el mundo.
-            </strong>
-          </p>
-
+      <div style="margin-bottom:16px;">
+        <div style="font-size:.75rem; color:var(--accent); margin-bottom:6px;">Inferencia</div>
+        <div style="background:var(--s-panel); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between; font-size:.8rem; gap:8px;">
+            <span style="color:#e5e7eb;">RUTA-INF - Ruta Inferencial</span>
+            <span style="color:rgba(229,231,235,.5); white-space:nowrap;">vale la pena examinar</span>
+          </div>
+          <div style="font-size:.7rem; color:rgba(229,231,235,.4); margin-top:4px;">Átomo: <span style="cursor:pointer; text-decoration:underline dotted;" data-atomo="Ruta Inferencial">Ruta Inferencial</span></div>
         </div>
-
       </div>
+    </div>
 
-      <div class="view-section">
+    <div class="view-section">
+      <div class="view-section-title">Evidencias textuales</div>
+      <div style="max-height:300px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
+        <div style="border-bottom:1px solid rgba(255,255,255,.05); padding:8px 0; font-size:.75rem;">
+          <span style="color:#d97706; font-weight:500;">ATOMO_CONTRADICCION</span>
+          <span style="color:rgba(229,231,235,.3);"> (1.1)</span>
+          <div style="color:rgba(229,231,235,.6); margin-top:2px;">"La medida podría parecer exagerada, pero existe una razón sencilla para defenderla"</div>
+        </div>
+        <div style="border-bottom:1px solid rgba(255,255,255,.05); padding:8px 0; font-size:.75rem;">
+          <span style="color:#d97706; font-weight:500;">ATOMO_CONTRADICCION</span>
+          <span style="color:rgba(229,231,235,.3);"> (1.1)</span>
+          <div style="color:rgba(229,231,235,.6); margin-top:2px;">"Pero una empresa crea empleo porque existe demanda por sus productos, no simplemente porque alguien tenga mucho dinero"</div>
+        </div>
+        <div style="border-bottom:1px solid rgba(255,255,255,.05); padding:8px 0; font-size:.75rem;">
+          <span style="color:#d97706; font-weight:500;">ATOMO_SOPORTE_LOGICO</span>
+          <span style="color:rgba(229,231,235,.3);"> (1.4)</span>
+          <div style="color:rgba(229,231,235,.6); margin-top:2px;">"Algunos responderían que las grandes fortunas son necesarias porque los ricos invierten y crean empresas"</div>
+        </div>
+        <div style="border-bottom:1px solid rgba(255,255,255,.05); padding:8px 0; font-size:.75rem;">
+          <span style="color:#d97706; font-weight:500;">ATOMO_SOPORTE_LOGICO</span>
+          <span style="color:rgba(229,231,235,.3);"> (1.4)</span>
+          <div style="color:rgba(229,231,235,.6); margin-top:2px;">"Pero una empresa crea empleo porque existe demanda por sus productos, no simplemente porque alguien tenga mucho dinero"</div>
+        </div>
+      </div>
+    </div>
 
-        <div class="s-card">
+    <div class="view-section">
+      <div class="view-section-title">Confiabilidad factual</div>
+      <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
+        <div style="margin-bottom:14px;">
+          <div style="font-size:.75rem; color:#22c55e; text-transform:uppercase; margin-bottom:6px;">Verificadas (2)</div>
+          <div style="background:rgba(255,255,255,.03); border-left:2px solid #22c55e; padding:10px 14px; margin-bottom:8px;">
+            <div style="font-size:.78rem; color:#e5e7eb; line-height:1.4;">Una persona puede conducir un solo automóvil a la vez y habitar una sola casa.</div>
+            <div style="font-size:.68rem; color:rgba(229,231,235,.45); margin-top:4px;">Fuentes: elpais.com, quora.com, global-immo.net, kronoshomes.com, rocketmortgage.com, fincaseva.com, dfrealty.net, primeinvest.es</div>
+          </div>
+          <div style="background:rgba(255,255,255,.03); border-left:2px solid #22c55e; padding:10px 14px; margin-bottom:8px;">
+            <div style="font-size:.78rem; color:#e5e7eb; line-height:1.4;">Quienes poseen menos recursos consumen una proporción mayor de sus ingresos</div>
+            <div style="font-size:.68rem; color:rgba(229,231,235,.45); margin-top:4px;">Fuentes: gerencie.com, reddit.com, financialaha.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-          <div class="view-eyebrow">Confiabilidad factual</div>
+    <div class="view-section">
+      <div class="view-section-title">Revisión semántica</div>
+      <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
+        <div style="background:rgba(255,255,255,.03); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:10px;">
+          <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:6px; font-size:.68rem; color:rgba(229,231,235,.5); text-transform:uppercase;">
+            <span>Átomo: <strong style="color:#e5e7eb;">ATOMO_CONTRADICCION</strong></span>
+            <span>Criterio: <strong style="color:#e5e7eb;">1.1</strong></span>
+            <span>Categoría: <strong style="color:#e5e7eb;">uso_legitimo</strong></span>
+            <span>Confianza: <strong style="color:#e5e7eb;">0.95</strong></span>
+          </div>
+          <div style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.5;">El fragmento no presenta una contradicción. El autor utiliza una construcción retórica común para anticipar una objeción ('podría parecer exagerada') y acto seguido anuncia que presentará una justificación ('pero existe una razón sencilla para defenderla'), lo cual procede a hacer en los párrafos siguientes. Esto es un uso legítimo para introducir y argumentar una postura, no una infracción de contradicción.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:10px;">
+          <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:6px; font-size:.68rem; color:rgba(229,231,235,.5); text-transform:uppercase;">
+            <span>Átomo: <strong style="color:#e5e7eb;">ATOMO_CONTRADICCION</strong></span>
+            <span>Criterio: <strong style="color:#e5e7eb;">1.1</strong></span>
+            <span>Categoría: <strong style="color:#e5e7eb;">uso_critico</strong></span>
+            <span>Confianza: <strong style="color:#e5e7eb;">0.95</strong></span>
+          </div>
+          <div style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.5;">El autor presenta una objeción común ('Algunos responderían que...') y luego refuta esa idea con el fragmento proporcionado ('Pero una empresa crea empleo porque existe demanda...'). No se trata de una contradicción interna del autor, sino de una crítica o refutación a una postura ajena, lo cual es un uso crítico del argumento.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:10px;">
+          <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:6px; font-size:.68rem; color:rgba(229,231,235,.5); text-transform:uppercase;">
+            <span>Átomo: <strong style="color:#e5e7eb;">ATOMO_SOPORTE_LOGICO</strong></span>
+            <span>Criterio: <strong style="color:#e5e7eb;">1.4</strong></span>
+            <span>Categoría: <strong style="color:#e5e7eb;">uso_critico</strong></span>
+            <span>Confianza: <strong style="color:#e5e7eb;">0.95</strong></span>
+          </div>
+          <div style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.5;">El fragmento activado presenta la postura de 'Algunos' (terceros) sobre la necesidad de las grandes fortunas, inmediatamente antes de que el autor la critique y la refute con argumentos propios. La frase 'Pero una empresa crea empleo porque...' deja claro que el autor no comparte ni afirma la idea presentada, sino que la expone para refutarla.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:10px;">
+          <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:6px; font-size:.68rem; color:rgba(229,231,235,.5); text-transform:uppercase;">
+            <span>Átomo: <strong style="color:#e5e7eb;">ATOMO_SOPORTE_LOGICO</strong></span>
+            <span>Criterio: <strong style="color:#e5e7eb;">1.4</strong></span>
+            <span>Categoría: <strong style="color:#e5e7eb;">uso_legitimo</strong></span>
+            <span>Confianza: <strong style="color:#e5e7eb;">0.95</strong></span>
+          </div>
+          <div style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.5;">El autor utiliza el fragmento para presentar una premisa lógica que refuta el argumento de que las grandes fortunas son necesarias para la creación de empleo. La afirmación de que 'una empresa crea empleo porque existe demanda por sus productos, no simplemente porque alguien tenga mucho dinero' es una pieza de soporte lógico para su postura sobre la redistribución de la riqueza.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03); border-left:2px solid var(--accent); padding:10px 14px; margin-bottom:10px;">
+          <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:6px; font-size:.68rem; color:rgba(229,231,235,.5); text-transform:uppercase;">
+            <span>Criterio: <strong style="color:#e5e7eb;">RUTA-INF - Ruta Inferencial</strong></span>
+            <span>Categoría: <strong style="color:#e5e7eb;">uso_legitimo</strong></span>
+            <span>Confianza: <strong style="color:#e5e7eb;">0.85</strong></span>
+          </div>
+          <div style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.5;">El fragmento constituye un ensayo argumentativo que propone un escenario hipotético y lo defiende mediante razonamientos lógicos y principios económicos ampliamente discutidos (como la utilidad marginal decreciente, la propensión marginal al consumo o la naturaleza de la creación de empleo). Si bien las generalizaciones realizadas no están respaldadas por 'datos' empíricos explícitos dentro del texto (como estadísticas o estudios específicos), se utilizan de manera legítima para construir un argumento teórico y filosófico. En este contexto de ensayo, la fundamentación de las generalizaciones radica en la lógica del argumento y en la apelación a principios conceptuales, más que en la presentación de nueva evidencia empírica. Por lo tanto, la activación de 'generalizacion_sin_dato' por Capa 1 podría considerarse un falso positivo contextual.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03); border-left:2px solid #ef4444; padding:10px 14px; margin-bottom:10px;">
+          <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:6px; font-size:.68rem; color:rgba(229,231,235,.5); text-transform:uppercase;">
+            <span>Criterio: <strong style="color:#e5e7eb;">RUTA-INF - Ruta Inferencial</strong></span>
+            <span>Categoría: <strong style="color:#e5e7eb;">infraccion_confirmada</strong></span>
+            <span>Confianza: <strong style="color:#e5e7eb;">0.9</strong></span>
+          </div>
+          <div style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.5;">El fragmento activado afirma relaciones de causalidad ('necesariamente queda menos dinero', 'aumentaría el consumo y haría más dinámica la economía') como justificación o explicación dentro de la argumentación del autor. Aunque el texto general plantea un escenario hipotético, las afirmaciones causales específicas dentro del fragmento no se presentan como meras posibilidades hipotéticas o subjetivas, sino como consecuencias lógicas o principios económicos. Sin embargo, el documento no proporciona segmentos de dato (estadísticas, estudios, hechos concretos) que sustenten explícitamente estas afirmaciones causales, confirmando la activación del indicador 'causalidad_sin_dato'.</div>
+        </div>
+      </div>
+    </div>
 
-          <h2 class="view-subtitle">Afirmaciones verificadas</h2>
-
-          <ul>
-            <li>
-              Menos del 0,1 % del patrimonio neto total de Elon estaría
-              realmente en efectivo.
-            </li>
-            <li>
-              El 99,9 % restante estaría compuesto básicamente por acciones
-              y participaciones en sus empresas.
-            </li>
-            <li>
-              Más de 600.000 empleos indirectos habrían sido generados a través
-              de sus cadenas de suministro.
-            </li>
-            <li>
-              Joy no sería fundadora ni propietaria de una empresa escalable.
-            </li>
+    <div class="view-section">
+      <div class="view-section-title">Interpretación integral</div>
+      <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
+        <div style="margin-bottom:12px;">
+          <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Interpretación</div>
+          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">El texto explora la idea de establecer límites a la riqueza personal a través de un experimento mental, argumentando que la acumulación excesiva puede tener implicaciones sociales negativas. SOPHIA ha identificado tres puntos de atención que invitan a una revisión de la estructura del razonamiento y la conexión entre las afirmaciones. Específicamente, los puntos de atención se centran en cómo el autor maneja las ideas opuestas y el soporte para ciertas premisas y cadenas inferenciales. Si bien dos afirmaciones específicas del texto fueron verificadas como confiables a nivel factual, los puntos de atención estructurales sugieren examinar la completitud y el respaldo de la argumentación general, más que la veracidad de los hechos aislados.</div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Contexto</div>
+          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">El motor ha detectado señales estructurales en el argumento que, desde una perspectiva semántica, tienen un uso particular por parte del autor. Los puntos de atención en 'No Contradicción' (segmentos 2 y 9) se refieren a momentos en que el autor introduce una idea que podría verse como opuesta a su tesis principal. Sin embargo, en el contexto, esto es una estrategia retórica (proslepsis o refutación de un contraargumento) para fortalecer su postura al abordar objeciones esperadas, no una contradicción interna. Por ejemplo, al decir 'La medida podría parecer exagerada, pero...', el autor anticipa una crítica para luego justificar su posición. De manera similar, en el segmento 9, el autor refuta la idea de que las grandes fortunas son necesarias para la creación de empleo. En cuanto a la 'Integridad de las Premisas' (segmentos 8 y 9), el motor señala que las afirmaciones 'Algunos responderían que...' y su refutación ('Pero una empresa crea empleo...') carecen de un soporte explícito en el texto. Esto es relevante porque, aunque el autor cita una objeción para refutarla, la fuerza de su refutación dependería de la evidencia subyacente que no se presenta aquí. Finalmente, el punto de atención en la 'Ruta Inferencial' sobre 'generalización_sin_dato' y 'causalidad_sin_dato' se debe a que el texto funciona como un ensayo conceptual o experimento mental, partiendo de premisas que el autor asume como dadas o lógicamente evidentes dentro de su marco de razonamiento, en lugar de presentar 'datos' empíricos específicos para cada afirmación causal o generalización.</div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Observaciones</div>
+          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
+            <div style="margin-bottom: 6px;">Las detecciones del motor en 'No Contradicción' (segmentos 2 y 9) son estructuralmente correctas al señalar la yuxtaposición de ideas. No obstante, se contextualiza que el autor las utiliza como una estrategia retórica para anticipar y refutar objeciones, lo cual no constituye una contradicción lógica en su argumento, sino un recurso persuasivo.</div>
+            <div style="margin-bottom: 6px;">En cuanto a la 'Integridad de las Premisas' (segmentos 8 y 9), la detección es precisa en que el texto presenta una premisa citada (segmento 8) y su refutación (segmento 9) sin un soporte detallado dentro del documento. Si bien el segmento 8 es una objeción externa, la refutación en el segmento 9 podría beneficiarse de un mayor desarrollo o evidencia explícita para fortalecer la solidez argumentativa.</div>
+            <div style="margin-bottom: 6px;">La detección de saltos en la 'Ruta Inferencial' (generalización y causalidad sin dato) se confirma. Esto refleja la naturaleza del documento como un experimento mental y una reflexión conceptual que se basa en premisas que el autor considera razonables o de conocimiento general, en lugar de un análisis empírico exhaustivo con datos explícitos para cada inferencia. Esto no anula la validez del pensamiento, pero indica que las conexiones causales y generalizaciones se basan en un marco lógico o conceptual que el lector debe considerar, en lugar de en datos presentados directamente en el documento.</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Preguntas reflexivas</div>
+          <ul style="margin:0; padding-left:18px; font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
+            <li>¿De qué manera el uso de un experimento mental, como el de los '20 Ferraris', busca generar comprensión y facilitar el debate sobre un tema complejo como la desigualdad de la riqueza?</li>
+            <li>¿Qué tipo de evidencia o desarrollo adicional podría el autor haber incluido para fortalecer las premisas y las cadenas causales sin perder el formato de ensayo conceptual?</li>
+            <li>Considerando la naturaleza conceptual del argumento, ¿es siempre necesario que cada afirmación de causalidad o generalización tenga un 'dato' explícito en el texto, o se asume un conocimiento compartido en el público al que se dirige?</li>
+            <li>¿Cómo influye la estrategia del autor de anticipar y refutar contraargumentos en la percepción de la solidez y la honestidad intelectual de su propuesta?</li>
           </ul>
-
-          <h2 class="view-subtitle">Afirmaciones refutadas</h2>
-
-          <ul>
-            <li>
-              Que al menos un millón de personas en todo el mundo puedan llevar
-              el pan a su mesa gracias a los empleos creados por las empresas
-              de Elon.
-            </li>
-            <li>
-              Que Joy tenga un patrimonio de 30 millones de dólares.
-            </li>
-            <li>
-              Que Joy no haya creado ningún empleo.
-            </li>
-          </ul>
-
-          <h2 class="view-subtitle">Evidencia insuficiente</h2>
-
-          <ul>
-            <li>
-              Que la parte líquida del patrimonio de Elon equivalga como máximo
-              a mil o dos mil millones de dólares.
-            </li>
-            <li>
-              Que sus empresas hayan creado más de 160.000 empleos directos.
-            </li>
-            <li>
-              Que hayan generado más de 500.000 empleos adicionales derivados
-              de una actividad económica más amplia.
-            </li>
-          </ul>
-
         </div>
-
       </div>
+    </div>
 
-      <div class="view-section">
-
-        <div class="s-card">
-
-          <div class="view-eyebrow">Interpretación integral</div>
-
-          <h2 class="view-subtitle">¿Qué vio SOPHIA?</h2>
-
-          <p>
-            El texto presenta un debate en el que el hablante primero responde
-            a las críticas dirigidas contra Elon Musk describiendo la estructura
-            de su riqueza y su supuesto impacto en la creación de empleo.
-          </p>
-
-          <p>
-            Posteriormente, el argumento cambia de dirección y cuestiona a la
-            propia interlocutora: si ella considera que las grandes fortunas
-            deberían utilizarse para ayudar a otras personas, ¿por qué no
-            aplica ese mismo criterio a su propia riqueza?
-          </p>
-
-          <p>
-            SOPHIA identifica así una estructura argumentativa que combina
-            datos, interpretación, causalidad, generalización y una interpelación
-            directa.
-          </p>
-
-        </div>
-
+    <div class="view-section">
+      <div class="s-card" style="border-left:3px solid var(--accent);">
+        <div class="view-eyebrow">El texto original</div>
+        <h2 class="view-subtitle">Argumento evaluado</h2>
+        <blockquote>
+          <strong>Si nadie pudiera tener más de 20 Ferraris</strong><br><br>
+          Imaginemos que una sociedad decide establecer un límite a la riqueza personal: nadie puede poseer más de 20 Ferraris ni más de 10 casas frente al mar. Todo lo que exceda esos límites debe destinarse a fines de interés público.<br><br>
+          La medida podría parecer exagerada, pero existe una razón sencilla para defenderla. Una persona puede conducir un solo automóvil a la vez y habitar una sola casa. Por lo tanto, cuando alguien acumula cientos de vehículos o decenas de propiedades, una parte de esos bienes deja de cumplir una función personal y permanece fuera del alcance de quienes podrían necesitarlos.<br><br>
+          Lo mismo ocurre con el dinero. Si una pequeña parte de la población concentra cantidades enormes de riqueza, necesariamente queda menos dinero disponible para el resto. Quienes poseen menos recursos consumen una proporción mayor de sus ingresos, de modo que trasladar una parte de la riqueza hacia ellos aumentaría el consumo y haría más dinámica la economía.<br><br>
+          Algunos responderían que las grandes fortunas son necesarias porque los ricos invierten y crean empresas. Pero una empresa crea empleo porque existe demanda por sus productos, no simplemente porque alguien tenga mucho dinero. Si desaparecieran las grandes fortunas, otras personas podrían invertir esos mismos recursos y satisfacer las mismas necesidades.<br><br>
+          Además, existe un límite evidente a la utilidad personal de la riqueza. Después de cierto nivel, disponer de más dinero ya no permite satisfacer necesidades importantes adicionales. Nadie necesita una vigésima primera Ferrari para mejorar significativamente su vida, mientras que para otra persona una fracción de ese valor podría representar una vivienda, educación o alimentación durante años.<br><br>
+          Por eso, establecer un límite razonable a la riqueza no significa defender que todos deban tener exactamente lo mismo. Significa reconocer que la propiedad privada cumple una función social y que, cuando la acumulación supera ampliamente cualquier necesidad personal razonable, existe una justificación para redistribuir el excedente.<br><br>
+          La pregunta, entonces, no debería ser cuánto puede acumular legalmente una persona, sino cuánto puede acumular antes de que esa acumulación deje de beneficiar principalmente a quien posee la riqueza y comience a perjudicar al resto de la sociedad.
+        </blockquote>
       </div>
-
-      <div class="view-section">
-
-        <div class="s-card">
-
-          <div class="view-eyebrow">Transparencia retórica</div>
-
-          <h2 class="view-subtitle">El giro hacia Joy</h2>
-
-          <p>
-            Una parte importante del argumento consiste en devolver la crítica
-            hacia quien la formula:
-            <strong>
-              si Joy sostiene que Elon debería repartir su riqueza,
-              entonces también debería aplicar ese criterio a su propia fortuna.
-            </strong>
-          </p>
-
-          <p>
-            Esta estrategia puede describirse como un
-            <strong>tu quoque</strong>: se cuestiona la consistencia de la
-            posición del interlocutor a partir de su propia conducta o situación.
-          </p>
-
-          <p>
-            SOPHIA detectó esta estrategia, pero no la penalizó automáticamente
-            como una falacia. Esto es importante: identificar una estrategia
-            retórica no equivale necesariamente a determinar que sea ilegítima.
-          </p>
-
-        </div>
-
-      </div>
-
-      <div class="view-section">
-
-        <div class="s-card">
-
-          <div class="view-eyebrow">El texto original</div>
-
-          <h2 class="view-subtitle">Diálogo evaluado</h2>
-
-          <blockquote>
-            <strong>Joy:</strong>
-            ¿Qué está haciendo Elon Musk con su dinero? Está a punto de
-            convertirse en trillonario. ¿Dónde está ese dinero? Con ese dinero
-            podría salvar a algunos países. Las personas que tienen tanto
-            dinero… ¿qué creen? ¿Que van a vivir para siempre, Elon?
-          </blockquote>
-
-          <blockquote>
-            <strong>Guy / Vivek Ramaswamy:</strong>
-            Sí, podría. ¿Lo va a hacer? No. Menos del 0,1 % del patrimonio neto
-            total de Elon está realmente en efectivo depositado en el banco.
-            Eso equivale, como máximo, a unos mil o dos mil millones de dólares.
-            El resto, es decir, el 99,9 %, está compuesto básicamente por
-            acciones y participaciones en sus empresas, como SpaceX, Tesla y otras.
-          </blockquote>
-
-          <blockquote>
-            Esas empresas han creado más de 160.000 empleos directos, más de
-            600.000 empleos indirectos a través de sus cadenas de suministro y
-            más de 500.000 empleos adicionales derivados de una actividad
-            económica más amplia.
-          </blockquote>
-
-          <blockquote>
-            Así que, si hacemos los cálculos, al menos un millón de personas en
-            todo el mundo pueden llevar el pan a su mesa gracias a los empleos
-            que han creado las empresas de Elon.
-          </blockquote>
-
-          <blockquote>
-            Ahora bien, por otro lado, tú, Joy, tienes un patrimonio de 30
-            millones de dólares. Y, a diferencia de Elon, tú no has creado
-            ningún empleo. No eres fundadora ni propietaria de una empresa
-            escalable.
-          </blockquote>
-
-          <blockquote>
-            Y, por lo tanto, la mayor parte —si no todo— de tus 30 millones de
-            dólares es dinero real disponible para gastar.
-          </blockquote>
-
-          <blockquote>
-            ¿Vas a vivir para siempre, Joy?
-            ¿Por qué no estás regalando tu dinero?
-            Con solo un tercio de tu patrimonio, probablemente podrías alimentar
-            a 3.000 personas durante todo un año.
-          </blockquote>
-
-        </div>
-
-      </div>
-
-      <div class="view-section">
-
-        <div class="s-card" style="border-left:3px solid var(--accent);">
-
-          <div class="view-eyebrow">Lo que este ejemplo permite ver</div>
-
-          <p>
-            SOPHIA no responde simplemente:
-            <strong>“¿Tiene razón?”</strong>
-          </p>
-
-          <p>
-            Primero pregunta, en términos estructurales:
-            <strong>¿cómo está construido el razonamiento?</strong>
-          </p>
-
-          <p>
-            Después incorpora una capa diferente:
-            <strong>¿qué ocurre cuando comprobamos las afirmaciones verificables?</strong>
-          </p>
-
-          <p>
-            En este caso, ambas respuestas son muy diferentes:
-            <strong>SOPHIA no encontró puntos de atención en la estructura del
-            argumento (VPA: 0), mientras varias premisas fácticas centrales
-            fueron refutadas o quedaron sin evidencia suficiente.</strong>
-          </p>
-
-          <p>
-            Esa diferencia es precisamente lo que SOPHIA busca hacer visible:
-            <strong>
-              un argumento puede estar muy bien construido y, al mismo tiempo,
-              conducir a una conclusión débil porque parte de información falsa,
-              dudosa o insuficientemente comprobada.
-            </strong>
-          </p>
-
-        </div>
-
-      </div>
-    `
+    </div>
+  
+  }
+}
+          
   },
 
 
