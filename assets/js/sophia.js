@@ -1545,26 +1545,12 @@ if (text.length > 5000) {
         const shuffled = [...SOPHIA_LOADING_FACTS].sort(() => Math.random() - 0.5);
         let factIndex = 0;
         const renderLoading = () => {
-          out.innerHTML = `
-            <div style="margin-top:16px; padding:18px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px;">
-              <div style="display:flex; align-items:center; gap:8px; color:var(--accent); font-size:.8rem; margin-bottom:12px;">
-                <span style="display:inline-block; animation:sophia-hourglass-spin 1s linear infinite; font-size:1rem;">⌛</span>
-                <span>Analizando documento con SOPHIA…</span>
-              </div>
+          const loader = document.getElementById('logos-loader');
+          const fact = document.getElementById('sophia-loader-fact');
 
-              <div style="padding-top:12px; border-top:1px solid var(--s-border);">
-                <p style="color:rgba(229,231,235,.65); font-size:.78rem; line-height:1.55; margin:0;">
-                  ${shuffled[factIndex % shuffled.length]}
-                </p>
-              </div>
-            </div>
+          if (!loader || !fact) return;
 
-            <style>
-              @keyframes sophia-hourglass-spin {
-                100% { transform: rotate(360deg); }
-              }
-            </style>
-          `;
+          fact.textContent = shuffled[factIndex % shuffled.length];
           factIndex++;
         };
         renderLoading();

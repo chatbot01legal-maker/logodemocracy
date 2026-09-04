@@ -12,12 +12,15 @@
 </head>
 <body>
 
-  <!-- === LOADER AUTO-ACTIVABLE SOPHIA / LOGOS === -->
+  <!-- === LOADER FULLSCREEN SOPHIA === -->
 <style>
   #logos-loader {
     display: none;
     position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     background: rgba(15, 23, 42, 0.88) !important;
     backdrop-filter: blur(5px);
     z-index: 999999 !important;
@@ -26,36 +29,66 @@
     align-items: center;
     color: #f8fafc;
     font-family: system-ui, -apple-system, sans-serif;
+    text-align: center;
+    padding: 24px;
+    box-sizing: border-box;
   }
+
   .sandglass-box {
     font-size: 56px;
     animation: flipHourglass 4s infinite ease-in-out;
   }
-  .loading-dots::after {
-    content: '';
-    animation: dots 1.5s infinite;
+
+  .sophia-loader-title {
+    margin-top: 18px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
   }
+
+  .sophia-loader-fact {
+    max-width: 680px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(148, 163, 184, 0.25);
+    color: rgba(229, 231, 235, 0.72);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
   @keyframes flipHourglass {
-    0% { transform: rotate(0deg) scale(1); }
-    45% { transform: rotate(180deg) scale(1.1); }
-    50% { transform: rotate(180deg) scale(1); }
-    95% { transform: rotate(360deg) scale(1.1); }
-    100% { transform: rotate(360deg) scale(1); }
-  }
-  @keyframes dots {
-    0% { content: ''; }
-    33% { content: '.'; }
-    66% { content: '..'; }
-    100% { content: '...'; }
+    0% {
+      transform: rotate(0deg) scale(1);
+    }
+
+    45% {
+      transform: rotate(180deg) scale(1.1);
+    }
+
+    50% {
+      transform: rotate(180deg) scale(1);
+    }
+
+    95% {
+      transform: rotate(360deg) scale(1.1);
+    }
+
+    100% {
+      transform: rotate(360deg) scale(1);
+    }
   }
 </style>
 
 <div id="logos-loader">
-  <div class="sandglass-box">⏳</div>
-  <p style="margin-top: 18px; font-size: 1.2rem; font-weight: 600; color: #ffffff;">
-    Analizando tus ideas<span class="loading-dots"></span>
-  </p>
-  <small style="color: #94a3b8; margin-top: 6px;">Por favor espera unos segundos...</small>
+  <div class="sandglass-box">⌛</div>
+
+  <div class="sophia-loader-title">
+    Analizando documento con SOPHIA…
+  </div>
+
+  <div id="sophia-loader-fact" class="sophia-loader-fact">
+    Preparando el análisis…
+  </div>
 </div>
 
 <script>
@@ -74,7 +107,7 @@
     };
   })();
 </script>
-<!-- === FIN LOADER AUTO-ACTIVABLE === -->
+<!-- === FIN LOADER FULLSCREEN SOPHIA === -->
   
 
 <div class="page">
