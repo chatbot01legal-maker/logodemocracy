@@ -12,6 +12,7 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 const { connect } = require("./modules/database");
 const { evaluate } = require("./modules/sophiaEvaluationPipeline");
 const { mergeGuestProfileIntoUser } = require("./modules/reyFilosofoService");
+const { getAcademyAnalysis } = require("./modules/sophiaAcademyPipeline");
 
 const PROTOCOL = {
   version: "4.0"
@@ -555,6 +556,43 @@ app.get(
       res.status(500).json({
         error:
           "Error interno del servidor al buscar el análisis."
+      });
+    }
+  }
+);
+
+// ─── LECTURA PURA DE CACHÉ SOPHIA — ACADEMIA ──────────
+// READ-ONLY.
+// Nunca ejecuta SophiaEngineV4.
+// Nunca llama a Gemini.
+// Nunca escribe en MongoDB.
+// Solo devuelve un análisis previamente generado por
+// auditAcademyDocuments.js.
+
+app.get(
+  "/api/sophia/academy/analysis/:docId",
+  async (req, res) => {
+    try {
+      const docId = req.params.docId;
+
+      const cached = await getAcademyAnalysis(docId);
+
+      if (!cached) {
+        return res.status(404).json({
+          error: "Análisis de Academia aún no disponible"
+        });
+      }
+
+      return res.json(cached.result);
+
+    } catch (error) {
+      console.error(
+        "❌ Error en /api/sophia/academy/analysis/:docId:",
+        error
+      );
+
+      return res.status(500).json({
+        error: "Error interno"
       });
     }
   }

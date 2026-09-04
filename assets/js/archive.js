@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let allDocuments = [];
   let currentActiveAsset = null;
   let tagSearchQuery = "";
-  let currentDocumentAnalysis = null; 
+  let currentDocumentAnalysis = null;
+  let currentAcademyAnalysis = null;
 
   // 1. Exponer el Activo Cognitivo para el Rey Filósofo
   window.Academy = window.Academy || {};
@@ -51,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       document.body.appendChild(modal);
     }
-    
+
     modal.style.display = "flex";
     const contentDiv = document.getElementById("sophia-modal-content");
     const asset = currentActiveAsset ? currentActiveAsset.asset : null;
@@ -141,6 +142,90 @@ document.addEventListener("DOMContentLoaded", () => {
   /* =========================
      LOAD MARKDOWN DOCUMENT
   ========================= */
+
+  // ─── Recuperación READ-ONLY del análisis SOPHIA de Academia ───
+  // Nunca ejecuta SOPHIA ni Gemini. Solo consulta el caché.
+  async function evaluateAcademyDocumentCached(docId) {
+    try {
+      const res = await fetch(
+        `/api/sophia/academy/analysis/${encodeURIComponent(docId)}`
+      );
+
+      if (res.status === 404) {
+        currentAcademyAnalysis = null;
+        return false;
+      }
+
+      if (!res.ok) {
+        throw new Error(`El servidor respondió ${res.status}`);
+      }
+
+      const raw = await res.json();
+
+      const normalized =
+        typeof normalizeSophiaResult === "function"
+          ? normalizeSophiaResult(raw)
+          : raw;
+
+      normalized.docId = docId;
+      currentAcademyAnalysis = normalized;
+
+      return true;
+
+    } catch (err) {
+      console.error(
+        "❌ Error recuperando análisis SOPHIA de Academia:",
+        err
+      );
+
+      currentAcademyAnalysis = null;
+      return false;
+    }
+  }
+
+
+  // ─── Modal SOPHIA específico de Academia ────────────────
+  // Recupera primero el análisis precalculado de Academia.
+  // Después reutiliza la infraestructura visual existente.
+  window.openAcademySophiaModal = async function() {
+    const asset =
+      currentActiveAsset ? currentActiveAsset.asset : null;
+
+    if (!asset) {
+      return;
+    }
+
+    const ok = await evaluateAcademyDocumentCached(asset.file);
+
+    if (!ok || !currentAcademyAnalysis) {
+      const modal = document.getElementById("sophia-modal");
+
+      if (modal) {
+        modal.style.display = "flex";
+
+        const contentDiv =
+          document.getElementById("sophia-modal-content");
+
+        if (contentDiv) {
+          contentDiv.innerHTML = `
+            <p><strong>Documento:</strong> ${asset.title}</p>
+            <p style="margin-top:15px; color:var(--c-seal); font-size:0.8rem;">
+              El análisis de SOPHIA aún no está disponible para este documento.
+            </p>
+          `;
+        }
+      }
+
+      return;
+    }
+
+    // Reutilizamos el modal existente sin modificar
+    // openSophiaModal() ni renderAnalysis().
+    currentDocumentAnalysis = currentAcademyAnalysis;
+
+    window.openSophiaModal();
+  };
+
   async function loadDocument(name) {
     if (!content) return;
     try {
@@ -148,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const filePath = `/pages/academy/content/${name}`;
       const res = await fetch(filePath);
       if (!res.ok) throw new Error("No se pudo cargar: " + filePath);
-      
+
       const rawText = await res.text();
       const { meta, body } = parseFrontmatter(rawText);
       content.innerHTML = marked.parse(body);
@@ -211,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!treeContainer) return;
 
     const query = tagSearchQuery.toLowerCase().trim();
-    
+
     const filteredDocs = query === "" ? allDocuments : allDocuments.filter(doc => {
       return doc.tags && doc.tags.some(tag => tag.toLowerCase().includes(query));
     });
@@ -232,23 +317,23 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
       <div class="docs-list" style="display: flex; flex-direction: column; gap: 10px; color: var(--c-text);">
     `;
-        
+
     for (const [lib, folders] of Object.entries(grouped)) {
       html += `<details open style="margin-bottom: 5px;">
                 <summary style="cursor: pointer; font-weight: 600; margin-bottom: 5px; color: var(--accent); font-size: 0.95rem; user-select: none;">📚 ${lib}</summary>
                 <div style="padding-left: 15px; margin-top: 5px;">`;
-      
+
       for (const [folder, files] of Object.entries(folders)) {
         if (folder) {
           html += `<details style="margin-bottom: 5px;">
                     <summary style="cursor: pointer; font-size: 0.85rem; margin-bottom: 5px; color: var(--c-muted); user-select: none;">📁 ${folder}</summary>
                     <div style="padding-left: 15px;">`;
         }
-        
+
         files.forEach(f => {
           html += `<div class="file" data-file="${f.file}" style="cursor: pointer; padding: 6px 0; font-size: 0.85rem; border-bottom: 1px solid var(--c-border); transition: color 0.2s;">📄 ${f.title}</div>`;
         });
-        
+
         if (folder) html += `</div></details>`;
       }
       html += `</div></details>`;
@@ -279,4 +364,4 @@ document.addEventListener("DOMContentLoaded", () => {
   loadTree();
   loadDocument("intro.md");
 });
-        
+
