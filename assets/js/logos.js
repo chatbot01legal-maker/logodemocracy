@@ -759,7 +759,8 @@
       "¿Sabías que...? El objetivo de LOGOS no es cerrar una discusión, sino hacer visible su estructura para que las personas puedan examinarla y encontrar nuevas posibilidades."
     ];
 
-    let phraseIndex = 0;
+    // Selección aleatoria de la frase inicial.
+    let phraseIndex = Math.floor(Math.random() * loadingPhrases.length);
 
     const renderLoading = () => {
       const loader = document.getElementById('logos-loader');
@@ -772,10 +773,17 @@
 
     renderLoading();
 
+    // Cambiar la frase cada 10 segundos sin repetir inmediatamente la anterior.
     const loadingInterval = setInterval(() => {
-      phraseIndex = (phraseIndex + 1) % loadingPhrases.length;
+      let nextIndex;
+
+      do {
+        nextIndex = Math.floor(Math.random() * loadingPhrases.length);
+      } while (nextIndex === phraseIndex && loadingPhrases.length > 1);
+
+      phraseIndex = nextIndex;
       renderLoading();
-    }, 20000);
+    }, 10000);
 
     // Pipelines de varias llamadas a Gemini en serie (reconstrucción A,
     // reconstrucción B, análisis relacional, síntesis) pueden tardar más de
