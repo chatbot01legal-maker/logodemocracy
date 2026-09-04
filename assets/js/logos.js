@@ -737,32 +737,44 @@
   // corrigió, para poder comparar su reconstrucción anterior vs la nueva.
   async function compareWithLogos(posicionA, posicionB, outEl, sesion, ladoCorregido) {
     const loadingPhrases = [
-      "<b>¿Sabías que...?</b> Logos no decide quién tiene la razón, sino que cartografía la estructura del desacuerdo.",
-      "<b>¿Sabías que...?</b> Un desacuerdo bien descrito es, muchas veces, un resultado más valioso que un consenso forzado.",
-      "<b>¿Sabías que...?</b> La síntesis generativa ocurre cuando ambas partes descubren que el problema tenía dimensiones ocultas.",
-      "<b>¿Sabías que...?</b> Identificar los supuestos que ambas posiciones comparten es el primer paso para destrabar el debate.",
-      "<b>¿Sabías que...?</b> Cuando corregís una reconstrucción, Logos vuelve a calcular todo el análisis posterior — nada queda construido sobre una versión que ya invalidaste."
+      "¿Sabías que...? LOGOS no intenta decidir quién tiene razón. Reconstruye las posiciones para que podamos comprender mejor qué está realmente en juego.",
+      "¿Sabías que...? Antes de comparar dos posiciones, LOGOS reconstruye cada una por separado. Comprender primero es una condición para deliberar después.",
+      "¿Sabías que...? La Prueba de Reconstrucción permite que la propia persona confirme, rechace o precise la representación que LOGOS hizo de su posición.",
+      "¿Sabías que...? Una reconstrucción que la persona no reconoce como fiel no debería convertirse en la base de todo el análisis posterior.",
+      "¿Sabías que...? Comprender una posición contraria no significa estar de acuerdo con ella. Significa poder representarla de una manera que su propio autor pueda reconocer.",
+      "¿Sabías que...? El steelman dialéctico busca presentar la versión más sólida y caritativa de una posición antes de evaluarla o compararla.",
+      "¿Sabías que...? LOGOS distingue entre comprender lo que alguien dice y determinar si estamos de acuerdo con lo que dice. Son operaciones diferentes.",
+      "¿Sabías que...? Dos personas pueden discrepar en una conclusión y, sin embargo, compartir algunos de los supuestos que utilizan para llegar a ella.",
+      "¿Sabías que...? LOGOS distingue seis naturalezas posibles del desacuerdo: factual, causal, conceptual, normativo, metodológico y estratégico.",
+      "¿Sabías que...? Un desacuerdo factual pregunta por los hechos; uno normativo pregunta por valores o criterios de deseabilidad. Confundirlos puede hacer que una discusión avance en círculos.",
+      "¿Sabías que...? Un desacuerdo conceptual puede parecer factual cuando, en realidad, las personas están utilizando de manera diferente una misma palabra o concepto.",
+      "¿Sabías que...? Encontrar un punto de acuerdo no significa que el desacuerdo haya desaparecido. El mapa relacional permite mostrar ambas cosas al mismo tiempo.",
+      "¿Sabías que...? Una convergencia no siempre existe desde el principio. A veces aparece cuando comprendemos mejor qué condiciones permitirían acercar las dos posiciones.",
+      "¿Sabías que...? La síntesis descriptiva pregunta qué están diciendo realmente A y B. No intenta conciliarlos: intenta representarlos fielmente.",
+      "¿Sabías que...? La síntesis relacional pregunta cómo se relacionan las posiciones: qué comparten, dónde difieren y qué tipo de desacuerdo existe.",
+      "¿Sabías que...? Una síntesis generativa de solución propone una alternativa que responde al problema incorporando elementos que ninguna de las posiciones contenía por separado.",
+      "¿Sabías que...? Una síntesis generativa de problema puede revelar que la pregunta original estaba incompleta o planteada de una manera demasiado estrecha.",
+      "¿Sabías que...? Una síntesis no tiene que ser un punto medio entre A y B. Puede ser una nueva forma de comprender el problema.",
+      "¿Sabías que...? LOGOS no fabrica consenso. Una buena deliberación también puede terminar mostrando con mayor precisión por qué las personas siguen en desacuerdo.",
+      "¿Sabías que...? El objetivo de LOGOS no es cerrar una discusión, sino hacer visible su estructura para que las personas puedan examinarla y encontrar nuevas posibilidades."
     ];
+
     let phraseIndex = 0;
 
-    const renderLoading = () => `
-      <div class="s-card" style="margin-top: 20px; border-left: 3px solid var(--accent);">
-        <div style="color:var(--accent); font-size:.75rem; text-transform:uppercase; font-weight:600; letter-spacing:0.05em; margin-bottom:10px; display:flex; align-items:center;">
-          PROCESANDO SÍNTESIS <span class="loading-dots" style="font-size:1.1rem; margin-left:4px; line-height:0;"><span>.</span><span>.</span><span>.</span></span>
-        </div>
-        <div style="color:#e5e7eb; font-size:.85rem; line-height:1.6;">
-          ${loadingPhrases[phraseIndex]}
-        </div>
-      </div>
-    `;
+    const renderLoading = () => {
+      const loader = document.getElementById('logos-loader');
+      const fact = document.getElementById('logos-loader-fact');
 
-    outEl.innerHTML = renderLoading();
+      if (!loader || !fact) return;
+
+      fact.textContent = loadingPhrases[phraseIndex];
+    };
+
+    renderLoading();
 
     const loadingInterval = setInterval(() => {
       phraseIndex = (phraseIndex + 1) % loadingPhrases.length;
-      // Re-consulta el contenedor real por si la vista fue re-renderizada
-      // mientras esperábamos — nunca escribe sobre un nodo ya desconectado.
-      elementoDestino(outEl).innerHTML = renderLoading();
+      renderLoading();
     }, 20000);
 
     // Pipelines de varias llamadas a Gemini en serie (reconstrucción A,

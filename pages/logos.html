@@ -15,66 +15,79 @@
   <link rel="stylesheet" href="/assets/css/logos.css">
 </head>
 <body class="logos-page">
-<!-- === INICIO: ANIMACIÓN DE CARGA LOGOS/SOPHIA === -->
+<!-- === LOADER FULLSCREEN LOGOS === -->
 <style>
   #logos-loader {
     display: none;
     position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(4px);
-    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.88) !important;
+    backdrop-filter: blur(5px);
+    z-index: 999999 !important;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #e2e8f0;
-    font-family: monospace;
+    color: #f8fafc;
+    font-family: system-ui, -apple-system, sans-serif;
+    text-align: center;
+    padding: 24px;
+    box-sizing: border-box;
   }
-  .sandglass-box {
-    font-size: 48px;
-    animation: flipHourglass 2s infinite ease-in-out;
-    display: inline-block;
+
+  .logos-loader-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
   }
-  .loading-dots::after {
-    content: '';
-    animation: dots 1.5s infinite;
-  }
-  @keyframes flipHourglass {
-    0% { transform: rotate(0deg) scale(1); }
-    45% { transform: rotate(180deg) scale(1.1); }
-    50% { transform: rotate(180deg) scale(1); }
-    95% { transform: rotate(360deg) scale(1.1); }
-    100% { transform: rotate(360deg) scale(1); }
-  }
-  @keyframes dots {
-    0% { content: ''; }
-    33% { content: '.'; }
-    66% { content: '..'; }
-    100% { content: '...'; }
+
+  .logos-loader-fact {
+    max-width: 680px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(148, 163, 184, 0.25);
+    color: rgba(229, 231, 235, 0.72);
+    font-size: 0.85rem;
+    line-height: 1.6;
   }
 </style>
 
 <div id="logos-loader">
-  <div class="sandglass-box">⏳</div>
-  <p style="margin-top: 15px; font-size: 1.1rem; font-weight: bold;">
-    Entrenando síntesis cognitiva<span class="loading-dots"></span>
-  </p>
-  <small style="color: #94a3b8; margin-top: 5px;">Esto puede tomar unos segundos</small>
+  <div class="logos-loader-title">
+    Analizando el encuentro entre posiciones…
+  </div>
+
+  <div id="logos-loader-fact" class="logos-loader-fact">
+    Preparando el análisis…
+  </div>
 </div>
 
 <script>
-  function toggleLoader(activar, mensaje = 'Entrenando síntesis cognitiva') {
-    const el = document.getElementById('logos-loader');
-    if (!el) return;
-    if (mensaje && el.querySelector('p')) {
-      el.querySelector('p').childNodes[0].nodeValue = mensaje;
-    }
-    el.style.display = activar ? 'flex' : 'none';
-  }
-</script>
-<!-- === FIN: ANIMACIÓN DE CARGA LOGOS/SOPHIA === -->
+  (function() {
+    const originalFetch = window.fetch;
 
-  
+    window.fetch = async function(...args) {
+      const loader = document.getElementById('logos-loader');
+
+      if (loader) {
+        loader.style.display = 'flex';
+      }
+
+      try {
+        return await originalFetch(...args);
+      } finally {
+        if (loader) {
+          loader.style.display = 'none';
+        }
+      }
+    };
+  })();
+</script>
+
+<!-- === FIN LOADER FULLSCREEN LOGOS === -->
+
 <div class="page">
 
 <header class="topbar">
