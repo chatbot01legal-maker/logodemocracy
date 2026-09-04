@@ -736,7 +736,7 @@ ejemplo: {
       </div>
     </div>
   `
-}
+},
   analisis: {
   title: 'Analiza tus ideas con Sophia',
   render: () => {
