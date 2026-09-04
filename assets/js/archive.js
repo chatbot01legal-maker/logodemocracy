@@ -74,8 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       contentDiv.innerHTML = `
         <p><strong>Documento:</strong> ${asset.title}</p>
-        <p><strong>IRD:</strong> ${asset.sophia.ird}/100</p>
-        <p><strong>Riesgo:</strong> ${asset.sophia.risk}</p>
+        <p style="margin-top:15px; color:var(--c-seal); font-size:0.8rem;">No se pudo recuperar el análisis previamente generado por SOPHIA.</p>
         <p style="margin-top:15px; color:var(--c-seal); font-size:0.8rem;">No se pudo conectar con el servicio de auditoría.</p>
       `;
     }
@@ -88,8 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       container.innerHTML = `
         <p><strong>Documento:</strong> ${asset.title}</p>
-        <p><strong>Índice de Robustez (IRD):</strong> <span style="color:var(--c-sophia); font-weight:bold;">${currentDocumentAnalysis.IRD_global ?? '--'}/100</span></p>
-        <p><strong>Riesgo Epistémico:</strong> ${currentDocumentAnalysis.riesgo ?? 'ND'}</p>
+        <p style="color:var(--c-muted);">El análisis de SOPHIA está disponible, pero no se pudo cargar su visualización completa.</p>
       `;
     }
   }
@@ -97,43 +95,49 @@ document.addEventListener("DOMContentLoaded", () => {
   /* =========================
      EVALUAR DOCUMENTO CON CACHÉ
   ========================= */
-  async function evaluateDocumentCached(name, text) {
-    const irdEl = document.getElementById("sophia-ird");
-
+  async function evaluateDocumentCached(name) {
     try {
-      const res = await fetch("/api/sophia/evaluate-cached", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, docId: name })
-      });
-      if (!res.ok) throw new Error(`El servidor respondió ${res.status}`);
+      const res = await fetch(
+        `/api/sophia/analysis/${encodeURIComponent(name)}`
+      );
+
+      if (res.status === 404) {
+        currentDocumentAnalysis = null;
+        return false;
+      }
+
+      if (!res.ok) {
+        throw new Error(`El servidor respondió ${res.status}`);
+      }
 
       const raw = await res.json();
-      const normalized = typeof normalizeSophiaResult === 'function'
-        ? normalizeSophiaResult(raw)
-        : raw;
+
+      const normalized =
+        typeof normalizeSophiaResult === 'function'
+          ? normalizeSophiaResult(raw)
+          : raw;
 
       normalized.docId = name;
       currentDocumentAnalysis = normalized;
 
       if (currentActiveAsset) {
         currentActiveAsset.asset.sophia = {
-          ird: normalized.IRD_global,
-          risk: normalized.riesgo,
           fullAnalysis: normalized
         };
       }
 
-      if (irdEl) {
-        irdEl.innerHTML = `${normalized.IRD_global ?? '--'}<span style="font-size: 0.65rem; color: var(--c-faint);">/100</span>`;
-      }
+      return true;
+
     } catch (err) {
-      console.error("❌ Error evaluando documento con SOPHIA:", err);
+      console.error(
+        "❌ Error recuperando análisis SOPHIA desde caché:",
+        err
+      );
       currentDocumentAnalysis = null;
-      if (irdEl) irdEl.innerHTML = `--<span style="font-size: 0.65rem; color: var(--c-faint);">/100</span>`;
+      return false;
     }
   }
-  
+
   /* =========================
      LOAD MARKDOWN DOCUMENT
   ========================= */
@@ -152,11 +156,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (currentDocumentAnalysis && currentDocumentAnalysis.docId !== name) {
         currentDocumentAnalysis = null;
       }
-
-      const irdEl = document.getElementById("sophia-ird");
-      const riskEl = document.getElementById("sophia-risk");
-      if (irdEl) irdEl.innerHTML = `${meta.ird}<span style="font-size: 0.85rem; color: var(--c-faint);">/100</span>`;
-      if (riskEl) riskEl.textContent = meta.risk;
 
             currentActiveAsset = {
         source: "Academia",
@@ -187,13 +186,6 @@ document.addEventListener("DOMContentLoaded", () => {
       ) {
         window.ReyFilosofoChat.setActiveAsset(currentActiveAsset);
       }
-
-      evaluateDocumentCached(name, body).catch(e =>
-        console.warn(
-          "Evaluación en segundo plano falló:",
-          e
-        )
-      );
 
     } catch (err) {
       console.error(err);
