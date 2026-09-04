@@ -1631,6 +1631,30 @@ function desenvolverRespuesta(cuerpo) {
           out.innerHTML = `<p style="color:#ef4444; font-size:.82rem;">Necesitás cargar materiales en ambas posiciones antes de comparar.</p>`;
           return;
         }
+// Validación de longitud máxima por posición
+if (a.length > 5000 || b.length > 5000) {
+  let mensaje = '';
+  if (a.length > 5000 && b.length > 5000) {
+    mensaje = 'Ambas posiciones superan el límite de 5.000 caracteres.';
+  } else if (a.length > 5000) {
+    mensaje = 'La Posición A supera el límite de 5.000 caracteres.';
+  } else {
+    mensaje = 'La Posición B supera el límite de 5.000 caracteres.';
+  }
+
+  out.innerHTML = `
+    <div style="margin-top:16px; padding:16px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px;">
+      <p style="color:#ef4444; font-size:.82rem; margin:0 0 8px 0;">
+        ${mensaje}
+      </p>
+      <p style="color:rgba(229,231,235,.65); font-size:.78rem; line-height:1.5; margin:0;">
+        Cada posición puede tener hasta 5.000 caracteres.
+        La Posición A tiene ${a.length.toLocaleString('es-CL')} caracteres y la Posición B tiene ${b.length.toLocaleString('es-CL')} caracteres.
+        Reduce los textos e inténtalo nuevamente.
+      </p>
+    </div>`;
+  return;
+}
         btn.disabled = true;
         const original = btn.textContent;
         btn.textContent = 'Comparando…';
