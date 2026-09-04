@@ -1549,14 +1549,21 @@ if (text.length > 5000) {
         // para que la espera se sienta informativa en vez de un simple spinner.
         const shuffled = [...SOPHIA_LOADING_FACTS].sort(() => Math.random() - 0.5);
         let factIndex = 0;
-        const renderLoading = () => {
-          out.innerHTML = `
-            <div style="margin-top:16px; padding:16px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px;">
-              <p style="color:var(--accent); font-size:.8rem; margin:0 0 8px 0;">Analizando documento con SOPHIA (Motor Determinista + IA)…</p>
-              <p style="color:rgba(229,231,235,.65); font-size:.78rem; line-height:1.5; margin:0;">${shuffled[factIndex % shuffled.length]}</p>
-            </div>`;
-          factIndex++;
-        };
+const renderLoading = () => {
+  out.innerHTML = `
+    <div style="margin-top:16px; padding:16px; background:var(--s-panel); border:1px solid var(--s-border); border-radius:4px;">
+      <p style="color:var(--accent); font-size:.8rem; margin:0 0 8px 0;">
+        <span style="display:inline-block; animation: spin 1s linear infinite;">⌛</span>
+        Analizando documento con SOPHIA (Motor Determinista + IA)…
+      </p>
+      <p style="color:rgba(229,231,235,.65); font-size:.78rem; line-height:1.5; margin:0;">${shuffled[factIndex % shuffled.length]}</p>
+    </div>
+    <style>
+      @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+  `;
+  factIndex++;
+};
         renderLoading();
         const factInterval = setInterval(renderLoading, 20000);
 
