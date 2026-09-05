@@ -44,7 +44,7 @@ async function evaluate({ text }) {
     console.log("❌ Error en evaluación local");
     throw new Error("Error al evaluar el texto");
   }
-  console.log(`✅ Evaluación local completada. IRD: ${localResult.IRD_global}, evidencias: ${localResult.evidencias?.length || 0}`);
+  console.log(`✅ Evaluación local completada. Evidencias: ${localResult.evidencias?.length || 0}`);
 
   // ─── PIPELINE STEPS 2 & 3: Ejecución en Paralelo ────────
   console.log("🔍 PIPELINE STEPS 2 & 3: Iniciando Revisión Semántica y Auditoría Factual en paralelo...");

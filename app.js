@@ -790,10 +790,6 @@ app.post(
           comentario,
           texto_evaluado:
             texto_evaluado || null,
-          ird_global:
-            ird_global !== undefined
-              ? ird_global
-              : null,
           userId: userId || null,
           timestamp:
             timestamp ||

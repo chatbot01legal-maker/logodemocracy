@@ -890,12 +890,9 @@
 
     var fases = Object.keys(porFase).map(function (faseId) {
       var f = porFase[faseId];
-      var penalizacion_fase = f.criterios.reduce(function (acc, c) { return acc + c.penalizacion; }, 0);
-      var puntaje_fase = Math.max(0, 100 - penalizacion_fase);
       return {
         id: f.id,
         nombre: f.nombre,
-        puntaje: Math.round(puntaje_fase),
         infracciones: f.criterios.filter(function (c) { return c.penalizacion > 0; }).map(function (c) {
           return {
             criterio: c.id + ' - ' + c.nombre,
@@ -908,8 +905,6 @@
       };
     });
 
-    var IRD_global = Math.round(fases.reduce(function (acc, f) { return acc + f.puntaje; }, 0) / fases.length);
-
     var nivel3Count = fases.reduce(function (acc, f) {
       return acc + f.infracciones.filter(function (i) { return i.penalizacion >= 25; }).length;
     }, 0);
@@ -919,7 +914,7 @@
     else if (nivel3Count >= 3) riesgo = 'Alta Fragilidad';
     else if (nivel3Count >= 2) riesgo = 'Atención';
 
-    return { fases: fases, evidencias: evidencias, IRD_global: IRD_global, riesgo: riesgo };
+    return { fases: fases, evidencias: evidencias, riesgo: riesgo };
   }
 
   /* ═══════════════════════════════════════════════════════════
@@ -944,7 +939,6 @@
       rutas_evaluadas: rutaEval,
       fases: scoring.fases,
       evidencias: scoring.evidencias,
-      IRD_global: scoring.IRD_global,
       riesgo: scoring.riesgo
     };
   }

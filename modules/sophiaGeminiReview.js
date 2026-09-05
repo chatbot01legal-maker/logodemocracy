@@ -123,10 +123,9 @@ Devuelve ÚNICAMENTE un objeto JSON válido con la siguiente estructura exacta (
 
     const parsed = JSON.parse(cleanJson);
 
-    // RED DE SEGURIDAD: por si el modelo, pese a la instrucción 4, igual
-    // desliza "IRD" o "puntuación" en la prosa — se traduce al VPA real
-    // ya calculado arriba, sin tocar el resto del texto.
-    return sanitizeVPALanguageInResponse(parsed, vpa);
+    // La respuesta se devuelve tal como fue generada.
+    // El prompt ya establece el contrato semántico: VPA, no IRD ni puntuaciones.
+    return parsed;
   } catch (error) {
     console.error("[SOPHIA-GEMINI-REVIEW] Error procesando la revisión:", error);
     return {
@@ -136,44 +135,6 @@ Devuelve ÚNICAMENTE un objeto JSON válido con la siguiente estructura exacta (
       preguntas_reflexivas: []
     };
   }
-}
-
-// Misma lógica que sophia.js (frontend): traduce menciones residuales de
-// IRD/puntaje al VPA real, sin alterar el resto de la prosa. Se aplica
-// aquí también (no solo en el frontend) porque el origen del texto es
-// este archivo — corregir el prompt reduce el problema, no lo garantiza
-// al 100% con un LLM.
-function sanitizeVPALanguage(texto, vpaConteo) {
-  if (!texto || typeof texto !== 'string') return texto;
-  const conteoTexto = vpaConteo === 0
-    ? 'sin puntos de atención'
-    : `${vpaConteo} punto${vpaConteo === 1 ? '' : 's'} de atención (VPA)`;
-  return texto
-    .replace(/\(?\bIRD\s*(de\s*|:\s*)?\d{1,3}\)?/gi, `(${conteoTexto})`)
-    .replace(/Índice de Robustez Deliberativa \(IRD\)/gi, 'VPA (Vale la Pena Prestar Atención)')
-    .replace(/Índice de Robustez Deliberativa/gi, 'VPA (Vale la Pena Prestar Atención)')
-    .replace(/\b(la|una)\s+máxima puntuación\b/gi, 'el mínimo de puntos de atención posible')
-    .replace(/\bmáxima puntuación\b/gi, 'el mínimo de puntos de atención posible')
-    .replace(/\b(la|una)\s+alta puntuación\b/gi, 'pocos puntos de atención')
-    .replace(/\balta puntuación\b/gi, 'pocos puntos de atención');
-}
-
-function sanitizeVPALanguageInResponse(parsed, vpa) {
-  if (!parsed || typeof parsed !== 'object') return parsed;
-  const conteo = vpa ? vpa.conteo : undefined;
-  if (typeof parsed.interpretacion === 'string') parsed.interpretacion = sanitizeVPALanguage(parsed.interpretacion, conteo);
-  if (typeof parsed.contexto === 'string') parsed.contexto = sanitizeVPALanguage(parsed.contexto, conteo);
-  if (typeof parsed.observaciones === 'string') {
-    parsed.observaciones = sanitizeVPALanguage(parsed.observaciones, conteo);
-  } else if (Array.isArray(parsed.observaciones)) {
-    parsed.observaciones = parsed.observaciones.map(o =>
-      o && typeof o === 'object' ? { ...o, detalle: sanitizeVPALanguage(o.detalle, conteo) } : o
-    );
-  }
-  if (Array.isArray(parsed.preguntas_reflexivas)) {
-    parsed.preguntas_reflexivas = parsed.preguntas_reflexivas.map(p => sanitizeVPALanguage(p, conteo));
-  }
-  return parsed;
 }
 
 module.exports = { generateGeminiReview };

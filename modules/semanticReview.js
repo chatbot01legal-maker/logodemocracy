@@ -114,7 +114,7 @@ async function analizarPenalizacion(evidencia, documentoCompleto) {
 CONTRATO DE AUTORIDAD Y LÍMITES ESTRICTOS:
 - No eres parte del motor SOPHIA determinista ni del Fact Checker.
 - No puedes modificar ningún resultado ni penalización producida por Capa 1.
-- No puedes modificar el IRD_global ni recalculaciones de puntajes.
+- No puedes modificar las activaciones, evidencias ni puntos de atención producidos por la evaluación local.
 - No puedes crear nuevas infracciones ni nuevos átomos.
 - No puedes recalcular fases ni reevaluar el documento completo.
 - Tu evaluación debe limitarse exclusivamente a la activación recibida y al fragmento contextual proporcionado. No debes inferir una nueva evaluación global del documento.
