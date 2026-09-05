@@ -95,25 +95,7 @@
 </div>
 
 <script>
-  (function() {
-    const originalFetch = window.fetch;
-
-    window.fetch = async function(...args) {
-      const loader = document.getElementById('logos-loader');
-
-      if (loader) {
-        loader.style.display = 'flex';
-      }
-
-      try {
-        return await originalFetch(...args);
-      } finally {
-        if (loader) {
-          loader.style.display = 'none';
-        }
-      }
-    };
-  })();
+  
 </script>
 
 <!-- === FIN LOADER FULLSCREEN LOGOS === -->
