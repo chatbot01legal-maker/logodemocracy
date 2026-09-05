@@ -1605,4 +1605,529 @@ if (text.length > 5000) {
         <p style="
           color:rgba(229,231,235,.85);
           font-size:.9rem;
-          margin:0 0 12px 
+          margin:0 0 12px 0;
+        ">
+          Estamos desarrollando y calibrando nuestros instrumentos
+          de inteligencia artificial con recursos propios. Para
+          mantener controlado el uso mientras realizamos esta etapa
+          de calibración, existe un límite diario de procesamiento.
+        </p>
+
+        <p style="
+          color:rgba(229,231,235,.85);
+          font-size:.9rem;
+          margin:0 0 12px 0;
+        ">
+          El límite de hoy ya fue alcanzado.
+        </p>
+
+        <p style="
+          color:rgba(229,231,235,.85);
+          font-size:.9rem;
+          margin:0 0 12px 0;
+        ">
+          Puedes volver a utilizar este instrumento a partir de las
+          00:00 horas del próximo día.
+        </p>
+
+        <p style="
+          color:rgba(229,231,235,.85);
+          font-size:.9rem;
+          margin:0;
+        ">
+          Gracias por ayudarnos a desarrollar y calibrar LogoDemocracy.
+        </p>
+      </div>
+    `;
+
+    /*
+     * Salir inmediatamente del flujo interno.
+     * Esto evita que data quede null y active
+     * evaluateWithBestAvailableEngine().
+     */
+    return;
+  }
+
+  /*
+   * Para otros errores HTTP se conserva el comportamiento anterior:
+   * SOPHIA podrá utilizar el motor local.
+   */
+
+  console.warn(
+    `⚠️ /api/sophia/evaluate respondió ${response.status}, usando motor local.`
+  );
+            }
+          } catch (networkError) {
+            console.warn('⚠️ No se pudo contactar /api/sophia/evaluate, usando motor local:', networkError.message);
+          }
+
+          if (!data) {
+            console.log("⚙️ Ejecutando fallback local (evaluateText)...");
+            data = normalizeSophiaResult(evaluateWithBestAvailableEngine(text));
+          }
+
+          // Guardar estado para el widget Rey Filósofo (Multiorigen)
+          this._lastEvaluationData = {
+            text: text,
+            evaluation: data,
+            timestamp: new Date().toISOString()
+          };
+
+          this._renderEvaluation(data, out);
+          this._bindFeedback(out, text, data);
+
+        } catch (error) {
+          console.error('❌ Error en evaluación:', error);
+          out.innerHTML = `<p style="color:#ef4444;">Error: ${error.message}</p>`;
+        } finally {
+          clearInterval(factInterval);
+          btn.disabled = false;
+          btn.textContent = originalBtnText;
+          btn.style.opacity = '';
+          btn.style.cursor = '';
+        }
+      };
+    } catch (e) {
+      showDebug(`❌ Error en _bindEval: ${e.message}`, true);
+    }
+  },
+
+  // Agrega, debajo del resultado de una evaluación, un espacio simple para
+  // que la persona cuente qué le pareció el análisis que hizo SOPHIA. Es el
+  // mecanismo de retroalimentación para calibrar el instrumento — nunca
+  // modifica el resultado ya mostrado, solo se envía al servidor.
+  _bindFeedback(out, originalText, evaluationData) {
+    try {
+      const wrapper = document.createElement('div');
+      wrapper.style.cssText = 'margin-top:20px; padding:16px; background:var(--s-panel); border:1px dashed rgba(255,255,255,.15); border-radius:4px;';
+      wrapper.innerHTML = `
+        <div style="font-size:.75rem; color:rgba(229,231,235,.5); text-transform:uppercase; margin-bottom:8px;">¿Qué te pareció este análisis?</div>
+        <p style="font-size:.72rem; color:rgba(229,231,235,.4); margin:0 0 10px 0;">SOPHIA está en beta — contanos si algo te pareció injusto, incorrecto o poco claro. Nos ayuda a calibrar el instrumento.</p>
+        <textarea id="sophiaFeedbackInput" placeholder="Ej: la penalización en Transparencia Retórica no me pareció justificada..." style="width:100%; min-height:60px; background:#0a0a0a; border:1px solid rgba(255,255,255,.1); border-radius:4px; color:#e5e7eb; font-size:.78rem; padding:8px; box-sizing:border-box; resize:vertical;"></textarea>
+        <div style="display:flex; justify-content:flex-end; align-items:center; gap:10px; margin-top:8px;">
+          <span id="sophiaFeedbackStatus" style="font-size:.72rem; color:rgba(229,231,235,.4);"></span>
+          <button id="sophiaFeedbackBtn" class="btn-primary" style="font-size:.78rem; padding:6px 14px;">Enviar comentario</button>
+        </div>
+      `;
+      out.appendChild(wrapper);
+
+      const feedbackBtn = wrapper.querySelector('#sophiaFeedbackBtn');
+      const feedbackInput = wrapper.querySelector('#sophiaFeedbackInput');
+      const feedbackStatus = wrapper.querySelector('#sophiaFeedbackStatus');
+
+      feedbackBtn.onclick = async () => {
+        const comentario = feedbackInput.value.trim();
+        if (!comentario) {
+          feedbackStatus.textContent = 'Escribí algo antes de enviar.';
+          feedbackStatus.style.color = '#ef4444';
+          return;
+        }
+
+        feedbackBtn.disabled = true;
+        feedbackStatus.textContent = 'Enviando…';
+        feedbackStatus.style.color = 'rgba(229,231,235,.4)';
+
+        try {
+          const response = await fetch('/api/sophia/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              comentario,
+              texto_evaluado: originalText,
+              vpa_conteo: evaluationData && evaluationData.vpa ? evaluationData.vpa.conteo : null,
+              userId: localStorage.getItem('userId') || null,
+              timestamp: new Date().toISOString()
+            })
+          });
+
+          if (response.ok) {
+            feedbackStatus.textContent = '¡Gracias! Tu comentario fue enviado.';
+            feedbackStatus.style.color = '#22c55e';
+            feedbackInput.value = '';
+          } else {
+            throw new Error(`El servidor respondió ${response.status}`);
+          }
+        } catch (err) {
+          console.warn('⚠️ No se pudo enviar el feedback:', err.message);
+          feedbackStatus.textContent = 'No se pudo enviar. Probá de nuevo más tarde.';
+          feedbackStatus.style.color = '#ef4444';
+        } finally {
+          feedbackBtn.disabled = false;
+        }
+      };
+    } catch (e) {
+      showDebug(`❌ Error en _bindFeedback: ${e.message}`, true);
+    }
+  },
+
+  _renderEvaluation(data, out) {
+    try {
+      if (!data) {
+        out.innerHTML = `<p style="color:#ef4444;">No se pudo generar la evaluación.</p>`;
+        return;
+      }
+
+      if (data.motor_no_disponible) {
+        out.innerHTML = `
+          <div class="view">
+            ${renderBetaBanner()}
+            <div style="background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.3); padding:16px; border-radius:4px;">
+              <div style="font-weight:500; color:#ef4444; margin-bottom:6px;">El motor determinista no está disponible ahora mismo</div>
+              <div style="font-size:.82rem; color:rgba(229,231,235,.7);">
+                No pudimos evaluar este texto porque SophiaEngineV4 ${data.motivo === 'error' ? `falló (${data.detalle || 'error desconocido'})` : 'no se cargó correctamente'}. Esto <strong>no significa</strong> que el texto no tenga puntos de atención — significa que SOPHIA no pudo revisarlo. Intenta de nuevo en unos momentos.
+              </div>
+            </div>
+          </div>`;
+        return;
+      }
+
+      const vpa = data.vpa || computeVPA(data.fases || []);
+      const nivelRiesgo = data.riesgo || "Normal";
+
+      const riesgoColor = {
+        "Normal": "#22c55e",
+        "Atención": "#eab308",
+        "Alta Fragilidad": "#f97316",
+        "Riesgo Extremo": "#ef4444"
+      }[nivelRiesgo] || "#22c55e";
+
+      const fases = data.fases || [];
+      const evidencias = data.evidencias || [];
+      const hayInfracciones = fases.some(f => (f.infracciones || []).length > 0);
+
+      const NATURALEZA_LABEL = { SC: 'Científica', INF: 'Informativa', ARG: 'Argumentativa', POL: 'Política Deliberativa', NORM: 'Normativa/Propositiva' };
+      const esV4 = !!data.naturaleza_documental;
+
+      out.innerHTML = `
+        ${esV4 ? `
+        <div class="view-section">
+          <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+              <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">Naturaleza documental detectada</div>
+              <div style="font-size:.95rem; color:var(--accent);">${NATURALEZA_LABEL[data.naturaleza_documental] || data.naturaleza_documental}${data.hibrido ? ' (híbrido)' : ''}</div>
+            </div>
+            <div style="font-size:.7rem; color:rgba(229,231,235,.4);">Confianza de clasificación: ${Math.round((data.confianza_clasificacion || 0) * 100)}%</div>
+          </div>
+        </div>` : ''}
+
+        <div class="view-section">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; background:var(--s-panel); padding:16px; border:1px solid var(--s-border);">
+            <div>
+              <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">VPA — Vale la Pena Prestar Atención</div>
+              <div style="font-size:1.9rem; font-weight:600; color:var(--accent);">${vpa.conteo} <span style="font-size:1rem; color:rgba(229,231,235,.6); font-weight:400;">${vpa.conteo === 1 ? 'punto de atención' : 'puntos de atención'}</span></div>
+              <div style="font-size:.75rem; color:rgba(229,231,235,.45); margin-top:2px;">${vpa.categoria}</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">Nivel de riesgo</div>
+              <div style="font-size:1.1rem; font-weight:600; color:${riesgoColor};">${nivelRiesgo}</div>
+            </div>
+          </div>
+          <div style="font-size:.75rem; color:rgba(229,231,235,.4); margin-top:8px;">SOPHIA no califica si este razonamiento es bueno o malo. Señala qué partes vale la pena examinar con más cuidado.</div>
+        </div>
+
+        ${esV4 && data.rutas_evaluadas && data.rutas_evaluadas.saltos_detectados.length > 0 ? `
+        <div class="view-section">
+          <div class="view-section-title">Ruta inferencial: saltos detectados</div>
+          <div style="font-size:.68rem; color:rgba(229,231,235,.35); margin-bottom:8px;">Ruta esperada: ${data.rutas_evaluadas.ruta_esperada.join(' → ')}</div>
+          ${data.rutas_evaluadas.saltos_detectados.map(s => `
+            <div style="background:var(--s-panel); border-left:2px solid #eab308; padding:10px 14px; margin-bottom:8px;">
+              <div style="font-size:.8rem; color:#e5e7eb;">${s.descripcion}</div>
+              <div style="font-size:.68rem; color:#eab308; margin-top:2px;">señal de atención</div>
+            </div>
+          `).join('')}
+        </div>` : ''}
+
+        <div class="view-section">
+          <div class="view-section-title">¿En qué dimensiones encontró SOPHIA algo que vale la pena examinar?</div>
+          ${fases.map(f => {
+            const n = (f.infracciones || []).length;
+            return `
+            <div style="margin-bottom:14px;">
+              <div style="display:flex; justify-content:space-between; font-size:.8rem; margin-bottom:4px;">
+                <span style="color:#e5e7eb;">${f.nombre || 'Fase'}</span>
+                <span style="color:${n === 0 ? 'rgba(229,231,235,.4)' : 'var(--accent)'};">${n === 0 ? 'Sin puntos de atención' : (n === 1 ? '1 punto de atención' : n + ' puntos de atención')}</span>
+              </div>
+              <div style="background:rgba(255,255,255,.06); height:6px; border-radius:3px; overflow:hidden;">
+                <div style="width:${n === 0 ? '0' : '100'}%; height:100%; background:${n === 0 ? 'transparent' : 'var(--accent)'};"></div>
+              </div>
+            </div>
+          `;}).join('')}
+        </div>
+
+        ${hayInfracciones ? `
+          <div class="view-section">
+            <div class="view-section-title">Puntos de atención</div>
+            ${fases.filter(f => (f.infracciones || []).length > 0).map(f => `
+              <div style="margin-bottom:16px;">
+                <div style="font-size:.75rem; color:var(--accent); margin-bottom:6px;">${f.nombre}</div>
+                ${f.infracciones.map(inf => `
+                  <div style="background:var(--s-panel); border-left:2px solid ${inf.mitigado_parcialmente ? '#eab308' : 'var(--accent)'}; padding:10px 14px; margin-bottom:8px;">
+                    <div style="display:flex; justify-content:space-between; font-size:.8rem; gap:8px;">
+                      <span style="color:#e5e7eb;">${inf.criterio || 'Criterio sin nombre'}</span>
+                      <span style="color:rgba(229,231,235,.5); white-space:nowrap;">${inf.mitigado_parcialmente ? 'señal contextualizada' : 'vale la pena examinar'}</span>
+                    </div>
+                    <div style="font-size:.7rem; color:rgba(229,231,235,.4); margin-top:4px;">Átomo: <span style="cursor:pointer; text-decoration:underline dotted;" data-atomo="${inf.constructo}">${inf.constructo || 'N/A'}</span></div>
+                    ${inf.meta_regla_aplicada ? `<div style="font-size:.65rem; color:#eab308; margin-top:4px;">⚠ ${inf.meta_regla_aplicada}</div>` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            `).join('')}
+          </div>
+        ` : `
+          <div class="view-section">
+            <p style="color:#22c55e;">✅ SOPHIA no identificó puntos de atención según el protocolo — no es un veredicto de que el razonamiento sea correcto, solo que no se detectaron las señales que este instrumento busca.</p>
+          </div>
+        `}
+
+        ${evidencias.length > 0 ? `
+          <div class="view-section">
+            <div class="view-section-title">Evidencias textuales</div>
+            <div style="max-height:300px; overflow-y:auto; background:var(--s-panel); padding:12px; border:1px solid var(--s-border);">
+              ${evidencias.map(ev => `
+                <div style="border-bottom:1px solid rgba(255,255,255,.05); padding:8px 0; font-size:.75rem;">
+                  <span style="color:#d97706; font-weight:500;">${ev.atomo || 'átomo'}</span>
+                  <span style="color:rgba(229,231,235,.3);"> (${ev.criterio || 'N/A'})</span>
+                  <div style="color:rgba(229,231,235,.6); margin-top:2px;">"${ev.fragmento || ''}"</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        ${data.llm ? `
+          <div class="view-section">
+            <div class="view-section-title">Revisión semántica (Gemini)</div>
+            <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
+              ${data.llm.overall_comment ? `<p style="font-size:.82rem; color:#e5e7eb; margin:0 0 12px 0; line-height:1.5;">${data.llm.overall_comment}</p>` : ''}
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:10px; margin-bottom:12px;">
+                ${data.llm.evidence_quality ? `
+                  <div>
+                    <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase;">Calidad de evidencia</div>
+                    <div style="font-size:.85rem; color:var(--accent);">${data.llm.evidence_quality}</div>
+                  </div>` : ''}
+                ${data.llm.tone_proportionality ? `
+                  <div>
+                    <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase;">Proporcionalidad del tono</div>
+                    <div style="font-size:.85rem; color:var(--accent);">${data.llm.tone_proportionality}</div>
+                  </div>` : ''}
+              </div>
+              ${(data.llm.additional_fallacies && data.llm.additional_fallacies.length > 0) ? `
+                <div style="margin-bottom:10px;">
+                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Falacias adicionales detectadas</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.llm.additional_fallacies.map(f => `<li>${f}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+              ${(data.llm.bias_detected && data.llm.bias_detected.length > 0) ? `
+                <div style="margin-bottom:10px;">
+                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Sesgos detectados</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.llm.bias_detected.map(b => `<li>${b}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+              ${(data.llm.rhetorical_devices && data.llm.rhetorical_devices.length > 0) ? `
+                <div>
+                  <div style="font-size:.7rem; color:rgba(229,231,235,.4); text-transform:uppercase; margin-bottom:4px;">Recursos retóricos identificados</div>
+                  <ul style="margin:0; padding-left:18px; font-size:.78rem; color:rgba(229,231,235,.75); line-height:1.5;">
+                    ${data.llm.rhetorical_devices.map(r => `<li>${r}</li>`).join('')}
+                  </ul>
+                </div>` : ''}
+            </div>
+          </div>
+        ` : data.llmError ? `
+          <div class="view-section">
+            <p style="color:rgba(229,231,235,.4); font-size:.78rem;">⚠ Revisión semántica (Gemini) no disponible: ${data.llmError}</p>
+          </div>
+        ` : ''}
+
+        ${data.confiabilidad_factual ? (() => {
+          const cf = data.confiabilidad_factual;
+          const claimText = (c) => {
+            if (c === null || c === undefined) return '(afirmación sin texto)';
+            if (typeof c === 'string') return c;
+            if (typeof c === 'object') {
+              return c.canonical_text
+                || (Array.isArray(c.original_texts) ? c.original_texts.join(' / ') : null)
+                || c.text
+                || c.claim
+                || '(afirmación sin texto)';
+            }
+            return String(c);
+          };
+          const claimSources = (c) => {
+            if (!c || typeof c !== 'object') return [];
+            const f = c.fuentes || c.sources || [];
+            return Array.isArray(f) ? f.filter(Boolean) : [];
+          };
+          // Normaliza cada fuente a { texto, uri } sin importar si viene como
+          // string simple (formato viejo) o como objeto {uri, title} (formato
+          // nuevo de la búsqueda real con Vertex grounding).
+          const sourceDisplay = (s) => {
+            if (typeof s === 'string') return { texto: s, uri: null };
+            if (s && typeof s === 'object') {
+              const texto = s.title || s.uri || '(fuente sin nombre)';
+              const uri = s.uri || null;
+              return { texto, uri };
+            }
+            return { texto: String(s), uri: null };
+          };
+          const renderGroup = (titulo, claims, color) => {
+            if (!Array.isArray(claims) || claims.length === 0) return '';
+            return `
+              <div style="margin-bottom:14px;">
+                <div style="font-size:.75rem; color:${color}; text-transform:uppercase; margin-bottom:6px;">${titulo} (${claims.length})</div>
+                ${claims.map(c => {
+                  const fuentes = claimSources(c).map(sourceDisplay);
+                  return `
+                    <div style="background:rgba(255,255,255,.03); border-left:2px solid ${color}; padding:10px 14px; margin-bottom:8px;">
+                      <div style="font-size:.78rem; color:#e5e7eb; line-height:1.4;">${claimText(c)}</div>
+                      ${fuentes.length > 0
+                        ? `<div style="font-size:.68rem; color:rgba(229,231,235,.45); margin-top:4px;">Fuentes: ${fuentes.map(f =>
+                            f.uri
+                              ? `<a href="${f.uri}" target="_blank" rel="noopener noreferrer" style="color:${color}; text-decoration:underline;">${f.texto}</a>`
+                              : f.texto
+                          ).join(', ')}</div>`
+                        : `<div style="font-size:.68rem; color:rgba(229,231,235,.3); margin-top:4px;">Sin fuentes registradas</div>`}
+                    </div>`;
+                }).join('')}
+              </div>`;
+          };
+          const verificados = cf.claims_verificados || [];
+          const refutados = cf.claims_refutados || [];
+          const enConflicto = cf.claims_en_conflicto || [];
+          const insuficientes = cf.claims_evidencia_insuficiente || [];
+          const noAplicables = cf.claims_no_aplicables || [];
+          const total = verificados.length + refutados.length + enConflicto.length + insuficientes.length + noAplicables.length;
+
+          return `
+          <div class="view-section">
+            <div class="view-section-title">Confiabilidad factual</div>
+            <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
+              ${total === 0
+                ? `<p style="font-size:.8rem; color:rgba(229,231,235,.5); margin:0;">No se identificaron afirmaciones verificables en el documento.</p>`
+                : `
+                  ${renderGroup('Verificadas', verificados, '#22c55e')}
+                  ${renderGroup('Refutadas', refutados, '#ef4444')}
+                  ${renderGroup('En conflicto', enConflicto, '#eab308')}
+                  ${renderGroup('Evidencia insuficiente', insuficientes, '#f97316')}
+                  ${renderGroup('No aplicables', noAplicables, 'rgba(229,231,235,.5)')}
+                `}
+            </div>
+          </div>`;
+        })() : ''}
+
+        ${data.semantic_review ? (() => {
+          const items = Array.isArray(data.semantic_review) ? data.semantic_review : [];
+          const pick = (obj, keys, fallback) => {
+            for (const k of keys) {
+              if (obj && obj[k] !== undefined && obj[k] !== null && obj[k] !== '') return obj[k];
+              if (obj && obj.revision_semantica && obj.revision_semantica[k] !== undefined && obj.revision_semantica[k] !== null && obj.revision_semantica[k] !== '') return obj.revision_semantica[k];
+            }
+            return fallback;
+          };
+          const cards = items.map(item => {
+            if (item === null || typeof item !== 'object') {
+              return `<div style="font-size:.78rem; color:rgba(229,231,235,.75); padding:8px 0;">${item}</div>`;
+            }
+            const atomo = pick(item, ['atomo', 'atom', 'ATOMO_CAUSALIDAD'], null);
+            const criterio = pick(item, ['criterio', 'criterion'], null);
+            const categoria = pick(item, ['categoria', 'category', 'tipo'], null);
+            const confianza = pick(item, ['confianza', 'confidence'], null);
+            const resultado = pick(item, ['resultado', 'result', 'veredicto'], null);
+            const razon = pick(item, ['razon', 'reason', 'observacion', 'descripcion', 'explicacion'], null);
+
+            const badgeColor = (resultado || '').toString().toLowerCase().includes('falso')
+              ? '#ef4444'
+              : (resultado || '').toString().toLowerCase().includes('correcto') || (resultado || '').toString().toLowerCase().includes('confirmado')
+                ? '#22c55e'
+                : 'var(--accent)';
+
+            return `
+              <div style="background:rgba(255,255,255,.03); border-left:2px solid ${badgeColor}; padding:10px 14px; margin-bottom:10px;">
+                <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:6px; font-size:.68rem; color:rgba(229,231,235,.5); text-transform:uppercase;">
+                  ${atomo ? `<span>Átomo: <strong style="color:#e5e7eb;">${atomo}</strong></span>` : ''}
+                  ${criterio ? `<span>Criterio: <strong style="color:#e5e7eb;">${criterio}</strong></span>` : ''}
+                  ${categoria ? `<span>Categoría: <strong style="color:#e5e7eb;">${categoria}</strong></span>` : ''}
+                  ${confianza !== null ? `<span>Confianza: <strong style="color:#e5e7eb;">${confianza}</strong></span>` : ''}
+                </div>
+                ${resultado ? `<div style="font-size:.85rem; color:${badgeColor}; font-weight:500; margin-bottom:4px;">${resultado}</div>` : ''}
+                ${razon ? `<div style="font-size:.78rem; color:rgba(229,231,235,.8); line-height:1.5;">${razon}</div>` : ''}
+                ${(!resultado && !razon) ? `<div style="font-size:.78rem; color:rgba(229,231,235,.5);">Sin detalle adicional disponible.</div>` : ''}
+              </div>`;
+          }).join('');
+
+          return `
+          <div class="view-section">
+            <div class="view-section-title">Revisión semántica</div>
+            <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
+              ${items.length > 0 ? cards : `<p style="font-size:.8rem; color:rgba(229,231,235,.5); margin:0;">No se detectaron observaciones semánticas — el motor determinista no presenta activaciones que requieran revisión.</p>`}
+            </div>
+          </div>`;
+        })() : ''}
+${data.gemini_review ? `
+  <div class="view-section">
+    <div class="view-section-title">Interpretación integral</div>
+    <div style="background:var(--s-panel); border:1px solid var(--s-border); padding:14px;">
+      ${data.gemini_review.interpretacion ? `
+        <div style="margin-bottom:12px;">
+          <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Interpretación</div>
+          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.interpretacion}</div>
+        </div>` : ''}
+      ${data.gemini_review.contexto ? `
+        <div style="margin-bottom:12px;">
+          <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Contexto</div>
+          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.contexto}</div>
+        </div>` : ''}
+      ${data.gemini_review.observaciones ? `
+        <div style="margin-bottom:12px;">
+          <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Observaciones</div>
+          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
+            ${Array.isArray(data.gemini_review.observaciones)
+              ? data.gemini_review.observaciones.map(o => `<div style="margin-bottom: 6px;">${typeof o === 'string' ? o : `<strong style="color:#e5e7eb;">${o.tipo || ''}${o.tipo ? ':' : ''}</strong> ${o.detalle || o.texto || JSON.stringify(o)}`}</div>`).join('')
+               : data.gemini_review.observaciones}
+          </div>
+        </div>` : ''}
+      ${(data.gemini_review.preguntas_reflexivas && Array.isArray(data.gemini_review.preguntas_reflexivas) && data.gemini_review.preguntas_reflexivas.length > 0) ? `
+        <div>
+          <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Preguntas reflexivas</div>
+          <ul style="margin:0; padding-left:18px; font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
+            ${data.gemini_review.preguntas_reflexivas.map(p => `<li>${p}</li>`).join('')}
+          </ul>
+        </div>` : ''}
+    </div>
+  </div>
+` : ''}
+
+      `;
+       
+this._animateBars(out);
+    } catch (e) {
+      showDebug(`❌ Error en _renderEvaluation: ${e.message}`, true);
+      out.innerHTML = `<p style="color:#ef4444;">Error al renderizar la evaluación: ${e.message}</p>`;
+    }
+  },
+
+  init() {
+    try {
+      console.log('🚀 Inicializando SOPHIA...');
+      const buttons = document.querySelectorAll('button.snav-item');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          this.navigate(e.currentTarget.dataset.view);
+        });
+      });
+      this.navigate('analisis');
+      console.log('✅ SOPHIA inicializada con éxito');
+    } catch (e) {
+      console.error(`❌ Error en init: ${e.message}`);
+    }
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('✅ El motor está encendido');
+  SOPHIA.init();
+});
+
+// Exponer explícitamente para el consumo del Motor Cognitivo (Rey Filósofo)
+window.SOPHIA = SOPHIA;
