@@ -955,6 +955,12 @@
   // esta llamada es consecuencia de una corrección, indica qué lado se
   // corrigió, para poder comparar su reconstrucción anterior vs la nueva.
   async function compareWithLogos(posicionA, posicionB, outEl, sesion, ladoCorregido) {
+    const loader = document.getElementById('logos-loader');
+
+    if (loader) {
+      loader.style.display = 'flex';
+    }
+
     const loadingPhrases = [
       "¿Sabías que...? LOGOS no intenta decidir quién tiene razón. Reconstruye las posiciones para que podamos comprender mejor qué está realmente en juego.",
       "¿Sabías que...? Antes de comparar dos posiciones, LOGOS reconstruye cada una por separado. Comprender primero es una condición para deliberar después.",
@@ -1168,6 +1174,10 @@
     } finally {
       clearTimeout(timeoutId);
       clearInterval(loadingInterval);
+
+      if (loader) {
+        loader.style.display = 'none';
+      }
     }
   }
 
