@@ -1805,7 +1805,9 @@ if (text.length > 5000) {
               <div style="font-size:.65rem; color:rgba(229,231,235,.4); text-transform:uppercase; letter-spacing:.05em;">Naturaleza documental detectada</div>
               <div style="font-size:.95rem; color:var(--accent);">${NATURALEZA_LABEL[data.naturaleza_documental] || data.naturaleza_documental}${data.hibrido ? ' (híbrido)' : ''}</div>
             </div>
-            <div style="font-size:.7rem; color:rgba(229,231,235,.4);">Confianza de clasificación: ${Math.round((data.confianza_clasificacion || 0) * 100)}%</div>
+            ${(data.confianza_clasificacion || 0) >= 0.5
+  ? `<div style="font-size:.7rem; color:rgba(229,231,235,.4);">Confianza de clasificación: ${Math.round(data.confianza_clasificacion * 100)}%</div>`
+  : `<div style="font-size:.7rem; color:rgba(229,231,235,.4); max-width:420px;">SOPHIA no pudo establecer un nivel de confianza suficiente para esta clasificación. Debe interpretarse con cautela.</div>`}
           </div>
         </div>` : ''}
 
