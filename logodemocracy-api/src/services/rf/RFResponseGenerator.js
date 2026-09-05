@@ -5,7 +5,6 @@ const { askVertex } = require('../../../../modules/vertexClient');
  *
  * Frontera pedagógica entre SOPHIA y Rey Filósofo.
  *
- * IMPORTANTE:
  * SOPHIA puede conservar internamente sus penalizaciones para producir
  * puntos de atención, riesgo y VPA.
  *
@@ -14,13 +13,6 @@ const { askVertex } = require('../../../../modules/vertexClient');
  * o como un índice antiguo.
  */
 
-/**
- * Elimina recursivamente campos internos de evaluación que no deben
- * llegar al modelo pedagógico.
- *
- * La evaluación determinista conserva estos datos internamente.
- * Aquí solamente se evita que Gemini los reutilice o los reconstruya.
- */
 function removeInternalEvaluationFields(value) {
   if (Array.isArray(value)) {
     return value.map(removeInternalEvaluationFields);
@@ -31,14 +23,11 @@ function removeInternalEvaluationFields(value) {
   }
 
   const blockedKeys = new Set([
-    // Sistema antiguo
     'IRD',
     'ird',
     'IRD_global',
     'ird_global',
     'sophia_ird',
-
-    // Puntuaciones antiguas / numéricas
     'puntaje',
     'puntuaje',
     'puntaje_fase',
@@ -50,8 +39,6 @@ function removeInternalEvaluationFields(value) {
     'percent',
     'porcentaje',
     'porcentajes',
-
-    // Penalizaciones internas
     'penalizacion',
     'penalización',
     'penalizacion_fase',
@@ -64,8 +51,6 @@ function removeInternalEvaluationFields(value) {
     'penalización_criterio',
     'penalizacion_ruta',
     'penalización_ruta',
-
-    // Datos derivados exclusivamente para scoring
     'severity_score',
     'severityScore',
     'risk_score',
@@ -75,23 +60,13 @@ function removeInternalEvaluationFields(value) {
   const clean = {};
 
   Object.keys(value).forEach(key => {
-    if (blockedKeys.has(key)) {
-      return;
-    }
-
+    if (blockedKeys.has(key)) return;
     clean[key] = removeInternalEvaluationFields(value[key]);
   });
 
   return clean;
 }
 
-/**
- * Construye una representación pedagógica de SOPHIA.
- *
- * No expone la estructura interna completa del motor.
- * El objetivo es que Rey Filósofo pueda enseñar e interpretar VPA,
- * pero no reconstruir un sistema de puntuación.
- */
 function buildSophiaPedagogicalContext(asset) {
   if (!asset || typeof asset !== 'object') {
     return null;
@@ -103,7 +78,6 @@ function buildSophiaPedagogicalContext(asset) {
     tipo: 'resultado_pedagogico_sophia'
   };
 
-  // Naturaleza y clasificación documental
   if (clean.naturaleza_documental !== undefined) {
     pedagogical.naturaleza_documental = clean.naturaleza_documental;
   }
@@ -116,7 +90,6 @@ function buildSophiaPedagogicalContext(asset) {
     pedagogical.clasificacion = clean.clasificacion;
   }
 
-  // VPA
   if (clean.vpa !== undefined) {
     pedagogical.vpa = clean.vpa;
   }
@@ -125,22 +98,18 @@ function buildSophiaPedagogicalContext(asset) {
     pedagogical.vpa = clean.VPA;
   }
 
-  // Fases e infracciones/puntos de atención
   if (Array.isArray(clean.fases)) {
     pedagogical.fases = clean.fases;
   }
 
-  // Evidencias
   if (Array.isArray(clean.evidencias)) {
     pedagogical.evidencias = clean.evidencias;
   }
 
-  // Riesgo
   if (clean.riesgo !== undefined) {
     pedagogical.riesgo = clean.riesgo;
   }
 
-  // Información factual relevante
   if (clean.confiabilidad_factual !== undefined) {
     pedagogical.confiabilidad_factual = clean.confiabilidad_factual;
   }
@@ -162,8 +131,6 @@ function buildSophiaPedagogicalContext(asset) {
       clean.claims_evidencia_insuficiente;
   }
 
-  // Contexto semántico producido por SOPHIA.
-  // Se conserva porque es pedagógicamente útil.
   if (clean.gemini_review !== undefined) {
     pedagogical.gemini_review = clean.gemini_review;
   }
@@ -184,8 +151,6 @@ function buildSophiaPedagogicalContext(asset) {
     pedagogical.preguntas_reflexivas = clean.preguntas_reflexivas;
   }
 
-  // Metadata útil, pero sin permitir que entren nuevamente campos
-  // de scoring a través de metadata.
   if (clean.metadata !== undefined) {
     pedagogical.metadata = clean.metadata;
   }
@@ -193,12 +158,6 @@ function buildSophiaPedagogicalContext(asset) {
   return pedagogical;
 }
 
-/**
- * Determina si el activo corresponde a SOPHIA.
- *
- * No depende de un campo único porque existen distintas generaciones
- * del contrato del activo.
- */
 function looksLikeSophiaAsset(asset) {
   if (!asset || typeof asset !== 'object') {
     return false;
@@ -231,23 +190,6 @@ const RFResponseGenerator = {
     const adaptedContent =
       scaffold?.adapted_content || '';
 
-    /**
-     * ---------------------------------------------------------------
-     * CONTEXTO SOPHIA
-     * ---------------------------------------------------------------
-     *
-     * NO enviamos a Gemini el objeto interno completo.
-     *
-     * Antes:
-     *
-     *   sophiaData = JSON.stringify(context.sophiaAudit)
-     *   assetData  = JSON.stringify(context.cognitiveAsset)
-     *
-     * Eso permitía que Gemini viera las penalizaciones internas y
-     * reconstruyera porcentajes/índices que ya no forman parte del
-     * contrato actual de SOPHIA.
-     */
-
     let sophiaData = 'Sin auditoría previa';
     let assetData = 'Sin activo cognitivo';
 
@@ -261,18 +203,9 @@ const RFResponseGenerator = {
         ? JSON.stringify(pedagogicalSophia, null, 2)
         : 'Sin resultado pedagógico de SOPHIA';
 
-      /**
-       * No necesitamos enviar nuevamente sophiaAudit completo.
-       *
-       * El activo pedagógico ya contiene la información necesaria
-       * para interpretar SOPHIA sin exponer el motor interno.
-       */
-      sophiaData = 'El contexto analítico interno de SOPHIA no se expone al modelo pedagógico.';
+      sophiaData =
+        'El contexto analítico interno de SOPHIA no se expone al modelo pedagógico.';
     } else {
-      /**
-       * Para otros módulos (por ejemplo LOGOS o activos de Academia),
-       * conservamos el comportamiento general anterior.
-       */
       sophiaData = context?.sophiaAudit
         ? JSON.stringify(
             removeInternalEvaluationFields(context.sophiaAudit),
