@@ -1549,7 +1549,7 @@ if (text.length > 5000) {
             if (encouragement) {
               encouragement.style.display = 'none';
             }
-          }, 9000);
+          }, 15000);
         };
 
         waitMessageInterval = setInterval(showWaitMessage, 45000);
@@ -1558,7 +1558,10 @@ if (text.length > 5000) {
           let data = null;
 
           try {
-            const response = await fetch('/api/sophia/evaluate', {
+            const sophiaLoader = document.getElementById('logos-loader');
+      if (sophiaLoader) sophiaLoader.style.display = 'flex';
+
+      const response = await fetch('/api/sophia/evaluate', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -1724,6 +1727,9 @@ if (text.length > 5000) {
           if (encouragement) {
             encouragement.style.display = 'none';
           }
+          
+          const sophiaLoader = document.getElementById('logos-loader');
+          if (sophiaLoader) sophiaLoader.style.display = 'none';
 
           btn.disabled = false;
           btn.textContent = originalBtnText;
