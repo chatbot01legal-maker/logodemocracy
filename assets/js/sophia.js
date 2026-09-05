@@ -1520,6 +1520,40 @@ if (text.length > 5000) {
         renderLoading();
         const factInterval = setInterval(renderLoading, 20000);
 
+        // Mensajes simpáticos de espera cada 45 segundos.
+        // Complementan las frases "¿Sabías que...?" sin reemplazarlas.
+        const SOPHIA_WAIT_MESSAGES = [
+          "🍳 <strong>Tranquilo, está en el horno.</strong> Una buena mirada necesita su tiempo… y vale la pena la espera.",
+          "🧠 <strong>Seguimos pensando contigo.</strong> SOPHIA está afinando la mirada sobre tu razonamiento.",
+          "🔎 <strong>Una buena idea merece una buena revisión.</strong> Seguimos examinándola con calma…",
+          "☕ <strong>Gracias por la paciencia.</strong> Las ideas interesantes no siempre se dejan examinar a la carrera."
+        ];
+
+        let waitMessageIndex = 0;
+        let waitMessageInterval = null;
+
+        const showWaitMessage = () => {
+          const encouragement = document.getElementById('sophia-loader-encouragement');
+
+          if (!encouragement) return;
+
+          encouragement.innerHTML =
+            SOPHIA_WAIT_MESSAGES[waitMessageIndex % SOPHIA_WAIT_MESSAGES.length];
+
+          waitMessageIndex++;
+          encouragement.style.display = 'block';
+
+          // El mensaje acompaña unos segundos y luego deja nuevamente
+          // protagonismo a la información "¿Sabías que...?".
+          setTimeout(() => {
+            if (encouragement) {
+              encouragement.style.display = 'none';
+            }
+          }, 9000);
+        };
+
+        waitMessageInterval = setInterval(showWaitMessage, 45000);
+
         try {
           let data = null;
 
@@ -1680,6 +1714,17 @@ if (text.length > 5000) {
           out.innerHTML = `<p style="color:#ef4444;">Error: ${error.message}</p>`;
         } finally {
           clearInterval(factInterval);
+
+          if (waitMessageInterval) {
+            clearInterval(waitMessageInterval);
+            waitMessageInterval = null;
+          }
+
+          const encouragement = document.getElementById('sophia-loader-encouragement');
+          if (encouragement) {
+            encouragement.style.display = 'none';
+          }
+
           btn.disabled = false;
           btn.textContent = originalBtnText;
           btn.style.opacity = '';
