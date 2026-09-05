@@ -94,18 +94,15 @@ function evaluateWithBestAvailableEngine(text) {
       if (resultV4) return resultV4;
     } catch (e) {
       console.warn('⚠️ SophiaEngineV4 falló:', e.message);
-      return { motor_no_disponible: true, motivo: 'error', detalle: e.message, fases: [], evidencias: [], IRD_global: 0, riesgo: 'Desconocido' };
+      return { motor_no_disponible: true, motivo: 'error', detalle: e.message, fases: [], evidencias: [], riesgo: 'Desconocido' };
     }
   }
   console.warn('⚠️ SophiaEngineV4 no está cargado (falta <script src=".../sophiaEngineV4.js">).');
-  return { motor_no_disponible: true, motivo: 'no_cargado', fases: [], evidencias: [], IRD_global: 0, riesgo: 'Desconocido' };
+  return { motor_no_disponible: true, motivo: 'no_cargado', fases: [], evidencias: [], riesgo: 'Desconocido' };
 }
 
-// No es una fórmula nueva: es una relectura de los mismos datos que ya
-// produce la Capa 1 (fases[].infracciones). IRD_global seguía siendo el
-// promedio de puntaje_fase; VPA cuenta cuántos hallazgos reales quedaron
-// en pie después de aplicar mitigadores — no reemplaza el cálculo de
-// severidad/mitigación, solo cambia cómo se presenta su resultado.
+// VPA: relectura de los mismos datos que produce la Capa 1 (fases[].infracciones).
+// Cuenta cuántos hallazgos reales quedaron en pie después de aplicar mitigadores.
 function computeVPA(fases) {
   const puntos = [];
   (fases || []).forEach(fase => {
@@ -128,33 +125,11 @@ function computeVPA(fases) {
   return { conteo: puntos.length, categoria, puntos };
 }
 
-// ─── PARCHE DE PRESENTACIÓN: lenguaje heredado en texto del LLM ──
-// El backend (gemini_review) puede seguir generando narrativa con
-// lenguaje de puntaje ("IRD 99", "Índice de Robustez Deliberativa",
-// "máxima puntuación") si su prompt no fue actualizado. Esta función
-// traduce esas menciones al VPA real ya calculado del lado del
-// cliente, sin alterar el resto del texto. Es un parche temporal:
-// lo correcto es actualizar el prompt en origen; ver limitaciones.
-function sanitizeVPALanguage(texto, vpaConteo) {
-  if (!texto || typeof texto !== 'string') return texto;
-  const conteoTexto = vpaConteo === 0
-    ? 'sin puntos de atención'
-    : `${vpaConteo} punto${vpaConteo === 1 ? '' : 's'} de atención (VPA)`;
-  return texto
-    .replace(/\(?\bIRD\s*(de\s*|:\s*)?\d{1,3}\)?/gi, `(${conteoTexto})`)
-    .replace(/Índice de Robustez Deliberativa \(IRD\)/gi, 'VPA (Vale la Pena Prestar Atención)')
-    .replace(/Índice de Robustez Deliberativa/gi, 'VPA (Vale la Pena Prestar Atención)')
-    .replace(/\b(la|una)\s+máxima puntuación\b/gi, 'el mínimo de puntos de atención posible')
-    .replace(/\bmáxima puntuación\b/gi, 'el mínimo de puntos de atención posible')
-    .replace(/\b(la|una)\s+alta puntuación\b/gi, 'pocos puntos de atención')
-    .replace(/\balta puntuación\b/gi, 'pocos puntos de atención');
-}
-
 // ─── NORMALIZACIÓN DE RESPUESTAS SOPHIA ───────────────
 // El backend híbrido (/api/sophia/evaluate) responde con la forma:
-//   { local: {fases, evidencias, IRD_global, riesgo}, llm_review, ird, risk, ... }
+//   { local: {fases, evidencias, riesgo}, llm_review, risk, ... }
 // El motor local de respaldo (evaluateText) responde con la forma plana:
-//   { fases, evidencias, IRD_global, riesgo }
+//   { fases, evidencias, riesgo }
 // Esta función unifica ambas en un solo objeto para el render.
 function normalizeSophiaResult(raw) {
   if (!raw) return null;
@@ -171,7 +146,6 @@ function normalizeSophiaResult(raw) {
       detalle: raw.detalle,
       fases: [],
       evidencias: [],
-      IRD_global: null,
       vpa: null,
       riesgo: null
     };
@@ -184,7 +158,6 @@ function normalizeSophiaResult(raw) {
   //   local: {
   //     fases,
   //     evidencias,
-  //     IRD_global,
   //     riesgo,
   //     naturaleza_documental,
   //     naturalezas_secundarias,
@@ -216,14 +189,6 @@ function normalizeSophiaResult(raw) {
     return {
       fases: local.fases || [],
       evidencias: local.evidencias || [],
-
-      // IRD_global se conserva internamente por compatibilidad con
-      // consumidores existentes (Ágora, telemetría, contrato API), pero
-      // deja de ser la métrica principal para el usuario: ver vpa.
-      IRD_global:
-        raw.ird !== undefined
-          ? raw.ird
-          : local.IRD_global,
 
       vpa: computeVPA(local.fases || []),
 
@@ -269,7 +234,6 @@ function normalizeSophiaResult(raw) {
     fases: raw.fases || [],
     evidencias: raw.evidencias || [],
 
-    IRD_global: raw.IRD_global,
     vpa: computeVPA(raw.fases || []),
     riesgo: raw.riesgo,
 
@@ -471,7 +435,7 @@ ejemplo: {
       <p style="font-size:.78rem; color:rgba(229,231,235,.55);">
         El resultado que aparece a continuación corresponde a una evaluación
         real realizada por SOPHIA. La verificación factual es una capa
-        independiente de la evaluación de robustez deliberativa.
+        independiente de la evaluación estructural del razonamiento.
       </p>
     </div>
 
@@ -1141,7 +1105,7 @@ inicio: {
             <h1 class="view-title">Integración con Academia y Ágora</h1>
             <div class="view-body">
               <p>Antes de que un documento llegue a discutirse en el <strong>Ágora</strong>, SOPHIA lo examina como <strong>instrumento de pensamiento crítico</strong>: no decide si el argumento es correcto ni le pone una nota — identifica qué partes de su razonamiento vale la pena que la ciudadanía revise con más cuidado antes de deliberar sobre él.</p>
-              <p>Los documentos con pocos puntos de atención sin mitigar pueden ser sometidos a discusión en el <strong>Ágora</strong>, donde la ciudadanía delibera y vota su inclusión en el repositorio académico. Internamente, este umbral de admisibilidad se calcula sobre el mismo campo <code>IRD_global</code> que ya usaba el sistema — se conserva por compatibilidad con Ágora y con la telemetría existente, pero es un mecanismo de filtrado entre módulos, no la métrica que SOPHIA le muestra a la persona que escribió el texto.</p>
+              <p>Los documentos con pocos puntos de atención sin mitigar pueden ser sometidos a discusión en el <strong>Ágora</strong>, donde la ciudadanía delibera y vota su inclusión en el repositorio académico. El umbral de admisibilidad es un mecanismo de filtrado entre módulos, no la métrica que SOPHIA le muestra a la persona que escribió el texto.</p>
             </div>
             <div class="view-section">
               <div class="view-section-title">Estándar Mínimo de Admisibilidad (uso interno)</div>
@@ -1696,7 +1660,7 @@ if (text.length > 5000) {
             console.warn('⚠️ No se pudo contactar /api/sophia/evaluate, usando motor local:', networkError.message);
           }
 
-          if (!data || typeof data.IRD_global === 'undefined') {
+          if (!data) {
             console.log("⚙️ Ejecutando fallback local (evaluateText)...");
             data = normalizeSophiaResult(evaluateWithBestAvailableEngine(text));
           }
@@ -1769,7 +1733,6 @@ if (text.length > 5000) {
             body: JSON.stringify({
               comentario,
               texto_evaluado: originalText,
-              ird_global: evaluationData ? evaluationData.IRD_global : null,
               vpa_conteo: evaluationData && evaluationData.vpa ? evaluationData.vpa.conteo : null,
               userId: localStorage.getItem('userId') || null,
               timestamp: new Date().toISOString()
@@ -1817,10 +1780,6 @@ if (text.length > 5000) {
         return;
       }
 
-      // El IRD_global sigue calculándose internamente (compatibilidad con
-      // Ágora/telemetría vía data.IRD_global), pero ya no es lo que se
-      // muestra como resultado principal. VPA es una relectura de los
-      // mismos hallazgos: cuenta señales, no califica al texto.
       const vpa = data.vpa || computeVPA(data.fases || []);
       const nivelRiesgo = data.riesgo || "Normal";
 
@@ -2111,20 +2070,20 @@ ${data.gemini_review ? `
       ${data.gemini_review.interpretacion ? `
         <div style="margin-bottom:12px;">
           <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Interpretación</div>
-          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${sanitizeVPALanguage(data.gemini_review.interpretacion, data.vpa ? data.vpa.conteo : undefined)}</div>
+          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.interpretacion}</div>
         </div>` : ''}
       ${data.gemini_review.contexto ? `
         <div style="margin-bottom:12px;">
           <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Contexto</div>
-          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${sanitizeVPALanguage(data.gemini_review.contexto, data.vpa ? data.vpa.conteo : undefined)}</div>
+          <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">${data.gemini_review.contexto}</div>
         </div>` : ''}
       ${data.gemini_review.observaciones ? `
         <div style="margin-bottom:12px;">
           <div style="font-size:.75rem; color:var(--accent); text-transform:uppercase; margin-bottom:4px;">Observaciones</div>
           <div style="font-size:.8rem; color:rgba(229,231,235,.85); line-height:1.6;">
             ${Array.isArray(data.gemini_review.observaciones)
-              ? data.gemini_review.observaciones.map(o => `<div style="margin-bottom: 6px;">${typeof o === 'string' ? sanitizeVPALanguage(o, data.vpa ? data.vpa.conteo : undefined) : `<strong style="color:#e5e7eb;">${o.tipo || ''}${o.tipo ? ':' : ''}</strong> ${sanitizeVPALanguage(o.detalle || o.texto || JSON.stringify(o), data.vpa ? data.vpa.conteo : undefined)}`}</div>`).join('')
-               : sanitizeVPALanguage(data.gemini_review.observaciones, data.vpa ? data.vpa.conteo : undefined)}
+              ? data.gemini_review.observaciones.map(o => `<div style="margin-bottom: 6px;">${typeof o === 'string' ? o : `<strong style="color:#e5e7eb;">${o.tipo || ''}${o.tipo ? ':' : ''}</strong> ${o.detalle || o.texto || JSON.stringify(o)}`}</div>`).join('')
+               : data.gemini_review.observaciones}
           </div>
         </div>` : ''}
       ${(data.gemini_review.preguntas_reflexivas && Array.isArray(data.gemini_review.preguntas_reflexivas) && data.gemini_review.preguntas_reflexivas.length > 0) ? `
@@ -2171,5 +2130,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Exponer explícitamente para el consumo del Motor Cognitivo (Rey Filósofo)
 window.SOPHIA = SOPHIA;
-
-
