@@ -71,7 +71,7 @@ function createReport({
   // ── Capa local (motor determinista) ──  
   const local = {  
     engine: "SophiaEngineV4",  
-    IRD_global: localResult.IRD_global ?? 0,  
+      
     fases: localResult.fases ?? [],  
     evidencias: localResult.evidencias ?? [],  
     riesgo: localResult.riesgo ?? "Normal",  
@@ -176,21 +176,12 @@ function validateReport(report) {
 
   // Validar 'local'  
   if (isObject(report.local)) {  
-    const requiredLocal = ['IRD_global', 'evidencias', 'fases'];  
+    const requiredLocal = ['evidencias', 'fases'];  
     for (const field of requiredLocal) {  
       if (!(field in report.local)) {  
         errors.push(`Falta local.${field}`);  
       }  
     }  
-
-    // Validar rango IRD
-    if (typeof report.local.IRD_global === 'number') {
-      if (report.local.IRD_global < 0 || report.local.IRD_global > 100) {
-        errors.push('local.IRD_global debe estar en el rango [0, 100]');
-      }
-    } else {
-      errors.push('local.IRD_global debe ser un número');
-    }
 
     if (!isArray(report.local.evidencias)) {  
       errors.push('local.evidencias debe ser un array');  
@@ -234,7 +225,7 @@ function validateReport(report) {
 
 /**  
  * Normaliza un reporte, completando estructuras faltantes sin modificar  
- * ni alterar valores calculados por el motor (ej. IRD fuera de rango).  
+ * ni alterar valores calculados por el motor.  
  *  
  * @param {Object} report - Reporte a normalizar  
  * @returns {Object} Reporte normalizado  
@@ -248,7 +239,6 @@ function normalizeReport(report) {
       evaluated_at: new Date().toISOString(),
       local: {
         engine: "SophiaEngineV4",
-        IRD_global: 0,
         fases: [],
         evidencias: [],
         riesgo: "Normal",
@@ -296,7 +286,6 @@ function normalizeReport(report) {
   if (!isObject(normalized.local)) {  
     normalized.local = {};  
   }  
-  normalized.local.IRD_global = typeof normalized.local.IRD_global === 'number' ? normalized.local.IRD_global : 0;
   normalized.local.engine = normalized.local.engine || "SophiaEngineV4";
   normalized.local.evidencias = isArray(normalized.local.evidencias) ? normalized.local.evidencias : [];  
   normalized.local.fases = isArray(normalized.local.fases) ? normalized.local.fases : [];  

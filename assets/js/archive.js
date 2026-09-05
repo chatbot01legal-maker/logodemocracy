@@ -14,17 +14,15 @@ document.addEventListener("DOMContentLoaded", () => {
      EXTRACTOR FRONTMATTER YAML
   ========================= */
   function parseFrontmatter(mdText) {
-    let meta = { ird: "--", risk: "ND", title: "Documento" };
+    let meta = { risk: "--", title: "Documento" };
     let body = mdText;
     if (mdText.startsWith("---")) {
       const parts = mdText.split("---");
       if (parts.length >= 3) {
         const fm = parts[1];
         body = parts.slice(2).join("---").trim();
-        const irdMatch = fm.match(/sophia_ird:\s*"?(\d+)"?/);
         const riskMatch = fm.match(/sophia_risk:\s*"?([^"\n]+)"?/);
         const titleMatch = fm.match(/title:\s*"?([^"\n]+)"?/);
-        if (irdMatch) meta.ird = irdMatch[1];
         if (riskMatch) meta.risk = riskMatch[1];
         if (titleMatch) meta.title = titleMatch[1];
       }
@@ -250,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
           title: meta.title,
           file: name,
           content: body,
-          sophia: { ird: meta.ird, risk: meta.risk }
+          sophia: { risk: meta.risk }
         },
         metadata: {
           originModule: "Academia"
