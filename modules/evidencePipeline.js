@@ -15,7 +15,7 @@ const { askVertexWithSearch } = require("./vertexClient");
  * Gemini solo interpreta lo que la búsqueda real encontró — nunca decide
  * el estado a partir de su conocimiento entrenado.
  */
-async function evaluateClaim(claim) {
+async function evaluateClaim(claim, timeoutMs = 50000) {
   const prompt = `
 Eres un evaluador de evidencia del sistema SOPHIA. Verifica la siguiente afirmación
 usando búsqueda de información actual y real, no tu conocimiento entrenado.
@@ -37,7 +37,12 @@ Devuelve EXCLUSIVAMENTE un JSON, sin texto adicional, sin comillas de markdown:
   "justificacion": "breve explicación de por qué, basada en lo que encontraste en la búsqueda"
 }`;
 
-  const { text, sources } = await askVertexWithSearch(prompt, undefined, undefined, "factual_verification");
+  const { text, sources } = await askVertexWithSearch(
+    prompt,
+    undefined,
+    timeoutMs,
+    "factual_verification"
+  );
 
   let cleaned = text.replace(/```json\s?/g, '').replace(/```\s?/g, '').trim();
   let evaluation;
@@ -54,7 +59,7 @@ Devuelve EXCLUSIVAMENTE un JSON, sin texto adicional, sin comillas de markdown:
   return evaluation;
 }
 
-async function verifyClaims(claims) {
+async function verifyClaims(claims, timeoutMs = 50000) {
   const results = {
     claims_verificados: [],
     claims_refutados: [],
@@ -68,11 +73,20 @@ async function verifyClaims(claims) {
     claims.map(async (claim) => {
       console.log(`   🔎 Verificando con búsqueda real (Vertex grounding): "${claim.canonical_text.substring(0, 80)}..."`);
       try {
-        const evaluation = await evaluateClaim(claim);
+        const evaluation = await evaluateClaim(claim, timeoutMs);
         return { claim, evaluation };
       } catch (err) {
         console.error(`   ❌ Error al verificar claim ${claim.claim_id}:`, err.message);
-        return { claim, evaluation: { estado: "evidencia_insuficiente", fuentes_relevantes: [] } };
+
+        return {
+          claim,
+          evaluation: {
+            estado: "evidencia_insuficiente",
+            fuentes_relevantes: [],
+            error_tecnico: true,
+            error_mensaje: err.message
+          }
+        };
       }
     })
   );
@@ -83,7 +97,15 @@ async function verifyClaims(claims) {
       canonical_text: claim.canonical_text,
       original_texts: claim.original_texts,
       estado: evaluation.estado,
-      fuentes: evaluation.fuentes_relevantes || []
+      fuentes: evaluation.fuentes_relevantes || [],
+      ...(evaluation.error_tecnico === true
+        ? {
+            error_tecnico: true,
+            error_mensaje:
+              evaluation.error_mensaje ||
+              "Error técnico durante la verificación"
+          }
+        : {})
     };
 
     switch (evaluation.estado) {

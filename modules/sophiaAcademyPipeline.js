@@ -14,6 +14,10 @@ const SophiaEngineV4 = require("../assets/js/sophiaEngineV4");
 const { extractClaims } = require("./claimExtractor");
 const { normalizeClaims } = require("./claimNormalizer");
 const { verifyClaims } = require("./evidencePipeline");
+
+// Timeout exclusivo para la verificación factual de SOPHIA-Academia.
+// NO modifica el timeout del SOPHIA general de la plataforma.
+const ACADEMY_FACTUAL_TIMEOUT_MS = 60000;
 const { procesarPenalizaciones } = require("./semanticReview");
 const {
   selectAcademySemanticEvidence,
@@ -153,15 +157,45 @@ async function generateAcademyAnalysis({ docId, text }) {
     const claimsSeleccionados = selectAcademyClaims(claimsNormalizados, MAX_ACADEMY_FACTUAL_CHECKS);
 
     if (claimsSeleccionados.length > 0) {
-      confiabilidadFactual = await verifyClaims(claimsSeleccionados);
+      confiabilidadFactual = await verifyClaims(
+        claimsSeleccionados,
+        ACADEMY_FACTUAL_TIMEOUT_MS
+      );
       budget_used.factual_verification = claimsSeleccionados.length;
+
+      // Una verificación puede devolver "evidencia_insuficiente" porque
+      // realmente no existe evidencia concluyente. Eso NO es un fallo.
+      //
+      // En cambio, error_tecnico=true significa que la verificación no
+      // terminó correctamente (por ejemplo, timeout de Vertex). Ese caso
+      // debe impedir que Academia marque el análisis como "complete".
+      const claimsConErrorTecnico = [];
+
+      for (const grupo of [
+        confiabilidadFactual.claims_verificados || [],
+        confiabilidadFactual.claims_refutados || [],
+        confiabilidadFactual.claims_en_conflicto || [],
+        confiabilidadFactual.claims_evidencia_insuficiente || []
+      ]) {
+        for (const claim of grupo) {
+          if (claim.error_tecnico === true) {
+            claimsConErrorTecnico.push(claim.claim_id);
+          }
+        }
+      }
+
+      if (claimsConErrorTecnico.length > 0) {
+        for (const claimId of claimsConErrorTecnico) {
+          etapas_fallidas.push(`factual_verification:${claimId}`);
+        }
+      }
     } else {
       confiabilidadFactual = confiabilidadFactualVacia();
       // 0 claims -> 0 llamadas de Fact Checking, tal como pide la regla 7.
     }
   } catch (err) {
     console.error("[SOPHIA-ACADEMY] Pipeline factual falló:", err.message);
-    etapas_fallidas.push("factual_pipeline");
+    etapas_fallidas.push("claim_extraction");
     confiabilidadFactual = null;
   }
 

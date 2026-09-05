@@ -513,6 +513,21 @@ async function askVertexWithSearch(
     googleSearch: {}
   };
 
+  /*
+   * ==========================================================
+   * TIMEOUT NATIVO + CANCELACIÓN REAL DEL SDK
+   * ==========================================================
+   *
+   * @google/genai soporta:
+   *   - httpOptions.timeout
+   *   - abortSignal
+   *
+   * Promise.race() NO cancela la petición subyacente.
+   * El SDK sí puede hacerlo mediante AbortSignal.
+   */
+  const abortController =
+    new AbortController();
+
   const requestPromise =
     client.models.generateContent({
       model,
@@ -520,22 +535,14 @@ async function askVertexWithSearch(
       config: {
         tools: [
           googleSearchTool
-        ]
+        ],
+        httpOptions: {
+          timeout: timeoutMs
+        },
+        abortSignal:
+          abortController.signal
       }
     });
-
-  const timeoutPromise =
-    new Promise((_, reject) =>
-      setTimeout(
-        () =>
-          reject(
-            new Error(
-              `Vertex AI Timeout excedido (${timeoutMs}ms)`
-            )
-          ),
-        timeoutMs
-      )
-    );
 
   const startTime =
     Date.now();
@@ -543,10 +550,7 @@ async function askVertexWithSearch(
   try {
 
     const response =
-      await Promise.race([
-        requestPromise,
-        timeoutPromise
-      ]);
+      await requestPromise;
 
     const candidates =
       response?.candidates;
