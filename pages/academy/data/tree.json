@@ -470,11 +470,58 @@
       "puertas-giratorias"
     ]
   },
+      {
+    "library": "Logodemocracia",
+    "folder": "El Modelo",
+    "title": "8. La Hipótesis del nivel de atención para el diálogo",
+    "file": "nivel-de-atencion.md",
+    "order": 8,
+    "tags": [
+      "comunicacion",
+      "dialogo",
+      "paul-watzlawick",
+      "gregory-bateson",
+"emocion",
+"cognicion",
+"atencion",
+"metacognicion",
+"autorregulacion",
+"mindfulness",
+"polarizacion",
+"pensamiento-colectivo",
+"psicologia",
+"democracia",
+"academia",
+"fundamentos",
+"hipotesis-del-dialogo"
+    ]
+  },
+
+
+    
     {
   "library": "Joe Pino",
   "folder": "Bases",
   "title": "1. ¿Qué será Joe Pino y cuál es su función en la Academia?",
   "file": "joe-pino.md",
+  "order": 1,
+  "tags": [
+    "deporte",
+    "geopolitica",
+    "voluntad-colectiva",
+    "micro-negociaciones",
+    "paz",
+    "competencia-simbolica",
+    "guerra-robotica",
+    "ensayo-modelo",
+    "yo-opino"
+  ]
+    },
+    {
+  "library": "Joe Pino",
+  "folder": "Ideas que valen la pena",
+  "title": "1. Deporte, Voluntad Colectiva y Geopolítica",
+  "file": "deporte.md",
   "order": 1,
   "tags": [
     "joe-pino",
