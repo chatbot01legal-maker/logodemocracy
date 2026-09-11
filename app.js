@@ -12,7 +12,11 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 const { connect } = require("./modules/database");
 const { evaluate } = require("./modules/sophiaEvaluationPipeline");
 const { mergeGuestProfileIntoUser } = require("./modules/reyFilosofoService");
+const microtestRoutes = require("./logodemocracy-api/src/routes/microtestRoutes");
+const profileRoutes = require("./logodemocracy-api/src/routes/profileRoutes");
+const authRoutes = require("./logodemocracy-api/src/routes/authRoutes");
 const { getAcademyAnalysis } = require("./modules/sophiaAcademyPipeline");
+const connectDB = require("./logodemocracy-api/src/config/db");
 
 const PROTOCOL = {
   version: "4.0"
@@ -31,14 +35,21 @@ let hasRunAudit = false;
 let isAuditRunning = false;
 
 // ─── LEVANTAR PUERTO INMEDIATAMENTE (Evita Timeout) ───
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor SOPHIA ejecutándose y escuchando en el puerto ${PORT}`);
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`🚀 Servidor SOPHIA ejecutándose y escuchando en el puerto ${PORT}`);
 
-  // Auditoría automática que se ejecuta una única vez al arrancar
-  setTimeout(() => {
-    runAutomaticAuditOnce();
-  }, 3000);
-});
+      // Auditoría automática que se ejecuta una única vez al arrancar
+      setTimeout(() => {
+        runAutomaticAuditOnce();
+      }, 3000);
+    });
+  })
+  .catch((error) => {
+    console.error("[MongoDB Error] No se pudo iniciar la aplicación:", error);
+    process.exit(1);
+  });
 
 // ─── Middleware ────────────────────────────────────────
 app.use(cors());
@@ -68,16 +79,13 @@ app.use((req, res, next) => {
 });
 
 // ─── Proxy Middleware ─────────────────────────────────
-app.use(
-  "/api/reyfilosofo/microtests",
-  createProxyMiddleware({
-    target: "http://localhost:5000",
-    changeOrigin: true
-  })
-);
+
 
 // ─── Rutas del Rey Filósofo (RESTORED) ────────────────
 const rfRoutes = require("./logodemocracy-api/src/routes/rfRoutes");
+app.use("/api/reyfilosofo/microtests", microtestRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/auth", authRoutes);
 app.use("/api/reyfilosofo", rfRoutes);
 
 // ─── Utilidad para normalizar texto ───────────────────

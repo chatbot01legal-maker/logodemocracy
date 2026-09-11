@@ -2,7 +2,7 @@ var CoreConfig = (function () {
   'use strict';
 
   return {
-    API_BASE: 'http://localhost:5000/api',
+    API_BASE: '/api',
 
     SERVICES: {
       auth: '/auth',

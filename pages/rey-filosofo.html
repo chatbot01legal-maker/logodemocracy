@@ -15,39 +15,27 @@
 <div class="page">
 
   <header class="topbar">
-
   <a href="/" class="brand">LOGODEMOCRACY</a>
+<nav class="module-nav">
+      <a href="/pages/archive-template.html" class="module-link">Academia</a>
+      <a href="/pages/logos.html" class="module-link">Logos</a>
+      <a href="/pages/sophia.html" class="module-link">Sophia</a>
+      <a href="/pages/rey-filosofo.html" class="module-link active">Rey Filósofo</a>
+  
+    <div class="topbar-right">
+      <div id="ld-header-auth"></div>
+    </div>
+</nav>
 
-  <nav class="module-nav">
-    <a href="/pages/archive-template.html" class="module-link">Academia</a>
-    <a href="/pages/rey-filosofo.html" class="module-link active">Rey Filósofo</a>
-    <a href="/pages/sophia.html" class="module-link">Sophia</a>
-  </nav>
-
-  <button
-      class="mobile-menu-btn"
-      id="mobileMenuBtn"
-      aria-label="Abrir menú">
-
-    <svg width="22"
-         height="22"
-         viewBox="0 0 24 24"
-         fill="none"
-         stroke="currentColor"
-         stroke-width="2"
-         stroke-linecap="round">
-
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round">
       <path d="M4 6H20"/>
       <path d="M4 12H20"/>
       <path d="M4 18H20"/>
-
     </svg>
-
   </button>
-
-<div class="topbar-right"></div>
-    
-  </header>
+</header>
   
   <div class="layout">
 
@@ -73,6 +61,8 @@
             </button>
           </div>
 
+          
+
           <div class="pnav-section">
             <button class="pnav-item" data-view="zdp">
               <span class="pnav-icon">⤱</span> Trayectoria y ZPD
@@ -93,24 +83,16 @@
         </nav>
 
         <div class="epistemic sidebar-status">
-          <div class="epistemic-title">Perfil de Aprendizaje</div>
-
-          <div class="status-row">
-            <span class="status-dot status-dot--on"></span>
-            <span id="lblUserSync">Usuario: Invitado (Local)</span>
-          </div>
-
-          <div class="status-row">
-            <span class="status-dot status-dot--on"></span>
-            <span id="lblZdpLevel">ZPD: Nivel Introductorio</span>
-          </div>
-        </div>
+  <button type="button" class="pnav-item" onclick="window.ReyFilosofo.navigateTo('microtests')">
+    <span class="pnav-icon">◎</span> Perfil de aprendizaje
+  </button>
+</div>
 
         <div class="philosopher sidebar-philosopher clickable-trigger" id="btnOpenChat">
           <div class="phil-icon">🏛</div>
           <div>
-            <div class="phil-name">Interrogar al Tutor</div>
-            <div class="phil-msg">Click para abrir diálogo emergente...</div>
+            <div class="phil-name">Preguntar al Rey Filósofo</div>
+            <div class="phil-msg">Abrir conversación</div>
           </div>
         </div>
 
@@ -171,8 +153,38 @@
 
 
   <footer class="footer">
-    LogoDemocracy · Rey Filósofo · Zona de Desarrollo Próximo e Integración Epistémica
-  </footer>
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">LOGODEMOCRACY</span>
+      <p class="footer-tagline">Democracia Aumentada · Pensamiento colectivo asistido</p>
+    </div>
+    <nav class="footer-nav" aria-label="Navegación del ecosistema">
+      <div class="footer-nav-group">
+        <span class="footer-nav-title">Ecosistema</span>
+        <a href="/pages/archive-template.html">Academia</a>
+        <a href="/pages/logos.html">Logos</a>
+        <a href="/pages/sophia.html">Sophia</a>
+        <a href="/pages/archive-template.html">Rey Filósofo</a>
+      </div>
+      <div class="footer-nav-group">
+        <span class="footer-nav-title">En desarrollo</span>
+        <span class="footer-link-disabled">Aletheia</span>
+        <span class="footer-link-disabled">Mythos</span>
+        <span class="footer-link-disabled">Agora</span>
+        <a href="#laboratorio">Laboratorio Cívico</a>
+      </div>
+    </nav>
+    <div class="footer-contact">
+      <span class="footer-nav-title">Contacto</span>
+      <a href="mailto:contacto@logodemocracy.tech" class="footer-email">contacto@logodemocracy.tech</a>
+      <p class="footer-contact-note">Una plataforma en construcción abierta.</p>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span class="footer-copy">© 2026 LogoDemocracy</span>
+    <span class="footer-bottom-text">Democracia Aumentada</span>
+  </div>
+</footer>
 
 </div>
 
@@ -185,13 +197,27 @@
   <script src="/assets/js/debug/RemoteLogger.js"></script>
   <script src="/assets/js/config.js"></script>
 
-<script src="/assets/js/platform/events/EventBus.js"></script>
+  <script src="/assets/js/platform/core/CoreConfig.js"></script>
+  <script src="/assets/js/platform/events/EventBus.js"></script>
+  <script src="/assets/js/platform/identity/IdentityStorage.js"></script>
+  <script src="/assets/js/platform/identity/CurrentUser.js"></script>
+  <script src="/assets/js/platform/identity/IdentityProvider.js"></script>
+  <script src="/assets/js/platform/identity/AuthService.js"></script>
+  <script src="/assets/js/platform/api/ApiClient.js"></script>
+  <script src="/assets/js/platform/services/ProfileService.js"></script>
+  <script src="/assets/js/platform/services/LearningMapService.js"></script>
+  <script src="/assets/js/platform/services/MicrotestService.js"></script>
+  <script src="/assets/js/platform/services/LearningProfileService.js"></script>
+  <script src="/assets/js/platform/cognitive/ContextAdapter.js"></script>
+  <script src="/assets/js/platform/cognitive/LearningStrategy.js"></script>
+  <script src="/assets/js/platform/cognitive/PedagogicalEngine.js"></script>
+  <script src="/assets/js/platform/runtime/CognitiveRuntime.js"></script>
+  <script src="/assets/js/platform/runtime/ModuleContextAdapter.js"></script>
 
-<script src="/assets/js/platform/identity/IdentityStorage.js"></script>
 
-<script src="/assets/js/platform/identity/CurrentUser.js"></script>
 
-<script src="/assets/js/platform/identity/IdentityProvider.js"></script>
+
+
 
 
 <script>
@@ -231,21 +257,21 @@
 <!-- ========================================== -->
 
 
-<script src="/assets/js/platform/cognitive/ContextAdapter.js"></script>
 
-<script src="/assets/js/platform/cognitive/LearningStrategy.js"></script>
 
-<script src="/assets/js/platform/cognitive/PedagogicalEngine.js"></script>
 
-<script src="/assets/js/platform/runtime/CognitiveRuntime.js"></script>
 
-<script src="/assets/js/platform/runtime/ModuleContextAdapter.js"></script>
+
+
+
+
+
 
   <!-- ========================================== -->
 <!-- SERVICIOS -->
 <!-- ========================================== -->
 
-<script src="/assets/js/apiClient.js"></script>
+
 
 <script src="/assets/js/chatUI.js"></script>
 
@@ -269,5 +295,7 @@
 <script src="/assets/js/rey-filosofo.js"></script>
 
 
+
+<script src="/assets/js/platform/identity/HeaderAuth.js"></script>
 </body>
 </html>

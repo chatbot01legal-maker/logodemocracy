@@ -111,6 +111,59 @@ var AuthService = (function() {
   }
 
   /**
+   * Solicita un enlace para restablecer la contraseña.
+   * El backend responde de forma genérica para no revelar
+   * si un correo está registrado.
+   *
+   * @param {string} email - Correo electrónico.
+   * @returns {Promise<object>}
+   */
+  async function requestPasswordReset(email) {
+    if (!email) {
+      throw new Error('El correo electrónico es obligatorio');
+    }
+
+    return await _request('/forgot-password', {
+      email: email
+    });
+  }
+
+  /**
+   * Cambia la contraseña utilizando el token recibido
+   * por correo electrónico.
+   *
+   * El backend devuelve un JWT y los datos del usuario.
+   * Cuando eso ocurre, se guarda automáticamente la sesión,
+   * igual que en el login normal.
+   *
+   * @param {string} token - Token de recuperación.
+   * @param {string} password - Nueva contraseña.
+   * @returns {Promise<{ token: string, user: object }>}
+   */
+  async function resetPassword(token, password) {
+    if (!token || !password) {
+      throw new Error('El enlace y la nueva contraseña son obligatorios');
+    }
+
+    var data = await _request('/reset-password', {
+      token: token,
+      password: password
+    });
+
+    // El backend devuelve una sesión válida después
+    // de cambiar correctamente la contraseña.
+    if (
+      data &&
+      data.token &&
+      data.user
+    ) {
+      LDIdentityProvider.setAuthenticated(data.token, data.user);
+    }
+
+    return data;
+  }
+
+  /**
    * Cierra la sesión actual.
    * Limpia el estado de autenticación local.
    * No realiza llamadas al backend (preparado para futuro endpoint de logout).
@@ -164,6 +217,8 @@ var AuthService = (function() {
     register: register,
     logout: logout,
     whoAmI: whoAmI,
+    requestPasswordReset: requestPasswordReset,
+    resetPassword: resetPassword,
     refreshToken: refreshToken
   };
 

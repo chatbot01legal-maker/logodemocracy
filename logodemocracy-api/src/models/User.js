@@ -22,6 +22,22 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['citizen', 'consultant', 'admin'],
     default: 'citizen'
+  },
+
+  /*
+   * Recuperación de contraseña.
+   * Nunca almacenamos el token original:
+   * solamente su hash y su fecha de expiración.
+   */
+  passwordResetTokenHash: {
+    type: String,
+    default: null,
+    select: false
+  },
+  passwordResetExpires: {
+    type: Date,
+    default: null,
+    select: false
   }
 }, { timestamps: true });
 
