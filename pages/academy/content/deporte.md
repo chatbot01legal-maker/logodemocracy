@@ -16,7 +16,7 @@ tags:
 
 <div align="justify">
 
-# El Deporte y la Voluntad Colectiva: Un Experimento sobre Geopolítica y Micro-negociaciones
+# Deporte, Voluntad Colectiva y Geopolítica 
 
 ## Pregunta central
 
