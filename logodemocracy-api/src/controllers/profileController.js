@@ -18,14 +18,23 @@ exports.getProfile = async (req, res, next) => {
 
 exports.getLearningMap = async (req, res, next) => {
   try {
-    const query = req.user ? { userId: req.user._id } : { sessionId: req.query.sessionId };
-    let learningMap = await LearningMap.findOne(query);
+    const query = req.user
+      ? { userId: req.user._id }
+      : { sessionId: req.query.sessionId };
 
-    if (!learningMap && req.user) {
-      learningMap = await LearningMap.create({ userId: req.user._id });
+    if (!req.user && !req.query.sessionId) {
+      return res.status(400).json({
+        error: 'Se requiere sessionId para usuario invitado.'
+      });
     }
 
-    res.json({ learningMap: learningMap || { domains: {}, anchors: [], interaction_stats: {} } });
+    let learningMap = await LearningMap.findOne(query);
+
+    if (!learningMap) {
+      learningMap = await LearningMap.create(query);
+    }
+
+    res.json({ learningMap });
   } catch (error) {
     next(error);
   }

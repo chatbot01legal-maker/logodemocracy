@@ -7,7 +7,14 @@ const PedagogicalProfile = require('../models/PedagogicalProfile');
  */
 exports.saveMicrotest = async (req, res, next) => {
   try {
-    const { userId, sessionId, testId, answers, variables } = req.body;
+    const {
+      userId,
+      sessionId,
+      testId,
+      answers,
+      variables,
+      attempt
+    } = req.body;
     
     // Identificamos por token (req.user), por userId explícito en body, o por sessionId anónimo
     const targetUserId = req.user ? req.user._id : (userId || null);
@@ -27,17 +34,40 @@ exports.saveMicrotest = async (req, res, next) => {
       profile.completed_tests.push(testId);
     }
 
-    // 2. Mapear variables al esquema de alto nivel si corresponden
+    // 1.5. Conservar cada intento como evidencia acumulativa.
+    // Nunca se reemplaza un intento anterior.
+    if (attempt && typeof attempt === 'object') {
+      profile.microtest_evidence = profile.microtest_evidence || [];
+      profile.microtest_evidence.push(attempt);
+      profile.markModified('microtest_evidence');
+    }
+
+    // 2. Mapear variables pedagógicas al perfil operativo.
+    // Estas variables alimentan directamente ContextAdapter/LearningStrategy.
     if (variables) {
-      if (variables.estilo_explicativo)
-  profile.estilo_explicativo = variables.estilo_explicativo;
+      const profileFields = [
+        'estilo_explicativo',
+        'preferencia_ejemplos',
+        'contexto_ejemplo',
+        'tipo_analogia_dominante',
+        'orientacion',
+        'pensamiento_sistemico',
+        'preferencia_formato',
+        'nivel_abstraccion_inicial',
+        'secuencia_preferida',
+        'necesidad_andamiaje',
+        'tipo_andamiaje_preferido',
+        'estrategias_metacognitivas',
+        'enfoque_resolucion'
+      ];
 
-if (variables.nivel_abstraccion_inicial)
-  profile.nivel_abstraccion_inicial = variables.nivel_abstraccion_inicial;
+      for (const field of profileFields) {
+        if (variables[field] !== undefined && variables[field] !== null) {
+          profile[field] = variables[field];
+        }
+      }
 
-if (variables.necesidad_andamiaje)
-  profile.necesidad_andamiaje = variables.necesidad_andamiaje;
-      // 3. Fusionar todas las variables crudas computadas por el frontend en raw_variables
+      // 3. Conservar todas las variables originales como evidencia cruda.
       for (const [key, val] of Object.entries(variables)) {
         profile.raw_variables.set(key, val);
       }
@@ -57,10 +87,26 @@ if (variables.necesidad_andamiaje)
 
 exports.listCompletedTests = async (req, res, next) => {
   try {
-    const query = req.user ? { userId: req.user._id } : { sessionId: req.query.sessionId };
+    const query = req.user
+      ? { userId: req.user._id }
+      : { sessionId: req.query.sessionId };
+
+    if (!req.user && !req.query.sessionId) {
+      return res.json({ completed_tests: [] });
+    }
+
     const profile = await PedagogicalProfile.findOne(query).select('completed_tests');
-    res.json({ completed_tests: profile ? profile.completed_tests : [] });
+
+    res.json({
+      completed_tests: profile ? (profile.completed_tests || []) : []
+    });
   } catch (error) {
+    console.error('[Microtests] Error listando microtests:', error);
+
+    if (!req.user && req.query.sessionId) {
+      return res.json({ completed_tests: [] });
+    }
+
     next(error);
   }
 };

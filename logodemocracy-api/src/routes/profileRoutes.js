@@ -7,8 +7,9 @@ const {
   getLearningMap
 } = require('../controllers/profileController');
 
-router.get('/profile', getProfile);
+const { optionalAuth } = require('../middlewares/auth');
 
-router.get('/learning-map', getLearningMap);
+router.get('/profile', optionalAuth, getProfile);
+router.get('/learning-map', optionalAuth, getLearningMap);
 
 module.exports = router;

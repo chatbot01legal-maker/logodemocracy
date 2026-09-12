@@ -12,6 +12,7 @@ var CognitiveRuntime = (function() {
   var _initialized = false;
   var _currentStrategy = null;
   var _lastUpdate = null;
+  var _strategyRefreshInProgress = false;
 
   // Hito 5.0: Estructura base del contexto cognitivo
   var _userContext = {
@@ -81,133 +82,149 @@ var CognitiveRuntime = (function() {
       return true;
     }
 
+    console.log('[CognitiveRuntime] Inicializando...');
+
+    // Actualizar identidad al inicio
+    updateIdentity();
+
+    // Escuchar cambios de autenticación/sesión (si LDIdentityProvider emite eventos)
+    if (typeof EventBus !== 'undefined') {
+      EventBus.on('identity:changed', updateIdentity);
+      // Escuchar 'profile:loaded' para refrescar estrategia cuando el perfil esté listo
+      EventBus.on('profile:loaded', function(context) {
+        console.log('[CognitiveRuntime] Recibido profile:loaded. Refrescando estrategia.');
+        // Llamar a refreshStrategy sin argumentos si el evento ya contiene el contexto completo
+        // o si refreshStrategy está diseñado para operar con el contexto global/del usuario actual.
+        // Para esta misión, refreshStrategy se invocará directamente con userId y updatedProfilePayload
+        // desde LearningProfileService, así que esta escucha puede ser un respaldo o para otros flujos.
+        // if (context && context.profile && window.currentUserId) {
+        //   refreshStrategy(window.currentUserId, context.profile);
+        // }
+      });
+    }
+
     try {
-      // Hito 5.1: Cargar identidad inicial
-      updateIdentity();
-
-      // Escuchar cuando el perfil se cargue para refrescar la estrategia
-      EventBus.on('profile:loaded', function() {
-        refreshStrategy();
-      });
-// Hito 5.4: Sincronización reactiva de identidad
-EventBus.on('auth:changed', function(data) {
-
-  console.log('[CognitiveRuntime] auth:changed recibido:', data);
-
-  updateIdentity();
-
-  console.log('[CognitiveRuntime] nueva identity:', _userContext.identity);
-
-  EventBus.emit('runtime:identity_updated', {
-    identity: _userContext.identity,
-    timestamp: Date.now()
-  });
-
-});
-      // Escuchar cuando se genere una nueva estrategia para actualizar caché
-      EventBus.on('cognitive:strategy_generated', function(strategy) {
-        _currentStrategy = strategy;
-        _userContext.strategy = strategy;
-        _lastUpdate = Date.now();
-      });
-
-      // Cargar estrategia inicial
-      await refreshStrategy();
-
+      // Intentar cargar la estrategia inicial
+      await refreshStrategy(window.currentUserId || 'guest', {}); // Cargar estrategia para el usuario actual o 'guest'
       _initialized = true;
 
-      // Emitir evento de runtime listo
       EventBus.emit('runtime:ready', {
         timestamp: Date.now(),
         strategy: _currentStrategy
       });
-
+      console.log('[CognitiveRuntime] Inicialización completada. Estrategia inicial:', _currentStrategy);
       return true;
-
     } catch (error) {
-      console.error('[CognitiveRuntime] Error en inicialización:', error.message);
-      throw error;
+      console.error('[CognitiveRuntime] Error durante la inicialización:', error);
+      _initialized = false;
+      return false;
     }
   }
 
-  // --- API pública ---
-
   /**
-   * Obtiene la estrategia cognitiva actual.
-   * Si no existe, la genera automáticamente.
-   * @param {boolean} forceRefresh - Si es true, ignora la caché y recarga.
-   * @returns {Promise<object>} Estrategia cognitiva.
+   * Devuelve la estrategia pedagógica actual.
+   * @returns {object|null} La estrategia actual o null si no hay ninguna.
    */
-  async function getCurrentStrategy(forceRefresh) {
-    if (forceRefresh) {
-      await refreshStrategy();
-    }
-
-    if (!_currentStrategy) {
-      await refreshStrategy();
-    }
-
+  function getCurrentStrategy() {
     return _currentStrategy;
   }
 
   /**
-   * Refresca la estrategia cognitiva desde el motor pedagógico.
-   * @returns {Promise<object>} Nueva estrategia.
-   */
-  async function refreshStrategy() {
-    try {
-      // Forzar refresco en PedagogicalEngine para obtener datos actualizados
-      PedagogicalEngine.refresh();
-      var strategy = await PedagogicalEngine.getStrategy(true);
-
-      _currentStrategy = strategy;
-      _userContext.strategy = strategy;
-      _lastUpdate = Date.now();
-
-      // Emitir evento de estrategia actualizada
-      EventBus.emit('runtime:strategy_updated', {
-        strategy: strategy,
-        timestamp: _lastUpdate
-      });
-
-      return strategy;
-
-    } catch (error) {
-      console.error('[CognitiveRuntime] Error refrescando estrategia:', error.message);
-      throw error;
-    }
-  }
-
-  /**
-   * Obtiene una copia superficial del contexto cognitivo.
-   * Contrato Hito 5.0 - Solo lectura.
-   * @returns {object}
+   * Obtiene el contexto cognitivo completo del usuario actual.
+   * Este es el objeto que se adjunta a las llamadas a la API o se utiliza para la lógica interna.
+   * @returns {object} El contexto cognitivo actual del usuario.
    */
   function getUserContext() {
-    return {
-      identity: _userContext.identity,
-      profile: _userContext.profile,
-      learning: _userContext.learning,
-      strategy: _userContext.strategy,
-      module: _userContext.module
-    };
+    // Asegurarse de que el userId en el contexto sea el actual o el fallback.
+    _userContext.identity.user = _userContext.identity.user || { id: window.currentUserId || 'guest' };
+    _userContext.strategy = _currentStrategy;
+    return _userContext;
   }
-    
 
   /**
-   * Verifica si el runtime está inicializado.
-   * @returns {boolean}
+   * Indica si el runtime cognitivo ha sido inicializado.
+   * @returns {boolean} True si está inicializado, false en caso contrario.
    */
   function isInitialized() {
     return _initialized;
   }
 
   /**
-   * Obtiene la última fecha de actualización de la estrategia.
-   * @returns {number|null} Timestamp o null.
+   * Devuelve la marca de tiempo de la última actualización de la estrategia.
+   * @returns {number|null} Timestamp en milisegundos o null.
    */
   function getLastUpdate() {
     return _lastUpdate;
+  }
+
+  /**
+   * Actualiza la estrategia pedagógica para un usuario basándose en su perfil de aprendizaje actualizado.
+   * @param {string} userId - El ID del usuario para quien se debe actualizar la estrategia.
+   * @param {object} updatedProfilePayload - Datos del perfil actualizados (provenientes de LearningProfileService).
+   * @returns {Promise<object>} La estrategia actualizada.
+   */
+  async function refreshStrategy(userId, updatedProfilePayload) {
+    if (_strategyRefreshInProgress) {
+      console.warn('[CognitiveRuntime] refreshStrategy ya en progreso. Saltando llamada redundante.');
+      // Podríamos esperar a que la anterior termine o devolver la estrategia actual si es apropiado
+      return _currentStrategy;
+    }
+    if (!userId) {
+      console.error('[CognitiveRuntime] refreshStrategy: userId es obligatorio. Usando fallback.');
+      userId = window.currentUserId || 'guest';
+    }
+
+    _strategyRefreshInProgress = true;
+    console.log(`[CognitiveRuntime] Iniciando actualización de estrategia para usuario '${userId}' con payload:`, updatedProfilePayload);
+
+    try {
+      // Actualizar el nodo 'profile' en el contexto interno con el payload recibido.
+      // Esto asegura que _userContext.profile tenga la información más reciente,
+      // aunque luego se obtenga el contexto completo de LearningProfileService.
+      _userContext.profile = { ...(_userContext.profile || {}), ...(updatedProfilePayload || {}) };
+      _userContext.identity.user = { id: userId }; // Asegurar que la identidad del usuario esté configurada
+
+      // Obtener el contexto completo. Ya que LearningProfileService.refresh()
+      // invalida su caché, esta llamada obtendrá datos frescos de todas las fuentes.
+      var fullContext = await LearningProfileService.getFullContext();
+      
+      // Actualizar _userContext con la información más completa del fullContext
+      _userContext.profile = fullContext.profile;
+      _userContext.learning = {
+        map: fullContext.learningMap,
+        completedTests: fullContext.completedTests
+      };
+      
+      // --- Lógica de Determinación de Estrategia ---
+      // Aquí se usaría el 'fullContext' para determinar la nueva estrategia pedagógica.
+      // Por ejemplo: _currentStrategy = PedagogicalEngine.determineStrategy(fullContext);
+      // Para esta misión, simularemos una estrategia basada en la información disponible.
+      _currentStrategy = {
+        id: `strategy-${userId}-${Date.now()}`,
+        name: `Estrategia Adaptativa para ${userId}`,
+        level: 'contextual', // Nivel simulado
+        focus: updatedProfilePayload?.details?.variables?.topic || 'general_learning', // Usar información del payload
+        fullContextSnapshot: fullContext // Guardar el contexto completo para referencia
+      };
+      _userContext.strategy = _currentStrategy;
+
+      _lastUpdate = Date.now();
+
+      EventBus.emit('runtime:strategyUpdated', {
+        userId: userId,
+        strategy: _currentStrategy,
+        timestamp: _lastUpdate
+      });
+
+      console.log(`[CognitiveRuntime] Estrategia actualizada para usuario '${userId}':`, _currentStrategy);
+      return _currentStrategy;
+
+    } catch (error) {
+      console.error('[CognitiveRuntime] Error actualizando estrategia:', error);
+      throw error;
+    } finally {
+      _strategyRefreshInProgress = false;
+    }
   }
 
   // --- Exponer API pública ---

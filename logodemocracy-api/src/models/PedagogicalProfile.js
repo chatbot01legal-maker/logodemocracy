@@ -25,9 +25,9 @@ const pedagogicalProfileSchema = new mongoose.Schema({
     default: null
   },
   contexto_ejemplo: {
-    type: String,
+    type: [String],
     enum: ['cotidiano', 'profesional', 'mediatico_social'],
-    default: null
+    default: []
   },
   tipo_analogia_dominante: {
     type: String,
@@ -81,6 +81,14 @@ const pedagogicalProfileSchema = new mongoose.Schema({
     type: Map,
     of: mongoose.Schema.Types.Mixed,
     default: {}
+  },
+
+  // Historial acumulativo de intentos de Microtests.
+  // Cada elemento conserva testId, version, attemptId y evidencia
+  // de cada respuesta. Los intentos anteriores nunca se sobrescriben.
+  microtest_evidence: {
+    type: [mongoose.Schema.Types.Mixed],
+    default: []
   }
 }, { timestamps: true });
 

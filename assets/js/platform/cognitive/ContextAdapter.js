@@ -37,14 +37,29 @@ var ContextAdapter = (function() {
     };
 
     // --- cognitiveProfile: capacidades cognitivas evaluadas (dinámicas) ---
+    // El backend entrega learningMap.competencies como un Map/objeto
+    // con claves en inglés y cada competencia contiene autonomy, trend, etc.
+    // Aquí se traduce ese contrato persistente al contrato cognitivo interno.
+    var competencies = learningMap.competencies || {};
+
+    function autonomyOf(key) {
+      var competence = competencies[key];
+      return competence && typeof competence === 'object'
+        ? (competence.autonomy ?? null)
+        : null;
+    }
+
     var cognitiveProfile = {
-      systemsThinking: learningMap.pensamiento_sistemico || null,
-      argumentation: learningMap.competencias?.argumentacion?.autonomy || null,
-      criticalReading: learningMap.competencias?.lectura_critica?.autonomy || null,
-      epistemology: learningMap.competencias?.epistemologia?.autonomy || null,
-      deliberation: learningMap.competencias?.deliberacion?.autonomy || null,
-      logic: learningMap.competencias?.logica?.autonomy || null,
-      fallacyDetection: learningMap.competencias?.deteccion_falacias?.autonomy || null
+      systemsThinking: autonomyOf('systems_thinking'),
+      argumentation: autonomyOf('argumentation'),
+      criticalReading: autonomyOf('critical_reading'),
+      epistemology: autonomyOf('epistemology'),
+      deliberation: autonomyOf('deliberation'),
+      logic: autonomyOf('logic'),
+      fallacyDetection: autonomyOf('fallacy_detection'),
+      causalReasoning: autonomyOf('causal_reasoning'),
+      normativeAnalysis: autonomyOf('normative_analysis'),
+      evidenceAssessment: autonomyOf('evidence_assessment')
     };
 
     // --- progress: estado de avance ---

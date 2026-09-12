@@ -83,12 +83,45 @@ var LearningProfileService = (function() {
   }
 
   /**
-   * Invalida la caché interna y fuerza una recarga en la próxima llamada a getFullContext().
-   * @returns {boolean} true si se invalidó correctamente.
+   * Actualiza el perfil de aprendizaje de un usuario basándose en nueva evidencia/datos del backend.
+   * Después de actualizar el perfil, dispara una actualización de la estrategia cognitiva.
+   * @param {string} userIdentifier - El ID del usuario o la sessionId cuyo perfil necesita ser actualizado.
+   * @param {object} profileUpdateData - Datos del backend para actualizar el perfil.
+   * @returns {Promise<boolean>} true si la operación fue exitosa.
    */
-  function refresh() {
-    _invalidateCache();
-    return true;
+  async function refresh(userIdentifier, profileUpdateData) {
+    if (!userIdentifier) {
+      console.error("LearningProfileService.refresh: userIdentifier es obligatorio.");
+      return false;
+    }
+    
+    // Invalida la caché existente para forzar una recarga en la próxima llamada a getFullContext()
+    _invalidateCache(); 
+    console.log(`LearningProfileService: Caché invalidada para '${userIdentifier}'.`);
+
+    // --- Simulación de Actualización de Perfil ---
+    // En un sistema real, aquí se llamaría a ProfileService.updateProfile() o
+    // se fusionarían los profileUpdateData con el perfil actual del usuario
+    // para obtener un 'updatedProfile' más completo y persistente.
+    // Para esta misión, creamos un objeto 'updatedProfile' simple que encapsula los 'profileUpdateData'.
+    let updatedProfile = {
+      id: userIdentifier,
+      lastUpdate: Date.now(),
+      updateReason: profileUpdateData.source || 'microtest_completion',
+      details: profileUpdateData // Contiene los datos específicos del microtest u otra evidencia
+    };
+
+    console.log(`LearningProfileService: Perfil de aprendizaje para '${userIdentifier}' actualizado (simulado). Datos:`, updatedProfile);
+
+    // Invocar CognitiveRuntime.refreshStrategy con el identificador y el perfil actualizado
+    if (typeof CognitiveRuntime !== 'undefined' && CognitiveRuntime.refreshStrategy) {
+      console.log(`LearningProfileService: Invocando CognitiveRuntime.refreshStrategy para '${userIdentifier}'.`);
+      await CognitiveRuntime.refreshStrategy(userIdentifier, updatedProfile);
+      return true;
+    } else {
+      console.error("LearningProfileService: CognitiveRuntime no disponible o refreshStrategy ausente. No se pudo actualizar la estrategia cognitiva.");
+      return false;
+    }
   }
 
   // --- Futuro: getContextForModule (comentado) ---

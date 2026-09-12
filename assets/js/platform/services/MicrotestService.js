@@ -51,7 +51,7 @@ var MicrotestService = (function() {
    * @param {object} variables - Variables calculadas a partir de las respuestas.
    * @returns {Promise<object>} Respuesta del backend.
    */
-  async function save(testId, answers, variables) {
+  async function save(testId, answers, variables, attempt) {
     // Validaciones
     if (!testId) {
       throw new Error('MicrotestService.save: testId es obligatorio.');
@@ -67,13 +67,40 @@ var MicrotestService = (function() {
     var payload = _buildPayload({
       testId: testId,
       answers: answers,
-      variables: variables
+      variables: variables,
+      attempt: attempt || null
     });
 
     // Enviar al backend
     var result = await ApiClient.post(SERVICE, SAVE_ENDPOINT, payload);
 
-    // Emitir evento de microtest completado
+    // Si el guardado fue exitoso, invocar LearningProfileService.refresh()
+    if (result && (result.success === true || result.status === 'success')) {
+      // Determinar el identificador de usuario/sesión a pasar a LearningProfileService.refresh
+      // Puede ser userId para usuarios autenticados o sessionId para invitados.
+      let userIdentifier = payload.userId || payload.sessionId;
+
+      // Obtener datos de actualización de perfil de la respuesta del backend.
+      // Proporcionar un objeto por defecto si el backend no envía 'profileUpdateData'.
+      let profileUpdateData = result.profileUpdateData || {
+        source: 'microtest',
+        testId: testId,
+        status: 'completed',
+        variables: variables // Incluir variables para más contexto
+      };
+
+      if (typeof LearningProfileService !== 'undefined' && LearningProfileService.refresh) {
+        console.log(`MicrotestService: Guardado exitoso de microtest '${testId}'. Invocando LearningProfileService.refresh para '${userIdentifier}'.`);
+        await LearningProfileService.refresh(userIdentifier, profileUpdateData);
+      } else {
+        console.warn("MicrotestService: LearningProfileService no disponible o método refresh ausente. No se pudo actualizar el perfil de aprendizaje.");
+      }
+    } else {
+      console.error("MicrotestService: El guardado del microtest no fue exitoso o la respuesta del backend fue inválida:", result);
+      // Opcionalmente, aquí se podría relanzar el error o manejarlo de otra forma
+    }
+
+    // Emitir evento de microtest completado (se emite siempre, independientemente del éxito de la actualización del perfil)
     EventBus.emit('microtest:completed', {
       testId: testId,
       variables: variables,
@@ -85,25 +112,62 @@ var MicrotestService = (function() {
 
   /**
    * Obtiene la lista de microtests ya completados por el ciudadano actual.
-   * @returns {Promise<{ completed_tests: string[] }>}
+   * @returns {Promise<{ completed_tests: string[] }>} 
    */
   async function listCompleted() {
     var mode = LDIdentityProvider.getMode();
 
-    // Usuario autenticado: ApiClient añade el token automáticamente.
-    if (mode === 'authenticated') {
-      return await ApiClient.get(SERVICE, LIST_ENDPOINT);
-    }
+    try {
+      var result;
 
-    // Usuario invitado: enviar sessionId como query param.
-    var sessionId = LDIdentityProvider.getSessionId();
-    if (!sessionId) {
-      throw new Error('MicrotestService.listCompleted: No se pudo obtener sessionId para usuario invitado.');
-    }
+      // Usuario autenticado: ApiClient añade el token automáticamente.
+      if (mode === 'authenticated') {
+        result = await ApiClient.get(SERVICE, LIST_ENDPOINT);
+      } else {
+        // Usuario invitado: enviar sessionId como query param.
+        var sessionId = LDIdentityProvider.getSessionId();
 
-    return await ApiClient.get(SERVICE, LIST_ENDPOINT, {
-      sessionId: sessionId
-    });
+        if (!sessionId) {
+          console.warn(
+            'MicrotestService.listCompleted: No hay sessionId para usuario invitado. ' +
+            'Se devuelve una lista vacía.'
+          );
+
+          return {
+            completed_tests: []
+          };
+        }
+
+        result = await ApiClient.get(SERVICE, LIST_ENDPOINT, {
+          sessionId: sessionId
+        });
+      }
+
+      // El backend devuelve { completed_tests: [...] }.
+      // Normalizamos la respuesta para que LearningProfileService
+      // siempre reciba una estructura válida.
+      if (
+        !result ||
+        !Array.isArray(result.completed_tests)
+      ) {
+        return {
+          completed_tests: []
+        };
+      }
+
+      return result;
+
+    } catch (error) {
+      console.warn(
+        'MicrotestService.listCompleted: No fue posible recuperar ' +
+        'los microtests completados. Se continuará con lista vacía.',
+        error
+      );
+
+      return {
+        completed_tests: []
+      };
+    }
   }
 
   // --- Exponer API pública ---

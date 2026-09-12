@@ -32,7 +32,7 @@
       recoverPassword: 'Recuperar contraseña',
       recoverDescription: 'Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.',
       sendLink: 'Enviar enlace',
-      recoverySent: 'Si existe una cuenta asociada a ese correo, recibirás un enlace para restablecer la contraseña.',
+      recoverySent: 'Solicitud enviada. Si existe una cuenta asociada a este correo, hemos enviado un enlace para restablecer tu contraseña. Revisa tu bandeja de entrada y, si no aparece, revisa también spam.',
       backToLogin: 'Volver a iniciar sesión',
       resetPassword: 'Restablecer contraseña',
       passwordUpdated: 'Tu contraseña fue actualizada correctamente.',
