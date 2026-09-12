@@ -19,6 +19,14 @@ var ProfileService = (function() {
    *
    * @returns {Promise<object>} Objeto con el perfil del usuario.
    */
+  function _normalizeProfileResponse(result) {
+    if (result && result.profile) {
+      return result.profile;
+    }
+
+    return result || {};
+  }
+
   async function getProfile() {
 
     var mode = LDIdentityProvider.getMode();
@@ -27,10 +35,12 @@ var ProfileService = (function() {
     // ApiClient añadirá automáticamente el token.
     if (mode === 'authenticated') {
 
-      return await ApiClient.get(
+      var result = await ApiClient.get(
         PROFILE_SERVICE,
         PROFILE_ENDPOINT
       );
+
+      return _normalizeProfileResponse(result);
 
     }
 
@@ -47,13 +57,15 @@ var ProfileService = (function() {
 
     try {
 
-      return await ApiClient.get(
+      var result = await ApiClient.get(
         PROFILE_SERVICE,
         PROFILE_ENDPOINT,
         {
           sessionId: sessionId
         }
       );
+
+      return _normalizeProfileResponse(result);
 
 
     } catch (error) {

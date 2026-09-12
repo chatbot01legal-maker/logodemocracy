@@ -2064,9 +2064,11 @@ var views = {
         }
 
         var context = await LearningProfileService.getFullContext();
-        var profileResponse = context && context.profile
-          ? context.profile
-          : {};
+
+        var profileResponse =
+          context && context.profile
+            ? context.profile
+            : {};
 
         var profile =
           profileResponse.profile &&
@@ -2074,13 +2076,33 @@ var views = {
             ? profileResponse.profile
             : profileResponse;
 
-        var completedTests = Array.isArray(context.completedTests)
-          ? context.completedTests
-          : (
-              Array.isArray(profile.completed_tests)
-                ? profile.completed_tests
-                : []
-            );
+        var completedTests =
+          Array.isArray(context.completedTests)
+            ? context.completedTests
+            : (
+                Array.isArray(profile.completed_tests)
+                  ? profile.completed_tests
+                  : []
+              );
+
+        /*
+         * IMPORTANTE:
+         *
+         * microtestEvidence es evidencia observada.
+         * No se convierte aquí en una interpretación pedagógica.
+         *
+         * La interpretación de múltiples evidencias corresponde a una
+         * capa posterior del sistema.
+         */
+        var microtestEvidence =
+          context &&
+          Array.isArray(context.microtestEvidence)
+            ? context.microtestEvidence
+            : (
+                Array.isArray(profile.microtest_evidence)
+                  ? profile.microtest_evidence
+                  : []
+              );
 
         var labels = {
           estilo_explicativo: 'Forma de explicación',
@@ -2114,6 +2136,15 @@ var views = {
             });
         };
 
+        /*
+         * ----------------------------------------------------------
+         * INTERPRETACIONES CONSOLIDADAS
+         * ----------------------------------------------------------
+         *
+         * Solo mostramos aquí campos que realmente existen en el
+         * PedagogicalProfile. No inferimos ninguno desde los
+         * indicadores de Microtests.
+         */
         var fields = Object.keys(labels)
           .filter(function(key) {
             return profile[key] !== undefined &&
@@ -2122,7 +2153,7 @@ var views = {
                    (!Array.isArray(profile[key]) || profile[key].length > 0);
           });
 
-        var dimensionsHtml = fields.length
+        var consolidatedHtml = fields.length
           ? fields.map(function(key) {
               return `
                 <div style="
@@ -2150,13 +2181,165 @@ var views = {
               `;
             }).join('')
           : `
-            <div class="mt-done-panel">
-              <p class="mt-done-text">
-                Todavía no hay suficiente evidencia para construir un perfil.
-                Puedes comenzar con los Microtests.
+              <div style="
+                border-top:1px solid rgba(255,255,255,.12);
+                padding:14px 0;
+              ">
+                <p style="
+                  margin:0;
+                  color:rgba(229,231,235,.62);
+                  line-height:1.6;
+                ">
+                  Aún no hay interpretaciones pedagógicas consolidadas.
+                  Los Microtests ya pueden aportar evidencia sin convertirla
+                  prematuramente en una etiqueta sobre tu forma de aprender.
+                </p>
+              </div>
+            `;
+
+        /*
+         * ----------------------------------------------------------
+         * EVIDENCIA DE MICROTESTS
+         * ----------------------------------------------------------
+         *
+         * La estructura puede contener intentos completos con una
+         * propiedad evidence[]. La pantalla muestra únicamente lo
+         * registrado: test, dimensión, indicadores y cantidad de
+         * respuestas. No calcula "estilos".
+         */
+        var evidenceAttempts = microtestEvidence.filter(function(item) {
+          return item && typeof item === 'object';
+        });
+
+        var testTitles = {};
+
+        if (typeof MICROTESTS !== 'undefined' && Array.isArray(MICROTESTS)) {
+          MICROTESTS.forEach(function(test) {
+            if (test && test.id) {
+              testTitles[test.id] = test.title || test.id;
+            }
+          });
+        }
+
+        var evidenceHtml = '';
+
+        if (!evidenceAttempts.length) {
+          evidenceHtml = `
+            <div style="
+              border-top:1px solid rgba(255,255,255,.12);
+              padding:14px 0;
+            ">
+              <p style="
+                margin:0;
+                color:rgba(229,231,235,.62);
+                line-height:1.6;
+              ">
+                Todavía no hay evidencia detallada de respuestas de
+                Microtests disponible en este perfil.
               </p>
             </div>
           `;
+        } else {
+          evidenceHtml = evidenceAttempts.map(function(attempt, index) {
+            var testId = attempt.testId || 'microtest';
+            var title = testTitles[testId] || testId;
+
+            var evidence = Array.isArray(attempt.evidence)
+              ? attempt.evidence
+              : [];
+
+            var indicators = [];
+
+            evidence.forEach(function(item) {
+              if (
+                item &&
+                item.indicator &&
+                indicators.indexOf(item.indicator) === -1
+              ) {
+                indicators.push(item.indicator);
+              }
+            });
+
+            var phase = attempt.phase || null;
+            var domain = attempt.domain || null;
+
+            var meta = [];
+
+            if (phase) {
+              meta.push('Fase: ' + humanize(phase));
+            }
+
+            if (domain) {
+              meta.push('Dominio: ' + humanize(domain));
+            }
+
+            if (evidence.length) {
+              meta.push(
+                evidence.length +
+                (evidence.length === 1
+                  ? ' evidencia registrada'
+                  : ' evidencias registradas')
+              );
+            }
+
+            return `
+              <div style="
+                border-top:1px solid rgba(255,255,255,.12);
+                padding:16px 0;
+              ">
+                <div style="
+                  font-family:var(--font-mono,monospace);
+                  font-size:.72rem;
+                  text-transform:uppercase;
+                  letter-spacing:.08em;
+                  color:rgba(229,231,235,.55);
+                  margin-bottom:6px;
+                ">
+                  ${title}
+                </div>
+
+                <div style="
+                  font-family:var(--font-mono,monospace);
+                  font-size:.95rem;
+                  color:#f3f4f6;
+                  margin-bottom:7px;
+                ">
+                  Evidencia registrada
+                </div>
+
+                ${
+                  meta.length
+                    ? `
+                      <div style="
+                        color:rgba(229,231,235,.62);
+                        font-size:.82rem;
+                        line-height:1.6;
+                        margin-bottom:7px;
+                      ">
+                        ${meta.join(' · ')}
+                      </div>
+                    `
+                    : ''
+                }
+
+                ${
+                  indicators.length
+                    ? `
+                      <div style="
+                        color:rgba(229,231,235,.82);
+                        font-size:.86rem;
+                        line-height:1.6;
+                      ">
+                        Indicadores observados:
+                        ${indicators.map(humanize).join(', ')}
+                      </div>
+                    `
+                    : ''
+                }
+              </div>
+            `;
+          }).join('');
+        }
 
         root.innerHTML = `
           <div style="
@@ -2182,6 +2365,14 @@ var views = {
             ">
               Microtests completados: ${completedTests.length} / 10
             </div>
+
+            <div style="
+              margin-top:8px;
+              color:rgba(229,231,235,.62);
+              font-size:.82rem;
+            ">
+              Intentos con evidencia detallada: ${evidenceAttempts.length}
+            </div>
           </div>
 
           <h2 style="
@@ -2191,19 +2382,45 @@ var views = {
             margin:28px 0 4px;
             color:#f3f4f6;
           ">
-            Lo que sabemos hasta ahora
+            Evidencia de los Microtests
           </h2>
 
           <p style="
             color:rgba(229,231,235,.62);
             margin:0 0 12px;
+            line-height:1.6;
           ">
-            Estas dimensiones provienen de la evidencia registrada por el
-            sistema. No son etiquetas permanentes.
+            Aquí se muestra lo que el sistema ha registrado.
+            Esta evidencia todavía no constituye una etiqueta sobre tu
+            forma de aprender.
           </p>
 
           <div>
-            ${dimensionsHtml}
+            ${evidenceHtml}
+          </div>
+
+          <h2 style="
+            font-family:var(--font-serif,Georgia,serif);
+            font-size:1.35rem;
+            font-weight:400;
+            margin:32px 0 4px;
+            color:#f3f4f6;
+          ">
+            Interpretaciones consolidadas
+          </h2>
+
+          <p style="
+            color:rgba(229,231,235,.62);
+            margin:0 0 12px;
+            line-height:1.6;
+          ">
+            Estas dimensiones requieren una interpretación posterior de
+            múltiples evidencias. No se generan automáticamente a partir
+            de una sola respuesta.
+          </p>
+
+          <div>
+            ${consolidatedHtml}
           </div>
 
           <div style="
