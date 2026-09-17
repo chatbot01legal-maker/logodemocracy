@@ -595,6 +595,87 @@ function _qualitativeForTest(testId, evidence) {
 }
 
 
+function _deterministicQualitativeForBrujula(attempts) {
+  var list = Array.isArray(attempts) ? attempts : [];
+  var deterministicProfile = null;
+
+  // El historial es append-only.
+  // Buscamos el último intento de brujula con un perfil determinista válido.
+  for (var i = list.length - 1; i >= 0; i -= 1) {
+    var attempt = list[i];
+
+    if (
+      !attempt ||
+      !attempt.deterministic_profile ||
+      typeof attempt.deterministic_profile !== 'object'
+    ) {
+      continue;
+    }
+
+    var candidate = attempt.deterministic_profile;
+    var interpretation = candidate.interpretation;
+
+    if (
+      !interpretation ||
+      typeof interpretation !== 'object' ||
+      !interpretation.patron ||
+      !interpretation.dominante ||
+      !interpretation.relacion ||
+      !interpretation.implicacion
+    ) {
+      continue;
+    }
+
+    deterministicProfile = candidate;
+    break;
+  }
+
+  // Si todavía no existe resultado determinista, no inventamos
+  // una interpretación para brujula.
+  if (!deterministicProfile) {
+    return {
+      testId: 'brujula',
+      title: 'Cómo construyes una comprensión',
+      interpretation: '',
+      indicators: [],
+      evidenceCount: 0,
+      indicatorCounts: {},
+      indicatorSequence: [],
+      deterministicProfile: null
+    };
+  }
+
+  var interpretation = deterministicProfile.interpretation;
+
+  var frame =
+    'A partir de tus cinco respuestas en este Microtest, el sistema formula esta hipótesis provisional:';
+
+  var body = [
+    interpretation.patron,
+    interpretation.dominante,
+    interpretation.relacion,
+    interpretation.implicacion
+  ].join(' ');
+
+  return {
+    testId: 'brujula',
+    title: 'Cómo construyes una comprensión',
+    interpretation: frame + ' ' + body,
+    indicators: Array.isArray(deterministicProfile.indicators)
+      ? deterministicProfile.indicators
+      : [],
+    evidenceCount: Array.isArray(deterministicProfile.indicators)
+      ? deterministicProfile.indicators.length
+      : 0,
+    indicatorCounts: {},
+    indicatorSequence: Array.isArray(deterministicProfile.indicators)
+      ? deterministicProfile.indicators.slice()
+      : [],
+    deterministicProfile: deterministicProfile
+  };
+}
+
+
 function _buildQualitativeProfile(evidence) {
   var groupedAttempts =
     Array.isArray(evidence)
@@ -605,12 +686,21 @@ function _buildQualitativeProfile(evidence) {
     _groupMicrotestEvidenceByTest(groupedAttempts);
 
   return Object.keys(MICROTEST_QUALITATIVE).map(function(testId) {
+    if (testId === 'brujula') {
+      return _deterministicQualitativeForBrujula(
+        grouped[testId] || []
+      );
+    }
+
     return _qualitativeForTest(
       testId,
       grouped[testId] || []
     );
   });
 }
+
+
+
 
 
 function _buildProfileSynthesis(qualitative) {

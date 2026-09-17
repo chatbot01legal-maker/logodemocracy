@@ -1,4 +1,5 @@
 const PedagogicalProfile = require('../models/PedagogicalProfile');
+const brujulaEngine = require('../services/rf/brujulaEngine');
 
 /*
  * Controlador diseñado específicamente para empatar con la llamada fetch en rey-filosofo.js (línea 416):
@@ -37,6 +38,28 @@ exports.saveMicrotest = async (req, res, next) => {
     // 1.5. Conservar cada intento como evidencia acumulativa.
     // Nunca se reemplaza un intento anterior.
     if (attempt && typeof attempt === 'object') {
+      // Motor determinista de "brujula" (Nivel A/B del contrato v1.0.0).
+      // attempt.evidence es la ÚNICA fuente de los indicadores: no se
+      // reconstruyen desde "answers". Aditivo: no toca ningún otro campo
+      // de "attempt". Los demás 9 Microtests no entran a este bloque.
+      //
+      // "generated_at" se añade AQUÍ, fuera de brujulaEngine.buildProfile
+      // (que es puro y no usa Date.now()), precisamente para no romper el
+      // determinismo estricto exigido por A.11.7. Es un campo adicional
+      // documentado sobre deterministic_profile (ver política en
+      // brujulaEngine.js): marca cuándo se persistió el registro, y es
+      // semánticamente distinto de "attempt.timestamp" (cuándo el usuario
+      // completó el intento). No participa en el cálculo de rule_version.
+      if (testId === 'brujula' && Array.isArray(attempt.evidence)) {
+        const indicators = attempt.evidence.map((e) => e && e.indicator);
+        const deterministicProfile = brujulaEngine.buildProfile(indicators);
+        attempt.deterministic_profile = Object.assign(
+          {},
+          deterministicProfile,
+          { generated_at: new Date().toISOString() }
+        );
+      }
+
       profile.microtest_evidence = profile.microtest_evidence || [];
       profile.microtest_evidence.push(attempt);
       profile.markModified('microtest_evidence');
