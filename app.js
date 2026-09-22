@@ -34,22 +34,35 @@ console.log(`📦 Protocolo cargado: ${PROTOCOL.version}`);
 let hasRunAudit = false;
 let isAuditRunning = false;
 
-// ─── LEVANTAR PUERTO INMEDIATAMENTE (Evita Timeout) ───
-connectDB()
-  .then(() => {
+// ─── ARRANQUE DEL SERVIDOR LOCAL ────────────────────────
+async function startServer() {
+  try {
+    await connectDB();
+
     app.listen(PORT, () => {
-      console.log(`🚀 Servidor SOPHIA ejecutándose y escuchando en el puerto ${PORT}`);
+      console.log(
+        `🚀 Servidor SOPHIA ejecutándose y escuchando en el puerto ${PORT}`
+      );
 
       // Auditoría automática que se ejecuta una única vez al arrancar
       setTimeout(() => {
         runAutomaticAuditOnce();
       }, 3000);
     });
-  })
-  .catch((error) => {
-    console.error("[MongoDB Error] No se pudo iniciar la aplicación:", error);
+  } catch (error) {
+    console.error(
+      "[MongoDB Error] No se pudo iniciar la aplicación:",
+      error
+    );
     process.exit(1);
-  });
+  }
+}
+
+// En local: npm start → arranca el servidor.
+// En Vercel: require() → solamente obtiene la aplicación Express.
+if (require.main === module) {
+  startServer();
+}
 
 // ─── Middleware ────────────────────────────────────────
 app.use(cors());
@@ -949,3 +962,4 @@ app.get(
     });
   }
 );
+module.exports = app;
