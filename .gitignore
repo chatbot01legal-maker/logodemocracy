@@ -29,3 +29,5 @@ sophia-comparacion.diff
 logodemocracy_export_24h.csv
 logos-remoto.js
 test-db-guard.js
+.vercel
+.env*
