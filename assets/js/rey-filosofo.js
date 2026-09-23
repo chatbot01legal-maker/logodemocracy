@@ -2153,6 +2153,162 @@ var views = {
                    (!Array.isArray(profile[key]) || profile[key].length > 0);
           });
 
+        /*
+         * ----------------------------------------------------------
+         * RESULTADO CUALITATIVO DE MICROTESTS
+         * ----------------------------------------------------------
+         *
+         * microtestQualitative contiene resultados producidos por
+         * la capa determinista. Aquí solo se presentan; no se
+         * recalculan ni se convierten en una etiqueta del usuario.
+         */
+        var microtestQualitative =
+          context && Array.isArray(context.microtestQualitative)
+            ? context.microtestQualitative
+            : [];
+
+        var brujulaQualitative = microtestQualitative.find(function(item) {
+          return item && item.testId === 'brujula';
+        });
+
+        var qualitativeHtml = '';
+
+        if (
+          brujulaQualitative &&
+          brujulaQualitative.deterministicProfile &&
+          brujulaQualitative.deterministicProfile.interpretation
+        ) {
+          var brujulaInterpretation =
+            brujulaQualitative.deterministicProfile.interpretation;
+
+          qualitativeHtml = `
+            <div style="
+              border:1px solid rgba(255,255,255,.14);
+              padding:18px;
+              margin-top:12px;
+            ">
+              <div style="
+                font-family:var(--font-mono,monospace);
+                font-size:.72rem;
+                text-transform:uppercase;
+                letter-spacing:.08em;
+                color:rgba(229,231,235,.55);
+                margin-bottom:8px;
+              ">
+                Resultado cualitativo · Brújula
+              </div>
+
+              <p style="
+                margin:0 0 16px;
+                color:rgba(229,231,235,.68);
+                line-height:1.6;
+                font-size:.86rem;
+              ">
+                Este resultado resume la evidencia de este Microtest.
+                Es una hipótesis provisional y no constituye una etiqueta
+                estable sobre tu forma de aprender.
+              </p>
+
+              <div style="
+                display:grid;
+                gap:14px;
+              ">
+                <div>
+                  <div style="
+                    font-family:var(--font-mono,monospace);
+                    font-size:.72rem;
+                    text-transform:uppercase;
+                    letter-spacing:.08em;
+                    color:rgba(229,231,235,.55);
+                    margin-bottom:5px;
+                  ">
+                    Patrón observado
+                  </div>
+                  <div style="
+                    color:#f3f4f6;
+                    line-height:1.6;
+                  ">
+                    ${brujulaInterpretation.patron}
+                  </div>
+                </div>
+
+                <div>
+                  <div style="
+                    font-family:var(--font-mono,monospace);
+                    font-size:.72rem;
+                    text-transform:uppercase;
+                    letter-spacing:.08em;
+                    color:rgba(229,231,235,.55);
+                    margin-bottom:5px;
+                  ">
+                    Recurso dominante
+                  </div>
+                  <div style="
+                    color:#f3f4f6;
+                    line-height:1.6;
+                  ">
+                    ${brujulaInterpretation.dominante}
+                  </div>
+                </div>
+
+                <div>
+                  <div style="
+                    font-family:var(--font-mono,monospace);
+                    font-size:.72rem;
+                    text-transform:uppercase;
+                    letter-spacing:.08em;
+                    color:rgba(229,231,235,.55);
+                    margin-bottom:5px;
+                  ">
+                    Relación entre recursos
+                  </div>
+                  <div style="
+                    color:#f3f4f6;
+                    line-height:1.6;
+                  ">
+                    ${brujulaInterpretation.relacion}
+                  </div>
+                </div>
+
+                <div>
+                  <div style="
+                    font-family:var(--font-mono,monospace);
+                    font-size:.72rem;
+                    text-transform:uppercase;
+                    letter-spacing:.08em;
+                    color:rgba(229,231,235,.55);
+                    margin-bottom:5px;
+                  ">
+                    Implicación provisional
+                  </div>
+                  <div style="
+                    color:#f3f4f6;
+                    line-height:1.6;
+                  ">
+                    ${brujulaInterpretation.implicacion}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          qualitativeHtml = `
+            <div style="
+              border-top:1px solid rgba(255,255,255,.12);
+              padding:14px 0;
+            ">
+              <p style="
+                margin:0;
+                color:rgba(229,231,235,.62);
+                line-height:1.6;
+              ">
+                Todavía no hay un resultado cualitativo disponible
+                para este Microtest.
+              </p>
+            </div>
+          `;
+        }
+
         var consolidatedHtml = fields.length
           ? fields.map(function(key) {
               return `
@@ -2397,6 +2553,30 @@ var views = {
 
           <div>
             ${evidenceHtml}
+          </div>
+
+          <h2 style="
+            font-family:var(--font-serif,Georgia,serif);
+            font-size:1.35rem;
+            font-weight:400;
+            margin:32px 0 4px;
+            color:#f3f4f6;
+          ">
+            Resultado cualitativo
+          </h2>
+
+          <p style="
+            color:rgba(229,231,235,.62);
+            margin:0 0 12px;
+            line-height:1.6;
+          ">
+            El motor determinista organiza la evidencia de cada Microtest
+            en un resultado provisional. No constituye todavía una
+            interpretación consolidada del perfil.
+          </p>
+
+          <div>
+            ${qualitativeHtml}
           </div>
 
           <h2 style="
