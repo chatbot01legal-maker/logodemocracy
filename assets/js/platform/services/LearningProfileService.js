@@ -687,8 +687,22 @@ function _buildQualitativeProfile(evidence) {
 
   return Object.keys(MICROTEST_QUALITATIVE).map(function(testId) {
     if (testId === 'brujula') {
+      /*
+       * Brújula conserva un perfil determinista dentro del intento
+       * completo. No debe pasar por _flattenMicrotestEvidence(),
+       * porque ese proceso conserva las evidencias individuales pero
+       * elimina deterministic_profile.
+       */
+      var brujulaAttempts = groupedAttempts.filter(function(attempt) {
+        return (
+          attempt &&
+          typeof attempt === 'object' &&
+          attempt.testId === 'brujula'
+        );
+      });
+
       return _deterministicQualitativeForBrujula(
-        grouped[testId] || []
+        brujulaAttempts
       );
     }
 
