@@ -16,6 +16,7 @@ const profileRoutes = require("./logodemocracy-api/src/routes/profileRoutes");
 const authRoutes = require("./logodemocracy-api/src/routes/authRoutes");
 const { getAcademyAnalysis } = require("./modules/sophiaAcademyPipeline");
 const connectDB = require("./logodemocracy-api/src/config/db");
+const { mongooseServerless } = require("./logodemocracy-api/src/config/mongooseServerless");
 
 const PROTOCOL = {
   version: "4.0"
@@ -95,10 +96,10 @@ app.use((req, res, next) => {
 
 // ─── Rutas del Rey Filósofo (RESTORED) ────────────────
 const rfRoutes = require("./logodemocracy-api/src/routes/rfRoutes");
-app.use("/api/reyfilosofo/microtests", microtestRoutes);
-app.use("/api/profile", profileRoutes);
-app.use("/auth", authRoutes);
-app.use("/api/reyfilosofo", rfRoutes);
+app.use("/api/reyfilosofo/microtests", mongooseServerless, microtestRoutes);
+app.use("/api/profile", mongooseServerless, profileRoutes);
+app.use("/auth", mongooseServerless, authRoutes);
+app.use("/api/reyfilosofo", mongooseServerless, rfRoutes);
 
 // ─── Utilidad para normalizar texto ───────────────────
 function normalizeTextForHash(text) {
