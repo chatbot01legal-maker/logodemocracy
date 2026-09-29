@@ -1,0 +1,73 @@
+{
+  "contract_version": "1.0.0",
+  "test_id": "brujula",
+  "name": "Brújula",
+  "dimension": {
+    "id": "entrada_al_contenido",
+    "name": "Entrada al contenido",
+    "definition": "La forma en que una persona inicia la construcción de significado frente a un contenido."
+  },
+  "purpose": "Caracterizar provisionalmente la forma de entrada al contenido expresada por una persona en las situaciones planteadas por este instrumento.",
+  "indicators": [
+    {
+      "id": "ejemplo",
+      "name": "Ejemplo",
+      "description": "Entrada al contenido mediante casos concretos o situaciones particulares."
+    },
+    {
+      "id": "principio",
+      "name": "Principio",
+      "description": "Entrada al contenido mediante reglas, conceptos generales o relaciones fundamentales."
+    },
+    {
+      "id": "analogia",
+      "name": "Analogía",
+      "description": "Entrada al contenido mediante relaciones con conocimientos o experiencias previamente conocidos."
+    },
+    {
+      "id": "secuencia",
+      "name": "Secuencia",
+      "description": "Entrada al contenido mediante un orden de pasos, procesos o acontecimientos."
+    }
+  ],
+  "structure": {
+    "questions": 5,
+    "alternatives_per_question": 4,
+    "indicator_per_alternative": 1,
+    "response_required": true
+  },
+  "question_set": {
+    "source": "brujula_microtest_1.json",
+    "path": "questions"
+  },
+  "canonical_catalog": {
+    "source": "brujula_microtest_1.json",
+    "path": "signatures",
+    "lookup_key": "firm_key",
+    "lookup_key_format": "indicador:count|indicador:count|...",
+    "entry_fields": [
+      "descripcion",
+      "ejemplo"
+    ]
+  },
+  "output": {
+    "type": "deterministic",
+    "signature": {
+      "notation": "[E,P,A,S]",
+      "notation_description": "Cuatro enteros en orden fijo: Ejemplo, Principio, Analogía, Secuencia.",
+      "technical_key_format": "indicador:count|indicador:count|..."
+    },
+    "interpretation": {
+      "fields": [
+        "descripcion",
+        "ejemplo"
+      ],
+      "source": "canonical_catalog"
+    }
+  },
+  "versions": {
+    "contract_version": "1.0.0",
+    "instrument_version": "1.0.0",
+    "rule_version": "1.0.0"
+  }
+}
