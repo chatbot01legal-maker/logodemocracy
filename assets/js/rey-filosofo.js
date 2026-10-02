@@ -2052,6 +2052,17 @@ var views = {
         return;
       }
 
+        if (!this._profileRefreshBound && typeof EventBus !== 'undefined') {
+          this._profileRefreshBound = true;
+          var profileView = this;
+
+          EventBus.on('microtest:completed', function() {
+            if (document.getElementById('learningProfileRoot')) {
+              profileView.onEnter();
+            }
+          });
+        }
+
       root.innerHTML =
         '<p class="mt-hint">Cargando perfil de aprendizaje...</p>';
 
@@ -2064,7 +2075,6 @@ var views = {
         }
 
         var context = await LearningProfileService.getFullContext();
-
         var profileResponse =
           context && context.profile
             ? context.profile
@@ -2210,85 +2220,18 @@ var views = {
               </p>
 
               <div style="
-                display:grid;
-                gap:14px;
-              ">
-                <div>
-                  <div style="
-                    font-family:var(--font-mono,monospace);
-                    font-size:.72rem;
-                    text-transform:uppercase;
-                    letter-spacing:.08em;
-                    color:rgba(229,231,235,.55);
-                    margin-bottom:5px;
-                  ">
-                    Patrón observado
+                  display:grid;
+                  gap:14px;
+                ">
+                  <div>
+                    <strong>Descripción</strong>
+                    <p>${brujulaInterpretation.descripcion}</p>
                   </div>
-                  <div style="
-                    color:#f3f4f6;
-                    line-height:1.6;
-                  ">
-                    ${brujulaInterpretation.patron}
+                  <div>
+                    <strong>Ejemplo</strong>
+                    <p>${brujulaInterpretation.ejemplo}</p>
                   </div>
                 </div>
-
-                <div>
-                  <div style="
-                    font-family:var(--font-mono,monospace);
-                    font-size:.72rem;
-                    text-transform:uppercase;
-                    letter-spacing:.08em;
-                    color:rgba(229,231,235,.55);
-                    margin-bottom:5px;
-                  ">
-                    Recurso dominante
-                  </div>
-                  <div style="
-                    color:#f3f4f6;
-                    line-height:1.6;
-                  ">
-                    ${brujulaInterpretation.dominante}
-                  </div>
-                </div>
-
-                <div>
-                  <div style="
-                    font-family:var(--font-mono,monospace);
-                    font-size:.72rem;
-                    text-transform:uppercase;
-                    letter-spacing:.08em;
-                    color:rgba(229,231,235,.55);
-                    margin-bottom:5px;
-                  ">
-                    Relación entre recursos
-                  </div>
-                  <div style="
-                    color:#f3f4f6;
-                    line-height:1.6;
-                  ">
-                    ${brujulaInterpretation.relacion}
-                  </div>
-                </div>
-
-                <div>
-                  <div style="
-                    font-family:var(--font-mono,monospace);
-                    font-size:.72rem;
-                    text-transform:uppercase;
-                    letter-spacing:.08em;
-                    color:rgba(229,231,235,.55);
-                    margin-bottom:5px;
-                  ">
-                    Implicación provisional
-                  </div>
-                  <div style="
-                    color:#f3f4f6;
-                    line-height:1.6;
-                  ">
-                    ${brujulaInterpretation.implicacion}
-                  </div>
-                </div>
-              </div>
             </div>
           `;
         } else {

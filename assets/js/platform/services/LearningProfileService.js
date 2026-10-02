@@ -601,6 +601,7 @@ function _deterministicQualitativeForBrujula(attempts) {
 
   // El historial es append-only.
   // Buscamos el último intento de brujula con un perfil determinista válido.
+  // El contrato canónico de Brújula usa descripcion + ejemplo.
   for (var i = list.length - 1; i >= 0; i -= 1) {
     var attempt = list[i];
 
@@ -615,14 +616,17 @@ function _deterministicQualitativeForBrujula(attempts) {
     var candidate = attempt.deterministic_profile;
     var interpretation = candidate.interpretation;
 
-    if (
-      !interpretation ||
-      typeof interpretation !== 'object' ||
-      !interpretation.patron ||
-      !interpretation.dominante ||
-      !interpretation.relacion ||
-      !interpretation.implicacion
-    ) {
+    if (!interpretation || typeof interpretation !== 'object') {
+      continue;
+    }
+
+    var isCanonicalContract =
+      typeof interpretation.descripcion === 'string' &&
+      !!interpretation.descripcion.trim() &&
+      typeof interpretation.ejemplo === 'string' &&
+      !!interpretation.ejemplo.trim();
+
+    if (!isCanonicalContract) {
       continue;
     }
 
@@ -651,10 +655,8 @@ function _deterministicQualitativeForBrujula(attempts) {
     'A partir de tus cinco respuestas en este Microtest, el sistema formula esta hipótesis provisional:';
 
   var body = [
-    interpretation.patron,
-    interpretation.dominante,
-    interpretation.relacion,
-    interpretation.implicacion
+    interpretation.descripcion,
+    interpretation.ejemplo
   ].join(' ');
 
   return {
@@ -674,7 +676,6 @@ function _deterministicQualitativeForBrujula(attempts) {
     deterministicProfile: deterministicProfile
   };
 }
-
 
 function _buildQualitativeProfile(evidence) {
   var groupedAttempts =
