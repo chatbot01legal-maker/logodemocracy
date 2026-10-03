@@ -74,76 +74,99 @@
 const MICROTESTS = [
   {
     id: "brujula",
-    title: "Brújula",
-    dimension: "entrada_al_contenido",
+    title: "Cómo construyes una comprensión",
+    dimension: "construccion_comprension",
+    phase: "construccion_comprension",
     indicators: ["ejemplo", "principio", "analogia", "secuencia"],
     questions: [
       {
         id: "brujula-Q1",
         questionId: "brujula-Q1",
-        text: "Te invitan a jugar un juego de mesa moderno que tiene muchas piezas y un tablero complejo. ¿Cómo prefieres empezar a entenderlo?",
-        question: "Te invitan a jugar un juego de mesa moderno que tiene muchas piezas y un tablero complejo. ¿Cómo prefieres empezar a entenderlo?",
-        prompt: "Te invitan a jugar un juego de mesa moderno que tiene muchas piezas y un tablero complejo. ¿Cómo prefieres empezar a entenderlo?",
+        text: "Estás intentando entender por qué una determinada idea política empieza a ser considerada aceptable después de haber sido marginal durante años. ¿Por dónde comenzarías?",
+        question: "Estás intentando entender por qué una determinada idea política empieza a ser considerada aceptable después de haber sido marginal durante años. ¿Por dónde comenzarías?",
+        prompt: "Estás intentando entender por qué una determinada idea política empieza a ser considerada aceptable después de haber sido marginal durante años. ¿Por dónde comenzarías?",
+        domain: "sociedad",
+        phase: "construccion_comprension",
         options: [
-          { value: "A", key: "A", id: "A", label: "Leer el manual desde la página uno, revisando la fase de preparación y luego la estructura del turno.", text: "Leer el manual desde la página uno, revisando la fase de preparación y luego la estructura del turno.", indicator: "secuencia" },
-          { value: "B", key: "B", id: "B", label: "Pedir que jueguen una ronda de demostración para ver qué acciones se toman en un turno real.", text: "Pedir que jueguen una ronda de demostración para ver qué acciones se toman en un turno real.", indicator: "ejemplo" },
-          { value: "C", key: "C", id: "C", label: "Preguntar inmediatamente cómo se ganan los puntos de victoria y cuál es el objetivo final.", text: "Preguntar inmediatamente cómo se ganan los puntos de victoria y cuál es el objetivo final.", indicator: "principio" },
-          { value: "D", key: "D", id: "D", label: "Preguntar a qué otros juegos que ya conoces se parece en sus mecánicas.", text: "Preguntar a qué otros juegos que ya conoces se parece en sus mecánicas.", indicator: "analogia" }
+          { value: "A", key: "A", id: "A", label: "Buscar un caso concreto en que haya ocurrido ese cambio.", text: "Buscar un caso concreto en que haya ocurrido ese cambio.", indicator: "ejemplo" },
+          { value: "B", key: "B", id: "B", label: "Compararlo con otro fenómeno conocido que haya seguido una transformación parecida.", text: "Compararlo con otro fenómeno conocido que haya seguido una transformación parecida.", indicator: "analogia" },
+          { value: "C", key: "C", id: "C", label: "Identificar la regla o principio que explica cuándo una idea pasa de ser marginal a aceptable.", text: "Identificar la regla o principio que explica cuándo una idea pasa de ser marginal a aceptable.", indicator: "principio" },
+          { value: "D", key: "D", id: "D", label: "Reconstruir cómo fue cambiando la situación a lo largo del tiempo.", text: "Reconstruir cómo fue cambiando la situación a lo largo del tiempo.", indicator: "secuencia" }
         ]
       },
       {
         id: "brujula-Q2",
         questionId: "brujula-Q2",
-        text: "Descargas una nueva aplicación de productividad para organizar tus proyectos. ¿Qué sueles hacer primero?",
-        question: "Descargas una nueva aplicación de productividad para organizar tus proyectos. ¿Qué sueles hacer primero?",
-        prompt: "Descargas una nueva aplicación de productividad para organizar tus proyectos. ¿Qué sueles hacer primero?",
+        text: "Quieres comprender cómo una red de organismos bajo tierra puede intercambiar recursos entre distintas plantas.",
+        question: "Quieres comprender cómo una red de organismos bajo tierra puede intercambiar recursos entre distintas plantas.",
+        prompt: "Quieres comprender cómo una red de organismos bajo tierra puede intercambiar recursos entre distintas plantas.",
+        domain: "biologia",
+        phase: "construccion_comprension",
         options: [
-          { value: "A", key: "A", id: "A", label: "Revisar la propuesta de valor de la app para entender su lógica general de organización.", text: "Revisar la propuesta de valor de la app para entender su lógica general de organización.", indicator: "principio" },
-          { value: "B", key: "B", id: "B", label: "Buscar un video donde alguien muestre cómo estructuró su propio proyecto específico en la app.", text: "Buscar un video donde alguien muestre cómo estructuró su propio proyecto específico en la app.", indicator: "ejemplo" },
-          { value: "C", key: "C", id: "C", label: "Explorar la interfaz buscando similitudes con herramientas que usaste en el pasado (carpetas, etiquetas).", text: "Explorar la interfaz buscando similitudes con herramientas que usaste en el pasado (carpetas, etiquetas).", indicator: "analogia" },
-          { value: "D", key: "D", id: "D", label: "Hacer clic en el recorrido guiado inicial y completar los pasos de configuración uno por uno.", text: "Hacer clic en el recorrido guiado inicial y completar los pasos de configuración uno por uno.", indicator: "secuencia" }
+          { value: "A", key: "A", id: "A", label: "Seguir el proceso desde el primer intercambio hasta sus consecuencias.", text: "Seguir el proceso desde el primer intercambio hasta sus consecuencias.", indicator: "secuencia" },
+          { value: "B", key: "B", id: "B", label: "Buscar una situación concreta en la que pueda observarse ese intercambio.", text: "Buscar una situación concreta en la que pueda observarse ese intercambio.", indicator: "ejemplo" },
+          { value: "C", key: "C", id: "C", label: "Compararlo con una red que ya conozcas.", text: "Compararlo con una red que ya conozcas.", indicator: "analogia" },
+          { value: "D", key: "D", id: "D", label: "Identificar el mecanismo general que permite que ocurra.", text: "Identificar el mecanismo general que permite que ocurra.", indicator: "principio" }
         ]
       },
       {
         id: "brujula-Q3",
         questionId: "brujula-Q3",
-        text: "Tienes que armar un mueble de oficina que viene desarmado en una caja con muchas partes. ¿Cómo inicias el proceso?",
-        question: "Tienes que armar un mueble de oficina que viene desarmado en una caja con muchas partes. ¿Cómo inicias el proceso?",
-        prompt: "Tienes que armar un mueble de oficina que viene desarmado en una caja con muchas partes. ¿Cómo inicias el proceso?",
+        text: "Tienes que entender cómo funciona un sistema de riego automático.",
+        question: "Tienes que entender cómo funciona un sistema de riego automático.",
+        prompt: "Tienes que entender cómo funciona un sistema de riego automático.",
+        domain: "tecnologia",
+        phase: "construccion_comprension",
         options: [
-          { value: "A", key: "A", id: "A", label: "Miras detenidamente la foto del mueble terminado en la caja para tener clara la imagen del resultado.", text: "Miras detenidamente la foto del mueble terminado en la caja para tener clara la imagen del resultado.", indicator: "ejemplo" },
-          { value: "B", key: "B", id: "B", label: "Abres el manual de instrucciones y buscas el paso número uno antes de tocar las piezas.", text: "Abres el manual de instrucciones y buscas el paso número uno antes de tocar las piezas.", indicator: "secuencia" },
-          { value: "C", key: "C", id: "C", label: "Agrupas todas las piezas (tornillos, tablas) para entender la lógica del sistema de ensamblaje primero.", text: "Agrupas todas las piezas (tornillos, tablas) para entender la lógica del sistema de ensamblaje primero.", indicator: "principio" },
-          { value: "D", key: "D", id: "D", label: "Recuerdas cómo armaste una repisa similar hace unos años y aplicas esa misma intuición inicial.", text: "Recuerdas cómo armaste una repisa similar hace unos años y aplicas esa misma intuición inicial.", indicator: "analogia" }
+          { value: "A", key: "A", id: "A", label: "Identificar las reglas que determinan cuándo y cómo se activa.", text: "Identificar las reglas que determinan cuándo y cómo se activa.", indicator: "principio" },
+          { value: "B", key: "B", id: "B", label: "Buscar una instalación que ya esté funcionando y observarla.", text: "Buscar una instalación que ya esté funcionando y observarla.", indicator: "ejemplo" },
+          { value: "C", key: "C", id: "C", label: "Compararlo con otro sistema de distribución que conozcas.", text: "Compararlo con otro sistema de distribución que conozcas.", indicator: "analogia" },
+          { value: "D", key: "D", id: "D", label: "Seguir ordenadamente qué ocurre desde que recibe una señal hasta que entrega agua.", text: "Seguir ordenadamente qué ocurre desde que recibe una señal hasta que entrega agua.", indicator: "secuencia" }
         ]
       },
       {
         id: "brujula-Q4",
         questionId: "brujula-Q4",
-        text: "Estás leyendo un artículo extenso sobre un fenómeno económico complejo que afecta a tu país. ¿En qué te enfocas para anclar tu comprensión?",
-        question: "Estás leyendo un artículo extenso sobre un fenómeno económico complejo que afecta a tu país. ¿En qué te enfocas para anclar tu comprensión?",
-        prompt: "Estás leyendo un artículo extenso sobre un fenómeno económico complejo que afecta a tu país. ¿En qué te enfocas para anclar tu comprensión?",
+        text: "Un sistema electrónico transmite información entre varios componentes y no entiendes bien qué está ocurriendo.",
+        question: "Un sistema electrónico transmite información entre varios componentes y no entiendes bien qué está ocurriendo.",
+        prompt: "Un sistema electrónico transmite información entre varios componentes y no entiendes bien qué está ocurriendo.",
+        domain: "tecnologia",
+        phase: "construccion_comprension",
         options: [
-          { value: "A", key: "A", id: "A", label: "Prestas atención a cuando el autor compara la economía del país con el presupuesto de una familia.", text: "Prestas atención a cuando el autor compara la economía del país con el presupuesto de una familia.", indicator: "analogia" },
-          { value: "B", key: "B", id: "B", label: "Buscas el párrafo introductorio que define la ley macroeconómica central que explica el problema.", text: "Buscas el párrafo introductorio que define la ley macroeconómica central que explica el problema.", indicator: "principio" },
-          { value: "C", key: "C", id: "C", label: "Lees primero la línea de tiempo de eventos para entender cómo se desencadenó la situación paso a paso.", text: "Lees primero la línea de tiempo de eventos para entender cómo se desencadenó la situación paso a paso.", indicator: "secuencia" },
-          { value: "D", key: "D", id: "D", label: "Te centras en la historia de una persona o empresa real mencionada en el texto que sufre el fenómeno.", text: "Te centras en la historia de una persona o empresa real mencionada en el texto que sufre el fenómeno.", indicator: "ejemplo" }
+          { value: "A", key: "A", id: "A", label: "Pensar en otro sistema conocido que funcione mediante intercambio de mensajes.", text: "Pensar en otro sistema conocido que funcione mediante intercambio de mensajes.", indicator: "analogia" },
+          { value: "B", key: "B", id: "B", label: "Identificar la regla general que determina cómo circula la información.", text: "Identificar la regla general que determina cómo circula la información.", indicator: "principio" },
+          { value: "C", key: "C", id: "C", label: "Seguir un mensaje concreto desde que sale hasta que llega.", text: "Seguir un mensaje concreto desde que sale hasta que llega.", indicator: "secuencia" },
+          { value: "D", key: "D", id: "D", label: "Buscar un caso real de funcionamiento y observar qué ocurre.", text: "Buscar un caso real de funcionamiento y observar qué ocurre.", indicator: "ejemplo" }
         ]
       },
       {
         id: "brujula-Q5",
         questionId: "brujula-Q5",
-        text: "Quieres preparar un plato tradicional de una cultura extranjera que nunca has cocinado. ¿Cómo abordas la preparación?",
-        question: "Quieres preparar un plato tradicional de una cultura extranjera que nunca has cocinado. ¿Cómo abordas la preparación?",
-        prompt: "Quieres preparar un plato tradicional de una cultura extranjera que nunca has cocinado. ¿Cómo abordas la preparación?",
+        text: "Quieres comprender cómo una institución histórica llegó a tener tanta influencia.",
+        question: "Quieres comprender cómo una institución histórica llegó a tener tanta influencia.",
+        prompt: "Quieres comprender cómo una institución histórica llegó a tener tanta influencia.",
+        domain: "historia",
+        phase: "construccion_comprension",
         options: [
-          { value: "A", key: "A", id: "A", label: "Sigues la receta al pie de la letra, pesando cada ingrediente y respetando el orden exacto.", text: "Sigues la receta al pie de la letra, pesando cada ingrediente y respetando el orden exacto.", indicator: "secuencia" },
-          { value: "B", key: "B", id: "B", label: "Identificas qué guiso de tu propio país utiliza una base similar para guiarte por intuición.", text: "Identificas qué guiso de tu propio país utiliza una base similar para guiarte por intuición.", indicator: "analogia" },
-          { value: "C", key: "C", id: "C", label: "Buscas una foto o video corto para ver exactamente el color y la textura que debería tener la salsa.", text: "Buscas una foto o video corto para ver exactamente el color y la textura que debería tener la salsa.", indicator: "ejemplo" },
-          { value: "D", key: "D", id: "D", label: "Lees sobre el perfil de sabor de esa cultura (equilibrio entre ácido, dulce y picante) antes de empezar.", text: "Lees sobre el perfil de sabor de esa cultura (equilibrio entre ácido, dulce y picante) antes de empezar.", indicator: "principio" }
+          { value: "A", key: "A", id: "A", label: "Reconstruir las etapas que llevaron desde su origen hasta esa posición.", text: "Reconstruir las etapas que llevaron desde su origen hasta esa posición.", indicator: "secuencia" },
+          { value: "B", key: "B", id: "B", label: "Buscar un caso concreto que muestre cómo ejercía esa influencia.", text: "Buscar un caso concreto que muestre cómo ejercía esa influencia.", indicator: "ejemplo" },
+          { value: "C", key: "C", id: "C", label: "Compararla con una institución que conozcas de otro período.", text: "Compararla con una institución que conozcas de otro período.", indicator: "analogia" },
+          { value: "D", key: "D", id: "D", label: "Identificar el principio que explica cómo pudo acumular ese poder.", text: "Identificar el principio que explica cómo pudo acumular ese poder.", indicator: "principio" }
         ]
       }
-    ]
+    ],
+    compute(answers) {
+      const counts = {};
+      this.indicators.forEach((indicator) => { counts[indicator] = 0; });
+      this.questions.forEach((question) => {
+        const answer = answers && answers[question.id];
+        const option = question.options.find((item) => item.value === answer || item.key === answer || item.id === answer);
+        if (option && counts[option.indicator] !== undefined) {
+          counts[option.indicator] += 1;
+        }
+      });
+      return counts;
+    }
   },
   {
     id: "ejemplos",

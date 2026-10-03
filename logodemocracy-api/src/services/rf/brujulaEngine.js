@@ -1,4 +1,4 @@
-// logodemocracy-api/src/services/rf/brujulaEngine.js
+-// logodemocracy-api/src/services/rf/brujulaEngine.js
 //
 // Motor determinista de perfil de aprendizaje — Microtest "brujula".
 // Implementa el contrato "Motor determinista de perfil de aprendizaje —
@@ -110,7 +110,8 @@ function buildProfile(indicators) {
     firm_key: firm_key,
     shape: shape,
     shape_algorithm_version: SHAPE_ALGORITHM_VERSION,
-    contract_version: BRUJULA_CATALOG.instrument_version || '1.0.0',
+    contract_version: CONTRACT_VERSION,
+    instrument_version: BRUJULA_CATALOG.instrument_version || '1.0.0',
     rule_version: BRUJULA_CATALOG.rule_version || '1.0.0',
     interpretation: {
       descripcion: catalogEntry.descripcion,
