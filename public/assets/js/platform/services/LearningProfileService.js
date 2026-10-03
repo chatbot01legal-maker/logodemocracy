@@ -66,7 +66,7 @@ var LearningProfileService = (function() {
   var MICROTEST_QUALITATIVE = {
 
     brujula: {
-      title: 'Cómo construyes una comprensión',
+      title: 'Brújula',
 
       frames: {
         ejemplo:
@@ -639,7 +639,7 @@ function _deterministicQualitativeForBrujula(attempts) {
   if (!deterministicProfile) {
     return {
       testId: 'brujula',
-      title: 'Cómo construyes una comprensión',
+      title: 'Brújula',
       interpretation: '',
       indicators: [],
       evidenceCount: 0,
@@ -661,7 +661,7 @@ function _deterministicQualitativeForBrujula(attempts) {
 
   return {
     testId: 'brujula',
-    title: 'Cómo construyes una comprensión',
+    title: 'Brújula',
     interpretation: frame + ' ' + body,
     indicators: Array.isArray(deterministicProfile.indicators)
       ? deterministicProfile.indicators
