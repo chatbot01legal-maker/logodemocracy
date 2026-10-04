@@ -1,14 +1,14 @@
 {
   "contract_version": "1.0.0",
-  "test_id": "premisa_oculta_1",
-  "name": "Premisa oculta 1",
+  "test_id": "premisa_oculta_2",
+  "name": "Premisa oculta 2",
   "dimension": {
     "id": "deteccion_de_premisas_ocultas",
     "name": "Detección de premisas ocultas",
     "definition": "La forma en que una persona identifica qué debe suponerse, aunque no esté expresado de manera explícita, para que un razonamiento pueda sostenerse."
   },
-  "purpose": "Caracterizar provisionalmente la forma en que una persona detecta la premisa necesaria no expresada en razonamientos directos, bajo condición de premisa faltante.",
-  "condition_id": "premisa_faltante_directa",
+  "purpose": "Caracterizar provisionalmente la forma en que una persona detecta la premisa estructuralmente necesaria cuando existen varias explicaciones plausibles, bajo condición de competencia entre explicaciones.",
+  "condition_id": "premisa_necesaria_entre_explicaciones",
   "indicators": [
     {
       "id": "vinculo",
@@ -38,11 +38,11 @@
     "response_required": true
   },
   "question_set": {
-    "source": "premisa_oculta_1_microtest_1.json",
+    "source": "premisa_oculta_2_microtest_1.json",
     "path": "questions"
   },
   "canonical_catalog": {
-    "source": "premisa_oculta_1_microtest_1.json",
+    "source": "premisa_oculta_2_microtest_1.json",
     "path": "signatures",
     "lookup_key": "firm_key",
     "lookup_key_format": "indicador:count|indicador:count|...",
