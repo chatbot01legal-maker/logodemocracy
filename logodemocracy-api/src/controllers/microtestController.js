@@ -1,5 +1,5 @@
 const PedagogicalProfile = require('../models/PedagogicalProfile');
-const brujulaEngine = require('../services/rf/brujulaEngine');
+const microtestEngine = require('../services/rf/microtestEngine');
 
 /*
  * Controlador diseñado específicamente para empatar con la llamada fetch en rey-filosofo.js (línea 416):
@@ -50,9 +50,9 @@ exports.saveMicrotest = async (req, res, next) => {
       // brujulaEngine.js): marca cuándo se persistió el registro, y es
       // semánticamente distinto de "attempt.timestamp" (cuándo el usuario
       // completó el intento). No participa en el cálculo de rule_version.
-      if (testId === 'brujula' && Array.isArray(attempt.evidence)) {
+      if (testId && microtestEngine.MICROTEST_REGISTRY[testId] && Array.isArray(attempt.evidence)) {
         const indicators = attempt.evidence.map((e) => e && e.indicator);
-        const deterministicProfile = brujulaEngine.buildProfile(indicators);
+        const deterministicProfile = microtestEngine.buildProfile(testId, indicators);
         attempt.deterministic_profile = Object.assign(
           {},
           deterministicProfile,
