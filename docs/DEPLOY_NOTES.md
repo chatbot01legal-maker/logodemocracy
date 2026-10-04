@@ -70,3 +70,35 @@ que sí lo tienen.
 5. La Deployment Protection de Vercel bloquea `curl` a URLs de deploy específico.
    Verificar siempre contra el alias `logodemocracy.tech`.
 
+
+---
+
+## Lección aprendida: `vercel.json` y archivos requeridos por el motor
+
+**Problema detectado (2026-10-04):** Al abstraer `brujulaEngine.js` a un motor universal
+(`microtestEngine.js`), el motor pasó a hacer `require` de archivos que antes no requería
+(metadata, catálogo JSON directo). En local todo funcionaba. En producción, el POST
+`/api/reyfilosofo/microtests/save` devolvía **500** con error:
+
+    Cannot find module './brujula_microtest_1_metadata.json'
+
+**Causa:** Vercel empaqueta solo los archivos declarados en `vercel.json → functions.app.js.includeFiles`.
+La configuración anterior solo incluía:
+
+    "includeFiles": "**/brujula_microtest_1.json"
+
+Por eso la metadata quedaba fuera del bundle.
+
+**Solución:** usar un patrón glob amplio que capture toda la carpeta del motor y sus datos:
+
+    "includeFiles": "logodemocracy-api/src/services/rf/**"
+
+**Ventajas:**
+- Captura todos los archivos de la carpeta.
+- Escala automáticamente cuando se añadan MT2, MT3, etc. sin tocar `vercel.json`.
+- Evita el error de olvidar añadir archivos nuevos al bundle.
+
+**Nota sobre la sintaxis:** el CLI 59.25.2 de Vercel **no acepta arrays** en `includeFiles`,
+aunque la documentación pueda sugerirlo. Solo acepta string. El patrón `**` cubre la necesidad.
+
+**Aplicable a:** cada vez que el motor universal añada `require` de archivos nuevos.
