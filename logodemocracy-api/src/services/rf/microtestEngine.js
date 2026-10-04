@@ -38,7 +38,8 @@
 // ============================================================
 
 var MICROTEST_REGISTRY = {
-  'brujula': './brujula_microtest_1_metadata.json'
+  'brujula': './brujula_microtest_1_metadata.json',
+  'reconstruccion_function_1': './reconstruccion_function_1_microtest_1_metadata.json'
 };
 
 // ============================================================
