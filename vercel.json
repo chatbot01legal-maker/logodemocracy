@@ -1,0 +1,9 @@
+
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "app.js": {
+      "includeFiles": "logodemocracy-api/src/services/rf/**"
+    }
+  }
+}
