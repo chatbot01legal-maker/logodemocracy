@@ -1,0 +1,75 @@
+{
+  "contract_version": "1.0.0",
+  "test_id": "premisa_oculta_1",
+  "name": "Premisa oculta 1",
+  "dimension": {
+    "id": "deteccion_de_premisas_ocultas",
+    "name": "Detección de premisas ocultas",
+    "definition": "La forma en que una persona identifica qué debe suponerse, aunque no esté expresado de manera explícita, para que un razonamiento pueda sostenerse."
+  },
+  "purpose": "Caracterizar provisionalmente la forma en que una persona detecta la premisa necesaria no expresada en razonamientos directos, bajo condición de premisa faltante.",
+  "condition_id": "premisa_faltante_directa",
+  "indicators": [
+    {
+      "id": "vinculo",
+      "name": "Vínculo",
+      "description": "Detección de la premisa mediante identificación del vínculo lógico faltante entre lo que se afirma y lo que se concluye."
+    },
+    {
+      "id": "contenido",
+      "name": "Contenido",
+      "description": "Detección de la premisa mediante análisis del significado y las afirmaciones presentes en el razonamiento."
+    },
+    {
+      "id": "ejemplo",
+      "name": "Ejemplo",
+      "description": "Detección de la premisa mediante prueba del razonamiento con un caso concreto."
+    },
+    {
+      "id": "contraste",
+      "name": "Contraste",
+      "description": "Detección de la premisa mediante comparación con premisas alternativas que no sostendrían el razonamiento."
+    }
+  ],
+  "structure": {
+    "questions": 5,
+    "alternatives_per_question": 4,
+    "indicator_per_alternative": 1,
+    "response_required": true
+  },
+  "question_set": {
+    "source": "premisa_oculta_1_microtest_1.json",
+    "path": "questions"
+  },
+  "canonical_catalog": {
+    "source": "premisa_oculta_1_microtest_1.json",
+    "path": "signatures",
+    "lookup_key": "firm_key",
+    "lookup_key_format": "indicador:count|indicador:count|...",
+    "entry_fields": [
+      "descripcion",
+      "ejemplo"
+    ]
+  },
+  "output": {
+    "type": "deterministic",
+    "signature": {
+      "notation": "[V,C,E,X]",
+      "notation_description": "Cuatro enteros en orden fijo: Vínculo, Contenido, Ejemplo, Contraste.",
+      "technical_key_format": "indicador:count|indicador:count|..."
+    },
+    "interpretation": {
+      "fields": [
+        "descripcion",
+        "ejemplo"
+      ],
+      "source": "canonical_catalog"
+    }
+  },
+  "versions": {
+    "contract_version": "1.0.0",
+    "instrument_version": "1.0.0",
+    "rule_version": "1.0.0"
+  }
+}
+
