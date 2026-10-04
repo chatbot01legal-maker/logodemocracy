@@ -1,0 +1,74 @@
+{
+  "contract_version": "1.0.0",
+  "test_id": "reconstruccion_function_2",
+  "name": "Reconstrucción de función 2",
+  "dimension": {
+    "id": "reconstruccion_de_funcion",
+    "name": "Reconstrucción de función",
+    "definition": "La forma en que una persona reconstruye qué función cumple un elemento dentro de un contenido o sistema, utilizando las relaciones relevantes que permiten explicar su papel."
+  },
+  "purpose": "Caracterizar provisionalmente la forma de reconstrucción de función expresada por una persona en las situaciones planteadas por este instrumento, bajo condición de señalización reducida.",
+  "condition_id": "senalizacion_reducida",
+  "indicators": [
+    {
+      "id": "marcador",
+      "name": "Marcador",
+      "description": "Entrada a la reconstrucción de función mediante señales explícitas del contenido que permiten identificar o delimitar el papel de un elemento."
+    },
+    {
+      "id": "contenido",
+      "name": "Contenido",
+      "description": "Entrada a la reconstrucción de función mediante la información, propiedades o características del propio elemento y aquello que permite hacer o producir."
+    },
+    {
+      "id": "posicion",
+      "name": "Posición",
+      "description": "Entrada a la reconstrucción de función mediante el lugar que ocupa el elemento dentro de una estructura, secuencia, sistema o conjunto de relaciones."
+    },
+    {
+      "id": "contraste",
+      "name": "Contraste",
+      "description": "Entrada a la reconstrucción de función mediante la comparación con otros elementos, situaciones o funciones que permite distinguir qué papel cumple el elemento observado."
+    }
+  ],
+  "structure": {
+    "questions": 5,
+    "alternatives_per_question": 4,
+    "indicator_per_alternative": 1,
+    "response_required": true
+  },
+  "question_set": {
+    "source": "reconstruccion_function_2_microtest_1.json",
+    "path": "questions"
+  },
+  "canonical_catalog": {
+    "source": "reconstruccion_function_2_microtest_1.json",
+    "path": "signatures",
+    "lookup_key": "firm_key",
+    "lookup_key_format": "indicador:count|indicador:count|...",
+    "entry_fields": [
+      "descripcion",
+      "ejemplo"
+    ]
+  },
+  "output": {
+    "type": "deterministic",
+    "signature": {
+      "notation": "[M,C,P,X]",
+      "notation_description": "Cuatro enteros en orden fijo: Marcador, Contenido, Posición, Contraste.",
+      "technical_key_format": "indicador:count|indicador:count|..."
+    },
+    "interpretation": {
+      "fields": [
+        "descripcion",
+        "ejemplo"
+      ],
+      "source": "canonical_catalog"
+    }
+  },
+  "versions": {
+    "contract_version": "1.0.0",
+    "instrument_version": "1.0.0",
+    "rule_version": "1.0.0"
+  }
+}
