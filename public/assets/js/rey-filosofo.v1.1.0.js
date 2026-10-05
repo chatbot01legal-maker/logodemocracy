@@ -146,868 +146,296 @@ const MICROTESTS = [
     ]
   },
   {
-    id: "ejemplos",
-    title: "Construir sobre lo que ya sabes",
-    dimension: "conocimiento_previo",
-    phase: "conocimiento_previo",
-    indicators: ["anclaje_experiencial", "recuperacion_conocimiento", "comparacion", "contraste"],
+    id: "reconstruccion_function_1",
+    title: "Reconstrucción de función 1",
+    dimension: "reconstruccion_de_funcion",
+    indicators: ["marcador", "contenido", "posicion", "contraste"],
     questions: [
       {
-        id: "ejemplos-Q1",
-        questionId: "ejemplos-Q1",
-        text: "Lees sobre cómo funcionaban las rutas comerciales romanas.",
-        question: "Lees sobre cómo funcionaban las rutas comerciales romanas.",
-        prompt: "Lees sobre cómo funcionaban las rutas comerciales romanas.",
-        domain: "comercio",
-        phase: "conocimiento_previo",
+        id: "reconstruccion_function_1-Q1",
+        questionId: "reconstruccion_function_1-Q1",
+        text: "En un blog de cocina, un párrafo comienza con la frase «Por lo tanto, para que el pan quede más esponjoso, hay que dejar reposar la masa dos horas más.» Aparece justo después del apartado donde se explican los ingredientes. ¿Cómo reconstruirías la función de ese párrafo dentro del blog?",
+        question: "En un blog de cocina, un párrafo comienza con la frase «Por lo tanto, para que el pan quede más esponjoso, hay que dejar reposar la masa dos horas más.» Aparece justo después del apartado donde se explican los ingredientes. ¿Cómo reconstruirías la función de ese párrafo dentro del blog?",
+        prompt: "En un blog de cocina, un párrafo comienza con la frase «Por lo tanto, para que el pan quede más esponjoso, hay que dejar reposar la masa dos horas más.» Aparece justo después del apartado donde se explican los ingredientes. ¿Cómo reconstruirías la función de ese párrafo dentro del blog?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Compararlo con otro sistema histórico de comercio que conozcas.", text: "Compararlo con otro sistema histórico de comercio que conozcas.", indicator: "comparacion" },
-          { value: "B", key: "B", id: "B", label: "Relacionarlo con experiencias actuales de comprar o transportar productos.", text: "Relacionarlo con experiencias actuales de comprar o transportar productos.", indicator: "anclaje_experiencial" },
-          { value: "C", key: "C", id: "C", label: "Buscar qué conocimientos anteriores necesitas recuperar para entenderlo.", text: "Buscar qué conocimientos anteriores necesitas recuperar para entenderlo.", indicator: "recuperacion_conocimiento" },
-          { value: "D", key: "D", id: "D", label: "Buscar primero diferencias que impidan asumir que ambos sistemas funcionaban igual.", text: "Buscar primero diferencias que impidan asumir que ambos sistemas funcionaban igual.", indicator: "contraste" }
+          { value: "A", key: "A", id: "A", label: "Usar la expresión «Por lo tanto» como señal explícita de que el párrafo cierra una conclusión a partir de lo ya dicho.", text: "Usar la expresión «Por lo tanto» como señal explícita de que el párrafo cierra una conclusión a partir de lo ya dicho.", indicator: "marcador" },
+          { value: "B", key: "B", id: "B", label: "Analizar qué indica específicamente el párrafo sobre el tiempo de reposo y cómo se relaciona con lo anterior.", text: "Analizar qué indica específicamente el párrafo sobre el tiempo de reposo y cómo se relaciona con lo anterior.", indicator: "contenido" },
+          { value: "C", key: "C", id: "C", label: "Observar que el párrafo está ubicado después del apartado de ingredientes, cerrando ese bloque del texto.", text: "Observar que el párrafo está ubicado después del apartado de ingredientes, cerrando ese bloque del texto.", indicator: "posicion" },
+          { value: "D", key: "D", id: "D", label: "Comparar este párrafo con otras partes del blog que solo describen pasos, para ver en qué se distingue.", text: "Comparar este párrafo con otras partes del blog que solo describen pasos, para ver en qué se distingue.", indicator: "contraste" }
         ]
       },
       {
-        id: "ejemplos-Q2",
-        questionId: "ejemplos-Q2",
-        text: "Te explican un fenómeno relacionado con la inercia y tu primera intuición no coincide con la explicación.",
-        question: "Te explican un fenómeno relacionado con la inercia y tu primera intuición no coincide con la explicación.",
-        prompt: "Te explican un fenómeno relacionado con la inercia y tu primera intuición no coincide con la explicación.",
-        domain: "fisica",
-        phase: "conocimiento_previo",
+        id: "reconstruccion_function_1-Q2",
+        questionId: "reconstruccion_function_1-Q2",
+        text: "En el envase de un producto de venta libre, hay una sección con el título «Precauciones» que aparece justo antes de las instrucciones de uso. ¿Cómo reconstruirías la función de esa sección dentro del envase?",
+        question: "En el envase de un producto de venta libre, hay una sección con el título «Precauciones» que aparece justo antes de las instrucciones de uso. ¿Cómo reconstruirías la función de esa sección dentro del envase?",
+        prompt: "En el envase de un producto de venta libre, hay una sección con el título «Precauciones» que aparece justo antes de las instrucciones de uso. ¿Cómo reconstruirías la función de esa sección dentro del envase?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Recordar otros fenómenos físicos que hayas estudiado y relacionarlos con este.", text: "Recordar otros fenómenos físicos que hayas estudiado y relacionarlos con este.", indicator: "recuperacion_conocimiento" },
-          { value: "B", key: "B", id: "B", label: "Pensar en alguna experiencia cotidiana en la que hayas observado algo parecido.", text: "Pensar en alguna experiencia cotidiana en la que hayas observado algo parecido.", indicator: "anclaje_experiencial" },
-          { value: "C", key: "C", id: "C", label: "Buscar inmediatamente qué diferencia existe entre tu intuición y el fenómeno explicado.", text: "Buscar inmediatamente qué diferencia existe entre tu intuición y el fenómeno explicado.", indicator: "contraste" },
-          { value: "D", key: "D", id: "D", label: "Compararlo con otro fenómeno conocido que pueda servirte como referencia.", text: "Compararlo con otro fenómeno conocido que pueda servirte como referencia.", indicator: "comparacion" }
+          { value: "A", key: "A", id: "A", label: "Analizar qué precauciones menciona específicamente esa sección.", text: "Analizar qué precauciones menciona específicamente esa sección.", indicator: "contenido" },
+          { value: "B", key: "B", id: "B", label: "Compararla con otras secciones del envase que no son advertencias.", text: "Compararla con otras secciones del envase que no son advertencias.", indicator: "contraste" },
+          { value: "C", key: "C", id: "C", label: "Usar el título «Precauciones» como señal explícita que delimita su papel.", text: "Usar el título «Precauciones» como señal explícita que delimita su papel.", indicator: "marcador" },
+          { value: "D", key: "D", id: "D", label: "Observar que la sección está ubicada justo antes de las instrucciones de uso.", text: "Observar que la sección está ubicada justo antes de las instrucciones de uso.", indicator: "posicion" }
         ]
       },
       {
-        id: "ejemplos-Q3",
-        questionId: "ejemplos-Q3",
-        text: "Debes aprender a utilizar una herramienta digital que nunca has usado.",
-        question: "Debes aprender a utilizar una herramienta digital que nunca has usado.",
-        prompt: "Debes aprender a utilizar una herramienta digital que nunca has usado.",
-        domain: "tecnologia",
-        phase: "conocimiento_previo",
+        id: "reconstruccion_function_1-Q3",
+        questionId: "reconstruccion_function_1-Q3",
+        text: "En la reseña de una película publicada en un blog, hay un párrafo titulado «Mi recomendación» que aparece al final, después del resumen de la trama. ¿Cómo reconstruirías la función de ese párrafo dentro de la reseña?",
+        question: "En la reseña de una película publicada en un blog, hay un párrafo titulado «Mi recomendación» que aparece al final, después del resumen de la trama. ¿Cómo reconstruirías la función de ese párrafo dentro de la reseña?",
+        prompt: "En la reseña de una película publicada en un blog, hay un párrafo titulado «Mi recomendación» que aparece al final, después del resumen de la trama. ¿Cómo reconstruirías la función de ese párrafo dentro de la reseña?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Identificar qué funciones de otras herramientas conocidas pueden servirte aquí.", text: "Identificar qué funciones de otras herramientas conocidas pueden servirte aquí.", indicator: "recuperacion_conocimiento" },
-          { value: "B", key: "B", id: "B", label: "Compararla con herramientas que ya sabes utilizar.", text: "Compararla con herramientas que ya sabes utilizar.", indicator: "comparacion" },
-          { value: "C", key: "C", id: "C", label: "Relacionarla con alguna experiencia concreta que hayas tenido con tecnología.", text: "Relacionarla con alguna experiencia concreta que hayas tenido con tecnología.", indicator: "anclaje_experiencial" },
-          { value: "D", key: "D", id: "D", label: "Buscar primero qué diferencias podrían impedir que funcione como las herramientas anteriores.", text: "Buscar primero qué diferencias podrían impedir que funcione como las herramientas anteriores.", indicator: "contraste" }
+          { value: "A", key: "A", id: "A", label: "Observar que está ubicado al final, después del resumen de la trama.", text: "Observar que está ubicado al final, después del resumen de la trama.", indicator: "posicion" },
+          { value: "B", key: "B", id: "B", label: "Usar el título «Mi recomendación» como etiqueta explícita de su función.", text: "Usar el título «Mi recomendación» como etiqueta explícita de su función.", indicator: "marcador" },
+          { value: "C", key: "C", id: "C", label: "Compararlo con las partes previas de la reseña que solo describen la trama.", text: "Compararlo con las partes previas de la reseña que solo describen la trama.", indicator: "contraste" },
+          { value: "D", key: "D", id: "D", label: "Analizar qué recomienda específicamente y con qué argumentos lo justifica.", text: "Analizar qué recomienda específicamente y con qué argumentos lo justifica.", indicator: "contenido" }
         ]
       },
       {
-        id: "ejemplos-Q4",
-        questionId: "ejemplos-Q4",
-        text: "Encuentras una explicación que contradice una idea que sostenías desde hace tiempo.",
-        question: "Encuentras una explicación que contradice una idea que sostenías desde hace tiempo.",
-        prompt: "Encuentras una explicación que contradice una idea que sostenías desde hace tiempo.",
-        domain: "sociedad",
-        phase: "conocimiento_previo",
+        id: "reconstruccion_function_1-Q4",
+        questionId: "reconstruccion_function_1-Q4",
+        text: "En un mensaje extenso que un amigo te envía por chat contándote un problema, el último párrafo comienza con «En resumen, lo que quiero decirte es que...». Antes de él se describen varias cosas que le pasaron. ¿Cómo reconstruirías la función de ese párrafo dentro del mensaje?",
+        question: "En un mensaje extenso que un amigo te envía por chat contándote un problema, el último párrafo comienza con «En resumen, lo que quiero decirte es que...». Antes de él se describen varias cosas que le pasaron. ¿Cómo reconstruirías la función de ese párrafo dentro del mensaje?",
+        prompt: "En un mensaje extenso que un amigo te envía por chat contándote un problema, el último párrafo comienza con «En resumen, lo que quiero decirte es que...». Antes de él se describen varias cosas que le pasaron. ¿Cómo reconstruirías la función de ese párrafo dentro del mensaje?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Revisar qué experiencia personal estaba detrás de tu idea inicial.", text: "Revisar qué experiencia personal estaba detrás de tu idea inicial.", indicator: "anclaje_experiencial" },
-          { value: "B", key: "B", id: "B", label: "Comparar ambas explicaciones punto por punto.", text: "Comparar ambas explicaciones punto por punto.", indicator: "comparacion" },
-          { value: "C", key: "C", id: "C", label: "Recuperar los conocimientos anteriores que podrían estar influyendo en tu interpretación.", text: "Recuperar los conocimientos anteriores que podrían estar influyendo en tu interpretación.", indicator: "recuperacion_conocimiento" },
-          { value: "D", key: "D", id: "D", label: "Buscar qué diferencias entre los casos podrían explicar la aparente contradicción.", text: "Buscar qué diferencias entre los casos podrían explicar la aparente contradicción.", indicator: "contraste" }
+          { value: "A", key: "A", id: "A", label: "Compararlo con los párrafos previos que describen lo que le pasó, para ver qué agrega.", text: "Compararlo con los párrafos previos que describen lo que le pasó, para ver qué agrega.", indicator: "contraste" },
+          { value: "B", key: "B", id: "B", label: "Observar que está ubicado al final del mensaje, después de las descripciones.", text: "Observar que está ubicado al final del mensaje, después de las descripciones.", indicator: "posicion" },
+          { value: "C", key: "C", id: "C", label: "Analizar qué quiere decirte concretamente en ese párrafo.", text: "Analizar qué quiere decirte concretamente en ese párrafo.", indicator: "contenido" },
+          { value: "D", key: "D", id: "D", label: "Usar la expresión «En resumen, lo que quiero decirte es que» como señal explícita de que contiene el punto principal.", text: "Usar la expresión «En resumen, lo que quiero decirte es que» como señal explícita de que contiene el punto principal.", indicator: "marcador" }
         ]
       },
       {
-        id: "ejemplos-Q5",
-        questionId: "ejemplos-Q5",
-        text: "Un concepto nuevo parece parecido a algo que ya conocías, pero no estás seguro de que la comparación sea válida.",
-        question: "Un concepto nuevo parece parecido a algo que ya conocías, pero no estás seguro de que la comparación sea válida.",
-        prompt: "Un concepto nuevo parece parecido a algo que ya conocías, pero no estás seguro de que la comparación sea válida.",
-        domain: "ciencia",
-        phase: "conocimiento_previo",
+        id: "reconstruccion_function_1-Q5",
+        questionId: "reconstruccion_function_1-Q5",
+        text: "En una publicación de blog personal, hay una sección titulada «Lo que no me funcionó» que aparece hacia el final, después de contar la experiencia principal. ¿Cómo reconstruirías la función de esa sección dentro de la publicación?",
+        question: "En una publicación de blog personal, hay una sección titulada «Lo que no me funcionó» que aparece hacia el final, después de contar la experiencia principal. ¿Cómo reconstruirías la función de esa sección dentro de la publicación?",
+        prompt: "En una publicación de blog personal, hay una sección titulada «Lo que no me funcionó» que aparece hacia el final, después de contar la experiencia principal. ¿Cómo reconstruirías la función de esa sección dentro de la publicación?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Recordar exactamente qué sabías sobre el fenómeno anterior.", text: "Recordar exactamente qué sabías sobre el fenómeno anterior.", indicator: "recuperacion_conocimiento" },
-          { value: "B", key: "B", id: "B", label: "Buscar una experiencia concreta que te ayude a relacionarlos.", text: "Buscar una experiencia concreta que te ayude a relacionarlos.", indicator: "anclaje_experiencial" },
-          { value: "C", key: "C", id: "C", label: "Comparar ambos fenómenos para encontrar correspondencias.", text: "Comparar ambos fenómenos para encontrar correspondencias.", indicator: "comparacion" },
-          { value: "D", key: "D", id: "D", label: "Examinar primero dónde dejan de ser equivalentes.", text: "Examinar primero dónde dejan de ser equivalentes.", indicator: "contraste" }
+          { value: "A", key: "A", id: "A", label: "Usar el título «Lo que no me funcionó» como señal explícita que declara su función.", text: "Usar el título «Lo que no me funcionó» como señal explícita que declara su función.", indicator: "marcador" },
+          { value: "B", key: "B", id: "B", label: "Observar que está ubicada al final, después de la experiencia principal.", text: "Observar que está ubicada al final, después de la experiencia principal.", indicator: "posicion" },
+          { value: "C", key: "C", id: "C", label: "Compararla con la sección donde cuenta la experiencia para ver qué aporta cada una.", text: "Compararla con la sección donde cuenta la experiencia para ver qué aporta cada una.", indicator: "contraste" },
+          { value: "D", key: "D", id: "D", label: "Analizar qué cosas específicas no le funcionaron y cómo lo describe.", text: "Analizar qué cosas específicas no le funcionaron y cómo lo describe.", indicator: "contenido" }
         ]
       }
-    ],
-    compute(answers) {
-      const counts = {};
-      this.indicators.forEach((indicator) => { counts[indicator] = 0; });
-      this.questions.forEach((question) => {
-        const answer = answers && answers[question.id];
-        const option = question.options.find((item) => item.value === answer || item.key === answer || item.id === answer);
-        if (option && counts[option.indicator] !== undefined) {
-          counts[option.indicator] += 1;
-        }
-      });
-      return counts;
-    }
+    ]
   },
   {
-    id: "puentes",
-    title: "Transferir a una situación nueva",
-    dimension: "transferencia",
-    phase: "transferencia",
-    indicators: ["transferencia_global", "mapeo_analitico", "contraste", "extraccion_regla"],
+    id: "reconstruccion_function_2",
+    title: "Reconstrucción de función 2",
+    dimension: "reconstruccion_de_funcion",
+    indicators: ["marcador", "contenido", "posicion", "contraste"],
     questions: [
       {
-        id: "puentes-Q1",
-        questionId: "puentes-Q1",
-        text: "Conoces un sistema en el que distintos componentes transmiten señales entre sí. Encuentras otro sistema que parece funcionar de manera parecida.",
-        question: "Conoces un sistema en el que distintos componentes transmiten señales entre sí. Encuentras otro sistema que parece funcionar de manera parecida.",
-        prompt: "Conoces un sistema en el que distintos componentes transmiten señales entre sí. Encuentras otro sistema que parece funcionar de manera parecida.",
-        domain: "biologia",
-        phase: "transferencia",
+        id: "reconstruccion_function_2-Q1",
+        questionId: "reconstruccion_function_2-Q1",
+        text: "En un blog de cocina, después del apartado donde se explican los ingredientes, hay un párrafo que dice: «Para que el pan quede más esponjoso, hay que dejar reposar la masa dos horas más.» ¿Cómo reconstruirías la función de ese párrafo dentro del blog?",
+        question: "En un blog de cocina, después del apartado donde se explican los ingredientes, hay un párrafo que dice: «Para que el pan quede más esponjoso, hay que dejar reposar la masa dos horas más.» ¿Cómo reconstruirías la función de ese párrafo dentro del blog?",
+        prompt: "En un blog de cocina, después del apartado donde se explican los ingredientes, hay un párrafo que dice: «Para que el pan quede más esponjoso, hay que dejar reposar la masa dos horas más.» ¿Cómo reconstruirías la función de ese párrafo dentro del blog?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Intentar aplicar la solución anterior prácticamente de la misma manera.", text: "Intentar aplicar la solución anterior prácticamente de la misma manera.", indicator: "transferencia_global" },
-          { value: "B", key: "B", id: "B", label: "Emparejar los elementos de ambos sistemas antes de decidir qué corresponde con qué.", text: "Emparejar los elementos de ambos sistemas antes de decidir qué corresponde con qué.", indicator: "mapeo_analitico" },
-          { value: "C", key: "C", id: "C", label: "Buscar primero las diferencias que podrían hacer fallar la comparación.", text: "Buscar primero las diferencias que podrían hacer fallar la comparación.", indicator: "contraste" },
-          { value: "D", key: "D", id: "D", label: "Extraer la regla general del primer sistema y comprobar si también sirve para el segundo.", text: "Extraer la regla general del primer sistema y comprobar si también sirve para el segundo.", indicator: "extraccion_regla" }
+          { value: "A", key: "A", id: "A", label: "Buscar en el párrafo o en su entorno alguna palabra o expresión, aunque no sea un conector explícito, que oriente sobre qué función cumple.", text: "Buscar en el párrafo o en su entorno alguna palabra o expresión, aunque no sea un conector explícito, que oriente sobre qué función cumple.", indicator: "marcador" },
+          { value: "B", key: "B", id: "B", label: "Analizar qué indica específicamente el párrafo sobre el tiempo de reposo y qué información aporta al conjunto.", text: "Analizar qué indica específicamente el párrafo sobre el tiempo de reposo y qué información aporta al conjunto.", indicator: "contenido" },
+          { value: "C", key: "C", id: "C", label: "Observar que el párrafo está ubicado después del apartado de ingredientes, cerrando ese bloque del texto.", text: "Observar que el párrafo está ubicado después del apartado de ingredientes, cerrando ese bloque del texto.", indicator: "posicion" },
+          { value: "D", key: "D", id: "D", label: "Comparar este párrafo con otras partes del blog que solo describen pasos, para ver en qué se distingue.", text: "Comparar este párrafo con otras partes del blog que solo describen pasos, para ver en qué se distingue.", indicator: "contraste" }
         ]
       },
       {
-        id: "puentes-Q2",
-        questionId: "puentes-Q2",
-        text: "Una organización enfrenta un problema de comunicación parecido a otro que ya conoces.",
-        question: "Una organización enfrenta un problema de comunicación parecido a otro que ya conoces.",
-        prompt: "Una organización enfrenta un problema de comunicación parecido a otro que ya conoces.",
-        domain: "organizacion",
-        phase: "transferencia",
+        id: "reconstruccion_function_2-Q2",
+        questionId: "reconstruccion_function_2-Q2",
+        text: "En el envase de un producto de venta libre, justo antes de las instrucciones de uso, hay un bloque que dice: «No usar si está tomando anticoagulantes. Evitar el contacto con los ojos. No exceder la dosis indicada.» ¿Cómo reconstruirías la función de ese bloque dentro del envase?",
+        question: "En el envase de un producto de venta libre, justo antes de las instrucciones de uso, hay un bloque que dice: «No usar si está tomando anticoagulantes. Evitar el contacto con los ojos. No exceder la dosis indicada.» ¿Cómo reconstruirías la función de ese bloque dentro del envase?",
+        prompt: "En el envase de un producto de venta libre, justo antes de las instrucciones de uso, hay un bloque que dice: «No usar si está tomando anticoagulantes. Evitar el contacto con los ojos. No exceder la dosis indicada.» ¿Cómo reconstruirías la función de ese bloque dentro del envase?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Identificar qué elementos cumplen funciones equivalentes en ambos casos.", text: "Identificar qué elementos cumplen funciones equivalentes en ambos casos.", indicator: "mapeo_analitico" },
-          { value: "B", key: "B", id: "B", label: "Buscar inmediatamente qué diferencias podrían impedir trasladar la solución.", text: "Buscar inmediatamente qué diferencias podrían impedir trasladar la solución.", indicator: "contraste" },
-          { value: "C", key: "C", id: "C", label: "Extraer el principio organizativo que estaba detrás de la solución anterior.", text: "Extraer el principio organizativo que estaba detrás de la solución anterior.", indicator: "extraccion_regla" },
-          { value: "D", key: "D", id: "D", label: "Intentar reproducir la solución anterior con los mínimos cambios posibles.", text: "Intentar reproducir la solución anterior con los mínimos cambios posibles.", indicator: "transferencia_global" }
+          { value: "A", key: "A", id: "A", label: "Analizar qué menciona específicamente ese bloque sobre situaciones a evitar o contraindicaciones.", text: "Analizar qué menciona específicamente ese bloque sobre situaciones a evitar o contraindicaciones.", indicator: "contenido" },
+          { value: "B", key: "B", id: "B", label: "Compararlo con otras secciones del envase que no mencionan advertencias.", text: "Compararlo con otras secciones del envase que no mencionan advertencias.", indicator: "contraste" },
+          { value: "C", key: "C", id: "C", label: "Buscar en el bloque o en su entorno alguna palabra o expresión, aunque no sea un título explícito, que oriente sobre qué tipo de información contiene.", text: "Buscar en el bloque o en su entorno alguna palabra o expresión, aunque no sea un título explícito, que oriente sobre qué tipo de información contiene.", indicator: "marcador" },
+          { value: "D", key: "D", id: "D", label: "Observar que el bloque está ubicado justo antes de las instrucciones de uso.", text: "Observar que el bloque está ubicado justo antes de las instrucciones de uso.", indicator: "posicion" }
         ]
       },
       {
-        id: "puentes-Q3",
-        questionId: "puentes-Q3",
-        text: "Encuentras un conflicto histórico que recuerda a otro que ya estudiaste.",
-        question: "Encuentras un conflicto histórico que recuerda a otro que ya estudiaste.",
-        prompt: "Encuentras un conflicto histórico que recuerda a otro que ya estudiaste.",
-        domain: "historia",
-        phase: "transferencia",
+        id: "reconstruccion_function_2-Q3",
+        questionId: "reconstruccion_function_2-Q3",
+        text: "En la reseña de una película publicada en un blog, después del resumen de la trama y al final del texto, hay un párrafo que dice: «Aunque la fotografía es excelente, el guion se siente forzado en el segundo acto. La recomiendo solo si te gustan las historias lentas.» ¿Cómo reconstruirías la función de ese párrafo dentro de la reseña?",
+        question: "En la reseña de una película publicada en un blog, después del resumen de la trama y al final del texto, hay un párrafo que dice: «Aunque la fotografía es excelente, el guion se siente forzado en el segundo acto. La recomiendo solo si te gustan las historias lentas.» ¿Cómo reconstruirías la función de ese párrafo dentro de la reseña?",
+        prompt: "En la reseña de una película publicada en un blog, después del resumen de la trama y al final del texto, hay un párrafo que dice: «Aunque la fotografía es excelente, el guion se siente forzado en el segundo acto. La recomiendo solo si te gustan las historias lentas.» ¿Cómo reconstruirías la función de ese párrafo dentro de la reseña?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Aplicar directamente la explicación utilizada para el conflicto anterior.", text: "Aplicar directamente la explicación utilizada para el conflicto anterior.", indicator: "transferencia_global" },
-          { value: "B", key: "B", id: "B", label: "Identificar qué actores y relaciones cumplen funciones equivalentes.", text: "Identificar qué actores y relaciones cumplen funciones equivalentes.", indicator: "mapeo_analitico" },
-          { value: "C", key: "C", id: "C", label: "Examinar primero las diferencias entre ambos conflictos.", text: "Examinar primero las diferencias entre ambos conflictos.", indicator: "contraste" },
-          { value: "D", key: "D", id: "D", label: "Extraer la estructura general que podría explicar ambos casos.", text: "Extraer la estructura general que podría explicar ambos casos.", indicator: "extraccion_regla" }
+          { value: "A", key: "A", id: "A", label: "Observar que está ubicado al final, después del resumen de la trama.", text: "Observar que está ubicado al final, después del resumen de la trama.", indicator: "posicion" },
+          { value: "B", key: "B", id: "B", label: "Buscar en el párrafo o en su entorno alguna palabra o expresión, aunque no sea un título explícito, que oriente sobre qué función cumple.", text: "Buscar en el párrafo o en su entorno alguna palabra o expresión, aunque no sea un título explícito, que oriente sobre qué función cumple.", indicator: "marcador" },
+          { value: "C", key: "C", id: "C", label: "Compararlo con las partes previas de la reseña que solo describen la trama.", text: "Compararlo con las partes previas de la reseña que solo describen la trama.", indicator: "contraste" },
+          { value: "D", key: "D", id: "D", label: "Analizar qué opina específicamente el autor y con qué argumentos lo justifica.", text: "Analizar qué opina específicamente el autor y con qué argumentos lo justifica.", indicator: "contenido" }
         ]
       },
       {
-        id: "puentes-Q4",
-        questionId: "puentes-Q4",
-        text: "Una solución que funcionó anteriormente parece aplicable a un problema nuevo.",
-        question: "Una solución que funcionó anteriormente parece aplicable a un problema nuevo.",
-        prompt: "Una solución que funcionó anteriormente parece aplicable a un problema nuevo.",
-        domain: "problema_practico",
-        phase: "transferencia",
+        id: "reconstruccion_function_2-Q4",
+        questionId: "reconstruccion_function_2-Q4",
+        text: "En un mensaje extenso que un amigo te envía por chat contándote un problema, el último párrafo dice: «Lo que quiero decirte es que ya no sé qué hacer y necesito que me escuches.» Antes de él se describen varias cosas que le pasaron. ¿Cómo reconstruirías la función de ese párrafo dentro del mensaje?",
+        question: "En un mensaje extenso que un amigo te envía por chat contándote un problema, el último párrafo dice: «Lo que quiero decirte es que ya no sé qué hacer y necesito que me escuches.» Antes de él se describen varias cosas que le pasaron. ¿Cómo reconstruirías la función de ese párrafo dentro del mensaje?",
+        prompt: "En un mensaje extenso que un amigo te envía por chat contándote un problema, el último párrafo dice: «Lo que quiero decirte es que ya no sé qué hacer y necesito que me escuches.» Antes de él se describen varias cosas que le pasaron. ¿Cómo reconstruirías la función de ese párrafo dentro del mensaje?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Trasladar la solución anterior casi sin modificarla.", text: "Trasladar la solución anterior casi sin modificarla.", indicator: "transferencia_global" },
-          { value: "B", key: "B", id: "B", label: "Identificar correspondencias entre las partes de ambos problemas.", text: "Identificar correspondencias entre las partes de ambos problemas.", indicator: "mapeo_analitico" },
-          { value: "C", key: "C", id: "C", label: "Determinar primero qué elementos son diferentes y podrían cambiar el resultado.", text: "Determinar primero qué elementos son diferentes y podrían cambiar el resultado.", indicator: "contraste" },
-          { value: "D", key: "D", id: "D", label: "Separar los detalles y quedarse con la regla que hizo funcionar la solución anterior.", text: "Separar los detalles y quedarse con la regla que hizo funcionar la solución anterior.", indicator: "extraccion_regla" }
+          { value: "A", key: "A", id: "A", label: "Compararlo con los párrafos previos que describen lo que le pasó, para ver qué agrega.", text: "Compararlo con los párrafos previos que describen lo que le pasó, para ver qué agrega.", indicator: "contraste" },
+          { value: "B", key: "B", id: "B", label: "Observar que está ubicado al final del mensaje, después de las descripciones.", text: "Observar que está ubicado al final del mensaje, después de las descripciones.", indicator: "posicion" },
+          { value: "C", key: "C", id: "C", label: "Analizar qué intenta decirte concretamente en ese párrafo.", text: "Analizar qué intenta decirte concretamente en ese párrafo.", indicator: "contenido" },
+          { value: "D", key: "D", id: "D", label: "Buscar en el párrafo alguna palabra o expresión, aunque no sea un conector explícito, que oriente sobre qué función cumple.", text: "Buscar en el párrafo alguna palabra o expresión, aunque no sea un conector explícito, que oriente sobre qué función cumple.", indicator: "marcador" }
         ]
       },
       {
-        id: "puentes-Q5",
-        questionId: "puentes-Q5",
-        text: "Una explicación conocida parece útil para interpretar un fenómeno nuevo.",
-        question: "Una explicación conocida parece útil para interpretar un fenómeno nuevo.",
-        prompt: "Una explicación conocida parece útil para interpretar un fenómeno nuevo.",
-        domain: "investigacion",
-        phase: "transferencia",
+        id: "reconstruccion_function_2-Q5",
+        questionId: "reconstruccion_function_2-Q5",
+        text: "En una publicación de blog personal, hacia el final, después de contar la experiencia principal, hay una sección que dice: «Lo que definitivamente no me sirvió fue levantarme a las cinco de la mañana. Tampoco me ayudó intentar meditar sin guía.» ¿Cómo reconstruirías la función de esa sección dentro de la publicación?",
+        question: "En una publicación de blog personal, hacia el final, después de contar la experiencia principal, hay una sección que dice: «Lo que definitivamente no me sirvió fue levantarme a las cinco de la mañana. Tampoco me ayudó intentar meditar sin guía.» ¿Cómo reconstruirías la función de esa sección dentro de la publicación?",
+        prompt: "En una publicación de blog personal, hacia el final, después de contar la experiencia principal, hay una sección que dice: «Lo que definitivamente no me sirvió fue levantarme a las cinco de la mañana. Tampoco me ayudó intentar meditar sin guía.» ¿Cómo reconstruirías la función de esa sección dentro de la publicación?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Buscar qué partes del fenómeno nuevo corresponden a la estructura anterior.", text: "Buscar qué partes del fenómeno nuevo corresponden a la estructura anterior.", indicator: "mapeo_analitico" },
-          { value: "B", key: "B", id: "B", label: "Aplicar inicialmente la explicación anterior como punto de partida.", text: "Aplicar inicialmente la explicación anterior como punto de partida.", indicator: "transferencia_global" },
-          { value: "C", key: "C", id: "C", label: "Examinar qué diferencias limitan esa transferencia.", text: "Examinar qué diferencias limitan esa transferencia.", indicator: "contraste" },
-          { value: "D", key: "D", id: "D", label: "Extraer el principio común y probar si permite explicar el nuevo fenómeno.", text: "Extraer el principio común y probar si permite explicar el nuevo fenómeno.", indicator: "extraccion_regla" }
+          { value: "A", key: "A", id: "A", label: "Buscar en la sección o en su entorno alguna palabra o expresión, aunque no sea un título explícito, que oriente sobre qué función cumple.", text: "Buscar en la sección o en su entorno alguna palabra o expresión, aunque no sea un título explícito, que oriente sobre qué función cumple.", indicator: "marcador" },
+          { value: "B", key: "B", id: "B", label: "Observar que está ubicada al final, después de la experiencia principal.", text: "Observar que está ubicada al final, después de la experiencia principal.", indicator: "posicion" },
+          { value: "C", key: "C", id: "C", label: "Compararla con la sección donde cuenta la experiencia para ver qué aporta cada una.", text: "Compararla con la sección donde cuenta la experiencia para ver qué aporta cada una.", indicator: "contraste" },
+          { value: "D", key: "D", id: "D", label: "Analizar qué menciona específicamente la sección y cómo se relaciona con la experiencia principal.", text: "Analizar qué menciona específicamente la sección y cómo se relaciona con la experiencia principal.", indicator: "contenido" }
         ]
       }
-    ],
-    compute(answers) {
-      const counts = {};
-      this.indicators.forEach((indicator) => { counts[indicator] = 0; });
-      this.questions.forEach((question) => {
-        const answer = answers && answers[question.id];
-        const option = question.options.find((item) => item.value === answer || item.key === answer || item.id === answer);
-        if (option && counts[option.indicator] !== undefined) {
-          counts[option.indicator] += 1;
-        }
-      });
-      return counts;
-    }
+    ]
   },
   {
-    id: "mapa_camino",
-    title: "Convertir comprensión en acción",
-    dimension: "ejecucion",
-    phase: "ejecucion",
-    indicators: ["experimentacion", "planificacion", "modelo_referencia", "descomposicion"],
+    id: "premisa_oculta_1",
+    title: "Premisa oculta 1",
+    dimension: "deteccion_de_premisas_ocultas",
+    indicators: ["vinculo", "contenido", "ejemplo", "contraste"],
     questions: [
       {
-        id: "mapa_camino-Q1",
-        questionId: "mapa_camino-Q1",
-        text: "Quieres construir un sistema de riego para un huerto pequeño.",
-        question: "Quieres construir un sistema de riego para un huerto pequeño.",
-        prompt: "Quieres construir un sistema de riego para un huerto pequeño.",
-        domain: "huerto",
-        phase: "ejecucion",
+        id: "premisa_oculta_1-Q1",
+        questionId: "premisa_oculta_1-Q1",
+        text: "Considera este razonamiento: «Si llueve, la calle se moja. Hoy la calle está mojada. Por lo tanto, hoy llovió.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
+        question: "Considera este razonamiento: «Si llueve, la calle se moja. Hoy la calle está mojada. Por lo tanto, hoy llovió.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
+        prompt: "Considera este razonamiento: «Si llueve, la calle se moja. Hoy la calle está mojada. Por lo tanto, hoy llovió.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Construir primero una versión sencilla y probarla.", text: "Construir primero una versión sencilla y probarla.", indicator: "experimentacion" },
-          { value: "B", key: "B", id: "B", label: "Diseñar el proyecto completo antes de comenzar la construcción.", text: "Diseñar el proyecto completo antes de comenzar la construcción.", indicator: "planificacion" },
-          { value: "C", key: "C", id: "C", label: "Buscar una instalación que funcione y reproducir su procedimiento.", text: "Buscar una instalación que funcione y reproducir su procedimiento.", indicator: "modelo_referencia" },
-          { value: "D", key: "D", id: "D", label: "Dividir el sistema en partes independientes y construirlas por separado.", text: "Dividir el sistema en partes independientes y construirlas por separado.", indicator: "descomposicion" }
+          { value: "A", key: "A", id: "A", label: "Buscar la relación que conecta lo que se afirma con lo que se concluye, para ver qué eslabón lógico falta entre las premisas y la conclusión.", text: "Buscar la relación que conecta lo que se afirma con lo que se concluye, para ver qué eslabón lógico falta entre las premisas y la conclusión.", indicator: "vinculo" },
+          { value: "B", key: "B", id: "B", label: "Analizar qué dicen exactamente las afirmaciones sobre la lluvia y la calle, para ver qué información adicional haría falta para sostener la conclusión.", text: "Analizar qué dicen exactamente las afirmaciones sobre la lluvia y la calle, para ver qué información adicional haría falta para sostener la conclusión.", indicator: "contenido" },
+          { value: "C", key: "C", id: "C", label: "Probar el razonamiento con un caso concreto —por ejemplo, pensando en una calle que se mojó sin llover— para ver si el razonamiento se sostiene.", text: "Probar el razonamiento con un caso concreto —por ejemplo, pensando en una calle que se mojó sin llover— para ver si el razonamiento se sostiene.", indicator: "ejemplo" },
+          { value: "D", key: "D", id: "D", label: "Comparar qué supuestos alternativos podrían agregarse al razonamiento, para ver cuál es el que sostiene la conclusión y cuál no.", text: "Comparar qué supuestos alternativos podrían agregarse al razonamiento, para ver cuál es el que sostiene la conclusión y cuál no.", indicator: "contraste" }
         ]
       },
       {
-        id: "mapa_camino-Q2",
-        questionId: "mapa_camino-Q2",
-        text: "Tienes que elaborar un ensayo extenso.",
-        question: "Tienes que elaborar un ensayo extenso.",
-        prompt: "Tienes que elaborar un ensayo extenso.",
-        domain: "escritura",
-        phase: "ejecucion",
+        id: "premisa_oculta_1-Q2",
+        questionId: "premisa_oculta_1-Q2",
+        text: "Considera este razonamiento: «Esta planta creció sana durante años. Desde hace tres meses dejó de crecer. Por lo tanto, le falta agua.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
+        question: "Considera este razonamiento: «Esta planta creció sana durante años. Desde hace tres meses dejó de crecer. Por lo tanto, le falta agua.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
+        prompt: "Considera este razonamiento: «Esta planta creció sana durante años. Desde hace tres meses dejó de crecer. Por lo tanto, le falta agua.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Buscar un ensayo bien realizado y utilizarlo como referencia de trabajo.", text: "Buscar un ensayo bien realizado y utilizarlo como referencia de trabajo.", indicator: "modelo_referencia" },
-          { value: "B", key: "B", id: "B", label: "Dividir el ensayo en partes y trabajar cada una por separado.", text: "Dividir el ensayo en partes y trabajar cada una por separado.", indicator: "descomposicion" },
-          { value: "C", key: "C", id: "C", label: "Definir primero todo el recorrido del trabajo antes de escribir.", text: "Definir primero todo el recorrido del trabajo antes de escribir.", indicator: "planificacion" },
-          { value: "D", key: "D", id: "D", label: "Escribir una primera versión y utilizarla para descubrir qué necesita cambiar.", text: "Escribir una primera versión y utilizarla para descubrir qué necesita cambiar.", indicator: "experimentacion" }
+          { value: "A", key: "A", id: "A", label: "Analizar qué dicen exactamente las afirmaciones sobre el crecimiento y el estado actual de la planta, para ver qué información adicional haría falta.", text: "Analizar qué dicen exactamente las afirmaciones sobre el crecimiento y el estado actual de la planta, para ver qué información adicional haría falta.", indicator: "contenido" },
+          { value: "B", key: "B", id: "B", label: "Comparar supuestos alternativos —falta de luz, trasplante, enfermedad— para ver cuál es el que sostiene la conclusión del razonamiento.", text: "Comparar supuestos alternativos —falta de luz, trasplante, enfermedad— para ver cuál es el que sostiene la conclusión del razonamiento.", indicator: "contraste" },
+          { value: "C", key: "C", id: "C", label: "Buscar la relación lógica que conecta lo que se afirma sobre el pasado de la planta con la conclusión sobre el agua, para ver qué eslabón falta.", text: "Buscar la relación lógica que conecta lo que se afirma sobre el pasado de la planta con la conclusión sobre el agua, para ver qué eslabón falta.", indicator: "vinculo" },
+          { value: "D", key: "D", id: "D", label: "Probar el razonamiento con un caso concreto —imaginar una planta que dejó de crecer por otra causa— para ver si el razonamiento se sostiene.", text: "Probar el razonamiento con un caso concreto —imaginar una planta que dejó de crecer por otra causa— para ver si el razonamiento se sostiene.", indicator: "ejemplo" }
         ]
       },
       {
-        id: "mapa_camino-Q3",
-        questionId: "mapa_camino-Q3",
-        text: "Debes preparar por primera vez un plato técnicamente complejo.",
-        question: "Debes preparar por primera vez un plato técnicamente complejo.",
-        prompt: "Debes preparar por primera vez un plato técnicamente complejo.",
-        domain: "cocina",
-        phase: "ejecucion",
+        id: "premisa_oculta_1-Q3",
+        questionId: "premisa_oculta_1-Q3",
+        text: "Considera este razonamiento: «Los últimos cinco veranos en esta ciudad fueron calurosos y secos. El próximo verano será igual.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
+        question: "Considera este razonamiento: «Los últimos cinco veranos en esta ciudad fueron calurosos y secos. El próximo verano será igual.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
+        prompt: "Considera este razonamiento: «Los últimos cinco veranos en esta ciudad fueron calurosos y secos. El próximo verano será igual.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Preparar una pequeña cantidad y ajustar después de probarla.", text: "Preparar una pequeña cantidad y ajustar después de probarla.", indicator: "experimentacion" },
-          { value: "B", key: "B", id: "B", label: "Seguir como referencia una preparación que ya haya demostrado funcionar.", text: "Seguir como referencia una preparación que ya haya demostrado funcionar.", indicator: "modelo_referencia" },
-          { value: "C", key: "C", id: "C", label: "Organizar previamente todo el proceso y sus tiempos.", text: "Organizar previamente todo el proceso y sus tiempos.", indicator: "planificacion" },
-          { value: "D", key: "D", id: "D", label: "Separar la preparación en componentes independientes.", text: "Separar la preparación en componentes independientes.", indicator: "descomposicion" }
+          { value: "A", key: "A", id: "A", label: "Probar el razonamiento con un caso concreto —pensar en un verano pasado en que las condiciones fueron distintas— para ver si el razonamiento se sostiene.", text: "Probar el razonamiento con un caso concreto —pensar en un verano pasado en que las condiciones fueron distintas— para ver si el razonamiento se sostiene.", indicator: "ejemplo" },
+          { value: "B", key: "B", id: "B", label: "Buscar la relación lógica que conecta lo observado en los veranos anteriores con la predicción sobre el próximo, para ver qué eslabón falta.", text: "Buscar la relación lógica que conecta lo observado en los veranos anteriores con la predicción sobre el próximo, para ver qué eslabón falta.", indicator: "vinculo" },
+          { value: "C", key: "C", id: "C", label: "Comparar supuestos alternativos —que el patrón se mantenga, que haya un cambio de ciclo, que haya factores nuevos— para ver cuál sostiene la conclusión.", text: "Comparar supuestos alternativos —que el patrón se mantenga, que haya un cambio de ciclo, que haya factores nuevos— para ver cuál sostiene la conclusión.", indicator: "contraste" },
+          { value: "D", key: "D", id: "D", label: "Analizar qué dicen exactamente las afirmaciones sobre los veranos anteriores, para ver qué información adicional haría falta para sostener la predicción.", text: "Analizar qué dicen exactamente las afirmaciones sobre los veranos anteriores, para ver qué información adicional haría falta para sostener la predicción.", indicator: "contenido" }
         ]
       },
       {
-        id: "mapa_camino-Q4",
-        questionId: "mapa_camino-Q4",
-        text: "Quieres construir una pequeña aplicación.",
-        question: "Quieres construir una pequeña aplicación.",
-        prompt: "Quieres construir una pequeña aplicación.",
-        domain: "proyecto_digital",
-        phase: "ejecucion",
+        id: "premisa_oculta_1-Q4",
+        questionId: "premisa_oculta_1-Q4",
+        text: "Considera este razonamiento: «Mi amigo llegó tarde a la reunión de hoy. Es una persona que siempre llega tarde. Por lo tanto, la próxima vez también llegará tarde.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
+        question: "Considera este razonamiento: «Mi amigo llegó tarde a la reunión de hoy. Es una persona que siempre llega tarde. Por lo tanto, la próxima vez también llegará tarde.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
+        prompt: "Considera este razonamiento: «Mi amigo llegó tarde a la reunión de hoy. Es una persona que siempre llega tarde. Por lo tanto, la próxima vez también llegará tarde.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Dividirla en módulos y resolverlos por separado.", text: "Dividirla en módulos y resolverlos por separado.", indicator: "descomposicion" },
-          { value: "B", key: "B", id: "B", label: "Crear una versión mínima para probar si funciona.", text: "Crear una versión mínima para probar si funciona.", indicator: "experimentacion" },
-          { value: "C", key: "C", id: "C", label: "Estudiar primero un proyecto similar que ya esté funcionando.", text: "Estudiar primero un proyecto similar que ya esté funcionando.", indicator: "modelo_referencia" },
-          { value: "D", key: "D", id: "D", label: "Diseñar antes la arquitectura completa y después comenzar a construir.", text: "Diseñar antes la arquitectura completa y después comenzar a construir.", indicator: "planificacion" }
+          { value: "A", key: "A", id: "A", label: "Comparar supuestos alternativos —que hoy haya sido una excepción, que la puntualidad varíe por contexto, que siempre llegue tarde— para ver cuál sostiene la conclusión.", text: "Comparar supuestos alternativos —que hoy haya sido una excepción, que la puntualidad varíe por contexto, que siempre llegue tarde— para ver cuál sostiene la conclusión.", indicator: "contraste" },
+          { value: "B", key: "B", id: "B", label: "Probar el razonamiento con un caso concreto —pensar en una situación donde el amigo llegó a tiempo— para ver si el razonamiento se sostiene.", text: "Probar el razonamiento con un caso concreto —pensar en una situación donde el amigo llegó a tiempo— para ver si el razonamiento se sostiene.", indicator: "ejemplo" },
+          { value: "C", key: "C", id: "C", label: "Analizar qué dicen exactamente las afirmaciones sobre el comportamiento del amigo, para ver qué información adicional haría falta para sostener la predicción.", text: "Analizar qué dicen exactamente las afirmaciones sobre el comportamiento del amigo, para ver qué información adicional haría falta para sostener la predicción.", indicator: "contenido" },
+          { value: "D", key: "D", id: "D", label: "Buscar la relación lógica que conecta lo observado hoy con la predicción sobre el futuro, para ver qué eslabón falta entre las premisas y la conclusión.", text: "Buscar la relación lógica que conecta lo observado hoy con la predicción sobre el futuro, para ver qué eslabón falta entre las premisas y la conclusión.", indicator: "vinculo" }
         ]
       },
       {
-        id: "mapa_camino-Q5",
-        questionId: "mapa_camino-Q5",
-        text: "Debes organizar una actividad que nunca has realizado.",
-        question: "Debes organizar una actividad que nunca has realizado.",
-        prompt: "Debes organizar una actividad que nunca has realizado.",
-        domain: "actividad_nueva",
-        phase: "ejecucion",
+        id: "premisa_oculta_1-Q5",
+        questionId: "premisa_oculta_1-Q5",
+        text: "Considera este razonamiento: «El año pasado subió el precio del pan porque subió el trigo. Este año también subió el trigo. Por lo tanto, este año también subirá el precio del pan.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
+        question: "Considera este razonamiento: «El año pasado subió el precio del pan porque subió el trigo. Este año también subió el trigo. Por lo tanto, este año también subirá el precio del pan.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
+        prompt: "Considera este razonamiento: «El año pasado subió el precio del pan porque subió el trigo. Este año también subió el trigo. Por lo tanto, este año también subirá el precio del pan.» ¿Cómo identificarías qué debe suponerse para que el razonamiento se sostenga?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Buscar una experiencia similar y utilizarla como referencia.", text: "Buscar una experiencia similar y utilizarla como referencia.", indicator: "modelo_referencia" },
-          { value: "B", key: "B", id: "B", label: "Probar rápidamente una versión pequeña.", text: "Probar rápidamente una versión pequeña.", indicator: "experimentacion" },
-          { value: "C", key: "C", id: "C", label: "Dividir el trabajo en tareas independientes.", text: "Dividir el trabajo en tareas independientes.", indicator: "descomposicion" },
-          { value: "D", key: "D", id: "D", label: "Establecer previamente el plan completo de ejecución.", text: "Establecer previamente el plan completo de ejecución.", indicator: "planificacion" }
+          { value: "A", key: "A", id: "A", label: "Buscar la relación lógica que conecta lo que se afirma sobre el trigo con lo que se concluye sobre el pan, para ver qué eslabón falta entre las premisas y la conclusión.", text: "Buscar la relación lógica que conecta lo que se afirma sobre el trigo con lo que se concluye sobre el pan, para ver qué eslabón falta entre las premisas y la conclusión.", indicator: "vinculo" },
+          { value: "B", key: "B", id: "B", label: "Probar el razonamiento con un caso concreto —pensar en un año donde subió el trigo pero no el pan— para ver si el razonamiento se sostiene.", text: "Probar el razonamiento con un caso concreto —pensar en un año donde subió el trigo pero no el pan— para ver si el razonamiento se sostiene.", indicator: "ejemplo" },
+          { value: "C", key: "C", id: "C", label: "Comparar supuestos alternativos —que el precio del pan siempre siga al del trigo, que haya subsidios, que el pan se importe— para ver cuál sostiene la conclusión.", text: "Comparar supuestos alternativos —que el precio del pan siempre siga al del trigo, que haya subsidios, que el pan se importe— para ver cuál sostiene la conclusión.", indicator: "contraste" },
+          { value: "D", key: "D", id: "D", label: "Analizar qué dicen exactamente las afirmaciones sobre el trigo y el pan, para ver qué información adicional haría falta para sostener la predicción.", text: "Analizar qué dicen exactamente las afirmaciones sobre el trigo y el pan, para ver qué información adicional haría falta para sostener la predicción.", indicator: "contenido" }
         ]
       }
-    ],
-    compute(answers) {
-      const counts = {};
-      this.indicators.forEach((indicator) => { counts[indicator] = 0; });
-      this.questions.forEach((question) => {
-        const answer = answers && answers[question.id];
-        const option = question.options.find((item) => item.value === answer || item.key === answer || item.id === answer);
-        if (option && counts[option.indicator] !== undefined) {
-          counts[option.indicator] += 1;
-        }
-      });
-      return counts;
-    }
+    ]
   },
   {
-    id: "redes",
-    title: "Pensar en relaciones",
-    dimension: "relaciones",
-    phase: "relaciones",
-    indicators: ["relacion_directa", "cadena_causal", "interdependencia", "retroalimentacion"],
+    id: "premisa_oculta_2",
+    title: "Premisa oculta 2",
+    dimension: "deteccion_de_premisas_ocultas",
+    indicators: ["vinculo", "contenido", "ejemplo", "contraste"],
     questions: [
       {
-        id: "redes-Q1",
-        questionId: "redes-Q1",
-        text: "Una población animal comienza a disminuir.",
-        question: "Una población animal comienza a disminuir.",
-        prompt: "Una población animal comienza a disminuir.",
-        domain: "ecologia",
-        phase: "relaciones",
+        id: "premisa_oculta_2-Q1",
+        questionId: "premisa_oculta_2-Q1",
+        text: "Un negocio de barrio bajó sus ventas desde hace seis meses. Se formulan varias explicaciones posibles: que hay más competencia en la zona, que los clientes cambiaron sus hábitos de consumo, que el dueño subió los precios. Alguien concluye: «La caída se debe a la nueva competencia.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
+        question: "Un negocio de barrio bajó sus ventas desde hace seis meses. Se formulan varias explicaciones posibles: que hay más competencia en la zona, que los clientes cambiaron sus hábitos de consumo, que el dueño subió los precios. Alguien concluye: «La caída se debe a la nueva competencia.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
+        prompt: "Un negocio de barrio bajó sus ventas desde hace seis meses. Se formulan varias explicaciones posibles: que hay más competencia en la zona, que los clientes cambiaron sus hábitos de consumo, que el dueño subió los precios. Alguien concluye: «La caída se debe a la nueva competencia.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Buscar qué factor está afectándola directamente.", text: "Buscar qué factor está afectándola directamente.", indicator: "relacion_directa" },
-          { value: "B", key: "B", id: "B", label: "Reconstruir la cadena de causas y consecuencias.", text: "Reconstruir la cadena de causas y consecuencias.", indicator: "cadena_causal" },
-          { value: "C", key: "C", id: "C", label: "Examinar cómo interactúan varias especies y recursos.", text: "Examinar cómo interactúan varias especies y recursos.", indicator: "interdependencia" },
-          { value: "D", key: "D", id: "D", label: "Buscar si el cambio genera consecuencias que después vuelven a afectar la población inicial.", text: "Buscar si el cambio genera consecuencias que después vuelven a afectar la población inicial.", indicator: "retroalimentacion" }
+          { value: "A", key: "A", id: "A", label: "Buscar el eslabón lógico entre lo observado —caída de ventas y presencia de competencia— y la conclusión, para ver qué hace falta suponer.", text: "Buscar el eslabón lógico entre lo observado —caída de ventas y presencia de competencia— y la conclusión, para ver qué hace falta suponer.", indicator: "vinculo" },
+          { value: "B", key: "B", id: "B", label: "Analizar qué afirma específicamente cada explicación, para ver cuál de ellas es la que efectivamente se necesita para sostener la conclusión.", text: "Analizar qué afirma específicamente cada explicación, para ver cuál de ellas es la que efectivamente se necesita para sostener la conclusión.", indicator: "contenido" },
+          { value: "C", key: "C", id: "C", label: "Probar el razonamiento con un caso concreto —por ejemplo, comparar con un negocio similar que también perdió ventas sin competencia nueva— para ver si la conclusión se sostiene.", text: "Probar el razonamiento con un caso concreto —por ejemplo, comparar con un negocio similar que también perdió ventas sin competencia nueva— para ver si la conclusión se sostiene.", indicator: "ejemplo" },
+          { value: "D", key: "D", id: "D", label: "Comparar las explicaciones entre sí, para ver cuál sostendría la conclusión y cuáles no serían necesarias.", text: "Comparar las explicaciones entre sí, para ver cuál sostendría la conclusión y cuáles no serían necesarias.", indicator: "contraste" }
         ]
       },
       {
-        id: "redes-Q2",
-        questionId: "redes-Q2",
-        text: "El precio de un producto básico aumenta.",
-        question: "El precio de un producto básico aumenta.",
-        prompt: "El precio de un producto básico aumenta.",
-        domain: "economia",
-        phase: "relaciones",
+        id: "premisa_oculta_2-Q2",
+        questionId: "premisa_oculta_2-Q2",
+        text: "Un amigo dejó de responder mensajes desde hace una semana. Se formulan varias explicaciones posibles: que está enojado por algo, que está muy ocupado, que se le rompió el teléfono. Alguien concluye: «Dejó de responder porque está enojado.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
+        question: "Un amigo dejó de responder mensajes desde hace una semana. Se formulan varias explicaciones posibles: que está enojado por algo, que está muy ocupado, que se le rompió el teléfono. Alguien concluye: «Dejó de responder porque está enojado.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
+        prompt: "Un amigo dejó de responder mensajes desde hace una semana. Se formulan varias explicaciones posibles: que está enojado por algo, que está muy ocupado, que se le rompió el teléfono. Alguien concluye: «Dejó de responder porque está enojado.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Identificar el factor que afecta directamente al precio.", text: "Identificar el factor que afecta directamente al precio.", indicator: "relacion_directa" },
-          { value: "B", key: "B", id: "B", label: "Seguir las consecuencias que el aumento produce en distintos actores.", text: "Seguir las consecuencias que el aumento produce en distintos actores.", indicator: "cadena_causal" },
-          { value: "C", key: "C", id: "C", label: "Analizar cómo consumidores, productores y autoridades se afectan mutuamente.", text: "Analizar cómo consumidores, productores y autoridades se afectan mutuamente.", indicator: "interdependencia" },
-          { value: "D", key: "D", id: "D", label: "Examinar si las consecuencias del aumento terminan modificando nuevamente el precio.", text: "Examinar si las consecuencias del aumento terminan modificando nuevamente el precio.", indicator: "retroalimentacion" }
+          { value: "A", key: "A", id: "A", label: "Analizar qué afirma específicamente cada explicación, para ver cuál de ellas es la que efectivamente se necesita para sostener la conclusión.", text: "Analizar qué afirma específicamente cada explicación, para ver cuál de ellas es la que efectivamente se necesita para sostener la conclusión.", indicator: "contenido" },
+          { value: "B", key: "B", id: "B", label: "Comparar las explicaciones entre sí, para ver cuál sostendría la conclusión y cuáles no serían necesarias.", text: "Comparar las explicaciones entre sí, para ver cuál sostendría la conclusión y cuáles no serían necesarias.", indicator: "contraste" },
+          { value: "C", key: "C", id: "C", label: "Buscar el eslabón lógico entre lo observado —dejar de responder— y la conclusión, para ver qué hace falta suponer.", text: "Buscar el eslabón lógico entre lo observado —dejar de responder— y la conclusión, para ver qué hace falta suponer.", indicator: "vinculo" },
+          { value: "D", key: "D", id: "D", label: "Probar el razonamiento con un caso concreto —por ejemplo, recordar otra vez en que dejó de responder sin estar enojado— para ver si la conclusión se sostiene.", text: "Probar el razonamiento con un caso concreto —por ejemplo, recordar otra vez en que dejó de responder sin estar enojado— para ver si la conclusión se sostiene.", indicator: "ejemplo" }
         ]
       },
       {
-        id: "redes-Q3",
-        questionId: "redes-Q3",
-        text: "Una ciudad entra en una crisis prolongada.",
-        question: "Una ciudad entra en una crisis prolongada.",
-        prompt: "Una ciudad entra en una crisis prolongada.",
-        domain: "historia",
-        phase: "relaciones",
+        id: "premisa_oculta_2-Q3",
+        questionId: "premisa_oculta_2-Q3",
+        text: "Las plantas del jardín se marchitaron durante el verano. Se formulan varias explicaciones posibles: que faltó agua, que hubo exceso de sol, que apareció una plaga. Alguien concluye: «Se marchitaron por la plaga.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
+        question: "Las plantas del jardín se marchitaron durante el verano. Se formulan varias explicaciones posibles: que faltó agua, que hubo exceso de sol, que apareció una plaga. Alguien concluye: «Se marchitaron por la plaga.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
+        prompt: "Las plantas del jardín se marchitaron durante el verano. Se formulan varias explicaciones posibles: que faltó agua, que hubo exceso de sol, que apareció una plaga. Alguien concluye: «Se marchitaron por la plaga.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Identificar el acontecimiento que desencadenó la crisis.", text: "Identificar el acontecimiento que desencadenó la crisis.", indicator: "relacion_directa" },
-          { value: "B", key: "B", id: "B", label: "Reconstruir la sucesión de causas y consecuencias.", text: "Reconstruir la sucesión de causas y consecuencias.", indicator: "cadena_causal" },
-          { value: "C", key: "C", id: "C", label: "Examinar las relaciones entre economía, instituciones, grupos y recursos.", text: "Examinar las relaciones entre economía, instituciones, grupos y recursos.", indicator: "interdependencia" },
-          { value: "D", key: "D", id: "D", label: "Buscar ciclos en los que una consecuencia de la crisis produzca nuevas causas.", text: "Buscar ciclos en los que una consecuencia de la crisis produzca nuevas causas.", indicator: "retroalimentacion" }
+          { value: "A", key: "A", id: "A", label: "Probar el razonamiento con un caso concreto —por ejemplo, recordar otras plantas que se marchitaron por otras causas— para ver si la conclusión se sostiene.", text: "Probar el razonamiento con un caso concreto —por ejemplo, recordar otras plantas que se marchitaron por otras causas— para ver si la conclusión se sostiene.", indicator: "ejemplo" },
+          { value: "B", key: "B", id: "B", label: "Buscar el eslabón lógico entre lo observado —plantas marchitas— y la conclusión, para ver qué hace falta suponer.", text: "Buscar el eslabón lógico entre lo observado —plantas marchitas— y la conclusión, para ver qué hace falta suponer.", indicator: "vinculo" },
+          { value: "C", key: "C", id: "C", label: "Comparar las explicaciones entre sí, para ver cuál sostendría la conclusión y cuáles no serían necesarias.", text: "Comparar las explicaciones entre sí, para ver cuál sostendría la conclusión y cuáles no serían necesarias.", indicator: "contraste" },
+          { value: "D", key: "D", id: "D", label: "Analizar qué afirma específicamente cada explicación, para ver cuál de ellas es la que efectivamente se necesita para sostener la conclusión.", text: "Analizar qué afirma específicamente cada explicación, para ver cuál de ellas es la que efectivamente se necesita para sostener la conclusión.", indicator: "contenido" }
         ]
       },
       {
-        id: "redes-Q4",
-        questionId: "redes-Q4",
-        text: "Un equipo empieza a cometer errores repetidamente.",
-        question: "Un equipo empieza a cometer errores repetidamente.",
-        prompt: "Un equipo empieza a cometer errores repetidamente.",
-        domain: "organizacion",
-        phase: "relaciones",
+        id: "premisa_oculta_2-Q4",
+        questionId: "premisa_oculta_2-Q4",
+        text: "Una persona rechazó una oferta de trabajo. Se formulan varias explicaciones posibles: el sueldo era bajo, la ubicación era lejos, el horario era incompatible con su vida familiar. Alguien concluye: «Rechazó la oferta porque el sueldo era bajo.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
+        question: "Una persona rechazó una oferta de trabajo. Se formulan varias explicaciones posibles: el sueldo era bajo, la ubicación era lejos, el horario era incompatible con su vida familiar. Alguien concluye: «Rechazó la oferta porque el sueldo era bajo.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
+        prompt: "Una persona rechazó una oferta de trabajo. Se formulan varias explicaciones posibles: el sueldo era bajo, la ubicación era lejos, el horario era incompatible con su vida familiar. Alguien concluye: «Rechazó la oferta porque el sueldo era bajo.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Identificar el factor que está produciendo directamente el error.", text: "Identificar el factor que está produciendo directamente el error.", indicator: "relacion_directa" },
-          { value: "B", key: "B", id: "B", label: "Seguir cómo un problema inicial genera otros posteriores.", text: "Seguir cómo un problema inicial genera otros posteriores.", indicator: "cadena_causal" },
-          { value: "C", key: "C", id: "C", label: "Examinar las relaciones entre personas, procedimientos, recursos y objetivos.", text: "Examinar las relaciones entre personas, procedimientos, recursos y objetivos.", indicator: "interdependencia" },
-          { value: "D", key: "D", id: "D", label: "Buscar si las consecuencias de los errores están produciendo las condiciones para nuevos errores.", text: "Buscar si las consecuencias de los errores están produciendo las condiciones para nuevos errores.", indicator: "retroalimentacion" }
+          { value: "A", key: "A", id: "A", label: "Comparar las explicaciones entre sí, para ver cuál sostendría la conclusión y cuáles no serían necesarias.", text: "Comparar las explicaciones entre sí, para ver cuál sostendría la conclusión y cuáles no serían necesarias.", indicator: "contraste" },
+          { value: "B", key: "B", id: "B", label: "Probar el razonamiento con un caso concreto —por ejemplo, imaginar a alguien que rechazó una oferta por el mismo sueldo en otro caso— para ver si la conclusión se sostiene.", text: "Probar el razonamiento con un caso concreto —por ejemplo, imaginar a alguien que rechazó una oferta por el mismo sueldo en otro caso— para ver si la conclusión se sostiene.", indicator: "ejemplo" },
+          { value: "C", key: "C", id: "C", label: "Analizar qué afirma específicamente cada explicación, para ver cuál de ellas es la que efectivamente se necesita para sostener la conclusión.", text: "Analizar qué afirma específicamente cada explicación, para ver cuál de ellas es la que efectivamente se necesita para sostener la conclusión.", indicator: "contenido" },
+          { value: "D", key: "D", id: "D", label: "Buscar el eslabón lógico entre lo observado —el rechazo de la oferta— y la conclusión, para ver qué hace falta suponer.", text: "Buscar el eslabón lógico entre lo observado —el rechazo de la oferta— y la conclusión, para ver qué hace falta suponer.", indicator: "vinculo" }
         ]
       },
       {
-        id: "redes-Q5",
-        questionId: "redes-Q5",
-        text: "Una zona comienza a perder biodiversidad.",
-        question: "Una zona comienza a perder biodiversidad.",
-        prompt: "Una zona comienza a perder biodiversidad.",
-        domain: "medioambiente",
-        phase: "relaciones",
+        id: "premisa_oculta_2-Q5",
+        questionId: "premisa_oculta_2-Q5",
+        text: "En una ciudad, el patrón de consumo cambió en los últimos cinco años. Se formulan varias explicaciones posibles: la inflación, las nuevas costumbres de consumo, la llegada de migrantes con hábitos distintos. Alguien concluye: «El cambio se debió a la llegada de migrantes.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
+        question: "En una ciudad, el patrón de consumo cambió en los últimos cinco años. Se formulan varias explicaciones posibles: la inflación, las nuevas costumbres de consumo, la llegada de migrantes con hábitos distintos. Alguien concluye: «El cambio se debió a la llegada de migrantes.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
+        prompt: "En una ciudad, el patrón de consumo cambió en los últimos cinco años. Se formulan varias explicaciones posibles: la inflación, las nuevas costumbres de consumo, la llegada de migrantes con hábitos distintos. Alguien concluye: «El cambio se debió a la llegada de migrantes.» ¿Cómo identificarías cuál es la premisa estructuralmente necesaria para que esa conclusión se sostenga?",
         options: [
-          { value: "A", key: "A", id: "A", label: "Identificar un factor que esté afectando directamente a una especie.", text: "Identificar un factor que esté afectando directamente a una especie.", indicator: "relacion_directa" },
-          { value: "B", key: "B", id: "B", label: "Reconstruir cómo ese cambio puede producir una sucesión de consecuencias.", text: "Reconstruir cómo ese cambio puede producir una sucesión de consecuencias.", indicator: "cadena_causal" },
-          { value: "C", key: "C", id: "C", label: "Analizar las interacciones entre especies, territorio y recursos.", text: "Analizar las interacciones entre especies, territorio y recursos.", indicator: "interdependencia" },
-          { value: "D", key: "D", id: "D", label: "Buscar mecanismos mediante los cuales los cambios producidos puedan reforzarse o compensarse.", text: "Buscar mecanismos mediante los cuales los cambios producidos puedan reforzarse o compensarse.", indicator: "retroalimentacion" }
+          { value: "A", key: "A", id: "A", label: "Buscar el eslabón lógico entre lo observado —el cambio en el consumo— y la conclusión, para ver qué hace falta suponer.", text: "Buscar el eslabón lógico entre lo observado —el cambio en el consumo— y la conclusión, para ver qué hace falta suponer.", indicator: "vinculo" },
+          { value: "B", key: "B", id: "B", label: "Probar el razonamiento con un caso concreto —por ejemplo, comparar con otra ciudad que también cambió su consumo sin migración— para ver si la conclusión se sostiene.", text: "Probar el razonamiento con un caso concreto —por ejemplo, comparar con otra ciudad que también cambió su consumo sin migración— para ver si la conclusión se sostiene.", indicator: "ejemplo" },
+          { value: "C", key: "C", id: "C", label: "Comparar las explicaciones entre sí, para ver cuál sostendría la conclusión y cuáles no serían necesarias.", text: "Comparar las explicaciones entre sí, para ver cuál sostendría la conclusión y cuáles no serían necesarias.", indicator: "contraste" },
+          { value: "D", key: "D", id: "D", label: "Analizar qué afirma específicamente cada explicación, para ver cuál de ellas es la que efectivamente se necesita para sostener la conclusión.", text: "Analizar qué afirma específicamente cada explicación, para ver cuál de ellas es la que efectivamente se necesita para sostener la conclusión.", indicator: "contenido" }
         ]
       }
-    ],
-    compute(answers) {
-      const counts = {};
-      this.indicators.forEach((indicator) => { counts[indicator] = 0; });
-      this.questions.forEach((question) => {
-        const answer = answers && answers[question.id];
-        const option = question.options.find((item) => item.value === answer || item.key === answer || item.id === answer);
-        if (option && counts[option.indicator] !== undefined) {
-          counts[option.indicator] += 1;
-        }
-      });
-      return counts;
-    }
-  },
-  {
-    id: "sentidos",
-    title: "Cambiar la representación cuando algo no funciona",
-    dimension: "cambio_representacion",
-    phase: "cambio_representacion",
-    indicators: ["reexplicacion", "ejemplo", "representacion_visual", "reorganizacion"],
-    questions: [
-      {
-        id: "sentidos-Q1",
-        questionId: "sentidos-Q1",
-        text: "Una explicación escrita no te permite entender un fenómeno.",
-        question: "Una explicación escrita no te permite entender un fenómeno.",
-        prompt: "Una explicación escrita no te permite entender un fenómeno.",
-        domain: "ciencia",
-        phase: "cambio_representacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Pedir que la explicación sea expresada con palabras más sencillas.", text: "Pedir que la explicación sea expresada con palabras más sencillas.", indicator: "reexplicacion" },
-          { value: "B", key: "B", id: "B", label: "Buscar un caso concreto que muestre el fenómeno.", text: "Buscar un caso concreto que muestre el fenómeno.", indicator: "ejemplo" },
-          { value: "C", key: "C", id: "C", label: "Representar visualmente cómo se relacionan sus partes.", text: "Representar visualmente cómo se relacionan sus partes.", indicator: "representacion_visual" },
-          { value: "D", key: "D", id: "D", label: "Reordenar la explicación comenzando por la idea central y después sus componentes.", text: "Reordenar la explicación comenzando por la idea central y después sus componentes.", indicator: "reorganizacion" }
-        ]
-      },
-      {
-        id: "sentidos-Q2",
-        questionId: "sentidos-Q2",
-        text: "Una explicación sobre una revolución te resulta confusa.",
-        question: "Una explicación sobre una revolución te resulta confusa.",
-        prompt: "Una explicación sobre una revolución te resulta confusa.",
-        domain: "historia",
-        phase: "cambio_representacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Buscar un episodio concreto que permita verla en acción.", text: "Buscar un episodio concreto que permita verla en acción.", indicator: "ejemplo" },
-          { value: "B", key: "B", id: "B", label: "Reorganizar la información separando causas, acontecimientos y consecuencias.", text: "Reorganizar la información separando causas, acontecimientos y consecuencias.", indicator: "reorganizacion" },
-          { value: "C", key: "C", id: "C", label: "Pedir una explicación utilizando palabras más directas.", text: "Pedir una explicación utilizando palabras más directas.", indicator: "reexplicacion" },
-          { value: "D", key: "D", id: "D", label: "Representar visualmente los actores y sus relaciones.", text: "Representar visualmente los actores y sus relaciones.", indicator: "representacion_visual" }
-        ]
-      },
-      {
-        id: "sentidos-Q3",
-        questionId: "sentidos-Q3",
-        text: "No entiendes cómo se conectan varios componentes de un sistema.",
-        question: "No entiendes cómo se conectan varios componentes de un sistema.",
-        prompt: "No entiendes cómo se conectan varios componentes de un sistema.",
-        domain: "tecnologia",
-        phase: "cambio_representacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Pedir una explicación verbal más sencilla.", text: "Pedir una explicación verbal más sencilla.", indicator: "reexplicacion" },
-          { value: "B", key: "B", id: "B", label: "Buscar un ejemplo concreto de un sistema funcionando.", text: "Buscar un ejemplo concreto de un sistema funcionando.", indicator: "ejemplo" },
-          { value: "C", key: "C", id: "C", label: "Dibujar las conexiones entre los componentes.", text: "Dibujar las conexiones entre los componentes.", indicator: "representacion_visual" },
-          { value: "D", key: "D", id: "D", label: "Reorganizar el sistema por funciones para entender qué papel cumple cada parte.", text: "Reorganizar el sistema por funciones para entender qué papel cumple cada parte.", indicator: "reorganizacion" }
-        ]
-      },
-      {
-        id: "sentidos-Q4",
-        questionId: "sentidos-Q4",
-        text: "Un argumento te resulta difícil de seguir.",
-        question: "Un argumento te resulta difícil de seguir.",
-        prompt: "Un argumento te resulta difícil de seguir.",
-        domain: "filosofia",
-        phase: "cambio_representacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Buscar un caso cotidiano que permita observar la misma estructura.", text: "Buscar un caso cotidiano que permita observar la misma estructura.", indicator: "ejemplo" },
-          { value: "B", key: "B", id: "B", label: "Ordenar las premisas y la conclusión según su dependencia.", text: "Ordenar las premisas y la conclusión según su dependencia.", indicator: "reorganizacion" },
-          { value: "C", key: "C", id: "C", label: "Representar visualmente cómo las premisas conducen a la conclusión.", text: "Representar visualmente cómo las premisas conducen a la conclusión.", indicator: "representacion_visual" },
-          { value: "D", key: "D", id: "D", label: "Reformular el argumento con palabras más sencillas.", text: "Reformular el argumento con palabras más sencillas.", indicator: "reexplicacion" }
-        ]
-      },
-      {
-        id: "sentidos-Q5",
-        questionId: "sentidos-Q5",
-        text: "Después de varias explicaciones sigues sin comprender un concepto.",
-        question: "Después de varias explicaciones sigues sin comprender un concepto.",
-        prompt: "Después de varias explicaciones sigues sin comprender un concepto.",
-        domain: "aprendizaje",
-        phase: "cambio_representacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Pedir una reformulación verbal más sencilla.", text: "Pedir una reformulación verbal más sencilla.", indicator: "reexplicacion" },
-          { value: "B", key: "B", id: "B", label: "Buscar una situación concreta donde el concepto pueda observarse.", text: "Buscar una situación concreta donde el concepto pueda observarse.", indicator: "ejemplo" },
-          { value: "C", key: "C", id: "C", label: "Representar visualmente sus elementos y relaciones.", text: "Representar visualmente sus elementos y relaciones.", indicator: "representacion_visual" },
-          { value: "D", key: "D", id: "D", label: "Cambiar el orden de la explicación para reconstruirla desde otra estructura.", text: "Cambiar el orden de la explicación para reconstruirla desde otra estructura.", indicator: "reorganizacion" }
-        ]
-      }
-    ],
-    compute(answers) {
-      const counts = {};
-      this.indicators.forEach((indicator) => { counts[indicator] = 0; });
-      this.questions.forEach((question) => {
-        const answer = answers && answers[question.id];
-        const option = question.options.find((item) => item.value === answer || item.key === answer || item.id === answer);
-        if (option && counts[option.indicator] !== undefined) {
-          counts[option.indicator] += 1;
-        }
-      });
-      return counts;
-    }
-  },
-  {
-    id: "escalando",
-    title: "Regular el nivel de abstracción",
-    dimension: "abstraccion",
-    phase: "abstraccion",
-    indicators: ["concreto", "patron", "principio", "panorama_global"],
-    questions: [
-      {
-        id: "escalando-Q1",
-        questionId: "escalando-Q1",
-        text: "Quieres entender por qué determinadas especies prosperan en un ambiente y otras desaparecen.",
-        question: "Quieres entender por qué determinadas especies prosperan en un ambiente y otras desaparecen.",
-        prompt: "Quieres entender por qué determinadas especies prosperan en un ambiente y otras desaparecen.",
-        domain: "naturaleza",
-        phase: "abstraccion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Comenzar por un caso concreto de una especie.", text: "Comenzar por un caso concreto de una especie.", indicator: "concreto" },
-          { value: "B", key: "B", id: "B", label: "Comparar varios casos para encontrar un patrón.", text: "Comparar varios casos para encontrar un patrón.", indicator: "patron" },
-          { value: "C", key: "C", id: "C", label: "Buscar el principio general que permita explicar los casos.", text: "Buscar el principio general que permita explicar los casos.", indicator: "principio" },
-          { value: "D", key: "D", id: "D", label: "Comenzar observando el funcionamiento general del ecosistema antes de estudiar especies concretas.", text: "Comenzar observando el funcionamiento general del ecosistema antes de estudiar especies concretas.", indicator: "panorama_global" }
-        ]
-      },
-      {
-        id: "escalando-Q2",
-        questionId: "escalando-Q2",
-        text: "Quieres entender por qué cambia el precio de ciertos productos.",
-        question: "Quieres entender por qué cambia el precio de ciertos productos.",
-        prompt: "Quieres entender por qué cambia el precio de ciertos productos.",
-        domain: "economia",
-        phase: "abstraccion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Comenzar observando el precio de un producto concreto.", text: "Comenzar observando el precio de un producto concreto.", indicator: "concreto" },
-          { value: "B", key: "B", id: "B", label: "Comparar varios productos y períodos para encontrar patrones.", text: "Comparar varios productos y períodos para encontrar patrones.", indicator: "patron" },
-          { value: "C", key: "C", id: "C", label: "Buscar el concepto económico general que permita explicarlos.", text: "Buscar el concepto económico general que permita explicarlos.", indicator: "principio" },
-          { value: "D", key: "D", id: "D", label: "Comenzar por la situación económica general y después bajar hacia los productos.", text: "Comenzar por la situación económica general y después bajar hacia los productos.", indicator: "panorama_global" }
-        ]
-      },
-      {
-        id: "escalando-Q3",
-        questionId: "escalando-Q3",
-        text: "Quieres comprender una relación matemática nueva.",
-        question: "Quieres comprender una relación matemática nueva.",
-        prompt: "Quieres comprender una relación matemática nueva.",
-        domain: "matematicas",
-        phase: "abstraccion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Empezar calculando algunos valores concretos.", text: "Empezar calculando algunos valores concretos.", indicator: "concreto" },
-          { value: "B", key: "B", id: "B", label: "Observar cómo cambia la relación entre distintos valores.", text: "Observar cómo cambia la relación entre distintos valores.", indicator: "patron" },
-          { value: "C", key: "C", id: "C", label: "Buscar la formulación general que representa esa relación.", text: "Buscar la formulación general que representa esa relación.", indicator: "principio" },
-          { value: "D", key: "D", id: "D", label: "Comenzar comprendiendo qué representa la relación completa antes de revisar casos particulares.", text: "Comenzar comprendiendo qué representa la relación completa antes de revisar casos particulares.", indicator: "panorama_global" }
-        ]
-      },
-      {
-        id: "escalando-Q4",
-        questionId: "escalando-Q4",
-        text: "Quieres analizar los efectos de una nueva política.",
-        question: "Quieres analizar los efectos de una nueva política.",
-        prompt: "Quieres analizar los efectos de una nueva política.",
-        domain: "politica_publica",
-        phase: "abstraccion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Comenzar estudiando cómo afecta a una persona concreta.", text: "Comenzar estudiando cómo afecta a una persona concreta.", indicator: "concreto" },
-          { value: "B", key: "B", id: "B", label: "Comparar sus efectos sobre distintos grupos para detectar patrones.", text: "Comparar sus efectos sobre distintos grupos para detectar patrones.", indicator: "patron" },
-          { value: "C", key: "C", id: "C", label: "Buscar un modelo general que permita explicar sus efectos.", text: "Buscar un modelo general que permita explicar sus efectos.", indicator: "principio" },
-          { value: "D", key: "D", id: "D", label: "Comenzar examinando el impacto global sobre el país y luego bajar hacia grupos e individuos.", text: "Comenzar examinando el impacto global sobre el país y luego bajar hacia grupos e individuos.", indicator: "panorama_global" }
-        ]
-      },
-      {
-        id: "escalando-Q5",
-        questionId: "escalando-Q5",
-        text: "Quieres entender el cambio de una sociedad a lo largo de varias décadas.",
-        question: "Quieres entender el cambio de una sociedad a lo largo de varias décadas.",
-        prompt: "Quieres entender el cambio de una sociedad a lo largo de varias décadas.",
-        domain: "historia",
-        phase: "abstraccion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Comenzar por un acontecimiento concreto.", text: "Comenzar por un acontecimiento concreto.", indicator: "concreto" },
-          { value: "B", key: "B", id: "B", label: "Comparar distintos períodos para encontrar patrones.", text: "Comparar distintos períodos para encontrar patrones.", indicator: "patron" },
-          { value: "C", key: "C", id: "C", label: "Formular una explicación general del proceso histórico.", text: "Formular una explicación general del proceso histórico.", indicator: "principio" },
-          { value: "D", key: "D", id: "D", label: "Comenzar observando la transformación global de la sociedad antes de estudiar acontecimientos particulares.", text: "Comenzar observando la transformación global de la sociedad antes de estudiar acontecimientos particulares.", indicator: "panorama_global" }
-        ]
-      }
-    ],
-    compute(answers) {
-      const counts = {};
-      this.indicators.forEach((indicator) => { counts[indicator] = 0; });
-      this.questions.forEach((question) => {
-        const answer = answers && answers[question.id];
-        const option = question.options.find((item) => item.value === answer || item.key === answer || item.id === answer);
-        if (option && counts[option.indicator] !== undefined) {
-          counts[option.indicator] += 1;
-        }
-      });
-      return counts;
-    }
-  },
-  {
-    id: "secuencia",
-    title: "Reparar una comprensión incompleta",
-    dimension: "reparacion",
-    phase: "reparacion",
-    indicators: ["retroceso", "aislamiento_error", "pregunta_diagnostica", "reconstruccion"],
-    questions: [
-      {
-        id: "secuencia-Q1",
-        questionId: "secuencia-Q1",
-        text: "Un resultado experimental no coincide con lo esperado.",
-        question: "Un resultado experimental no coincide con lo esperado.",
-        prompt: "Un resultado experimental no coincide con lo esperado.",
-        domain: "ciencia",
-        phase: "reparacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Volver al último punto que sabes que funcionaba.", text: "Volver al último punto que sabes que funcionaba.", indicator: "retroceso" },
-          { value: "B", key: "B", id: "B", label: "Intentar localizar exactamente en qué paso aparece la discrepancia.", text: "Intentar localizar exactamente en qué paso aparece la discrepancia.", indicator: "aislamiento_error" },
-          { value: "C", key: "C", id: "C", label: "Formular una pregunta específica sobre la condición que podría explicarla.", text: "Formular una pregunta específica sobre la condición que podría explicarla.", indicator: "pregunta_diagnostica" },
-          { value: "D", key: "D", id: "D", label: "Reconstruir la explicación desde sus supuestos iniciales.", text: "Reconstruir la explicación desde sus supuestos iniciales.", indicator: "reconstruccion" }
-        ]
-      },
-      {
-        id: "secuencia-Q2",
-        questionId: "secuencia-Q2",
-        text: "Dos fuentes históricas parecen contradecirse.",
-        question: "Dos fuentes históricas parecen contradecirse.",
-        prompt: "Dos fuentes históricas parecen contradecirse.",
-        domain: "historia",
-        phase: "reparacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Revisar desde qué premisas partía cada explicación.", text: "Revisar desde qué premisas partía cada explicación.", indicator: "reconstruccion" },
-          { value: "B", key: "B", id: "B", label: "Buscar exactamente qué afirmación produce la contradicción.", text: "Buscar exactamente qué afirmación produce la contradicción.", indicator: "aislamiento_error" },
-          { value: "C", key: "C", id: "C", label: "Preguntar qué información falta para poder resolverla.", text: "Preguntar qué información falta para poder resolverla.", indicator: "pregunta_diagnostica" },
-          { value: "D", key: "D", id: "D", label: "Reconstruir el problema desde una perspectiva diferente.", text: "Reconstruir el problema desde una perspectiva diferente.", indicator: "retroceso" }
-        ]
-      },
-      {
-        id: "secuencia-Q3",
-        questionId: "secuencia-Q3",
-        text: "Una aplicación deja de funcionar después de un cambio.",
-        question: "Una aplicación deja de funcionar después de un cambio.",
-        prompt: "Una aplicación deja de funcionar después de un cambio.",
-        domain: "tecnologia",
-        phase: "reparacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Volver a la última configuración que funcionaba.", text: "Volver a la última configuración que funcionaba.", indicator: "retroceso" },
-          { value: "B", key: "B", id: "B", label: "Identificar qué modificación concreta pudo producir el fallo.", text: "Identificar qué modificación concreta pudo producir el fallo.", indicator: "aislamiento_error" },
-          { value: "C", key: "C", id: "C", label: "Preguntar qué condición específica podría explicar el comportamiento.", text: "Preguntar qué condición específica podría explicar el comportamiento.", indicator: "pregunta_diagnostica" },
-          { value: "D", key: "D", id: "D", label: "Reconstruir el funcionamiento del sistema desde sus componentes básicos.", text: "Reconstruir el funcionamiento del sistema desde sus componentes básicos.", indicator: "reconstruccion" }
-        ]
-      },
-      {
-        id: "secuencia-Q4",
-        questionId: "secuencia-Q4",
-        text: "La conclusión de un razonamiento parece no seguir de sus premisas.",
-        question: "La conclusión de un razonamiento parece no seguir de sus premisas.",
-        prompt: "La conclusión de un razonamiento parece no seguir de sus premisas.",
-        domain: "argumentacion",
-        phase: "reparacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Revisar nuevamente las premisas iniciales.", text: "Revisar nuevamente las premisas iniciales.", indicator: "retroceso" },
-          { value: "B", key: "B", id: "B", label: "Localizar exactamente dónde aparece el salto lógico.", text: "Localizar exactamente dónde aparece el salto lógico.", indicator: "aislamiento_error" },
-          { value: "C", key: "C", id: "C", label: "Preguntar qué justificación falta para conectar ambas partes.", text: "Preguntar qué justificación falta para conectar ambas partes.", indicator: "pregunta_diagnostica" },
-          { value: "D", key: "D", id: "D", label: "Reconstruir el argumento desde el principio.", text: "Reconstruir el argumento desde el principio.", indicator: "reconstruccion" }
-        ]
-      },
-      {
-        id: "secuencia-Q5",
-        questionId: "secuencia-Q5",
-        text: "Después de estudiar un concepto, descubres que una parte de tu explicación no funciona.",
-        question: "Después de estudiar un concepto, descubres que una parte de tu explicación no funciona.",
-        prompt: "Después de estudiar un concepto, descubres que una parte de tu explicación no funciona.",
-        domain: "aprendizaje",
-        phase: "reparacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Volver al último punto que comprendías con seguridad.", text: "Volver al último punto que comprendías con seguridad.", indicator: "retroceso" },
-          { value: "B", key: "B", id: "B", label: "Identificar exactamente qué parte dejó de encajar.", text: "Identificar exactamente qué parte dejó de encajar.", indicator: "aislamiento_error" },
-          { value: "C", key: "C", id: "C", label: "Formular una pregunta concreta sobre aquello que todavía no comprendes.", text: "Formular una pregunta concreta sobre aquello que todavía no comprendes.", indicator: "pregunta_diagnostica" },
-          { value: "D", key: "D", id: "D", label: "Reconstruir la explicación desde sus fundamentos.", text: "Reconstruir la explicación desde sus fundamentos.", indicator: "reconstruccion" }
-        ]
-      }
-    ],
-    compute(answers) {
-      const counts = {};
-      this.indicators.forEach((indicator) => { counts[indicator] = 0; });
-      this.questions.forEach((question) => {
-        const answer = answers && answers[question.id];
-        const option = question.options.find((item) => item.value === answer || item.key === answer || item.id === answer);
-        if (option && counts[option.indicator] !== undefined) {
-          counts[option.indicator] += 1;
-        }
-      });
-      return counts;
-    }
-  },
-  {
-    id: "andamio",
-    title: "Comprobar si realmente entendiste",
-    dimension: "verificacion",
-    phase: "verificacion",
-    indicators: ["explicacion", "aplicacion", "transferencia", "contraste"],
-    questions: [
-      {
-        id: "andamio-Q1",
-        questionId: "andamio-Q1",
-        text: "Crees haber entendido por qué una civilización entró en crisis.",
-        question: "Crees haber entendido por qué una civilización entró en crisis.",
-        prompt: "Crees haber entendido por qué una civilización entró en crisis.",
-        domain: "historia",
-        phase: "verificacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Intentar explicarlo con tus propias palabras sin consultar el material.", text: "Intentar explicarlo con tus propias palabras sin consultar el material.", indicator: "explicacion" },
-          { value: "B", key: "B", id: "B", label: "Aplicar la explicación a un caso concreto de esa misma sociedad.", text: "Aplicar la explicación a un caso concreto de esa misma sociedad.", indicator: "aplicacion" },
-          { value: "C", key: "C", id: "C", label: "Buscar otro caso histórico donde comprobar si la explicación también sirve.", text: "Buscar otro caso histórico donde comprobar si la explicación también sirve.", indicator: "transferencia" },
-          { value: "D", key: "D", id: "D", label: "Intentar defender una explicación alternativa y comprobar si puedes responder a sus argumentos.", text: "Intentar defender una explicación alternativa y comprobar si puedes responder a sus argumentos.", indicator: "contraste" }
-        ]
-      },
-      {
-        id: "andamio-Q2",
-        questionId: "andamio-Q2",
-        text: "Crees haber comprendido un principio físico.",
-        question: "Crees haber comprendido un principio físico.",
-        prompt: "Crees haber comprendido un principio físico.",
-        domain: "fisica",
-        phase: "verificacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Utilizarlo para resolver un problema nuevo.", text: "Utilizarlo para resolver un problema nuevo.", indicator: "aplicacion" },
-          { value: "B", key: "B", id: "B", label: "Explicarlo con tus propias palabras.", text: "Explicarlo con tus propias palabras.", indicator: "explicacion" },
-          { value: "C", key: "C", id: "C", label: "Compararlo con un fenómeno diferente para comprobar si puedes reconocer la misma estructura.", text: "Compararlo con un fenómeno diferente para comprobar si puedes reconocer la misma estructura.", indicator: "transferencia" },
-          { value: "D", key: "D", id: "D", label: "Buscar un caso que parezca contradecirlo y determinar si realmente lo contradice.", text: "Buscar un caso que parezca contradecirlo y determinar si realmente lo contradice.", indicator: "contraste" }
-        ]
-      },
-      {
-        id: "andamio-Q3",
-        questionId: "andamio-Q3",
-        text: "Crees haber entendido un argumento.",
-        question: "Crees haber entendido un argumento.",
-        prompt: "Crees haber entendido un argumento.",
-        domain: "filosofia",
-        phase: "verificacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Reconstruirlo con tus propias palabras.", text: "Reconstruirlo con tus propias palabras.", indicator: "explicacion" },
-          { value: "B", key: "B", id: "B", label: "Utilizarlo para analizar un caso diferente.", text: "Utilizarlo para analizar un caso diferente.", indicator: "aplicacion" },
-          { value: "C", key: "C", id: "C", label: "Compararlo con otro problema para comprobar si la estructura se mantiene.", text: "Compararlo con otro problema para comprobar si la estructura se mantiene.", indicator: "transferencia" },
-          { value: "D", key: "D", id: "D", label: "Intentar defender una posición contraria y comprobar si puedes responderla.", text: "Intentar defender una posición contraria y comprobar si puedes responderla.", indicator: "contraste" }
-        ]
-      },
-      {
-        id: "andamio-Q4",
-        questionId: "andamio-Q4",
-        text: "Crees haber entendido cómo funciona una herramienta.",
-        question: "Crees haber entendido cómo funciona una herramienta.",
-        prompt: "Crees haber entendido cómo funciona una herramienta.",
-        domain: "tecnologia",
-        phase: "verificacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Resolver una tarea nueva utilizando lo aprendido.", text: "Resolver una tarea nueva utilizando lo aprendido.", indicator: "aplicacion" },
-          { value: "B", key: "B", id: "B", label: "Explicar su funcionamiento sin consultar instrucciones.", text: "Explicar su funcionamiento sin consultar instrucciones.", indicator: "explicacion" },
-          { value: "C", key: "C", id: "C", label: "Intentar utilizar el mismo principio en una herramienta o contexto diferente.", text: "Intentar utilizar el mismo principio en una herramienta o contexto diferente.", indicator: "transferencia" },
-          { value: "D", key: "D", id: "D", label: "Buscar una situación que parezca no encajar y averiguar si realmente invalida la explicación.", text: "Buscar una situación que parezca no encajar y averiguar si realmente invalida la explicación.", indicator: "contraste" }
-        ]
-      },
-      {
-        id: "andamio-Q5",
-        questionId: "andamio-Q5",
-        text: "Crees haber entendido una explicación científica.",
-        question: "Crees haber entendido una explicación científica.",
-        prompt: "Crees haber entendido una explicación científica.",
-        domain: "ciencia",
-        phase: "verificacion",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Explicarla de manera independiente.", text: "Explicarla de manera independiente.", indicator: "explicacion" },
-          { value: "B", key: "B", id: "B", label: "Utilizarla para interpretar un caso nuevo.", text: "Utilizarla para interpretar un caso nuevo.", indicator: "aplicacion" },
-          { value: "C", key: "C", id: "C", label: "Examinar si permite comprender un fenómeno diferente.", text: "Examinar si permite comprender un fenómeno diferente.", indicator: "transferencia" },
-          { value: "D", key: "D", id: "D", label: "Buscar deliberadamente un caso aparentemente contrario y comprobar qué ocurre.", text: "Buscar deliberadamente un caso aparentemente contrario y comprobar qué ocurre.", indicator: "contraste" }
-        ]
-      }
-    ],
-    compute(answers) {
-      const counts = {};
-      this.indicators.forEach((indicator) => { counts[indicator] = 0; });
-      this.questions.forEach((question) => {
-        const answer = answers && answers[question.id];
-        const option = question.options.find((item) => item.value === answer || item.key === answer || item.id === answer);
-        if (option && counts[option.indicator] !== undefined) {
-          counts[option.indicator] += 1;
-        }
-      });
-      return counts;
-    }
-  },
-  {
-    id: "navegando",
-    title: "Elegir una estrategia ante un problema nuevo",
-    dimension: "problema_nuevo",
-    phase: "problema_nuevo",
-    indicators: ["descomposicion", "experimentacion", "relaciones", "alternativas"],
-    questions: [
-      {
-        id: "navegando-Q1",
-        questionId: "navegando-Q1",
-        text: "Un dispositivo deja de funcionar y no sabes por qué.",
-        question: "Un dispositivo deja de funcionar y no sabes por qué.",
-        prompt: "Un dispositivo deja de funcionar y no sabes por qué.",
-        domain: "tecnologia",
-        phase: "problema_nuevo",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Separar el problema en componentes y revisar cada uno.", text: "Separar el problema en componentes y revisar cada uno.", indicator: "descomposicion" },
-          { value: "B", key: "B", id: "B", label: "Cambiar una condición concreta y observar qué ocurre.", text: "Cambiar una condición concreta y observar qué ocurre.", indicator: "experimentacion" },
-          { value: "C", key: "C", id: "C", label: "Analizar cómo interactúan los distintos componentes.", text: "Analizar cómo interactúan los distintos componentes.", indicator: "relaciones" },
-          { value: "D", key: "D", id: "D", label: "Formular varias explicaciones posibles antes de intervenir.", text: "Formular varias explicaciones posibles antes de intervenir.", indicator: "alternativas" }
-        ]
-      },
-      {
-        id: "navegando-Q2",
-        questionId: "navegando-Q2",
-        text: "Dos grupos mantienen un conflicto que no parece tener una causa única.",
-        question: "Dos grupos mantienen un conflicto que no parece tener una causa única.",
-        prompt: "Dos grupos mantienen un conflicto que no parece tener una causa única.",
-        domain: "conflicto_social",
-        phase: "problema_nuevo",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Separar el problema en aspectos distintos.", text: "Separar el problema en aspectos distintos.", indicator: "descomposicion" },
-          { value: "B", key: "B", id: "B", label: "Realizar una pequeña intervención y observar la respuesta.", text: "Realizar una pequeña intervención y observar la respuesta.", indicator: "experimentacion" },
-          { value: "C", key: "C", id: "C", label: "Mapear las relaciones entre los grupos y los factores involucrados.", text: "Mapear las relaciones entre los grupos y los factores involucrados.", indicator: "relaciones" },
-          { value: "D", key: "D", id: "D", label: "Formular varias interpretaciones posibles antes de decidir cuál investigar.", text: "Formular varias interpretaciones posibles antes de decidir cuál investigar.", indicator: "alternativas" }
-        ]
-      },
-      {
-        id: "navegando-Q3",
-        questionId: "navegando-Q3",
-        text: "Tienes que organizar una actividad con pocos recursos.",
-        question: "Tienes que organizar una actividad con pocos recursos.",
-        prompt: "Tienes que organizar una actividad con pocos recursos.",
-        domain: "organizacion",
-        phase: "problema_nuevo",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Dividirla en tareas independientes.", text: "Dividirla en tareas independientes.", indicator: "descomposicion" },
-          { value: "B", key: "B", id: "B", label: "Probar una versión pequeña antes de organizarla completamente.", text: "Probar una versión pequeña antes de organizarla completamente.", indicator: "experimentacion" },
-          { value: "C", key: "C", id: "C", label: "Analizar las dependencias entre recursos, tareas y participantes.", text: "Analizar las dependencias entre recursos, tareas y participantes.", indicator: "relaciones" },
-          { value: "D", key: "D", id: "D", label: "Generar varias formas posibles de organizarla y compararlas.", text: "Generar varias formas posibles de organizarla y compararlas.", indicator: "alternativas" }
-        ]
-      },
-      {
-        id: "navegando-Q4",
-        questionId: "navegando-Q4",
-        text: "Observas un fenómeno que no puedes explicar.",
-        question: "Observas un fenómeno que no puedes explicar.",
-        prompt: "Observas un fenómeno que no puedes explicar.",
-        domain: "investigacion",
-        phase: "problema_nuevo",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Separar las variables o componentes involucrados.", text: "Separar las variables o componentes involucrados.", indicator: "descomposicion" },
-          { value: "B", key: "B", id: "B", label: "Realizar una observación o prueba que permita distinguir entre posibilidades.", text: "Realizar una observación o prueba que permita distinguir entre posibilidades.", indicator: "experimentacion" },
-          { value: "C", key: "C", id: "C", label: "Construir un mapa de relaciones entre los factores.", text: "Construir un mapa de relaciones entre los factores.", indicator: "relaciones" },
-          { value: "D", key: "D", id: "D", label: "Generar varias explicaciones posibles antes de escoger una.", text: "Generar varias explicaciones posibles antes de escoger una.", indicator: "alternativas" }
-        ]
-      },
-      {
-        id: "navegando-Q5",
-        questionId: "navegando-Q5",
-        text: "Una solución habitual deja de funcionar y no sabes por qué.",
-        question: "Una solución habitual deja de funcionar y no sabes por qué.",
-        prompt: "Una solución habitual deja de funcionar y no sabes por qué.",
-        domain: "problema_cotidiano",
-        phase: "problema_nuevo",
-        options: [
-          { value: "A", key: "A", id: "A", label: "Dividir el problema en partes para localizar dónde está la dificultad.", text: "Dividir el problema en partes para localizar dónde está la dificultad.", indicator: "descomposicion" },
-          { value: "B", key: "B", id: "B", label: "Modificar una sola condición y observar el resultado.", text: "Modificar una sola condición y observar el resultado.", indicator: "experimentacion" },
-          { value: "C", key: "C", id: "C", label: "Examinar cómo se relacionan entre sí los elementos del problema.", text: "Examinar cómo se relacionan entre sí los elementos del problema.", indicator: "relaciones" },
-          { value: "D", key: "D", id: "D", label: "Generar varias posibles explicaciones y soluciones antes de actuar.", text: "Generar varias posibles explicaciones y soluciones antes de actuar.", indicator: "alternativas" }
-        ]
-      }
-    ],
-    compute(answers) {
-      const counts = {};
-      this.indicators.forEach((indicator) => { counts[indicator] = 0; });
-      this.questions.forEach((question) => {
-        const answer = answers && answers[question.id];
-        const option = question.options.find((item) => item.value === answer || item.key === answer || item.id === answer);
-        if (option && counts[option.indicator] !== undefined) {
-          counts[option.indicator] += 1;
-        }
-      });
-      return counts;
-    }
+    ]
   }
 ];
 
@@ -2091,21 +1519,7 @@ var views = {
                   : []
               );
 
-        var labels = {
-          estilo_explicativo: 'Forma de explicación',
-          preferencia_ejemplos: 'Uso de ejemplos',
-          contexto_ejemplo: 'Contexto de ejemplos',
-          tipo_analogia_dominante: 'Tipo de analogías',
-          orientacion: 'Orientación',
-          pensamiento_sistemico: 'Pensamiento sistémico',
-          preferencia_formato: 'Formato preferido',
-          nivel_abstraccion_inicial: 'Nivel de abstracción inicial',
-          secuencia_preferida: 'Secuencia de aprendizaje',
-          necesidad_andamiaje: 'Necesidad de andamiaje',
-          tipo_andamiaje_preferido: 'Tipo de andamiaje',
-          estrategias_metacognitivas: 'Estrategias metacognitivas',
-          enfoque_resolucion: 'Enfoque ante problemas'
-        };
+
 
         var humanize = function(value) {
           if (Array.isArray(value)) {
@@ -2132,13 +1546,7 @@ var views = {
          * PedagogicalProfile. No inferimos ninguno desde los
          * indicadores de Microtests.
          */
-        var fields = Object.keys(labels)
-          .filter(function(key) {
-            return profile[key] !== undefined &&
-                   profile[key] !== null &&
-                   profile[key] !== '' &&
-                   (!Array.isArray(profile[key]) || profile[key].length > 0);
-          });
+
 
         /*
          * ----------------------------------------------------------
@@ -2154,124 +1562,85 @@ var views = {
             ? context.microtestQualitative
             : [];
 
-        var brujulaQualitative = microtestQualitative.find(function(item) {
-          return item && item.testId === 'brujula';
-        });
+    var deterministicQualitativeItems = microtestQualitative.filter(function(item) {
+  return (
+    item &&
+    item.deterministicProfile &&
+    item.deterministicProfile.interpretation &&
+    typeof item.deterministicProfile.interpretation.descripcion === 'string' &&
+    item.deterministicProfile.interpretation.descripcion.trim() &&
+    typeof item.deterministicProfile.interpretation.ejemplo === 'string' &&
+    item.deterministicProfile.interpretation.ejemplo.trim()
+  );
+});
 
-        var qualitativeHtml = '';
+var qualitativeHtml = deterministicQualitativeItems.map(function(item) {
+  var interpretation = item.deterministicProfile.interpretation;
+  var itemTitle = item.title || item.testId || 'Microtest';
 
-        if (
-          brujulaQualitative &&
-          brujulaQualitative.deterministicProfile &&
-          brujulaQualitative.deterministicProfile.interpretation
-        ) {
-          var brujulaInterpretation =
-            brujulaQualitative.deterministicProfile.interpretation;
+  return `
+    <div style="
+      border:1px solid rgba(255,255,255,.14);
+      padding:18px;
+      margin-top:12px;
+    ">
+      <div style="
+        font-family:var(--font-mono,monospace);
+        font-size:.72rem;
+        text-transform:uppercase;
+        letter-spacing:.08em;
+        color:rgba(229,231,235,.55);
+        margin-bottom:8px;
+      ">
+        Resultado cualitativo · ${itemTitle}
+      </div>
 
-          qualitativeHtml = `
-            <div style="
-              border:1px solid rgba(255,255,255,.14);
-              padding:18px;
-              margin-top:12px;
-            ">
-              <div style="
-                font-family:var(--font-mono,monospace);
-                font-size:.72rem;
-                text-transform:uppercase;
-                letter-spacing:.08em;
-                color:rgba(229,231,235,.55);
-                margin-bottom:8px;
-              ">
-                Resultado cualitativo · Brújula
-              </div>
+      <p style="
+        margin:0 0 16px;
+        color:rgba(229,231,235,.68);
+        line-height:1.6;
+        font-size:.86rem;
+      ">
+        Este resultado resume la evidencia de este Microtest.
+        Es una hipótesis provisional y no constituye una etiqueta
+        estable sobre tu forma de aprender.
+      </p>
 
-              <p style="
-                margin:0 0 16px;
-                color:rgba(229,231,235,.68);
-                line-height:1.6;
-                font-size:.86rem;
-              ">
-                Este resultado resume la evidencia de este Microtest.
-                Es una hipótesis provisional y no constituye una etiqueta
-                estable sobre tu forma de aprender.
-              </p>
+      <div style="
+        display:grid;
+        gap:14px;
+      ">
+        <div>
+          <strong>Descripción</strong>
+          <p>${interpretation.descripcion}</p>
+        </div>
+        <div>
+          <strong>Ejemplo</strong>
+          <p>${interpretation.ejemplo}</p>
+        </div>
+      </div>
+    </div>
+  `;
+}).join('');
 
-              <div style="
-                  display:grid;
-                  gap:14px;
-                ">
-                  <div>
-                    <strong>Descripción</strong>
-                    <p>${brujulaInterpretation.descripcion}</p>
-                  </div>
-                  <div>
-                    <strong>Ejemplo</strong>
-                    <p>${brujulaInterpretation.ejemplo}</p>
-                  </div>
-                </div>
-            </div>
-          `;
-        } else {
-          qualitativeHtml = `
-            <div style="
-              border-top:1px solid rgba(255,255,255,.12);
-              padding:14px 0;
-            ">
-              <p style="
-                margin:0;
-                color:rgba(229,231,235,.62);
-                line-height:1.6;
-              ">
-                Todavía no hay un resultado cualitativo disponible
-                para este Microtest.
-              </p>
-            </div>
-          `;
-        }
+if (!qualitativeHtml) {
+  qualitativeHtml = `
+    <div style="
+      border-top:1px solid rgba(255,255,255,.12);
+      padding:14px 0;
+    ">
+      <p style="
+        margin:0;
+        color:rgba(229,231,235,.62);
+        line-height:1.6;
+      ">
+        Todavía no hay un resultado cualitativo disponible
+        para este Microtest.
+      </p>
+    </div>
+  `;
+}
 
-        var consolidatedHtml = fields.length
-          ? fields.map(function(key) {
-              return `
-                <div style="
-                  border-top:1px solid rgba(255,255,255,.12);
-                  padding:14px 0;
-                ">
-                  <div style="
-                    font-family:var(--font-mono,monospace);
-                    font-size:.72rem;
-                    text-transform:uppercase;
-                    letter-spacing:.08em;
-                    color:rgba(229,231,235,.55);
-                    margin-bottom:5px;
-                  ">
-                    ${labels[key]}
-                  </div>
-                  <div style="
-                    font-family:var(--font-mono,monospace);
-                    font-size:.95rem;
-                    color:#f3f4f6;
-                  ">
-                    ${humanize(profile[key])}
-                  </div>
-                </div>
-              `;
-            }).join('')
-          : `
-              <div style="
-                border-top:1px solid rgba(255,255,255,.12);
-                padding:14px 0;
-              ">
-                <p style="
-                  margin:0;
-                  color:rgba(229,231,235,.62);
-                  line-height:1.6;
-                ">
-                  Aún no hay interpretaciones pedagógicas consolidadas.
-                  Los Microtests ya pueden aportar evidencia sin convertirla
-                  prematuramente en una etiqueta sobre tu forma de aprender.
-                </p>
-              </div>
-            `;
 
         /*
          * ----------------------------------------------------------
@@ -2283,8 +1652,17 @@ var views = {
          * registrado: test, dimensión, indicadores y cantidad de
          * respuestas. No calcula "estilos".
          */
+        var validMicrotestIds = (typeof MICROTESTS !== 'undefined' && Array.isArray(MICROTESTS))
+          ? MICROTESTS.map(function(t) { return t && t.id; }).filter(Boolean)
+          : [];
+
         var evidenceAttempts = microtestEvidence.filter(function(item) {
-          return item && typeof item === 'object';
+          return (
+            item &&
+            typeof item === 'object' &&
+            item.testId &&
+            validMicrotestIds.indexOf(item.testId) !== -1
+          );
         });
 
         var testTitles = {};
@@ -2439,7 +1817,7 @@ var views = {
               font-size:1.15rem;
               color:#f3f4f6;
             ">
-              Microtests completados: ${completedTests.length} / 10
+              Microtests completados: ${completedTests.filter(function(id) { return validMicrotestIds.indexOf(id) !== -1; }).length} / ${MICROTESTS.length}
             </div>
 
             <div style="
@@ -2499,29 +1877,7 @@ var views = {
             ${qualitativeHtml}
           </div>
 
-          <h2 style="
-            font-family:var(--font-serif,Georgia,serif);
-            font-size:1.35rem;
-            font-weight:400;
-            margin:32px 0 4px;
-            color:#f3f4f6;
-          ">
-            Interpretaciones consolidadas
-          </h2>
 
-          <p style="
-            color:rgba(229,231,235,.62);
-            margin:0 0 12px;
-            line-height:1.6;
-          ">
-            Estas dimensiones requieren una interpretación posterior de
-            múltiples evidencias. No se generan automáticamente a partir
-            de una sola respuesta.
-          </p>
-
-          <div>
-            ${consolidatedHtml}
-          </div>
 
           <div style="
             border-top:1px solid rgba(255,255,255,.12);

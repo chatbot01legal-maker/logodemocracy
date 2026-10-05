@@ -67,6 +67,7 @@ var LearningProfileService = (function() {
 
     brujula: {
       title: 'Brújula',
+      deterministic: true,
 
       frames: {
         ejemplo:
@@ -84,6 +85,26 @@ var LearningProfileService = (function() {
 
       close:
         'Por eso, al acompañarte en un aprendizaje nuevo puede ser útil combinar explicaciones generales con ejemplos, conexiones o pasos concretos.'
+    },
+
+    reconstruccion_function_1: {
+      title: 'Reconstruccion de funcion 1',
+      deterministic: true
+    },
+
+    reconstruccion_function_2: {
+      title: 'Reconstruccion de funcion 2',
+      deterministic: true
+    },
+
+    premisa_oculta_1: {
+      title: 'Premisa oculta 1',
+      deterministic: true
+    },
+
+    premisa_oculta_2: {
+      title: 'Premisa oculta 2',
+      deterministic: true
     },
 
     ejemplos: {
@@ -595,7 +616,7 @@ function _qualitativeForTest(testId, evidence) {
 }
 
 
-function _deterministicQualitativeForBrujula(attempts) {
+function _deterministicQualitativeForTest(attempts, testId, title) {
   var list = Array.isArray(attempts) ? attempts : [];
   var deterministicProfile = null;
 
@@ -638,8 +659,8 @@ function _deterministicQualitativeForBrujula(attempts) {
   // una interpretación para brujula.
   if (!deterministicProfile) {
     return {
-      testId: 'brujula',
-      title: 'Brújula',
+      testId: testId,
+      title: title,
       interpretation: '',
       indicators: [],
       evidenceCount: 0,
@@ -660,8 +681,8 @@ function _deterministicQualitativeForBrujula(attempts) {
   ].join(' ');
 
   return {
-    testId: 'brujula',
-    title: 'Brújula',
+    testId: testId,
+    title: title,
     interpretation: frame + ' ' + body,
     indicators: Array.isArray(deterministicProfile.indicators)
       ? deterministicProfile.indicators
@@ -687,23 +708,26 @@ function _buildQualitativeProfile(evidence) {
     _groupMicrotestEvidenceByTest(groupedAttempts);
 
   return Object.keys(MICROTEST_QUALITATIVE).map(function(testId) {
-    if (testId === 'brujula') {
+    var config = MICROTEST_QUALITATIVE[testId];
+    if (config && config.deterministic === true) {
       /*
        * Brújula conserva un perfil determinista dentro del intento
        * completo. No debe pasar por _flattenMicrotestEvidence(),
        * porque ese proceso conserva las evidencias individuales pero
        * elimina deterministic_profile.
        */
-      var brujulaAttempts = groupedAttempts.filter(function(attempt) {
+      var deterministicAttempts = groupedAttempts.filter(function(attempt) {
         return (
           attempt &&
           typeof attempt === 'object' &&
-          attempt.testId === 'brujula'
+          attempt.testId === testId
         );
       });
 
-      return _deterministicQualitativeForBrujula(
-        brujulaAttempts
+      return _deterministicQualitativeForTest(
+        deterministicAttempts,
+        testId,
+        config.title
       );
     }
 
