@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Academia | Logodemocracy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Sans:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/base-layout.css">
+  <link rel="stylesheet" href="/assets/css/archive.css">
+</head>
+<body>
+
+<div class="page">
+
+<header class="topbar">
+  <a href="/" class="brand">LOGODEMOCRACY</a>
+<nav class="module-nav">
+      <a href="/pages/archive-template.html" class="module-link active">Academia</a>
+      <a href="/pages/logos.html" class="module-link">Logos</a>
+      <a href="/pages/sophia.html" class="module-link">Sophia</a>
+      <a href="/pages/rey-filosofo.html" class="module-link">Rey Filósofo</a>
+  
+    <div class="topbar-right">
+      <div id="ld-header-auth"></div>
+    </div>
+</nav>
+
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M4 6H20"/>
+      <path d="M4 12H20"/>
+      <path d="M4 18H20"/>
+    </svg>
+  </button>
+</header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-content">
+        <div class="tree" id="tree"></div>
+
+        <!-- TARJETA SOPHIA: acceso al análisis previamente generado -->
+<div class="sophia-score-card" id="sophia-score-block" onclick="window.openAcademySophiaModal()" role="button" tabindex="0" title="Ver análisis de SOPHIA">
+  <div class="sophia-card-info">
+    <div class="sophia-card-tag">
+      <span class="sophia-status-dot"></span>
+      <span>SOPHIA</span>
+    </div>
+    <span class="sophia-card-action">Ver análisis de SOPHIA ↗</span>
+  </div>
+</div>
+
+        <div class="philosopher">
+          <div class="philosopher-title">🏛 Rey Filósofo</div>
+          <div class="philosopher-text">¿Tienes alguna pregunta?</div>
+          <button class="philosopher-btn">Preguntar</button>
+        </div>
+      </div>
+
+      <div class="sidebar-rail">
+        <div class="sidebar-toggle">◂</div>
+      </div>
+    </aside>
+
+    <main class="document">
+      <div class="document-header">
+        Platón soñó con reyes filósofos. Nosotros exploramos otra posibilidad. Que cualquier ciudadano pueda aprender a pensar como uno. Bienvenido a la Academia.
+      </div>
+      <div class="document-content">
+        <div class="content" id="content"></div>
+      </div>
+    </main>
+  </div>
+
+
+  <footer class="footer">
+
+  <div class="container footer-inner">
+
+    <div class="footer-brand">
+      <span class="footer-logo">LOGODEMOCRACY</span>
+
+      <p class="footer-tagline">
+        Democracia Aumentada · Pensamiento colectivo asistido
+      </p>
+    </div>
+
+    <nav class="footer-nav" aria-label="Navegación del ecosistema">
+
+      <div class="footer-nav-group">
+        <span class="footer-nav-title">Ecosistema</span>
+
+        <a href="/pages/archive-template.html">Academia</a>
+        <a href="/pages/logos.html">Logos</a>
+        <a href="/pages/sophia.html">Sophia</a>
+      </div>
+
+    </nav>
+
+    <div class="footer-contact">
+
+      <span class="footer-nav-title">Contacto</span>
+
+      <a
+        href="mailto:contacto@logodemocracy.tech"
+        class="footer-email"
+      >
+        contacto@logodemocracy.tech
+      </a>
+
+      <p class="footer-contact-note">
+        Una plataforma en construcción abierta.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="container footer-bottom">
+
+    <span class="footer-copy">
+      © 2026 LogoDemocracy
+    </span>
+
+    <span class="footer-bottom-text">
+  Academia · Conocimiento abierto para ciudadanos
+  </span>
+
+  </div>
+
+  </footer>
+  
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="/assets/js/layout.js"></script>
+<script src="/assets/js/mobile-menu.js"></script>
+<script src="/assets/js/archive.js?v=8"></script>
+  <script src="/assets/js/platform/core/CoreConfig.js"></script>
+  <script src="/assets/js/platform/events/EventBus.js"></script>
+  <script src="/assets/js/platform/identity/IdentityStorage.js"></script>
+  <script src="/assets/js/platform/identity/CurrentUser.js"></script>
+  <script src="/assets/js/platform/identity/IdentityProvider.js"></script>
+  <script src="/assets/js/platform/identity/AuthService.js"></script>
+  <script src="/assets/js/platform/api/ApiClient.js"></script>
+  <script src="/assets/js/platform/services/ProfileService.js"></script>
+  <script src="/assets/js/platform/services/LearningMapService.js"></script>
+  <script src="/assets/js/platform/services/MicrotestService.js"></script>
+  <script src="/assets/js/platform/services/LearningProfileService.js"></script>
+<script src="/CognitiveSessionFactory.js?v=6"></script>
+<script src="/ReyFilosofoChat.js?v=6"></script>
+  <script src="/assets/js/AcademyCartero.js?v=1"></script>
+<script src="/assets/js/sophia.js?v=20260806"></script>
+
+<script>
+  window.addEventListener("load", () => {
+    if (typeof ReyFilosofoChat !== 'undefined' && typeof ReyFilosofoChat.setDefaultSessionProvider === 'function') {
+      ReyFilosofoChat.setDefaultSessionProvider(() => {
+        const asset = window.Academy && typeof window.Academy.getCurrentCognitiveAsset === 'function'
+          ? window.Academy.getCurrentCognitiveAsset()
+          : null;
+        if (!asset || typeof CognitiveSessionFactory === 'undefined') return null;
+        return CognitiveSessionFactory.fromAcademy(asset);
+      });
+    }
+
+    const btn = document.querySelector(".philosopher-btn");
+    if (btn) {
+      btn.addEventListener("click", () => {
+        if (window.AcademyCartero && typeof window.AcademyCartero.open === "function") {
+          window.AcademyCartero.open();
+        }
+      });
+    }
+  });
+</script>
+
+
+<script src="/assets/js/platform/identity/HeaderAuth.js"></script>
+</body>
+</html>
