@@ -830,6 +830,15 @@ function renderSpeechText(content, messageIndex) {
 
     if (btn) {
       btn.onclick = () => {
+        if (
+          window.AcademyCartero &&
+          typeof window.AcademyCartero.open === 'function' &&
+          document.getElementById('content')
+        ) {
+          window.AcademyCartero.open();
+          return;
+        }
+
         if (state.activeAsset) {
           state.isOpen = true;
           renderPanel();
@@ -837,8 +846,7 @@ function renderSpeechText(content, messageIndex) {
         }
 
         if (typeof defaultSessionProvider === 'function') {
-          const autoSession =
-            defaultSessionProvider();
+          const autoSession = defaultSessionProvider();
 
           if (autoSession) {
             ReyFilosofoChat.open(autoSession);
