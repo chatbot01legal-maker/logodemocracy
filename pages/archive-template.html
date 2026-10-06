@@ -56,8 +56,8 @@
 
         <div class="philosopher">
           <div class="philosopher-title">🏛 Rey Filósofo</div>
-          <div class="philosopher-text">¿Quieres profundizar en esta idea?</div>
-          <button class="philosopher-btn">Profundizar</button>
+          <div class="philosopher-text">¿Tienes alguna pregunta?</div>
+          <button class="philosopher-btn">Preguntar</button>
         </div>
       </div>
 
@@ -170,19 +170,9 @@
     const btn = document.querySelector(".philosopher-btn");
     if (btn) {
       btn.addEventListener("click", () => {
-        const asset = window.Academy && typeof window.Academy.getCurrentCognitiveAsset === 'function'
-          ? window.Academy.getCurrentCognitiveAsset()
-          : null;
-
-        if (!asset) return;
-
-        if (typeof CognitiveSessionFactory === 'undefined' || typeof ReyFilosofoChat === 'undefined') {
-          console.error("Módulos cognitivos no disponibles.");
-          return;
+        if (window.AcademyCartero && typeof window.AcademyCartero.open === "function") {
+          window.AcademyCartero.open();
         }
-
-        const session = CognitiveSessionFactory.fromAcademy(asset);
-        ReyFilosofoChat.open(session);
       });
     }
   });
