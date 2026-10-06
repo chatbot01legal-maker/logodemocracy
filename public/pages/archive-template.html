@@ -170,9 +170,16 @@
     const btn = document.querySelector(".philosopher-btn");
     if (btn) {
       btn.addEventListener("click", () => {
-        if (window.AcademyCartero && typeof window.AcademyCartero.open === "function") {
-          window.AcademyCartero.open();
+        const asset = window.Academy && typeof window.Academy.getCurrentCognitiveAsset === "function"
+          ? window.Academy.getCurrentCognitiveAsset()
+          : null;
+        if (!asset) return;
+        if (typeof CognitiveSessionFactory === "undefined" || typeof ReyFilosofoChat === "undefined") {
+          console.error("Módulos cognitivos no disponibles.");
+          return;
         }
+        const session = CognitiveSessionFactory.fromAcademy(asset);
+        ReyFilosofoChat.open(session);
       });
     }
   });
