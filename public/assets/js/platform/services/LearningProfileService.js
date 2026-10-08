@@ -707,7 +707,7 @@ function _buildQualitativeProfile(evidence) {
   var grouped =
     _groupMicrotestEvidenceByTest(groupedAttempts);
 
-  return Object.keys(MICROTEST_QUALITATIVE).map(function(testId) {
+  var items = Object.keys(MICROTEST_QUALITATIVE).map(function(testId) {
     var config = MICROTEST_QUALITATIVE[testId];
     if (config && config.deterministic === true) {
       /*
@@ -734,6 +734,21 @@ function _buildQualitativeProfile(evidence) {
     return _qualitativeForTest(
       testId,
       grouped[testId] || []
+    );
+  });
+
+  /*
+   * Filtrar items sin evidencia real.
+   * Un item con indicators.length === 0 corresponde a una dimensión
+   * que no tiene microtests completados, y su interpretación es un
+   * placeholder. No debe llegar al contexto pedagógico del cartero
+   * ni a la síntesis del perfil.
+   */
+  return items.filter(function(item) {
+    return (
+      item &&
+      Array.isArray(item.indicators) &&
+      item.indicators.length > 0
     );
   });
 }

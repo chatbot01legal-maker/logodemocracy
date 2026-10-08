@@ -1,0 +1,153 @@
+{
+  "protocol_version": "4.0",
+  "evaluated_at": "2026-09-04T12:00:00.000Z",
+  "local": {
+    "protocol_version": "4.0",
+    "naturaleza_documental": "POL",
+    "naturalezas_secundarias": ["ARG"],
+    "hibrido": true,
+    "confianza_clasificacion": 0.85,
+    "rutas_evaluadas": {
+      "ruta_esperada": ["dato","interpretacion","causal","generalizacion","propuesta"],
+      "pasos_presentes": {
+        "dato": false,
+        "interpretacion": true,
+        "causal": true,
+        "generalizacion": true,
+        "propuesta": false
+      },
+      "saltos_detectados": [
+        {
+          "tipo": "generalizacion_sin_dato",
+          "descripcion": "Se detectó generalización sin segmentos de dato que la respalden.",
+          "penalizacion": 10
+        }
+      ],
+      "penalizacion_ruta": 10,
+      "continuidad": 0.6
+    },
+    "fases": [
+      {
+        "id": "fase1",
+        "nombre": "Estructura Lógica",
+        "puntaje": 85,
+        "infracciones": [
+          {
+            "criterio": "1.3 - Ausencia de Falsas Dicotomías",
+            "constructo": "ATOMO_DICOTOMIA",
+            "penalizacion": 15,
+            "atomos_activados": [
+              {
+                "atomo": "ATOMO_DICOTOMIA",
+                "segmento": 0,
+                "penalizacion": 15,
+                "heredado": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fase2",
+        "nombre": "Inferencia",
+        "puntaje": 75,
+        "infracciones": [
+          {
+            "criterio": "2.3 - Proporcionalidad Generalizadora",
+            "constructo": "ATOMO_GENERALIZACION",
+            "penalizacion": 25,
+            "atomos_activados": [
+              {
+                "atomo": "ATOMO_GENERALIZACION",
+                "segmento": 2,
+                "penalizacion": 25,
+                "heredado": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fase3",
+        "nombre": "Calibración Epistémica",
+        "puntaje": 90,
+        "infracciones": []
+      },
+      {
+        "id": "fase4",
+        "nombre": "Transparencia Retórica",
+        "puntaje": 95,
+        "infracciones": []
+      },
+      {
+        "id": "fase5",
+        "nombre": "Pertinencia Deliberativa",
+        "puntaje": 80,
+        "infracciones": [
+          {
+            "criterio": "5.3 - Universalidad (Simetría)",
+            "constructo": "ATOMO_SIMETRIA_EPISTEMICA",
+            "penalizacion": 20,
+            "atomos_activados": [
+              {
+                "atomo": "ATOMO_SIMETRIA_EPISTEMICA",
+                "segmento": 4,
+                "penalizacion": 20,
+                "heredado": false
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "evidencias": [
+      {
+        "atomo": "ATOMO_DICOTOMIA",
+        "criterio": "1.3",
+        "fase": "fase1",
+        "perfil": "POL",
+        "segmento_indice": 0,
+        "fragmento": "La libertad política consiste principalmente en ausencia de interferencia.",
+        "funciones_segmento": ["interpretacion"],
+        "indicador_activado": "o bien",
+        "mitigado_por_contraindicador": false,
+        "relevancia": 1.0,
+        "severidad_base": 15,
+        "evidencia_esperada": "Reconocimiento de alternativas de política",
+        "umbral_incertidumbre": "medio",
+        "heredado": false
+      },
+      {
+        "atomo": "ATOMO_GENERALIZACION",
+        "criterio": "2.3",
+        "fase": "fase2",
+        "perfil": "POL",
+        "segmento_indice": 2,
+        "fragmento": "La libertad política consiste principalmente en ausencia de interferencia.",
+        "funciones_segmento": ["generalizacion"],
+        "indicador_activado": "principalmente",
+        "mitigado_por_contraindicador": false,
+        "relevancia": 0.9,
+        "severidad_base": 25,
+        "evidencia_esperada": "Reconocimiento de excepciones",
+        "umbral_incertidumbre": "medio",
+        "heredado": false
+      }
+    ],
+    "IRD_global": 82,
+    "riesgo": "Atención"
+  },
+  "gemini_review": {
+    "interpretacion": "El argumento presenta una visión de la libertad centrada en la ausencia de interferencia, pero tiende a simplificar un concepto que tiene múltiples dimensiones.",
+    "contexto": "La afirmación es generalizada y no reconoce que la libertad también puede entenderse como capacidad de autodeterminación.",
+    "observaciones": [
+      {
+        "detalle": "Se detecta una falsa dicotomía: reduce la libertad a una única dimensión."
+      }
+    ],
+    "preguntas_reflexivas": [
+      "¿Qué otras dimensiones de la libertad podrían ser relevantes?",
+      "¿Cómo influye el contexto social en tu definición de libertad?"
+    ]
+  }
+}

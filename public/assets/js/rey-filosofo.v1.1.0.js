@@ -1015,63 +1015,566 @@ function renderLoginForm(root) {
   });
 }
 
-function renderAuthenticatedUser(root, user) {
-  const name =
-    user && (user.name || user.username || user.email)
-      ? (user.name || user.username || user.email)
-      : 'Usuario';
+var profileState = {
+  authUser: null,
+  data: {},
+  root: null,
+  pendingAvatar: null
+};
 
-  const email =
-    user && user.email
-      ? user.email
-      : '';
+var INTERESTS_OPTIONS = [
+  'Filosofía','Política','Democracia','Historia','Ciencia','Tecnología',
+  'Inteligencia artificial','Economía','Psicología','Sociología',
+  'Antropología','Arte','Literatura','Música','Cine','Educación',
+  'Derechos humanos','Ecología','Salud','Religión y espiritualidad'
+];
+
+var EDU_LABELS = {
+  basica: 'Básica', media: 'Media', tecnica: 'Técnica',
+  universitaria: 'Universitaria', posgrado: 'Posgrado',
+  prefiero_no_decir: 'Prefiero no decir'
+};
+
+var AGE_LABELS = {
+  menos_18: 'Menos de 18', '18_25': '18 a 25', '26_35': '26 a 35',
+  '36_50': '36 a 50', '51_65': '51 a 65', mas_65: 'Más de 65',
+  prefiero_no_decir: 'Prefiero no decir'
+};
+
+var PRONOUN_LABELS = {
+  el: 'Él', ella: 'Ella', elle: 'Elle', prefiero_no_decir: 'Prefiero no decir'
+};
+
+var AVATARS = [
+  { id: 'rastas',    file: '/assets/avatares/rastas.svg' },
+  { id: 'afro',      file: '/assets/avatares/afro.svg' },
+  { id: 'spiky',     file: '/assets/avatares/spiky.svg' },
+  { id: 'largo',     file: '/assets/avatares/largo.svg' },
+  { id: 'bob',       file: '/assets/avatares/bob.svg' },
+  { id: 'coleta',    file: '/assets/avatares/coleta.svg' },
+  { id: 'mono',      file: '/assets/avatares/mono.svg' },
+  { id: 'hiyab',     file: '/assets/avatares/hiyab.svg' },
+  { id: 'anteojos',  file: '/assets/avatares/anteojos.svg' },
+  { id: 'barba',     file: '/assets/avatares/barba.svg' },
+  { id: 'bigote',    file: '/assets/avatares/bigote.svg' },
+  { id: 'gorra',     file: '/assets/avatares/gorra.svg' },
+  { id: 'trenza',    file: '/assets/avatares/trenza.svg' },
+  { id: 'rulos',     file: '/assets/avatares/rulos.svg' },
+  { id: 'mayor',     file: '/assets/avatares/mayor.svg' },
+  { id: 'capucha',   file: '/assets/avatares/capucha.svg' },
+  { id: 'vincha',    file: '/assets/avatares/vincha.svg' },
+  { id: 'copa',      file: '/assets/avatares/copa.svg' },
+  { id: 'ondulado',  file: '/assets/avatares/ondulado.svg' },
+  { id: 'dos_monos', file: '/assets/avatares/dos_monos.svg' }
+];
+
+function _normalize(str) {
+  return String(str || '').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function _orDash(v) {
+  if (v === null || v === undefined) return '—';
+  var s = String(v).trim();
+  return s.length ? s : '—';
+}
+
+function _avatarById(id) {
+  for (var i = 0; i < AVATARS.length; i++) {
+    if (AVATARS[i].id === id) return AVATARS[i];
+  }
+  return null;
+}
+
+function _avatarDisplayHtml(avatarId, size) {
+  var large = size === 'large';
+  var cls = large ? 'profile-avatar-large' : 'profile-avatar-small';
+  var a = avatarId ? _avatarById(avatarId) : null;
+  if (a) {
+    return '<img src="' + a.file + '" alt="" class="profile-avatar-img ' + cls + '">';
+  }
+  return '<div class="profile-avatar-badge ' + cls + '">RF</div>';
+}
+
+function _attachLogoutHandler(root) {
+  var logout = document.getElementById('authLogout');
+  if (!logout) return;
+  logout.addEventListener('click', function () {
+    if (window.AuthService && typeof AuthService.logout === 'function') {
+      AuthService.logout();
+    } else if (window.LDIdentityProvider && typeof LDIdentityProvider.clear === 'function') {
+      LDIdentityProvider.clear();
+    }
+    updateAuthStatusLabel();
+    renderLoginForm(root);
+  });
+}
+
+function _setupCountryAutocomplete(inputId) {
+  var input = document.getElementById(inputId);
+  if (!input) return;
+
+  var wrap = input.parentElement;
+  var dropdown = wrap ? wrap.querySelector('.profile-autocomplete-dropdown') : null;
+  if (!dropdown) return;
+
+  var countries = (window.LD_COUNTRIES && Array.isArray(window.LD_COUNTRIES))
+    ? window.LD_COUNTRIES
+    : [];
+
+  var normalized = countries.map(function (c) {
+    return { label: c, norm: _normalize(c) };
+  });
+
+  function renderDropdown(query) {
+    var q = _normalize(query).trim();
+    if (q.length < 1) {
+      dropdown.hidden = true;
+      dropdown.innerHTML = '';
+      return;
+    }
+    var matches = normalized.filter(function (c) {
+      return c.norm.indexOf(q) === 0;
+    }).slice(0, 8);
+
+    if (!matches.length) {
+      dropdown.hidden = true;
+      dropdown.innerHTML = '';
+      return;
+    }
+
+    dropdown.innerHTML = matches.map(function (c) {
+      return '<div class="profile-autocomplete-item" data-value="' +
+        escapeAuthHtml(c.label) + '">' + escapeAuthHtml(c.label) + '</div>';
+    }).join('');
+
+    dropdown.hidden = false;
+
+    dropdown.querySelectorAll('.profile-autocomplete-item').forEach(function (item) {
+      item.addEventListener('pointerdown', function (e) {
+        e.preventDefault();
+        input.value = item.getAttribute('data-value');
+        dropdown.hidden = true;
+        dropdown.innerHTML = '';
+      });
+    });
+  }
+
+  input.addEventListener('input', function () {
+    renderDropdown(input.value);
+  });
+
+  input.addEventListener('focus', function () {
+    if (input.value) renderDropdown(input.value);
+  });
+
+  input.addEventListener('blur', function () {
+    setTimeout(function () {
+      dropdown.hidden = true;
+    }, 200);
+  });
+
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      dropdown.hidden = true;
+    }
+  });
+}
+
+function renderAuthenticatedUser(root, user) {
+  profileState.authUser = user || null;
+  profileState.root = root;
+  profileState.data = {};
+  profileState.pendingAvatar = null;
 
   root.innerHTML = `
     <div class="view">
       <div class="view-eyebrow">Cuenta</div>
       <h1 class="view-title">Usuario</h1>
+      <div class="view-body">
+        <p>Cargando tu perfil…</p>
+      </div>
+    </div>
+  `;
 
-      <div class="view-body" style="max-width:520px;">
-        <p><strong>Sesión iniciada.</strong></p>
+  if (window.ProfileService && typeof ProfileService.getUserInfo === 'function') {
+    ProfileService.getUserInfo()
+      .then(function (data) {
+        profileState.data = data || {};
+        renderProfileView(root);
+      })
+      .catch(function (err) {
+        console.warn('[Usuario] No se pudo leer el perfil:', err.message);
+        profileState.data = {};
+        renderProfileView(root);
+      });
+  } else {
+    renderProfileView(root);
+  }
+}
 
-        <p>
-          Usuario:
-          <strong>${escapeAuthHtml(name)}</strong>
+function renderProfileView(root) {
+  var data = profileState.data || {};
+  var authUser = profileState.authUser || {};
+
+  var name = data.name || authUser.name || authUser.email || 'Usuario';
+  var email = data.email || authUser.email || '';
+  var displayName = _orDash(data.display_name);
+  var bio = _orDash(data.bio);
+  var eduLabel = EDU_LABELS[data.education_level] || '—';
+  var ageLabel = AGE_LABELS[data.age_range] || '—';
+  var pronounsLabel = PRONOUN_LABELS[data.pronouns] || '—';
+  var nationality = _orDash(data.nationality);
+  var country = _orDash(data.country);
+  var interests = Array.isArray(data.interests) ? data.interests : [];
+
+  var interestsHtml = interests.length
+    ? '<div class="profile-interest-list">' +
+        interests.map(function (i) {
+          return '<span class="profile-interest-chip">' + escapeAuthHtml(i) + '</span>';
+        }).join('') +
+      '</div>'
+    : '<span class="profile-empty">—</span>';
+
+  var avatarHtml = _avatarDisplayHtml(data.avatar_id, 'large');
+
+  root.innerHTML = `
+    <div class="view">
+      <div class="view-eyebrow">Cuenta</div>
+      <h1 class="view-title">Usuario</h1>
+      <div class="view-body">
+
+        <div class="profile-view-avatar">${avatarHtml}</div>
+
+        <div class="profile-view-row">
+          <div class="profile-view-label">Nombre para mostrar</div>
+          <div class="profile-view-value">${escapeAuthHtml(displayName)}</div>
+        </div>
+
+        <div class="profile-view-row">
+          <div class="profile-view-label">Sobre ti</div>
+          <div class="profile-view-value profile-view-value--multiline">${escapeAuthHtml(bio)}</div>
+        </div>
+
+        <div class="profile-view-row">
+          <div class="profile-view-label">Pronombres</div>
+          <div class="profile-view-value">${escapeAuthHtml(pronounsLabel)}</div>
+        </div>
+
+        <div class="profile-view-row">
+          <div class="profile-view-label">Edad</div>
+          <div class="profile-view-value">${escapeAuthHtml(ageLabel)}</div>
+        </div>
+
+        <div class="profile-view-row">
+          <div class="profile-view-label">Nivel educacional</div>
+          <div class="profile-view-value">${escapeAuthHtml(eduLabel)}</div>
+        </div>
+
+        <div class="profile-view-row">
+          <div class="profile-view-label">Nacionalidad</div>
+          <div class="profile-view-value">${escapeAuthHtml(nationality)}</div>
+        </div>
+
+        <div class="profile-view-row">
+          <div class="profile-view-label">País de residencia</div>
+          <div class="profile-view-value">${escapeAuthHtml(country)}</div>
+        </div>
+
+        <div class="profile-view-row">
+          <div class="profile-view-label">Intereses</div>
+          <div class="profile-view-value">${interestsHtml}</div>
+        </div>
+
+        <div class="profile-actions">
+          <button type="button" id="profileEdit" class="profile-save-btn">
+            Editar perfil
+          </button>
+        </div>
+
+        <div id="profileMessage" class="profile-message"></div>
+
+        <hr class="profile-sep">
+
+        <p class="profile-session-info">
+          Sesión iniciada como <strong>${escapeAuthHtml(name)}</strong>${email ? ' · ' + escapeAuthHtml(email) : ''}
         </p>
 
-        ${email ? `
-          <p>
-            Correo electrónico:
-            <strong>${escapeAuthHtml(email)}</strong>
-          </p>
-        ` : ''}
-
-        <button type="button" id="authLogout">
+        <button type="button" id="authLogout" class="profile-logout-btn">
           Cerrar sesión
         </button>
       </div>
     </div>
   `;
 
-  const logout = document.getElementById('authLogout');
-
-  if (logout) {
-    logout.addEventListener('click', () => {
-      if (window.AuthService &&
-          typeof AuthService.logout === 'function') {
-        AuthService.logout();
-      } else if (
-        window.LDIdentityProvider &&
-        typeof LDIdentityProvider.clear === 'function'
-      ) {
-        LDIdentityProvider.clear();
-      }
-
-      updateAuthStatusLabel();
-      renderLoginForm(root);
+  var editBtn = document.getElementById('profileEdit');
+  if (editBtn) {
+    editBtn.addEventListener('click', function () {
+      profileState.pendingAvatar = data.avatar_id || null;
+      renderProfileForm(root);
     });
   }
 
+  _attachLogoutHandler(root);
+  updateAuthStatusLabel();
+}
+
+function renderProfileForm(root) {
+  var data = profileState.data || {};
+  var authUser = profileState.authUser || {};
+
+  var name = data.name || authUser.name || authUser.email || 'Usuario';
+  var email = data.email || authUser.email || '';
+  var displayName = data.display_name || '';
+  var bio = data.bio || '';
+  var edu = data.education_level || '';
+  var age = data.age_range || '';
+  var pronouns = data.pronouns || '';
+  var nationality = data.nationality || '';
+  var country = data.country || '';
+  var interests = Array.isArray(data.interests) ? data.interests : [];
+  var pendingAvatar = profileState.pendingAvatar;
+
+  var interestsHtml = INTERESTS_OPTIONS.map(function (opt) {
+    var selected = interests.indexOf(opt) !== -1 ? ' selected' : '';
+    return '<button type="button" class="profile-interest-toggle' + selected +
+      '" data-interest="' + escapeAuthHtml(opt) + '">' + escapeAuthHtml(opt) + '</button>';
+  }).join('');
+
+  var ageOptions = [
+    { v: '', l: 'Prefiero no decir' },
+    { v: 'menos_18', l: 'Menos de 18' },
+    { v: '18_25', l: '18 a 25' },
+    { v: '26_35', l: '26 a 35' },
+    { v: '36_50', l: '36 a 50' },
+    { v: '51_65', l: '51 a 65' },
+    { v: 'mas_65', l: 'Más de 65' }
+  ].map(function (o) {
+    return '<option value="' + o.v + '"' + (age === o.v ? ' selected' : '') + '>' + o.l + '</option>';
+  }).join('');
+
+  var pronounOptions = [
+    { v: '', l: 'Prefiero no decir' },
+    { v: 'el', l: 'Él' },
+    { v: 'ella', l: 'Ella' },
+    { v: 'elle', l: 'Elle' }
+  ].map(function (o) {
+    return '<option value="' + o.v + '"' + (pronouns === o.v ? ' selected' : '') + '>' + o.l + '</option>';
+  }).join('');
+
+  var avatarHtml = _avatarDisplayHtml(pendingAvatar, 'small');
+
+  var avatarGridHtml = AVATARS.map(function (a) {
+    var sel = pendingAvatar === a.id ? ' selected' : '';
+    return '<button type="button" class="profile-avatar-option' + sel +
+      '" data-avatar-id="' + a.id + '">' +
+      '<img src="' + a.file + '" alt="">' +
+      '</button>';
+  }).join('');
+
+  root.innerHTML = `
+    <div class="view">
+      <div class="view-eyebrow">Cuenta</div>
+      <h1 class="view-title">Usuario</h1>
+      <div class="view-body">
+
+        <div class="profile-avatar-block">
+          ${avatarHtml}
+          <button type="button" id="profileToggleAvatarGrid" class="profile-avatar-btn">
+            Elegir avatar
+          </button>
+          <div id="profileAvatarGrid" class="profile-avatar-grid" hidden>
+            ${avatarGridHtml}
+          </div>
+        </div>
+
+        <div class="profile-field">
+          <label for="profileDisplayName">Nombre para mostrar</label>
+          <input type="text" id="profileDisplayName" class="profile-input" maxlength="50" placeholder="${escapeAuthHtml(name)}" value="${escapeAuthHtml(displayName)}">
+        </div>
+
+        <div class="profile-field">
+          <label for="profileBio">Sobre ti</label>
+          <textarea id="profileBio" class="profile-input profile-textarea" maxlength="300" rows="4" placeholder="Podés escribir una breve descripción si querés.">${escapeAuthHtml(bio)}</textarea>
+        </div>
+
+        <div class="profile-field">
+          <label for="profilePronouns">Pronombres</label>
+          <select id="profilePronouns" class="profile-input">${pronounOptions}</select>
+        </div>
+
+        <div class="profile-field">
+          <label for="profileAge">Edad</label>
+          <select id="profileAge" class="profile-input">${ageOptions}</select>
+        </div>
+
+        <div class="profile-field">
+          <label for="profileEdu">Nivel educacional</label>
+          <select id="profileEdu" class="profile-input">
+            <option value=""${edu === '' ? ' selected' : ''}>Prefiero no decir</option>
+            <option value="basica"${edu === 'basica' ? ' selected' : ''}>Básica</option>
+            <option value="media"${edu === 'media' ? ' selected' : ''}>Media</option>
+            <option value="tecnica"${edu === 'tecnica' ? ' selected' : ''}>Técnica</option>
+            <option value="universitaria"${edu === 'universitaria' ? ' selected' : ''}>Universitaria</option>
+            <option value="posgrado"${edu === 'posgrado' ? ' selected' : ''}>Posgrado</option>
+          </select>
+        </div>
+
+        <div class="profile-field">
+          <label for="profileNationality">Nacionalidad</label>
+          <div class="profile-autocomplete-wrap">
+            <input type="text" id="profileNationality" class="profile-input" autocomplete="off" maxlength="60" placeholder="Empezá a escribir…" value="${escapeAuthHtml(nationality)}">
+            <div class="profile-autocomplete-dropdown" hidden></div>
+          </div>
+        </div>
+
+        <div class="profile-field">
+          <label for="profileCountry">País de residencia</label>
+          <div class="profile-autocomplete-wrap">
+            <input type="text" id="profileCountry" class="profile-input" autocomplete="off" maxlength="60" placeholder="Empezá a escribir…" value="${escapeAuthHtml(country)}">
+            <div class="profile-autocomplete-dropdown" hidden></div>
+          </div>
+        </div>
+
+        <div class="profile-field">
+          <label>Intereses</label>
+          <div class="profile-interests-grid">${interestsHtml}</div>
+        </div>
+
+        <div class="profile-actions profile-actions--dual">
+          <button type="button" id="profileSave" class="profile-save-btn">
+            Guardar cambios
+          </button>
+          <button type="button" id="profileCancel" class="profile-cancel-btn">
+            Cancelar
+          </button>
+        </div>
+
+        <div id="profileMessage" class="profile-message"></div>
+
+        <hr class="profile-sep">
+
+        <p class="profile-session-info">
+          Sesión iniciada como <strong>${escapeAuthHtml(name)}</strong>${email ? ' · ' + escapeAuthHtml(email) : ''}
+        </p>
+
+        <button type="button" id="authLogout" class="profile-logout-btn">
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
+  `;
+
+  // Toggle del grid de avatares
+  var toggleGrid = document.getElementById('profileToggleAvatarGrid');
+  var grid = document.getElementById('profileAvatarGrid');
+  if (toggleGrid && grid) {
+    toggleGrid.addEventListener('click', function () {
+      grid.hidden = !grid.hidden;
+    });
+  }
+
+  // Selección de avatar
+  root.querySelectorAll('.profile-avatar-option').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      profileState.pendingAvatar = btn.getAttribute('data-avatar-id');
+      root.querySelectorAll('.profile-avatar-option').forEach(function (b) {
+        b.classList.remove('selected');
+      });
+      btn.classList.add('selected');
+      // Actualizar el badge/avatar grande
+      var block = root.querySelector('.profile-avatar-block');
+      var current = block.querySelector('.profile-avatar-svg, .profile-avatar-badge');
+      if (current) {
+        var newHtml = _avatarDisplayHtml(profileState.pendingAvatar, 'small');
+        var temp = document.createElement('div');
+        temp.innerHTML = newHtml;
+        block.replaceChild(temp.firstChild, current);
+      }
+    });
+  });
+
+  // Intereses
+  root.querySelectorAll('.profile-interest-toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      btn.classList.toggle('selected');
+    });
+  });
+
+  // Autocomplete custom
+  _setupCountryAutocomplete('profileNationality');
+  _setupCountryAutocomplete('profileCountry');
+
+  var saveBtn = document.getElementById('profileSave');
+  var cancelBtn = document.getElementById('profileCancel');
+  var message = document.getElementById('profileMessage');
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', function () {
+      profileState.pendingAvatar = null;
+      renderProfileView(root);
+    });
+  }
+
+  if (saveBtn) {
+    saveBtn.addEventListener('click', function () {
+      message.textContent = 'Guardando…';
+      message.className = 'profile-message';
+
+      var selectedInterests = [];
+      root.querySelectorAll('.profile-interest-toggle.selected').forEach(function (btn) {
+        selectedInterests.push(btn.getAttribute('data-interest'));
+      });
+
+      var payload = {
+        display_name: document.getElementById('profileDisplayName').value.trim() || null,
+        bio: document.getElementById('profileBio').value.trim() || null,
+        education_level: document.getElementById('profileEdu').value || null,
+        age_range: document.getElementById('profileAge').value || null,
+        pronouns: document.getElementById('profilePronouns').value || null,
+        nationality: document.getElementById('profileNationality').value.trim() || null,
+        country: document.getElementById('profileCountry').value.trim() || null,
+        avatar_id: profileState.pendingAvatar || null,
+        interests: selectedInterests
+      };
+
+      if (!window.ProfileService || typeof ProfileService.updateUserInfo !== 'function') {
+        message.textContent = 'No se pudo guardar: servicio no disponible.';
+        message.className = 'profile-message profile-message--error';
+        return;
+      }
+
+      saveBtn.disabled = true;
+      if (cancelBtn) cancelBtn.disabled = true;
+
+      ProfileService.updateUserInfo(payload)
+        .then(function (updated) {
+          profileState.data = Object.assign({}, profileState.data, updated || payload);
+          profileState.pendingAvatar = null;
+          renderProfileView(root);
+          var msg = document.getElementById('profileMessage');
+          if (msg) {
+            msg.textContent = 'Cambios guardados.';
+            msg.className = 'profile-message profile-message--ok';
+            setTimeout(function () {
+              var m2 = document.getElementById('profileMessage');
+              if (m2) {
+                m2.textContent = '';
+                m2.className = 'profile-message';
+              }
+            }, 3000);
+          }
+        })
+        .catch(function (err) {
+          message.textContent = 'No se pudo guardar: ' + (err.message || 'error desconocido');
+          message.className = 'profile-message profile-message--error';
+          saveBtn.disabled = false;
+          if (cancelBtn) cancelBtn.disabled = false;
+        });
+    });
+  }
+
+  _attachLogoutHandler(root);
   updateAuthStatusLabel();
 }
 
@@ -1100,18 +1603,19 @@ function updateAuthStatusLabel() {
 }
 
 function navigateTo(viewName) {
-    if (views[currentView] && views[currentView].onExit) {
-      views[currentView].onExit();
-    }
-
-    currentView = viewName;
-    renderView();
-
-    if (views[currentView] && views[currentView].onEnter) {
-      views[currentView].onEnter();
-    }
-    updateNavbarActiveState();
+  if (views[currentView] && views[currentView].onExit) {
+    views[currentView].onExit();
   }
+
+  currentView = viewName;
+  renderView();
+
+  if (views[currentView] && views[currentView].onEnter) {
+    views[currentView].onEnter();
+  }
+
+  updateNavbarActiveState();
+}
 
   function renderView() {
     var view = views[currentView];
@@ -1161,29 +1665,63 @@ var views = {
 
     inicio: {
       title: 'Rey Filósofo — Tú eres el Rey Filósofo',
+      onEnter: function() {
+        var updateCta = function() {
+          if (typeof CurrentUser === 'undefined') return;
+          var cta = document.getElementById('rf-cta-crear-cuenta');
+          if (!cta) return;
+          cta.style.display = CurrentUser.exists() ? 'none' : 'block';
+        };
+        updateCta();
+        if (!window._rfCtaBound && typeof EventBus !== 'undefined' && EventBus.on) {
+          window._rfCtaBound = true;
+          EventBus.on('identity:changed', updateCta);
+        }
+      },
       render: function() {
         return `
           <div class="view">
             <div class="view-eyebrow">Tu espacio de aprendizaje</div>
             <h1 class="view-title">Rey Filósofo eres tú</h1>
             <div class="view-body">
-              <p>El nombre viene de <strong>Platón</strong>. En <em>La República</em>, Platón imaginó al filósofo-rey: una persona cuya preparación para gobernar no se basaba simplemente en tener poder, sino en haber desarrollado la capacidad de conocer, comprender y examinar la realidad.</p>
-              <p>LogoDemocracy toma esta idea y la transforma. No se trata de que unos pocos gobiernen a los demás. Se trata de que <strong>cada persona pueda convertirse en protagonista de su propia formación</strong>.</p>
-              <p>Por eso, en LogoDemocracy, <strong>Rey Filósofo eres tú</strong>.</p>
-              <p>Este es tu espacio personal de aprendizaje. Rey Filósofo no es una autoridad que decide qué debes pensar ni una máquina que intenta mantenerte conectado el mayor tiempo posible.</p>
-              <p class="epistemic"><strong>No queremos capturar tu atención. Queremos devolvértela.</strong></p>
-              <p>En una red social convencional, un algoritmo decide constantemente qué contenido mostrarte para mantener tu atención. Aquí ocurre lo contrario: <strong>tú decides qué quieres comprender y en qué quieres invertir tu tiempo y tu atención</strong>.</p>
-              <p>Si, por ejemplo, quieres aprender sobre Fórmula 1, puedes decírselo al Rey Filósofo. Pero aprender no significa recibir instantáneamente un resumen generado por una IA. Primero necesita conocerte mejor: qué sabes, qué quieres comprender, qué aspectos te interesan y qué profundidad buscas. A partir de ese diálogo podrá ayudarte a construir una ruta de aprendizaje utilizando una <strong>biblioteca personal dentro de la Academia</strong>.</p>
-              <p>Los documentos de la Academia mantienen una estructura común y familiar, diseñada para facilitar la lectura y la comprensión. <strong>Leer es parte esencial del proceso.</strong> LogoDemocracy no busca reemplazar la lectura por respuestas instantáneas, sino recuperar la lectura como una herramienta para comprender y pensar.</p>
-              <p>La lógica es sencilla: <strong>leer → comprender → preguntar → pensar → volver al texto → comprender mejor</strong>.</p>
-              <p>Cada biblioteca que construyes, cada tema que eliges, cada documento que lees y cada conversación que tienes aporta nueva información sobre tus intereses y sobre tu manera de aprender. Así se construye progresivamente un <strong>mapa de intereses</strong> y un <strong>perfil de aprendizaje</strong> que permite que Rey Filósofo adapte su acompañamiento a ti.</p>
-              <p>El objetivo no es que la inteligencia artificial piense por ti. Es ayudarte a desarrollar, progresivamente, <strong>tu propia capacidad para comprender y pensar</strong>.</p>
-              <p><strong>Tú eliges aquello que merece tu atención. Nosotros te ayudamos a comprenderlo.</strong></p>
+              <p>El nombre viene de <strong>Platón</strong>. En <em>La República</em> imaginó al filósofo-rey: alguien cuya preparación para gobernar no venía del poder, sino de la capacidad de conocer, comprender y examinar la realidad.</p>
+
+              <p>LogoDemocracy invierte el sueño de Platón: ya no hay un rey que gobierne a su pueblo, sino personas que aprenden a <strong>gobernar su propio entendimiento</strong>.</p>
+
+              <div class="view-question-block">
+                <p class="view-question">¿Qué hace un rey con su poder?</p>
+                <p class="view-question view-question--light">Si tu atención es tu reino, ¿Quién la gobierna?</p>
+              </div>
+
+              <div class="rf-cta-inline" id="rf-cta-crear-cuenta">
+                <button class="rf-cta-button rf-cta-button--light" onclick="event.stopPropagation();(function(){var nav=document.querySelector('.module-nav');if(nav&&!nav.classList.contains('open'))nav.classList.add('open');var p=document.querySelector('#ld-header-auth .auth-panel');if(p)p.hidden=false;var t=document.querySelector('#ld-header-auth .auth-toggle');if(t&&t.textContent.indexOf('Crear')>-1)t.click();})()">
+                  Crear cuenta →
+                </button>
+              </div>
+
+              <p>Rey Filósofo no es una autoridad que decide qué debes pensar. No es una máquina que intenta retenerte.</p>
+
+              <p>En una red social convencional, un algoritmo decide qué ves. Aquí ocurre lo contrario: <strong>tú decides qué quieres comprender y en qué invertir tu atención</strong>.</p>
+
+              <p class="view-question">No queremos capturar tu atención. Queremos devolvértela.</p>
+
+              <p>Leer es pensar. Y también entretiene. Cuando lees con atención, no solo recibes información: comparas ideas, dudas, vuelves sobre lo que no entendiste, reconstruyes lo que el texto propone. Esa práctica te ayuda a pensar mejor.</p>
+
+              <p>Hay un mundo esperándote para leer.</p>
+
+              <p class="view-question view-question--light">Crea tu propia librería y empieza por donde tú quieras.</p>
+
+              <div class="rf-cta-inline">
+                <button class="rf-cta-button rf-cta-button--light" onclick="window.ReyFilosofo.navigateTo('aprende')">
+                  Crear mi librería →
+                </button>
+              </div>
             </div>
           </div>
         `;
       }
     },
+
     aprendizaje: {
       title: 'Rey Filósofo — Aprendizaje personalizado',
       render: function() {

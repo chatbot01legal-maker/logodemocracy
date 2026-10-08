@@ -31,3 +31,61 @@ logos-remoto.js
 test-db-guard.js
 .vercel
 .env*
+
+
+# ============================================
+# Respaldos de trabajo (agregado 2026-10-08)
+# ============================================
+*.bak
+*.bak-*
+*.before-*
+*.antes-de-reemplazo
+*.corrupto-antes-de-restaurar
+*.new.js
+
+# Scripts temporales de iteración
+aplicar_iteracion_*.py
+integrar_*.py
+fix_contador_y_filtro.py
+remover_legado_perfil.py
+standardize_academy_format.py
+adaptar_timeout_*.py
+
+# Logs y diagnósticos
+*.log
+*_tmp.*
+metadata_tmp.*
+bloque_nuevo.txt
+nuevas_frases.txt
+nuevo_ejemplo.txt
+nuevo_loading.txt
+
+# Carpetas de respaldo / auditoría local
+.audit-backup/
+_microtests_backup_*/
+
+
+# Archivos claramente no-código (agregado 2026-10-08)
+*.microtests-candidate
+*sophiEnginev4.1
+sophia-debug.js
+sophia_audit_report.*
+sophia_auditor.js
+suggest_patterns.js
+fix_weights.js
+generate_yaml.js
+enhance_aliases.js
+coherence_checker.js
+rey-filosofo.backup.js
+test-rf-cognitive.js
+vercel-dry-run-local.json
+
+
+# Respaldos y reportes dentro de public/
+public/**/.academy_backups/
+public/**/*.backup.js
+public/**/*.microtests-candidate
+public/**/sophia-debug.js
+public/**/sophia_audit_report.*
+public/**/sophiEnginev4.1
+tests/**/reports/

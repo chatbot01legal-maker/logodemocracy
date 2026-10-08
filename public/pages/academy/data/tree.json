@@ -1,0 +1,535 @@
+[
+{
+    "library": "Logodemocracia",
+    "folder": "Plataforma Tecnológica",
+    "title": "1. Introducción",
+    "file": "intro.md",
+    "order": 1,
+    "tags": [
+      "Logodemocracia",
+      "Fundamentos"
+    ]
+  },
+
+  {
+    "library": "Logodemocracia",
+    "folder": "Plataforma Tecnológica",
+    "title": "2. ¿Qué es LogoDemocracy? Arquitectura de la plataforma tecnológica",
+    "file": "Logodemocracia.md",
+    "order": 2,
+    "tags": [
+      "logodemocracia",
+      "arquitectura",
+      "democracia-aumentada",
+      "inteligencia-artificial",
+      "academia",
+      "sophia",
+      "rey-filosofo",
+      "logos",
+      "aletheia",
+      "agora",
+      "mythos",
+      "deliberacion",
+      "inteligencia-colectiva",
+      "produccion-comunitaria"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
+    "folder": "Plataforma Tecnológica",
+    "title": "3. ¿Qué es la Academia y cuál es su función en LogoDemocracy?",
+    "file": "la-academia.md",
+    "order": 3,
+    "tags": [
+      "academia",
+      "educacion-civica",
+      "aprendizaje",
+      "conocimiento",
+      "deliberacion",
+      "inteligencia-colectiva",
+      "rey-filosofo",
+      "sophia",
+      "votacion-cuadratica",
+      "democracia-aumentada"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
+    "folder": "Plataforma Tecnológica",
+    "title": "4. ¿Qué es SOPHIA y cuál es su función?",
+    "file": "que-es-sophia.md",
+    "order": 4,
+    "tags": [
+      "sophia",
+      "inteligencia-artificial",
+      "deliberación",
+      "epistemología",
+      "democracia-aumentada"
+    ]
+  },
+{
+  "library": "Logodemocracia",
+  "folder": "Plataforma Tecnológica",
+  "title": "5. ¿Qué es LOGOS y cuál es su función?",
+  "file": "que-es-logos.md",
+  "order": 5,
+  "tags": [
+    "logos",
+    "deliberación",
+    "pensamiento-colectivo",
+    "infraestructura-dialectica",
+    "democracia-aumentada"
+  ]
+},
+  
+  {
+    "library": "Logodemocracia",
+    "folder": "Plataforma Tecnológica",
+    "title": "6. Rey Filósofo: tutor cognitivo para el desarrollo del pensamiento crítico",
+    "file": "rey-filosofo.md",
+    "order": 6,
+    "tags": [
+      "rey-filósofo",
+      "pensamiento-crítico",
+      "aprendizaje",
+      "metacognición",
+      "zona-de-desarrollo-próximo",
+      "personalización",
+      "ciudadanía",
+      "academia",
+      "inteligencia-artificial"
+    ]
+  },
+  
+  {
+    "library": "Todo Ciudadano Sabe",
+    "folder": "01-Todo-Ciudadano-Sabe",
+    "title": "1. Todo Ciudadano Sabe: un currículum universal para comprender el mundo",
+    "file": "todo-ciudadano-sabe.md",
+    "order": 1,
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "pensamiento-critico",
+      "modelos-mentales",
+      "alfabetizacion-epistemica",
+      "educacion-civica",
+      "academia",
+      "conocimiento"
+    ]
+  },
+  {
+    "library": "Todo Ciudadano Sabe",
+    "folder": "01-Todo-Ciudadano-Sabe",
+    "title": "2. La pauta que conecta",
+    "file": "la-pauta-que-conecta.md",
+    "order": 2,
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "epistemologia",
+      "patrones",
+      "relaciones",
+      "aprendizaje",
+      "complejidad"
+    ]
+  },
+  {
+    "library": "Todo Ciudadano Sabe",
+    "folder": "01-Todo-Ciudadano-Sabe",
+    "title": "3. La diferencia que hace una diferencia",
+    "file": "la-diferencia-que-hace-una-diferencia.md",
+    "order": 3,
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "epistemologia",
+      "informacion",
+      "percepcion",
+      "aprendizaje",
+      "diferencias"
+    ]
+  },
+  {
+    "library": "Todo Ciudadano Sabe",
+    "folder": "01-Todo-Ciudadano-Sabe",
+    "title": "4. El mapa no es el territorio",
+    "file": "el-mapa-no-es-el-territorio.md",
+    "order": 4,
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "epistemologia",
+      "modelos-mentales",
+      "representacion",
+      "percepcion",
+      "pensamiento-critico"
+    ]
+  },
+  {
+    "library": "Todo Ciudadano Sabe",
+    "folder": "01-Todo-Ciudadano-Sabe",
+    "title": "5. Causalidad y retroalimentación",
+    "file": "causalidad-y-retroalimentacion.md",
+    "order": 5,
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "causalidad",
+      "retroalimentacion",
+      "sistemas",
+      "complejidad",
+      "aprendizaje"
+    ]
+  },
+  {
+    "library": "Todo Ciudadano Sabe",
+    "folder": "01-Todo-Ciudadano-Sabe",
+    "title": "6. Tipos lógicos y niveles de abstracción",
+    "file": "tipos-logicos-y-niveles-de-abstraccion.md",
+    "order": 6,
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "epistemologia",
+      "tipos-logicos",
+      "niveles-de-abstraccion",
+      "metacognicion",
+      "aprendizaje"
+    ]
+  },
+  {
+    "library": "Todo Ciudadano Sabe",
+    "folder": "01-Todo-Ciudadano-Sabe",
+    "title": "7. Evolución, aprendizaje y cambio",
+    "file": "evolucion-aprendizaje-y-cambio.md",
+    "order": 7,
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "evolucion",
+      "aprendizaje",
+      "cambio",
+      "adaptacion",
+      "estocasticidad",
+      "complejidad"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Encerar, pulir... no olvidar respirar, muy importante",
+    "title": "1. Inteligencia artificial: qué es y qué no es",
+    "file": "inteligencia-artificial-que-es-y-que-no-es.md",
+    "order": 1,
+    "tags": [
+      "alfabetizacion-digital",
+      "inteligencia-artificial",
+      "humanidades",
+      "modelos-de-lenguaje",
+      "pensamiento-critico",
+      "tecnologia",
+      "epistemologia",
+      "ia-generativa",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Encerar, pulir... no olvidar respirar, muy importante",
+    "title": "2. Pensar con IA sin dejar que la IA piense por ti",
+    "file": "pensar-con-ia-sin-dejar-que-la-ia-piense-por-ti.md",
+    "order": 2,
+    "tags": [
+      "alfabetizacion-digital",
+      "inteligencia-artificial",
+      "pensamiento-critico",
+      "criterio",
+      "metacognicion",
+      "autonomia",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Encerar, pulir... no olvidar respirar, muy importante",
+    "title": "3. Conversar con una IA: del prompt a la colaboración",
+    "file": "conversar-con-una-ia.md",
+    "order": 3,
+    "tags": [
+      "alfabetizacion-digital",
+      "inteligencia-artificial",
+      "prompts",
+      "colaboracion",
+      "dialogo",
+      "instrucciones",
+      "contexto",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Encerar, pulir... no olvidar respirar, muy importante",
+    "title": "4. Crear con IA: del texto al proyecto",
+    "file": "crear-con-ia.md",
+    "order": 4,
+    "tags": [
+      "alfabetizacion-digital",
+      "desarrollo",
+      "inteligencia-artificial",
+      "programacion",
+      "codigo",
+      "algoritmos",
+      "proyectos",
+      "colaboracion",
+      "documentacion",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Encerar, pulir... no olvidar respirar, muy importante",
+    "title": "5. Herramientas de Desarrollo",
+    "file": "herramientas-de-desarrollo.md",
+    "order": 5,
+    "tags": [
+      "alfabetizacion-digital",
+      "desarrollo",
+      "terminal",
+      "termux",
+      "github",
+      "render",
+      "cli",
+      "herramientas",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Encerar, pulir... no olvidar respirar, muy importante",
+    "title": "6. Desarrollo con un equipo de inteligencias artificiales",
+    "file": "desarrollo-con-un-equipo-de-inteligencias-artificiales.md",
+    "order": 6,
+    "tags": [
+      "alfabetizacion-digital",
+      "desarrollo",
+      "inteligencia-artificial",
+      "agentes",
+      "roles",
+      "arquitectura-de-colaboracion",
+      "contratos",
+      "auditoria",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Alfabetización Digital para humanistas",
+    "folder": "Encerar, pulir... no olvidar respirar, muy importante",
+    "title": "7. Crear tu primer proyecto con inteligencia artificial",
+    "file": "crea-tu-primer-proyecto-con-ia.md",
+    "order": 7,
+    "tags": [
+      "alfabetizacion-digital",
+      "desarrollo",
+      "inteligencia-artificial",
+      "desarrollo-web",
+      "html",
+      "css",
+      "javascript",
+      "termux",
+      "github",
+      "render",
+      "api",
+      "google-cloud",
+      "cli",
+      "copiloto",
+      "humanidades-digitales"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
+    "folder": "El Modelo",
+    "title": "1. El modelo de Logo Democracia",
+    "file": "01-El-Modelo.md",
+    "order": 1,
+    "tags": [
+      "el-modelo",
+      "logo-democracia",
+      "mapa-y-territorio",
+      "voto-cuadratico",
+      "educacion",
+      "congreso-virtual",
+      "panel-de-expertos"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
+    "folder": "El Modelo",
+    "title": "2. Más allá de una persona, un voto",
+    "file": "02-Mas-Alla-De-Una-Persona-Un-Voto.md",
+    "order": 2,
+    "tags": [
+      "el-modelo",
+      "logo-democracia",
+      "una-persona-un-voto",
+      "voto-sensitivo",
+      "democracia-epistemica",
+      "legitimidad",
+      "ponderacion"
+    ]
+  },
+    {
+  "library": "Logodemocracia",
+  "folder": "El Modelo",
+  "title": "3. Voluntad colectiva: pensar juntos aquello que nos importa",
+  "file": "voluntad-colectiva.md",
+  "order": 3,
+  "tags": [
+    "voluntad-colectiva",
+    "atencion",
+    "pensamiento-critico",
+    "cooperacion",
+    "inteligencia-colectiva",
+    "deliberacion",
+    "democracia-aumentada"
+  ]
+},
+      {
+    "library": "Logodemocracia",
+    "folder": "El Modelo",
+    "title": "4. La Hipótesis del Relato",
+    "file": "04-la-hipotesis-del-relato.md",
+    "order": 4,
+    "tags": [
+      "todo-ciudadano-sabe",
+      "gregory-bateson",
+      "pensamiento-sistemico",
+      "evolucion",
+      "aprendizaje",
+      "cambio",
+      "adaptacion",
+      "estocasticidad",
+      "complejidad",
+      "academia",
+      "fundamentos",
+      "hipotesis-del-relato"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
+    "folder": "El Modelo",
+    "title": "5. Votación Cuadrática",
+    "file": "03-votacion-cuadratica.md",
+    "order": 5,
+    "tags": [
+      "votacion-cuadratica",
+      "voto-cuadratico",
+      "academia",
+      "fundamentos",
+      "democracia-aumentada",
+      "deliberacion",
+      "inteligencia-colectiva"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
+    "folder": "El Modelo",
+    "title": "6. Gobernanza Constitucional: Pesos, Enmiendas y Válvulas de Escape",
+    "file": "05-Gobernanza-Constitucional.md",
+    "order": 6,
+    "tags": [
+      "el-modelo",
+      "logo-democracia",
+      "gobernanza-constitucional",
+      "meta-gobernanza",
+      "pesos-institucionales",
+      "valvulas-de-escape",
+      "democracia-epistemica"
+    ]
+  },
+  {
+    "library": "Logodemocracia",
+    "folder": "El Modelo",
+    "title": "7. Incentivos, Anti-Captura y Economía del Modelo",
+    "file": "06-Incentivos-Anti-Captura.md",
+    "order": 7,
+    "tags": [
+      "el-modelo",
+      "logo-democracia",
+      "anti-captura",
+      "diseno-de-mecanismos",
+      "remuneracion",
+      "transparencia",
+      "lobbying",
+      "puertas-giratorias"
+    ]
+  },
+      {
+    "library": "Logodemocracia",
+    "folder": "El Modelo",
+    "title": "8. La Hipótesis del nivel de atención para el diálogo",
+    "file": "nivel-de-atencion.md",
+    "order": 8,
+    "tags": [
+      "comunicacion",
+      "dialogo",
+      "paul-watzlawick",
+      "gregory-bateson",
+"emocion",
+"cognicion",
+"atencion",
+"metacognicion",
+"autorregulacion",
+"mindfulness",
+"polarizacion",
+"pensamiento-colectivo",
+"psicologia",
+"democracia",
+"academia",
+"fundamentos",
+"hipotesis-del-dialogo"
+    ]
+  },
+
+
+    
+    {
+  "library": "Joe Pino",
+  "folder": "Bases",
+  "title": "1. ¿Qué será Joe Pino y cuál es su función en la Academia?",
+  "file": "joe-pino.md",
+  "order": 1,
+  "tags": [
+    "deporte",
+    "geopolitica",
+    "voluntad-colectiva",
+    "micro-negociaciones",
+    "paz",
+    "competencia-simbolica",
+    "guerra-robotica",
+    "ensayo-modelo",
+    "yo-opino"
+  ]
+    },
+    {
+  "library": "Joe Pino",
+  "folder": "Ideas que valen la pena",
+  "title": "1. Deporte, Voluntad Colectiva y Geopolítica",
+  "file": "deporte.md",
+  "order": 1,
+  "tags": [
+    "joe-pino",
+    "academia",
+    "conocimiento",
+    "comunidad",
+    "inteligencia-colectiva",
+    "participacion"
+  ]
+    }
+]

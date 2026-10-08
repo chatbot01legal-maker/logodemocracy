@@ -217,9 +217,7 @@
       typeof LearningProfileService === 'undefined' ||
       typeof LearningProfileService.getFullContext !== 'function'
     ) {
-      return Promise.resolve(
-        'Todavía no hay contexto pedagógico disponible.'
-      );
+      return Promise.resolve('');
     }
 
     return LearningProfileService.getFullContext()
@@ -233,13 +231,15 @@
         var available = qualitative.filter(function (item) {
           return (
             item &&
+            Array.isArray(item.indicators) &&
+            item.indicators.length > 0 &&
             typeof item.interpretation === 'string' &&
             item.interpretation.trim()
           );
         });
 
         if (!available.length) {
-          return 'Todavía no hay resultados cualitativos de Microtests disponibles.';
+          return '';
         }
 
         return available.map(function (item) {
@@ -252,7 +252,7 @@
           error
         );
 
-        return 'No fue posible recuperar el contexto pedagógico en este momento.';
+        return '';
       });
   }
 
@@ -324,11 +324,16 @@
         state.selection,
         '',
         'PREGUNTA DEL USUARIO',
-        state.question.trim(),
-        '',
-        'CONTEXTO PEDAGÓGICO',
-        pedagogicalContext
+        state.question.trim()
       );
+
+      if (pedagogicalContext) {
+        lines.push(
+          '',
+          'CONTEXTO PEDAGÓGICO',
+          pedagogicalContext
+        );
+      }
 
       return lines.join('\n');
     });
@@ -362,7 +367,7 @@
 
         return navigator.clipboard.writeText(text).then(function () {
           alert(
-            'Paquete copiado. Tu dispositivo no ofrece el menú Compartir desde esta página.'
+            'Paquete copiado. Tu dispositivo no ofrece el menú Enviar desde esta página.'
           );
         });
       })
@@ -379,6 +384,16 @@
 
     if (!panel) return;
 
+    var documentMain = document.querySelector('main.document');
+
+    if (documentMain) {
+      if (state.open) {
+        documentMain.classList.add('cartero-open');
+      } else {
+        documentMain.classList.remove('cartero-open');
+      }
+    }
+
     if (!state.open) {
       panel.innerHTML = '';
       panel.style.display = 'none';
@@ -390,7 +405,7 @@
     panel.innerHTML =
       '<div class="academy-cartero-box">' +
         '<div class="academy-cartero-header">' +
-          '<strong>Rey Filósofo · Cartero</strong>' +
+          '<strong>Rey Filósofo</strong>' +
           '<button type="button" id="academy-cartero-close">×</button>' +
         '</div>' +
 
@@ -420,7 +435,7 @@
         '<div class="academy-cartero-actions">' +
           '<button type="button" id="academy-cartero-share"' +
             (!state.selection ? ' disabled' : '') +
-            '>Compartir</button>' +
+            '>Enviar a una IA externa</button>' +
 
           '<button type="button" id="academy-cartero-copy"' +
             (!state.selection ? ' disabled' : '') +
@@ -479,6 +494,14 @@
   }
 
   function open() {
+    /* En mobile/tablet cerramos el sidebar automáticamente
+       para dejar visible el documento al seleccionar el fragmento. */
+    if (window.matchMedia('(max-width: 1024px)').matches) {
+      var sidebar = document.querySelector('.sidebar');
+      if (sidebar) {
+        sidebar.classList.add('collapsed');
+      }
+    }
     state.open = true;
     render();
   }
@@ -498,7 +521,13 @@
 
       panel.id = 'academy-cartero';
 
-      document.body.appendChild(panel);
+      var documentMain = document.querySelector('main.document');
+
+      if (documentMain) {
+        documentMain.insertBefore(panel, documentMain.firstChild);
+      } else {
+        document.body.appendChild(panel);
+      }
     }
 
     document.addEventListener('mouseup', captureSelection);

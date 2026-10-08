@@ -1,0 +1,144 @@
+/* =====================
+   TERMINAL TREE MENU
+===================== */
+
+.menu-group {
+
+  position: relative;
+
+  list-style: none;
+}
+
+/* =====================
+   ROOT
+===================== */
+
+.menu-group > span {
+
+  display: block;
+
+  padding:
+    8px 10px;
+
+  color:
+    #94a3b8;
+
+  font-size: 12px;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+}
+
+.menu-group > span:hover {
+
+  color:
+    #d1fae5;
+}
+
+/* =====================
+   TREE
+===================== */
+
+.submenu {
+
+  display: none;
+
+  position: absolute;
+
+  top: calc(100% + 4px);
+
+  left: 0;
+
+  padding-left: 12px;
+
+  white-space: nowrap;
+
+  background: transparent;
+}
+
+/* DESKTOP */
+
+.menu-group:hover .submenu {
+
+  display: block;
+}
+
+/* =====================
+   ITEMS
+===================== */
+
+.submenu li {
+
+  list-style: none;
+
+  margin:
+    2px 0;
+}
+
+.submenu a {
+
+  display: block;
+
+  color:
+    #64748b;
+
+  text-decoration: none;
+
+  font-size: 11px;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+
+  padding:
+    2px 0;
+}
+
+/* TREE ASCII */
+
+.submenu a::before {
+
+  content:
+    "├─ ";
+
+  color:
+    rgba(34,197,94,0.55);
+}
+
+.submenu li:last-child a::before {
+
+  content:
+    "└─ ";
+}
+
+.submenu a:hover {
+
+  color:
+    #d1fae5;
+}
+
+/* =====================
+   MOBILE
+===================== */
+
+@media (max-width: 768px) {
+
+  .submenu {
+
+    position: static;
+
+    padding:
+      6px 0 6px 18px;
+
+    margin-bottom: 10px;
+  }
+
+  .menu-group.active .submenu {
+
+    display: block;
+  }
+
+}

@@ -167,105 +167,27 @@ function getVertex() {
   if (vertex)
     return vertex;
 
-  const rawLocation =
-    process.env.GOOGLE_CLOUD_LOCATION;
+  const apiKey =
+    process.env.GEMINI_API_KEY;
 
-  const project =
-    process.env.GOOGLE_CLOUD_PROJECT ||
-    "logodemocracy-ai-2026";
+  if (!apiKey) {
+    console.error(
+      "[SOPHIA-GENAI] Falta GEMINI_API_KEY en el entorno. " +
+      "Configurá la API key de Google AI Studio."
+    );
 
-  const location =
-    rawLocation === "logodemocracy-ai-2026"
-      ? "us-central1"
-      : (rawLocation || "us-central1");
-
-  const config = {
-    vertexai: true,
-    project,
-    location
-  };
-
-  if (
-    process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON
-  ) {
-    try {
-      const b64 =
-        process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
-
-      const credentials =
-        JSON.parse(
-          Buffer.from(
-            b64,
-            "base64"
-          ).toString("utf8")
-        );
-
-      config.credentials =
-        credentials;
-
-      console.log(
-        "[SOPHIA-GENAI] Usando GOOGLE_APPLICATION_CREDENTIALS_JSON"
-      );
-
-    } catch (error) {
-
-      console.error(
-        "[SOPHIA-GENAI] Error leyendo GOOGLE_APPLICATION_CREDENTIALS_JSON:",
-        error.message
-      );
-
-      throw error;
-    }
-
-  } else if (
-    process.env.GOOGLE_APPLICATION_CREDENTIALS
-  ) {
-
-    try {
-      const fs =
-        require("fs");
-
-      const keyPath =
-        process.env.GOOGLE_APPLICATION_CREDENTIALS;
-
-      const credentials =
-        JSON.parse(
-          fs.readFileSync(
-            keyPath,
-            "utf8"
-          )
-        );
-
-      config.credentials =
-        credentials;
-
-      console.log(
-        `[SOPHIA-GENAI] Usando credenciales desde ${keyPath}`
-      );
-
-    } catch (error) {
-
-      console.error(
-        "[SOPHIA-GENAI] Error leyendo GOOGLE_APPLICATION_CREDENTIALS:",
-        error.message
-      );
-
-      throw error;
-    }
-
-  } else {
-
-    console.log(
-      "[SOPHIA-GENAI] Usando Application Default Credentials (ADC)"
+    throw new Error(
+      "GEMINI_API_KEY no está configurada. " +
+      "Agregá la variable en el .env o en el panel del hosting."
     );
   }
 
   console.log(
-    `[SOPHIA-GENAI] Inicializando Vertex AI project=${project} location=${location}`
+    "[SOPHIA-GENAI] Inicializando cliente Gemini (Google AI Studio) con API key"
   );
 
   vertex =
-    new GoogleGenAI(config);
+    new GoogleGenAI({ apiKey });
 
   return vertex;
 }
@@ -332,7 +254,7 @@ async function enforceAILimit(stage) {
 
 async function askVertex(
   prompt,
-  model = "gemini-2.5-flash",
+  model = "gemini-flash-lite-latest",
   timeoutMs = 50000,
   generationConfig = null,
   stage = "unknown"
@@ -490,7 +412,7 @@ async function askVertex(
 
 async function askVertexWithSearch(
   prompt,
-  model = "gemini-2.5-flash",
+  model = "gemini-flash-lite-latest",
   timeoutMs = 50000,
   stage = "unknown"
 ) {

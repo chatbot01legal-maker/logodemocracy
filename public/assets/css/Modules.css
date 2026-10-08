@@ -1,0 +1,559 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Cormorant+Garamond:wght@400;600&display=swap');
+
+/* =====================
+   RESET
+===================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  min-height: 100%;
+}
+
+/* =====================
+   VARIABLES
+===================== */
+
+:root {
+  --bg:         #020617;
+  --panel:      rgba(5,10,18,0.96);
+  --text:       #dbe4ee;
+  --text-soft:  #94a3b8;
+  --accent:     #22c55e;
+  --accent-dim: rgba(34,197,94,0.18);
+  --border:     rgba(34,197,94,0.18);
+  --sidebar-w:  280px;
+}
+
+/* =====================
+   BASE
+===================== */
+
+html {
+  background: #000;
+}
+
+body {
+  font-family: "IBM Plex Mono", monospace;
+  background: #000;
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.8;
+  letter-spacing: 0.3px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =====================
+   CRT EFFECT
+===================== */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.02),
+    rgba(255,255,255,0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.12;
+}
+
+/* =====================
+   PAGE WRAPPER
+===================== */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* =====================
+   TOPBAR
+===================== */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.96);
+  flex-shrink: 0;
+  gap: 16px;
+  z-index: 10;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.brand {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--text-soft);
+  white-space: nowrap;
+}
+
+.brand a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.brand a:hover {
+  text-decoration: underline;
+}
+
+.module-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.topbar-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* =====================
+   MODULE INPUT (topbar)
+   usado en Sophia y Logos
+===================== */
+
+.module-input {
+  flex: 1;
+  height: 60px;
+  background: rgba(5,10,18,0.96);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  resize: none;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.module-input:focus {
+  border-color: rgba(34,197,94,0.5);
+}
+
+.module-input::placeholder {
+  color: var(--text-soft);
+  opacity: 0.6;
+}
+
+.btn {
+  background: rgba(5,10,18,0.96);
+  color: #b8f7ca;
+  border: 1px solid rgba(34,197,94,0.3);
+  padding: 8px 18px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: border 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  background: rgba(34,197,94,0.08);
+}
+
+.btn-file {
+  font-size: 10px;
+  color: var(--text-soft);
+  border-color: rgba(34,197,94,0.12);
+}
+
+/* =====================
+   LAYOUT (sidebar + main)
+===================== */
+
+.layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* =====================
+   SIDEBAR
+===================== */
+
+.sidebar {
+  width: var(--sidebar-w);
+  display: flex;
+  flex-direction: row;
+  border-right: 1px solid var(--border);
+  transition: width 0.3s ease;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.sidebar.collapsed {
+  width: 32px;
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.sidebar.collapsed .sidebar-content {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* scrollbar sidebar */
+.sidebar-content::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+/* toggle rail */
+.sidebar-rail {
+  width: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 16px;
+  border-left: 1px solid var(--border);
+}
+
+.sidebar-toggle {
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 14px;
+  line-height: 1;
+  padding: 4px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  user-select: none;
+}
+
+.sidebar-toggle:hover {
+  opacity: 1;
+}
+
+/* =====================
+   SIDEBAR SECTIONS
+===================== */
+
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-section-title {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--accent);
+  opacity: 0.8;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+
+.sidebar-section p,
+.sidebar-section div {
+  font-size: 11px;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+/* =====================
+   PHILOSOPHER WIDGET
+   (aparece en todos los módulos)
+===================== */
+
+.philosopher {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid var(--border);
+  padding: 12px;
+  background: rgba(5,10,18,0.6);
+}
+
+.philosopher-title {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--accent);
+}
+
+.philosopher-text {
+  font-size: 11px;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.philosopher-btn {
+  background: transparent;
+  color: #b8f7ca;
+  border: 1px solid rgba(34,197,94,0.25);
+  padding: 6px 12px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: border 0.2s;
+}
+
+.philosopher-btn:hover {
+  border-color: var(--accent);
+}
+
+/* =====================
+   DOCUMENT AREA (main)
+===================== */
+
+.document {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.document-header {
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--text-soft);
+  flex-shrink: 0;
+}
+
+.document-header .module-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 28px;
+  color: var(--text);
+  letter-spacing: 0;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+
+.document-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px;
+}
+
+/* scrollbar main */
+.document-content::-webkit-scrollbar {
+  width: 4px;
+}
+.document-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.document-content::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+/* =====================
+   EMPTY STATE
+===================== */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 12px;
+  opacity: 0.35;
+}
+
+.empty-state .empty-icon {
+  font-size: 32px;
+}
+
+.empty-state p {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text-soft);
+}
+
+/* =====================
+   SCORES PANEL (Sophia)
+===================== */
+
+.scores-panel {
+  width: 260px;
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.scores-panel-header {
+  padding: 14px 16px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+}
+
+.scores-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.score-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.score-label {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-soft);
+}
+
+.score-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.score-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(34,197,94,0.12);
+  position: relative;
+}
+
+.score-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+  transition: width 0.8s ease;
+}
+
+.score-value {
+  font-size: 11px;
+  color: var(--accent);
+  width: 28px;
+  text-align: right;
+}
+
+.score-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 4px 0;
+}
+
+.final-score-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.final-score-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-soft);
+}
+
+.final-score-value {
+  font-size: 20px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.score-confidence {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-align: center;
+  padding: 6px;
+  border: 1px solid var(--border);
+  color: var(--text-soft);
+}
+
+/* =====================
+   FOOTER
+===================== */
+
+.footer {
+  padding: 12px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-soft);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* =====================
+   RESPONSIVE
+===================== */
+
+@media (max-width: 768px) {
+  :root {
+    --sidebar-w: 240px;
+  }
+
+  .sidebar {
+    position: absolute;
+    z-index: 50;
+    height: 100%;
+    background: #000;
+  }
+
+  .sidebar.collapsed {
+    width: 32px;
+  }
+
+  .scores-panel {
+    display: none;
+  }
+
+  .topbar-center {
+    display: none;
+  }
+  }

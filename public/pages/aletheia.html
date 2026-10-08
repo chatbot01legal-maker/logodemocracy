@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aletheia — LogoDemocracy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/base-layout.css">
+  <link rel="stylesheet" href="/assets/css/aletheia.css">
+</head>
+<body>
+<div class="page">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+  <a href="/" class="brand">LOGODEMOCRACY</a>
+
+  <div class="topbar-right">
+    <div id="ld-header-auth"></div>
+      <div class="lang">ES | EN</div>
+  </div>
+
+  <nav class="module-nav">
+      <a href="/pages/archive-template.html" class="module-link">Academia</a>
+      <a href="/pages/logos.html" class="module-link">Logos</a>
+      <a href="/pages/sophia.html" class="module-link">Sophia</a>
+      <a href="/pages/aletheia.html" class="module-link active">Aletheia</a>
+      <a href="/pages/rey-filosofo.html" class="module-link">Rey Filósofo</a>
+  </nav>
+
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M4 6H20"/>
+      <path d="M4 12H20"/>
+      <path d="M4 18H20"/>
+    </svg>
+  </button>
+</header>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-content">
+
+        <!-- Módulo Label -->
+        <div class="aletheia-module-label">
+          <span class="module-badge">AL</span>
+          <span class="module-name">ALETHEIA / VERDAD</span>
+          <span class="module-version">v1.0</span>
+        </div>
+
+        <!-- Nav Tree -->
+        <nav class="aletheia-nav tree">
+          <div class="aletheia-nav-section">
+            <button class="aletheia-nav-item active" data-view="ingenieria">
+              <span class="aletheia-nav-icon">👁</span> Ingeniería Inversa
+            </button>
+          </div>
+          <div class="aletheia-nav-section">
+            <button class="aletheia-nav-item" data-view="subestimacion">
+              <span class="aletheia-nav-icon">📉</span> Coeficiente de Subestimación
+            </button>
+          </div>
+          <div class="aletheia-nav-section">
+            <button class="aletheia-nav-item" data-view="opensource">
+              <span class="aletheia-nav-icon">⚙</span> Open Source Cognitivo
+            </button>
+          </div>
+          <div class="aletheia-nav-section">
+            <button class="aletheia-nav-item" data-view="casos">
+              <span class="aletheia-nav-icon">📁</span> Archivo de Falacias Ocultas
+            </button>
+          </div>
+        </nav>
+
+        <!-- Estado del Monitor -->
+        <div class="epistemic sidebar-status">
+          <div class="epistemic-title">Descompresor Epistémico</div>
+          <div class="status-row">
+            <span class="status-dot status-dot--on" style="background:#f43f5e; box-shadow:0 0 4px #f43f5e;"></span>
+            <span>Filtro de Desinformación: ON</span>
+          </div>
+          <div class="status-row">
+            <span class="status-dot status-dot--on" style="background:#f43f5e; box-shadow:0 0 4px #f43f5e;"></span>
+            <span>Mapeo de Cinismo: Activo</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="sidebar-rail">
+        <div class="sidebar-toggle">◂</div>
+      </div>
+    </aside>
+
+    <!-- CONTENT AREA -->
+    <main class="document">
+      <div class="document-header" id="viewTitle">
+        Aletheia — Descomposición de la Posverdad Estructural
+      </div>
+
+      <div class="document-content" id="viewContent">
+        <!-- Inyección SPA dinámica -->
+      </div>
+    </main>
+
+  </div>
+
+  <footer class="footer">LogoDemocracy · Aletheia · Análisis Crítico del Cinismo Político e Inversión Hermenéutica del Discurso Público</footer>
+</div>
+
+<script src="/assets/js/layout.js"></script>
+<script src="/assets/js/mobile-menu.js"></script>
+<script src="/assets/js/aletheia.js"></script>
+
+<script src="/assets/js/platform/identity/HeaderAuth.js"></script>
+</body>
+</html>

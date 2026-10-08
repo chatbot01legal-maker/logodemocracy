@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Sans:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/base-layout.css">
-  <link rel="stylesheet" href="/assets/css/archive.css">
+  <link rel="stylesheet" href="/assets/css/base-layout.css?v=13">
+  <link rel="stylesheet" href="/assets/css/archive.css?v=13">
 </head>
 <body>
 
@@ -41,6 +41,17 @@
   <div class="layout">
     <aside class="sidebar">
       <div class="sidebar-content">
+        <div class="academia-module-label">
+          <span class="module-badge">A</span>
+          <span class="module-name">ACADEMIA</span>
+          <span class="module-version">v1.0</span>
+        </div>
+                <div class="philosopher">
+          <div class="philosopher-title">🏛 Rey Filósofo</div>
+          <div class="philosopher-text">¿Tienes alguna pregunta?</div>
+          <button class="philosopher-btn">Preguntar</button>
+        </div>
+
         <div class="tree" id="tree"></div>
 
         <!-- TARJETA SOPHIA: acceso al análisis previamente generado -->
@@ -54,11 +65,6 @@
   </div>
 </div>
 
-        <div class="philosopher">
-          <div class="philosopher-title">🏛 Rey Filósofo</div>
-          <div class="philosopher-text">¿Tienes alguna pregunta?</div>
-          <button class="philosopher-btn">Preguntar</button>
-        </div>
       </div>
 
       <div class="sidebar-rail">
@@ -78,67 +84,44 @@
 
 
   <footer class="footer">
-
   <div class="container footer-inner">
-
     <div class="footer-brand">
       <span class="footer-logo">LOGODEMOCRACY</span>
-
-      <p class="footer-tagline">
-        Democracia Aumentada · Pensamiento colectivo asistido
-      </p>
+      <p class="footer-tagline">Democracia Aumentada · Pensamiento colectivo asistido</p>
     </div>
-
     <nav class="footer-nav" aria-label="Navegación del ecosistema">
-
       <div class="footer-nav-group">
         <span class="footer-nav-title">Ecosistema</span>
-
         <a href="/pages/archive-template.html">Academia</a>
         <a href="/pages/logos.html">Logos</a>
         <a href="/pages/sophia.html">Sophia</a>
+        <a href="/pages/archive-template.html">Rey Filósofo</a>
       </div>
-
+      <div class="footer-nav-group">
+        <span class="footer-nav-title">En desarrollo</span>
+        <span class="footer-link-disabled">Aletheia</span>
+        <span class="footer-link-disabled">Mythos</span>
+        <span class="footer-link-disabled">Agora</span>
+        <a href="#laboratorio">Laboratorio Cívico</a>
+      </div>
     </nav>
-
     <div class="footer-contact">
-
       <span class="footer-nav-title">Contacto</span>
-
-      <a
-        href="mailto:contacto@logodemocracy.tech"
-        class="footer-email"
-      >
-        contacto@logodemocracy.tech
-      </a>
-
-      <p class="footer-contact-note">
-        Una plataforma en construcción abierta.
-      </p>
-
+      <a href="mailto:contacto@logodemocracy.tech" class="footer-email">contacto@logodemocracy.tech</a>
+      <p class="footer-contact-note">Una plataforma en construcción abierta.</p>
     </div>
-
   </div>
-
   <div class="container footer-bottom">
-
-    <span class="footer-copy">
-      © 2026 LogoDemocracy
-    </span>
-
-    <span class="footer-bottom-text">
-  Academia · Conocimiento abierto para ciudadanos
-  </span>
-
+    <span class="footer-copy">© 2026 LogoDemocracy</span>
+    <span class="footer-bottom-text">Democracia Aumentada</span>
   </div>
-
-  </footer>
+</footer>
   
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="/assets/js/layout.js"></script>
 <script src="/assets/js/mobile-menu.js"></script>
-<script src="/assets/js/archive.js?v=8"></script>
+<script src="/assets/js/archive.js?v=13"></script>
   <script src="/assets/js/platform/core/CoreConfig.js"></script>
   <script src="/assets/js/platform/events/EventBus.js"></script>
   <script src="/assets/js/platform/identity/IdentityStorage.js"></script>
@@ -150,10 +133,10 @@
   <script src="/assets/js/platform/services/LearningMapService.js"></script>
   <script src="/assets/js/platform/services/MicrotestService.js"></script>
   <script src="/assets/js/platform/services/LearningProfileService.js"></script>
-<script src="/CognitiveSessionFactory.js?v=6"></script>
-<script src="/ReyFilosofoChat.js?v=6"></script>
-  <script src="/assets/js/AcademyCartero.js?v=1"></script>
-<script src="/assets/js/sophia.js?v=20260806"></script>
+<script src="/CognitiveSessionFactory.js?v=13"></script>
+<script src="/ReyFilosofoChat.js?v=13"></script>
+  <script src="/assets/js/AcademyCartero.js?v=13"></script>
+<script src="/assets/js/sophia.js?v=13"></script>
 
 <script>
   window.addEventListener("load", () => {
@@ -181,6 +164,7 @@
 </script>
 
 
-<script src="/assets/js/platform/identity/HeaderAuth.js"></script>
+<script src="/assets/js/platform/identity/HeaderAuth.js?v=13"></script>
+<script src="/assets/js/platform/identity/SidebarAvatar.js?v=2"></script>
 </body>
 </html>

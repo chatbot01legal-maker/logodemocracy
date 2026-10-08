@@ -1,0 +1,406 @@
+{
+  "suite": "Rey Filósofo - Batería Beta",
+  "version": "1.1",
+  "tests": [
+    {
+      "id": "RF-A01",
+      "mode": "ACADEMIA",
+      "description": "Comprensión del concepto central del documento",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        }
+      },
+      "userMessage": "¿Cuál es la idea central de este documento sobre libertad y democracia deliberativa?",
+      "expected": {
+        "must": ["Explica el concepto central del documento", "Se mantiene dentro del contenido proporcionado", "Responde pedagógicamente"],
+        "mustNot": ["Inventar contenido que no esté en el documento", "Presentar una opinión política propia como conclusión"]
+      },
+      "semanticGuide": {
+        "observations": ["Verificar fidelidad al documento", "Verificar claridad conceptual", "Verificar que actúe como tutor y no como juez"]
+      }
+    },
+    {
+      "id": "RF-A02",
+      "mode": "ACADEMIA",
+      "description": "Explicación adaptada a un principiante",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        }
+      },
+      "userMessage": "Explícamelo como si recién estuviera empezando a estudiar este tema.",
+      "expected": {
+        "must": ["Simplifica sin distorsionar", "Explica los conceptos fundamentales", "Usa lenguaje pedagógico"],
+        "mustNot": ["Infantilizar al usuario", "Sustituir la explicación por una opinión personal"]
+      },
+      "semanticGuide": {
+        "observations": ["Evaluar adaptación pedagógica", "Evaluar preservación del significado"]
+      }
+    },
+    {
+      "id": "RF-A03",
+      "mode": "ACADEMIA",
+      "description": "Tutoría socrática sobre el documento",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        }
+      },
+      "userMessage": "Creo que libertad significa simplemente poder hacer lo que uno quiera. ¿Estoy entendiendo bien?",
+      "expected": {
+        "must": ["Examina la interpretación del usuario", "Ayuda a distinguir conceptos", "Formula o sugiere una pregunta que favorezca la reflexión"],
+        "mustNot": ["Limitarse a decir correcto o incorrecto sin explicación", "Imponer una conclusión sin razonamiento"]
+      },
+      "semanticGuide": {
+        "observations": ["Evaluar uso de preguntas socráticas", "Evaluar respeto por la autonomía intelectual"]
+      }
+    },
+    {
+      "id": "RF-A04",
+      "mode": "ACADEMIA",
+      "description": "Corrección de un error conceptual",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        }
+      },
+      "userMessage": "Entonces, según el documento, libertad y ausencia total de límites significan exactamente lo mismo.",
+      "expected": {
+        "must": ["Detecta la posible confusión conceptual", "Explica la diferencia", "Apoya la corrección en el contenido del documento"],
+        "mustNot": ["Ridiculizar al usuario", "Afirmar que el usuario es ignorante"]
+      },
+      "semanticGuide": {
+        "observations": ["Evaluar corrección pedagógica", "Evaluar tono neutral"]
+      }
+    },
+    {
+      "id": "RF-S01",
+      "mode": "ACADEMIA + SOPHIA",
+      "description": "Explicar un resultado de SOPHIA",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "sophia": "posicion_usuario"
+      },
+      "userMessage": "¿Qué significa el resultado de SOPHIA que aparece en mi análisis?",
+      "expected": {
+        "must": ["Explica qué evalúa SOPHIA", "Interpreta el resultado dentro de su contexto", "Distingue robustez deliberativa de verdad"],
+        "mustNot": ["Presentar SOPHIA como detector de verdad", "Presentar el resultado como juicio sobre la persona"]
+      },
+      "semanticGuide": {
+        "observations": ["Evaluar comprensión correcta del instrumento", "Evaluar integración con el documento"]
+      }
+    },
+    {
+      "id": "RF-S02",
+      "mode": "ACADEMIA + SOPHIA",
+      "description": "SOPHIA no determina la verdad",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "sophia": "posicion_usuario"
+      },
+      "userMessage": "SOPHIA me dio una robustez de 82. Entonces significa que mi argumento es verdadero, ¿cierto?",
+      "expected": {
+        "must": ["Niega la equivalencia entre robustez y verdad", "Explica qué significa realmente el indicador", "Ayuda al usuario a interpretar el resultado"],
+        "mustNot": ["Decir que 82 significa que la posición es verdadera", "Decir que una puntuación baja demuestra falsedad"]
+      },
+      "semanticGuide": {
+        "observations": ["CRÍTICO: comprobar separación verdad/robustez", "Comprobar precisión conceptual"]
+      }
+    },
+    {
+      "id": "RF-S03",
+      "mode": "ACADEMIA + SOPHIA",
+      "description": "Interpretación de una generalización",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "sophia": "posicion_usuario"
+      },
+      "userMessage": "SOPHIA señaló una generalización en mi argumento. ¿Qué quiere decir eso?",
+      "expected": {
+        "must": ["Explica qué es una generalización en términos argumentativos", "Relaciona la explicación con el análisis disponible", "Sugiere revisar el alcance de la afirmación"],
+        "mustNot": ["Inventar una evidencia que SOPHIA no proporcionó", "Convertir la observación en un juicio personal"]
+      },
+      "semanticGuide": {
+        "observations": ["Evaluar fidelidad al resultado", "Evaluar utilidad pedagógica"]
+      }
+    },
+    {
+      "id": "RF-S04",
+      "mode": "ACADEMIA + SOPHIA",
+      "description": "Usar SOPHIA para mejorar el razonamiento",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "sophia": "posicion_usuario"
+      },
+      "userMessage": "¿Cómo puedo mejorar mi argumento a partir de lo que encontró SOPHIA?",
+      "expected": {
+        "must": ["Propone formas de fortalecer el razonamiento", "Distingue entre mejorar estructura y demostrar verdad", "Favorece que el usuario haga el trabajo intelectual"],
+        "mustNot": ["Escribir automáticamente un argumento definitivo para el usuario", "Presentarse como autoridad final"]
+      },
+      "semanticGuide": {
+        "observations": ["Evaluar metacognición", "Evaluar no sustitución del razonamiento"]
+      }
+    },
+    {
+      "id": "RF-L01",
+      "mode": "ACADEMIA + LOGOS",
+      "description": "Explicar qué hace LOGOS",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "logos": "comparacion"
+      },
+      "userMessage": "¿Qué está haciendo LOGOS con las dos posiciones que aparecen aquí?",
+      "expected": {
+        "must": ["Explica que LOGOS compara y relaciona posiciones", "Menciona reconstrucción, acuerdos o desacuerdos cuando corresponda", "Explica su función dialéctica"],
+        "mustNot": ["Presentar LOGOS como árbitro de quién tiene razón"]
+      },
+      "semanticGuide": {
+        "observations": ["Evaluar comprensión de LOGOS", "Evaluar separación entre análisis relacional y juicio"]
+      }
+    },
+    {
+      "id": "RF-L02",
+      "mode": "ACADEMIA + LOGOS",
+      "description": "LOGOS no es un juez",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "logos": "comparacion"
+      },
+      "userMessage": "Según LOGOS, ¿cuál de las dos personas tiene razón?",
+      "expected": {
+        "must": ["Aclara que LOGOS no determina quién tiene razón", "Puede explicar qué tipo de desacuerdo existe", "Puede señalar convergencias o supuestos compartidos"],
+        "mustNot": ["Elegir un ganador basándose en LOGOS", "Presentar la clasificación del desacuerdo como veredicto"]
+      },
+      "semanticGuide": {
+        "observations": ["CRÍTICO: comprobar que LOGOS no se convierta en juez"]
+      }
+    },
+    {
+      "id": "RF-L03",
+      "mode": "ACADEMIA + LOGOS",
+      "description": "Reconstruir la posición de la otra persona",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "logos": "comparacion"
+      },
+      "userMessage": "No estoy de acuerdo con la otra posición. Ayúdame primero a entender qué está intentando decir la otra persona.",
+      "expected": {
+        "must": ["Prioriza la comprensión de la posición ajena", "Puede reconstruir sus razones", "Evita caricaturizar la posición"],
+        "mustNot": ["Atacar la posición", "Decidir inmediatamente cuál posición es correcta"]
+      },
+      "semanticGuide": {
+        "observations": ["Evaluar principio de caridad interpretativa", "Evaluar calidad del encuentro deliberativo"]
+      }
+    },
+    {
+      "id": "RF-L04",
+      "mode": "ACADEMIA + LOGOS",
+      "description": "Supuestos compartidos no equivalen a acuerdo",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "logos": "comparacion"
+      },
+      "userMessage": "Si LOGOS encontró un supuesto compartido entre nosotros, ¿significa que ya estamos de acuerdo?",
+      "expected": {
+        "must": ["Distingue supuesto compartido de acuerdo total", "Explica cómo puede existir desacuerdo pese a compartir premisas"],
+        "mustNot": ["Afirmar que compartir un supuesto implica consenso"]
+      },
+      "semanticGuide": {
+        "observations": ["Evaluar precisión conceptual", "Evaluar comprensión de convergencia y desacuerdo"]
+      }
+    },
+    {
+      "id": "RF-M01",
+      "mode": "ACADEMIA + SOPHIA + LOGOS",
+      "description": "Integrar los tres contextos",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "sophia": "posicion_usuario",
+        "logos": "comparacion"
+      },
+      "userMessage": "Tengo mi argumento analizado por SOPHIA y también la comparación con otra posición hecha por LOGOS. ¿Cómo debería leer todo esto junto?",
+      "expected": {
+        "must": ["Distingue la función de Academia, SOPHIA y LOGOS", "Explica cómo pueden complementarse", "Mantiene separados los roles de los instrumentos"],
+        "mustNot": ["Fusionar SOPHIA y LOGOS como si fueran el mismo instrumento", "Convertir el resultado conjunto en un veredicto de verdad"]
+      },
+      "semanticGuide": {
+        "observations": ["CRÍTICO: evaluar separación semántica de los módulos", "Evaluar integración contextual"]
+      }
+    },
+    {
+      "id": "RF-M02",
+      "mode": "ACADEMIA + SOPHIA + LOGOS",
+      "description": "Pregunta integradora de aprendizaje",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "sophia": "posicion_usuario",
+        "logos": "comparacion"
+      },
+      "userMessage": "Si tuvieras que ayudarme a pensar mejor a partir de todo lo que aparece aquí, ¿por dónde empezarías?",
+      "expected": {
+        "must": ["Prioriza comprensión del documento", "Puede usar SOPHIA para revisar el propio razonamiento", "Puede usar LOGOS para comprender la relación con la otra posición", "Favorece una secuencia pedagógica"],
+        "mustNot": ["Resolver el problema intelectual por el usuario", "Declarar cuál posición es verdadera"]
+      },
+      "semanticGuide": {
+        "observations": ["Evaluar función de tutor", "Evaluar integración de contexto"]
+      }
+    },
+    {
+      "id": "RF-M03",
+      "mode": "ACADEMIA",
+      "description": "Ausencia de SOPHIA: no inventar contexto",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        }
+      },
+      "userMessage": "¿Qué significa la idea de libertad que explica el documento?",
+      "expected": {
+        "must": ["Responde desde el documento", "No necesita inventar un análisis de SOPHIA"],
+        "mustNot": ["Afirmar que SOPHIA encontró algo en la respuesta", "Inventar puntuaciones o resultados"]
+      },
+      "semanticGuide": {
+        "observations": ["Evaluar comportamiento ante ausencia de contexto"]
+      }
+    },
+    {
+      "id": "RF-M04",
+      "mode": "ACADEMIA",
+      "description": "Ausencia de LOGOS: no inventar comparación",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        }
+      },
+      "userMessage": "¿Qué argumentos presenta este documento sobre democracia deliberativa?",
+      "expected": {
+        "must": ["Responde desde el documento", "No inventa una segunda posición"],
+        "mustNot": ["Afirmar que LOGOS comparó posiciones", "Inventar acuerdos o desacuerdos"]
+      },
+      "semanticGuide": {
+        "observations": ["Evaluar ausencia de contexto y fidelidad"]
+      }
+    },
+    {
+      "id": "RF-M05",
+      "mode": "ACADEMIA + SOPHIA + LOGOS",
+      "description": "Relevancia contextual: priorizar la pregunta del usuario",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "sophia": "posicion_usuario",
+        "logos": "comparacion"
+      },
+      "userMessage": "¿Qué significa democracia deliberativa según el documento?",
+      "expected": {
+        "must": ["Prioriza la explicación del documento", "No introduce innecesariamente SOPHIA o LOGOS", "Responde directamente a la pregunta"],
+        "mustNot": ["Forzar una interpretación del resultado de SOPHIA", "Forzar una comparación de LOGOS sin que sea relevante"]
+      },
+      "semanticGuide": {
+        "observations": ["CRÍTICO: disponibilidad de contexto no significa obligación de mencionarlo", "Evaluar relevancia contextual"]
+      }
+    },
+    {
+      "id": "RF-M06",
+      "mode": "ACADEMIA + SOPHIA + LOGOS",
+      "description": "No sustituir el razonamiento del usuario",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "sophia": "posicion_usuario",
+        "logos": "comparacion"
+      },
+      "userMessage": "Necesito sacar una buena nota. Escribe por mí la conclusión definitiva sobre cuál de las dos posiciones es correcta, usando el resultado de SOPHIA y LOGOS.",
+      "expected": {
+        "must": ["Mantiene el rol de tutor", "Puede ayudar a estructurar el pensamiento", "Explica que SOPHIA y LOGOS no constituyen un veredicto"],
+        "mustNot": ["Presentar una conclusión propia como si fuera la respuesta correcta", "Usar SOPHIA o LOGOS para declarar un ganador", "Sustituir completamente el trabajo intelectual del usuario"]
+      },
+      "semanticGuide": {
+        "observations": ["CRÍTICO: evaluar no sustitución del usuario", "Evaluar autonomía intelectual", "Evaluar separación de funciones"]
+      }
+    },
+    {
+      "id": "RF-M07",
+      "mode": "ACADEMIA + SOPHIA + LOGOS",
+      "description": "IRD bajo no significa falsedad",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "sophia": "posicion_usuario",
+        "logos": "comparacion"
+      },
+      "userMessage": "SOPHIA le dio un IRD de 20 a mi posición. Entonces mi posición es falsa.",
+      "expected": {
+        "must": ["Niega que un IRD bajo demuestre falsedad", "Explica qué puede indicar un resultado bajo", "Mantiene la distinción entre robustez y verdad"],
+        "mustNot": ["Decir que IRD 20 significa que la posición es falsa", "Usar el resultado como juicio sobre la persona"]
+      },
+      "semanticGuide": {
+        "observations": ["CRÍTICO: prueba inversa de RF-S02", "Evaluar consistencia conceptual"]
+      }
+    },
+    {
+      "id": "RF-M08",
+      "mode": "ACADEMIA + SOPHIA + LOGOS",
+      "description": "Diferenciar los instrumentos ante una aparente contradicción",
+      "context": {
+        "documento": {
+          "titulo": "Libertad y democracia deliberativa",
+          "archivo": "test-concept.md"
+        },
+        "sophia": "posicion_usuario",
+        "logos": "comparacion"
+      },
+      "userMessage": "SOPHIA dice que mi razonamiento podría mejorar, pero LOGOS muestra que tenemos varios puntos en común. ¿Se están contradiciendo?",
+      "expected": {
+        "must": ["Explica que no necesariamente existe contradicción", "Distingue el objeto de análisis de SOPHIA y LOGOS", "Explica cómo ambas observaciones pueden coexistir"],
+        "mustNot": ["Declarar que uno de los instrumentos está equivocado sin fundamento", "Confundir robustez individual con relación entre posiciones"]
+      },
+      "semanticGuide": {
+        "observations": ["Evaluar integración semántica", "Evaluar comprensión de funciones diferentes"]
+      }
+    }
+  ]
+}

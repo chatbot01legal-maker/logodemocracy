@@ -1,0 +1,14 @@
+{
+  "resultado": {
+    "tipo": "desacuerdo_conceptual",
+    "descripcion": "Las dos posiciones utilizan el mismo término 'libertad' con significados diferentes. La posición A la define como ausencia de interferencia (libertad negativa). La posición B la define como capacidad de autodeterminación (libertad positiva).",
+    "posicionA": "La libertad política consiste principalmente en ausencia de interferencia.",
+    "posicionB": "La libertad política requiere también capacidad efectiva de autodeterminación.",
+    "convergencia": false,
+    "supuestos_compartidos": [
+      "Ambos valoran la libertad",
+      "Ambos reconocen que la libertad es importante para la democracia"
+    ],
+    "recomendacion": "Aclarar definiciones y considerar que ambas dimensiones pueden ser complementarias."
+  }
+}

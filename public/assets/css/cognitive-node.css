@@ -1,0 +1,93 @@
+/* =====================
+   COGNITIVE NODE
+===================== */
+
+.cognitive-shell {
+
+  display: grid;
+
+  grid-template-columns:
+    260px 1fr;
+
+  gap: 60px;
+
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  padding:
+    60px 40px 140px;
+}
+
+/* =====================
+   SIDEBAR
+===================== */
+
+.cognitive-sidebar {
+
+  position: sticky;
+
+  top: 110px;
+
+  align-self: start;
+
+  font-size: 12px;
+
+  line-height: 1.9;
+}
+
+/* =====================
+   NODE HEADER
+===================== */
+
+.node-system-label {
+
+  color:
+    rgba(34,197,94,0.7);
+
+  letter-spacing: 2px;
+
+  margin-bottom: 24px;
+}
+
+.node-meta {
+
+  margin-bottom: 32px;
+
+  color:
+    #64748b;
+}
+
+.node-meta div {
+
+  margin-bottom: 6px;
+}
+
+/* =====================
+   TREE INDEX
+===================== */
+
+.node-index {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.node-index a {
+
+  color:
+    #94a3b8;
+
+  text-decoration: none;
+
+  font-size: 11px;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+
+  transition:
+    color

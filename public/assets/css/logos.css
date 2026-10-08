@@ -1,0 +1,79 @@
+/* logos.css
+   No define estructura ni componentes propios — todo eso ya existe en
+   sophia.css y se reutiliza tal cual (mismo sidebar, mismas tarjetas,
+   misma tipografía). Este archivo solo redefine el color de acento.
+
+   Esquema de color por módulo:
+     SOPHIA        -> azul    (--c-sophia)
+     Academia      -> verde   (--c-academia)
+     Rey Filósofo  -> naranjo (--c-rey)
+     Logos         -> celeste cian (--c-logos)  <- este archivo
+*/
+:root {
+  --c-logos: #22d3ee; /* celeste cian */
+}
+
+/* Redefine --accent para toda la página de Logos. Si algún componente
+   heredado de sophia.css usa un azul escrito directamente (no la
+   variable --accent), esa regla puntual necesita sobreescribirse acá
+   también -- ver notas al final de este archivo. */
+body.logos-page {
+  --accent: var(--c-logos);
+  --header-color: var(--c-logos);
+  --header-border: rgba(34,211,238,.22);
+  --s-border: rgba(34,211,238,.14);
+}
+
+/* ─── OVERRIDES LOGOS ─────────────────────────────────── */
+
+body.logos-page .module-badge {
+  background: var(--c-logos);
+}
+
+body.logos-page .snav-item.active {
+  border-color: var(--c-logos);
+  color: var(--c-logos);
+}
+
+body.logos-page .btn-primary {
+  background: var(--c-logos);
+  color: #050a12 !important;
+}
+
+body.logos-page .s-card-title {
+  color: var(--c-logos);
+}
+
+body.logos-page .sophia-module-label {
+  border-bottom-color: rgba(34,211,238,.15);
+}
+
+body.logos-page .module-version {
+  color: rgba(34,211,238,.5);
+}
+
+body.logos-page .snav-section--group {
+  border-left-color: rgba(34,211,238,.2);
+}
+
+body.logos-page .snav-group-label {
+  color: rgba(34,211,238,.6);
+}
+
+body.logos-page .snav-item:hover {
+  background: rgba(34,211,238,.06);
+}
+
+body.logos-page .snav-item.active {
+  background: rgba(34,211,238,.08);
+}
+
+body.logos-page .view-eyebrow {
+  color: rgba(34,211,238,.5);
+}
+
+body.logos-page .view-section-title {
+  color: rgba(34,211,238,.6);
+  border-bottom-color: rgba(34,211,238,.12);
+}
+*/

@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/base-layout.css">
-  <link rel="stylesheet" href="/assets/css/rey-filosofo.css">
+  <link rel="stylesheet" href="/assets/css/base-layout.css?v=13">
+  <link rel="stylesheet" href="/assets/css/rey-filosofo.css?v=36">
 </head>
 
 <body>
@@ -57,14 +57,14 @@
           </div>
 
           <div class="pnav-section">
-            <button class="pnav-item" data-view="aprendizaje">
-              <span class="pnav-icon">◈</span> Aprendizaje personalizado
+            <button class="pnav-item" data-view="usuario">
+              <span class="pnav-icon">◎</span> Usuario
             </button>
           </div>
 
           <div class="pnav-section">
-            <button class="pnav-item" data-view="usuario">
-              <span class="pnav-icon">◎</span> Perfil
+            <button class="pnav-item" data-view="perfil-aprendizaje">
+              <span class="pnav-icon">◎</span> Hipótesis de aprendizaje
             </button>
           </div>
 
@@ -75,45 +75,25 @@
           </div>
 
           <div class="pnav-section">
-            <button class="pnav-item" data-view="perfil-aprendizaje">
-              <span class="pnav-icon">◎</span> Perfil de aprendizaje
-            </button>
-          </div>
-
-          <div class="pnav-section">
             <button class="pnav-item" data-view="zdp">
               <span class="pnav-icon">⤱</span> ZDP
             </button>
           </div>
 
           <div class="pnav-section">
-            <button class="pnav-item" data-view="prueba">
-              <span class="pnav-icon">✓</span> Ponte a prueba
-            </button>
-          </div>
-
-          <div class="pnav-section">
             <button class="pnav-item" data-view="aprende">
-              <span class="pnav-icon">⌕</span> Aprende lo que tú quieras
+              <span class="pnav-icon">⌕</span> Crea tu propia librería
             </button>
           </div>
 
           <div class="pnav-section">
-            <button class="pnav-item" data-view="pregunta">
-              <span class="pnav-icon">?</span> Pregunta del día
+            <button class="pnav-item" data-view="aprendizaje">
+              <span class="pnav-icon">◈</span> Aprendizaje personalizado
             </button>
           </div>
 
         </nav>
 
-
-        <div class="philosopher sidebar-philosopher clickable-trigger" id="btnOpenChat">
-          <div class="phil-icon">🏛</div>
-          <div>
-            <div class="phil-name">Preguntar al Rey Filósofo</div>
-            <div class="phil-msg">Abrir conversación</div>
-          </div>
-        </div>
 
       </div>
 
@@ -223,10 +203,10 @@
   <script src="/assets/js/platform/identity/IdentityProvider.js"></script>
   <script src="/assets/js/platform/identity/AuthService.js"></script>
   <script src="/assets/js/platform/api/ApiClient.js"></script>
-  <script src="/assets/js/platform/services/ProfileService.js"></script>
+  <script src="/assets/js/platform/services/ProfileService.js?v=25"></script>
   <script src="/assets/js/platform/services/LearningMapService.js"></script>
   <script src="/assets/js/platform/services/MicrotestService.js"></script>
-  <script src="/assets/js/platform/services/LearningProfileService.js"></script>
+  <script src="/assets/js/platform/services/LearningProfileService.js?v=25"></script>
   <script src="/assets/js/platform/cognitive/ContextAdapter.js"></script>
   <script src="/assets/js/platform/cognitive/LearningStrategy.js"></script>
   <script src="/assets/js/platform/cognitive/PedagogicalEngine.js"></script>
@@ -311,11 +291,13 @@
 <!-- ========================================== -->
 
 
-<script src="/assets/js/rey-filosofo.v1.1.0.js"></script>
+<script src="/assets/js/rey-filosofo.v1.1.0.js?v=36"></script>
+<script src="/assets/js/data/countries-es.js?v=27"></script>
 
 
 
-<script src="/assets/js/platform/identity/HeaderAuth.js"></script>
+<script src="/assets/js/platform/identity/HeaderAuth.js?v=13"></script>
+<script src="/assets/js/platform/identity/SidebarAvatar.js?v=2"></script>
 </body>
 </html>
 <!-- cache-bust-20261003 -->
