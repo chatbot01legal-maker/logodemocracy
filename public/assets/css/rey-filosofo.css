@@ -1035,73 +1035,56 @@ body { font-family: 'IBM Plex Mono', monospace; }
 
 /* ============================================================
    CARD · CREA TU PROPIA LIBRERÍA
-   Mismo patrón visual que .sophia-score-card en Academia,
-   pero en color ámbar RF (#d97706).
+   Botón único: dot pulsante + texto naranja.
 ============================================================ */
 .rf-library-card {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 12px;
+  gap: 10px;
+  padding: 12px;
   margin-bottom: 12px;
-  background: linear-gradient(135deg, rgba(217, 119, 6, 0.06) 0%, rgba(5, 10, 18, 0.9) 100%);
-  border: 1px solid rgba(217, 119, 6, 0.3);
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.08) 0%, rgba(5, 10, 18, 0.9) 100%);
+  border: 1px solid rgba(217, 119, 6, 0.35);
   border-radius: 0;
   cursor: pointer;
   transition: all 0.22s ease-in-out;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   user-select: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .rf-library-card:hover {
-  border-color: rgba(217, 119, 6, 0.7);
-  background: linear-gradient(135deg, rgba(217, 119, 6, 0.14) 0%, rgba(5, 10, 18, 0.98) 100%);
-  box-shadow: 0 0 12px rgba(217, 119, 6, 0.25);
-  transform: translateY(-1px);
+  border-color: rgba(217, 119, 6, 0.75);
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.16) 0%, rgba(5, 10, 18, 0.98) 100%);
+  box-shadow: 0 0 12px rgba(217, 119, 6, 0.28);
 }
 
 .rf-library-card:active {
-  transform: translateY(0);
+  transform: translateY(1px);
 }
 
-.rf-library-card-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.rf-library-card-tag {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: #d97706;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.rf-library-status-dot {
-  width: 6px;
-  height: 6px;
+.rf-library-card-dot {
+  width: 8px;
+  height: 8px;
   background-color: #d97706;
   border-radius: 50%;
-  box-shadow: 0 0 6px #d97706;
+  box-shadow: 0 0 8px #d97706;
   animation: rfLibraryPulse 2s infinite ease-in-out;
+  flex-shrink: 0;
 }
 
 @keyframes rfLibraryPulse {
-  0%   { opacity: 0.4; transform: scale(0.95); }
-  50%  { opacity: 1;   transform: scale(1.15); }
-  100% { opacity: 0.4; transform: scale(0.95); }
+  0%   { opacity: 0.4; transform: scale(0.9); }
+  50%  { opacity: 1;   transform: scale(1.2); }
+  100% { opacity: 0.4; transform: scale(0.9); }
 }
 
-.rf-library-card-action {
-  font-size: 0.72rem;
-  color: rgba(229, 231, 235, 0.65);
-  transition: color 0.2s ease;
+.rf-library-card-cta {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #d97706;
+  letter-spacing: 0.01em;
 }
 
-.rf-library-card:hover .rf-library-card-action {
-  color: rgba(255, 255, 255, 0.95);
+.rf-library-card:hover .rf-library-card-cta {
+  color: #ea8c1c;
 }

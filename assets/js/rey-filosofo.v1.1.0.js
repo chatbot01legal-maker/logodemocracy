@@ -1822,6 +1822,31 @@ var views = {
       }
     },
 
+    biblioteca: {
+      title: 'Rey Filósofo — Mi Biblioteca',
+      render: function() {
+        return `
+          <div class="view">
+            <div class="view-eyebrow">Biblioteca personal</div>
+            <h1 class="view-title">Mi Biblioteca</h1>
+            <div id="rf-biblioteca-root"></div>
+          </div>
+        `;
+      },
+      onEnter: function() {
+        if (window.ReyFilosofoBiblioteca && typeof window.ReyFilosofoBiblioteca.mount === 'function') {
+          window.ReyFilosofoBiblioteca.mount();
+        } else {
+          console.error('[RF] ReyFilosofoBiblioteca no está cargado.');
+        }
+      },
+      onExit: function() {
+        if (window.ReyFilosofoBiblioteca && typeof window.ReyFilosofoBiblioteca.unmount === 'function') {
+          window.ReyFilosofoBiblioteca.unmount();
+        }
+      }
+    },
+
     aprende: {
       title: 'Rey Filósofo — Aprende lo que tú quieras',
       render: function() {

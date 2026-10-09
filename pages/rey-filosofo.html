@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="/assets/css/base-layout.css?v=13">
   <link rel="stylesheet" href="/assets/css/rey-filosofo.css?v=36">
 <link rel="stylesheet" href="/assets/css/rey-filosofo-libreria.css?v=1">
+<link rel="stylesheet" href="/assets/css/rey-filosofo-biblioteca.css?v=1">
 </head>
 
 <body>
@@ -63,7 +64,14 @@
             </button>
           </div>
 
-          <div class="pnav-section">
+          
+            <div class="pnav-section">
+              <button class="pnav-item" data-view="biblioteca">
+                <span class="pnav-icon">📚</span> Mi Biblioteca
+              </button>
+            </div>
+
+<div class="pnav-section">
             <button class="pnav-item" data-view="perfil-aprendizaje">
               <span class="pnav-icon">◎</span> Hipótesis de aprendizaje
             </button>
@@ -88,22 +96,14 @@
           </div>
 
         </nav>
-
-        <!-- CARD CREAR LIBRERÍA — al final del sidebar -->
-        <div class="rf-library-card" id="rf-library-card" role="button" tabindex="0"
-             title="Crear una librería personal"
+        <!-- CARD CREAR LIBRERÍA -->
+        <div class="rf-library-card rf-library-card--cta" id="rf-library-card" role="button" tabindex="0"
+             title="Crear una biblioteca personal"
              onclick="window.ReyFilosofo && window.ReyFilosofo.navigateTo('aprende')">
-          <div class="rf-library-card-info">
-            <div class="rf-library-card-tag">
-              <span class="rf-library-status-dot"></span>
-              <span>BIBLIOTECA PERSONAL</span>
-            </div>
-            <span class="rf-library-card-action">Crea tu propia librería →</span>
-          </div>
+          <span class="rf-library-card-dot"></span>
+          <span class="rf-library-card-cta">Crea tu propia biblioteca →</span>
         </div>
-
-
-      </div>
+</div>
 
       <div class="sidebar-rail">
         <div class="sidebar-toggle">◂</div>
@@ -299,8 +299,9 @@
 <!-- ========================================== -->
 
 
-<script src="/assets/js/rey-filosofo.v1.1.0.js?v=37"></script>
+<script src="/assets/js/rey-filosofo.v1.1.0.js?v=38"></script>
 <script src="/assets/js/rey-filosofo-libreria.js?v=1"></script>
+<script src="/assets/js/rey-filosofo-biblioteca.js?v=1"></script>
 <script src="/assets/js/data/countries-es.js?v=27"></script>
 
 

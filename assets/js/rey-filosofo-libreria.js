@@ -130,7 +130,7 @@
     return '' +
       '<div class="rfl-screen rfl-screen--intro">' +
         '<div class="rfl-intro-mark">🏛</div>' +
-        '<h2 class="rfl-h2">Vamos a prepararte un curso.</h2>' +
+        '<h2 class="rfl-h2">Vamos a prepararte una biblioteca de cursos.</h2>' +
         '<p class="rfl-p">Vas a elegir el tema y algunas cosas más. Después, Rey Filósofo se lo encarga a su bibliotecario, que te va a armar <strong>cinco documentos cortos</strong> para leer.</p>' +
         '<p class="rfl-p rfl-p--muted">Tarda unos 2 minutos.</p>' +
         '<div class="rfl-actions">' +

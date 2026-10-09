@@ -1,0 +1,341 @@
+/* =========================================================
+   REY FILÓSOFO · MI BIBLIOTECA
+   Gestión de cursos y carpetas personales.
+============================================================ */
+
+.rfb-wrap,
+#rf-biblioteca-root {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 8px 4px 40px;
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--c-text, #e5e7eb);
+}
+
+/* ─── Estados ───────────────────────────────────────── */
+.rfb-loading {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--c-muted, #9ca3af);
+  font-size: 0.9rem;
+}
+
+.rfb-error {
+  padding: 14px 16px;
+  border-left: 2px solid #f87171;
+  background: rgba(248, 113, 113, 0.08);
+  color: #f87171;
+  border-radius: 0;
+  font-size: 0.88rem;
+}
+
+.rfb-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--c-muted, #9ca3af);
+}
+.rfb-empty p { margin: 8px 0; }
+.rfb-empty-hint { font-size: 0.85rem; opacity: 0.75; }
+
+/* ─── Header ────────────────────────────────────────── */
+.rfb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(217, 119, 6, 0.15);
+}
+
+.rfb-count {
+  font-size: 0.85rem;
+  color: var(--c-muted, #9ca3af);
+  letter-spacing: 0.04em;
+}
+
+/* ─── Secciones (carpeta / sin carpeta) ─────────────── */
+.rfb-section {
+  margin-bottom: 24px;
+}
+.rfb-section-title {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent, #d97706);
+  margin: 0 0 10px;
+  font-weight: 500;
+}
+.rfb-section-title--folder {
+  color: var(--c-text, #e5e7eb);
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  margin: 0;
+}
+
+/* ─── Header de carpeta ─────────────────────────────── */
+.rfb-folder {
+  padding: 12px 14px;
+  background: rgba(217, 119, 6, 0.04);
+  border: 1px solid rgba(217, 119, 6, 0.15);
+  border-radius: 0;
+}
+.rfb-folder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.rfb-folder-actions {
+  display: flex;
+  gap: 4px;
+}
+.rfb-folder-empty {
+  font-size: 0.82rem;
+  color: var(--c-muted, #9ca3af);
+  margin: 0;
+  padding: 6px 0;
+}
+
+/* ─── Lista de cursos ───────────────────────────────── */
+.rfb-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rfb-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--p-panel, #111622);
+  border: 1px solid rgba(217, 119, 6, 0.12);
+  border-radius: 0;
+  transition: border-color 0.15s;
+}
+.rfb-item:hover {
+  border-color: rgba(217, 119, 6, 0.35);
+}
+
+.rfb-item-info {
+  min-width: 0;
+  flex: 1;
+}
+.rfb-item-title {
+  font-size: 0.9rem;
+  color: var(--c-text, #e5e7eb);
+  margin-bottom: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rfb-item-meta {
+  font-size: 0.72rem;
+  color: var(--c-muted, #9ca3af);
+  letter-spacing: 0.03em;
+}
+
+.rfb-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ─── Select ────────────────────────────────────────── */
+.rfb-select {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(217, 119, 6, 0.25);
+  border-radius: 0;
+  color: var(--c-text, #e5e7eb);
+  font: inherit;
+  font-size: 0.75rem;
+  padding: 4px 6px;
+  max-width: 140px;
+  cursor: pointer;
+}
+.rfb-select:focus {
+  outline: none;
+  border-color: var(--accent, #d97706);
+}
+
+/* ─── Botones ───────────────────────────────────────── */
+.rfb-btn {
+  font: inherit;
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+}
+.rfb-btn--ghost {
+  background: transparent;
+  color: var(--c-text, #e5e7eb);
+  border-color: rgba(217, 119, 6, 0.3);
+}
+.rfb-btn--ghost:hover {
+  border-color: var(--accent, #d97706);
+  color: var(--accent, #d97706);
+}
+
+.rfb-icon-btn {
+  background: transparent;
+  border: 1px solid rgba(217, 119, 6, 0.2);
+  border-radius: 0;
+  color: var(--c-muted, #9ca3af);
+  font: inherit;
+  font-size: 0.8rem;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  padding: 0;
+}
+.rfb-icon-btn:hover {
+  border-color: var(--accent, #d97706);
+  color: var(--accent, #d97706);
+}
+.rfb-icon-btn--danger:hover {
+  border-color: #f87171;
+  color: #f87171;
+}
+
+/* ─── Responsive ────────────────────────────────────── */
+@media (max-width: 600px) {
+  .rfb-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .rfb-item-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .rfb-select {
+    max-width: 100%;
+    flex: 1;
+  }
+}
+
+
+/* ─── Pantalla para invitado ─────────────────────── */
+.rfb-guest {
+  padding: 50px 20px;
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.rfb-guest-mark {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 0 14px rgba(217, 119, 6, 0.35));
+}
+.rfb-guest-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0 0 12px;
+  color: var(--c-text, #e5e7eb);
+}
+.rfb-guest-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--c-muted, #9ca3af);
+  margin: 0 0 24px;
+}
+
+.rfb-btn--primary {
+  background: var(--accent, #d97706);
+  color: #0a0e17;
+  border-color: var(--accent, #d97706);
+  font-weight: 500;
+  padding: 10px 22px;
+  font-size: 0.9rem;
+}
+.rfb-btn--primary:hover {
+  background: #ea8c1c;
+  border-color: #ea8c1c;
+  box-shadow: 0 0 16px rgba(217, 119, 6, 0.4);
+}
+
+/* ─── Documentos dentro de un curso ─────────────── */
+.rfb-docs {
+  margin-top: 6px;
+}
+.rfb-docs-summary {
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--c-muted, #9ca3af);
+  letter-spacing: 0.04em;
+  user-select: none;
+  list-style: none;
+  padding: 2px 0;
+}
+.rfb-docs-summary::-webkit-details-marker { display: none; }
+.rfb-docs[open] .rfb-docs-summary {
+  color: var(--accent, #d97706);
+}
+.rfb-docs-list {
+  list-style: none;
+  padding: 6px 0 2px 12px;
+  margin: 0;
+  border-left: 1px solid rgba(217, 119, 6, 0.2);
+  margin-left: 4px;
+}
+.rfb-doc-item {
+  display: flex;
+  gap: 8px;
+  padding: 3px 0;
+  font-size: 0.8rem;
+  color: var(--c-text, #e5e7eb);
+  line-height: 1.4;
+}
+.rfb-doc-order {
+  color: var(--accent, #d97706);
+  flex-shrink: 0;
+  font-weight: 500;
+  min-width: 16px;
+}
+.rfb-doc-title {
+  color: rgba(229, 231, 235, 0.85);
+}
+
+
+/* ─── Acciones por documento ─────────────────────── */
+.rfb-doc-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+.rfb-doc-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rfb-doc-actions {
+  display: flex;
+  gap: 3px;
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: opacity 0.15s;
+}
+.rfb-doc-item:hover .rfb-doc-actions {
+  opacity: 1;
+}
+.rfb-icon-btn--sm {
+  width: 22px;
+  height: 22px;
+  font-size: 0.7rem;
+}
