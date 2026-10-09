@@ -292,7 +292,7 @@ async function askVertex(
         () =>
           reject(
             new Error(
-              `Vertex AI Timeout excedido (${timeoutMs}ms)`
+              `Google AI Studio Timeout excedido (${timeoutMs}ms)`
             )
           ),
         timeoutMs

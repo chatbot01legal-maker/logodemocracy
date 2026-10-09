@@ -226,6 +226,78 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function loadDocument(name) {
     if (!content) return;
+
+    // ─── Documento de librería personal ────────────────
+    if (typeof name === 'string' && name.indexOf('lib://') === 0) {
+      content.innerHTML = "Cargando...";
+      try {
+        const parts = name.replace('lib://', '').split('/');
+        const libId = parts[0];
+        const order = parts[1];
+        const data = await window.ApiClient.get(
+          'reyfilosofo',
+          '/library/' + libId + '/document/' + order
+        );
+        if (!data || !data.document) throw new Error('Documento personal no disponible');
+        const doc = data.document;
+        const lib = data.library || {};
+
+        // Los docs personales llevan frontmatter YAML igual que los públicos.
+        const rawText = doc.content_md || '';
+        let body = rawText;
+        let meta = { title: doc.title || '' };
+        try {
+          const parsed = parseFrontmatter(rawText);
+          if (parsed && parsed.body) {
+            body = parsed.body;
+            meta = Object.assign(meta, parsed.meta || {});
+          }
+        } catch (e) {
+          // si falla el parse, usamos el raw tal cual
+        }
+
+        // Quitar ## Título del principio del body (ya lo insertamos como h1).
+        body = body.replace(/^##\s+.*\n+/, '');
+
+        const html = marked.parse(body);
+        const titleHtml = '<h1>' + (doc.title || '') + '</h1>';
+        // Usamos la clase .content existente para heredar todos los estilos
+        // de los documentos públicos de Academia.
+        content.innerHTML = '<div class="content">' + titleHtml + html + '</div>';
+
+        currentActiveAsset = {
+          source: "Academia",
+          contractVersion: "1.0",
+          objective: 'Acompañar en la comprensión del documento: ' + doc.title,
+          asset: {
+            title: doc.title,
+            file: name,
+            content: doc.content_md || '',
+            sophia: { risk: null },
+            summary: doc.summary || '',
+            ideas_fuerza: doc.ideas_fuerza || []
+          },
+          metadata: {
+            originModule: "Academia",
+            personalLibrary: { id: libId, title: lib.title || '' }
+          }
+        };
+
+        if (
+          window.ReyFilosofoChat &&
+          typeof window.ReyFilosofoChat.setActiveAsset === "function"
+        ) {
+          window.ReyFilosofoChat.setActiveAsset(currentActiveAsset);
+        }
+        return;
+      } catch (err) {
+        console.error(err);
+        content.innerHTML = "Error cargando documento personal.";
+        return;
+      }
+    }
+
+    // ─── Documento público ─────────────────────────────
     try {
       content.innerHTML = "Cargando...";
       const filePath = `/pages/academy/content/${name}`;
@@ -279,14 +351,73 @@ document.addEventListener("DOMContentLoaded", () => {
   /* =========================
      LOAD TREE & RENDER
   ========================= */
-  async function loadTree() {
+  let _publicDocuments = [];
+
+  async function loadPublicTree() {
     try {
       const res = await fetch("/pages/academy/data/tree.json");
-      allDocuments = await res.json();
-      renderSidebar();
+      _publicDocuments = await res.json();
     } catch (err) {
       console.error("Error cargando índice:", err);
+      _publicDocuments = [];
     }
+  }
+
+  async function loadPersonalLibraries() {
+    const personal = [];
+    try {
+      if (window.ApiClient && typeof window.ApiClient.get === 'function') {
+        const data = await window.ApiClient.get('reyfilosofo', '/library/list');
+        const libs = (data && Array.isArray(data.libraries)) ? data.libraries : [];
+        libs.forEach(function (lib) {
+          (lib.documents || []).forEach(function (doc) {
+            personal.push({
+              library: 'Biblioteca personal',
+              folder: lib.title || lib.tema || 'Curso',
+              title: doc.title,
+              file: 'lib://' + lib._id + '/' + doc.order,
+              order: doc.order,
+              tags: ['personal', 'libreria-personal'],
+              personal: true
+            });
+          });
+        });
+      }
+    } catch (err) {
+      console.warn('No se pudieron cargar librerías personales:', err && err.message);
+    }
+    return personal;
+  }
+
+  async function loadTree() {
+    await loadPublicTree();
+    const personal = await loadPersonalLibraries();
+    allDocuments = _publicDocuments.concat(personal);
+    renderSidebar();
+  }
+
+  async function refreshPersonalLibraries() {
+    const personal = await loadPersonalLibraries();
+    allDocuments = _publicDocuments.concat(personal);
+    renderSidebar();
+  }
+
+  // Refrescar librerías personales cuando cambia la identidad (login/logout).
+  if (window.EventBus && typeof window.EventBus.on === 'function') {
+    EventBus.on('identity:changed', function () {
+      // Pequeño delay para dar tiempo a que CurrentUser se actualice.
+      setTimeout(function () {
+        refreshPersonalLibraries();
+      }, 300);
+    });
+    EventBus.on('auth:changed', function () {
+      setTimeout(function () {
+        refreshPersonalLibraries();
+      }, 300);
+    });
+    console.log('[Academia] Listener identity:changed registrado');
+  } else {
+    console.warn('[Academia] EventBus no disponible, no se puede escuchar identity:changed');
   }
 
   function renderSidebar() {

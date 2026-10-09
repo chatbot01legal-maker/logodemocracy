@@ -400,6 +400,7 @@ body {
   gap: 4rem;
   align-items: start;
   justify-items: start;
+  padding-top: 1rem;
 }
 
 .footer-brand {
@@ -631,4 +632,24 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   FIX STICKY EN DESKTOP — sesión 2026-10-08
+   .document tenía overflow: hidden, lo cual rompe position:sticky
+   en sus hijos (el sticky se ancla al scroll container que no scrollea).
+   Al liberarlo, la página scrollea naturalmente y tanto el sidebar
+   (filósofo) como el cartero se quedan pegados al viewport.
+   Replica el comportamiento que ya funciona en mobile (<760px).
+═══════════════════════════════════════════════════════ */
+@media (min-width: 761px) {
+  .document {
+    overflow: visible;
+    min-height: auto;
+  }
+  .document-content {
+    flex: none;
+    overflow: visible;
+  }
 }

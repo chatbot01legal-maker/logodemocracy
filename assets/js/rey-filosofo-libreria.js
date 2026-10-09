@@ -7,7 +7,19 @@
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'rf-libreria-draft-v1';
+  var STORAGE_KEY_BASE = 'rf-libreria-draft-v1';
+
+  function getStorageKey() {
+    var suffix = 'guest';
+    try {
+      if (typeof CurrentUser !== 'undefined' && CurrentUser.exists && CurrentUser.exists()) {
+        var u = CurrentUser.get && CurrentUser.get();
+        if (u && (u.id || u._id)) suffix = String(u.id || u._id);
+        else if (u && u.email) suffix = String(u.email);
+      }
+    } catch (e) {}
+    return STORAGE_KEY_BASE + '-' + suffix;
+  }
 
   // Total de pantallas reales de configuración (excluyendo intro, resumen y loader)
   var CONFIG_STEPS = 8;
@@ -64,13 +76,13 @@
 
   function saveDraft() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      localStorage.setItem(getStorageKey(), JSON.stringify(state));
     } catch (e) {}
   }
 
   function loadDraft() {
     try {
-      var raw = localStorage.getItem(STORAGE_KEY);
+      var raw = localStorage.getItem(getStorageKey());
       if (!raw) return;
       var data = JSON.parse(raw);
       if (data && data.answers) {
@@ -81,7 +93,7 @@
   }
 
   function clearDraft() {
-    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    try { localStorage.removeItem(getStorageKey()); } catch (e) {}
   }
 
   function resetAll() {
@@ -325,13 +337,12 @@
   function screenLoader() {
     return '' +
       '<div class="rfl-screen rfl-screen--loader">' +
-        '<div class="rfl-loader-mark">⌛</div>' +
-        '<h2 class="rfl-h2">Estamos preparando tu curso.</h2>' +
-        '<p class="rfl-p">Rey Filósofo le pidió al bibliotecario cinco documentos sobre <strong>' + esc(state.answers.tema || 'tu tema') + '</strong>. Vas a poder leerlos en unos segundos.</p>' +
-        '<p class="rfl-p rfl-p--muted" id="rfl-loader-note">Conectando con el bibliotecario…</p>' +
-        '<div class="rfl-loader-actions" style="display:none" id="rfl-loader-done">' +
-          '<button class="rfl-btn rfl-btn--ghost" data-action="back-to-inicio">Volver al inicio de Rey Filósofo</button>' +
-        '</div>' +
+        '<div class="rfl-loader-mark" id="rfl-loader-mark">⌛</div>' +
+        '<h2 class="rfl-h2">Estamos generando tu curso.</h2>' +
+        '<p class="rfl-p">Estamos generando cinco documentos sobre <strong>' + esc(state.answers.tema || 'tu tema') + '</strong>. Va a tardar un momento.</p>' +
+        '<p class="rfl-p rfl-p--muted" id="rfl-loader-note">Iniciando la generación…</p>' +
+        '<p class="rfl-error" id="rfl-loader-error" style="display:none"></p>' +
+        '<div class="rfl-loader-actions" style="display:none" id="rfl-loader-done"></div>' +
       '</div>';
   }
 
@@ -389,30 +400,7 @@
   }
 
   function simulateLoader() {
-    var note = document.getElementById('rfl-loader-note');
-    if (!note) return;
-    var phases = [
-      'Consultando al bibliotecario…',
-      'Diseñando los cinco documentos…',
-      'Escribiendo el primero…',
-      'Escribiendo el segundo…',
-      'Escribiendo el tercero…',
-      'Escribiendo el cuarto…',
-      'Escribiendo el quinto…',
-      'Revisando el conjunto…'
-    ];
-    var i = 0;
-    var timer = setInterval(function () {
-      if (i >= phases.length) {
-        clearInterval(timer);
-        note.textContent = 'Esto es una demostración. Cuando el bibliotecario esté listo, tu curso va a aparecer aquí y en la Academia.';
-        var done = document.getElementById('rfl-loader-done');
-        if (done) done.style.display = 'block';
-        return;
-      }
-      note.textContent = phases[i];
-      i++;
-    }, 900);
+    // El loader real lo maneja callGenerateCourse().
   }
 
   // ─── Input handling ────────────────────────────────
@@ -499,8 +487,99 @@
       state.answers.titulo = state.answers.tema + ': una introducción';
     }
     state.step = 10;
+    state.error = null;
+    state.result = null;
     saveDraft();
     render();
+    callGenerateCourse();
+  }
+
+  async function callGenerateCourse() {
+    var note = document.getElementById('rfl-loader-note');
+    var done = document.getElementById('rfl-loader-done');
+    var errBox = document.getElementById('rfl-loader-error');
+
+    if (!window.ApiClient || !ApiClient.post) {
+      if (note) note.textContent = 'Error: ApiClient no disponible.';
+      return;
+    }
+
+    var phases = [
+      'Iniciando la generación…',
+      'Diseñando los cinco documentos…',
+      'Escribiendo el contenido…',
+      'Revisando el conjunto…',
+      'Casi listo…'
+    ];
+    var pi = 0;
+    var timer = setInterval(function () {
+      if (note && pi < phases.length) {
+        note.textContent = phases[pi];
+        pi++;
+      }
+    }, 4000);
+
+    try {
+      var payload = {
+        title: state.answers.titulo,
+        params: {
+          tema: state.answers.tema,
+          proposito: state.answers.proposito,
+          dificultad: state.answers.dificultad,
+          conocimiento: state.answers.conocimiento,
+          atraccion: state.answers.atraccion,
+          tecnico: state.answers.tecnico,
+          estilo: state.answers.estilo,
+          referencias: state.answers.referencias
+        }
+      };
+
+      var result = await ApiClient.post('reyfilosofo', '/library/generate', payload);
+
+      clearInterval(timer);
+
+      if (!result || !result.library) {
+        throw new Error('Respuesta inválida del servidor');
+      }
+
+      state.result = result.library;
+      clearDraft();
+
+      if (note) note.textContent = '¡Listo! Tu curso ya está en la Academia.';
+
+      // Detener animación del reloj de arena
+      var mark = document.getElementById('rfl-loader-mark');
+      if (mark) {
+        mark.style.animation = 'none';
+        mark.textContent = '✓';
+        mark.style.fontSize = '2.4rem';
+      }
+
+      if (done) {
+        done.style.display = 'block';
+        done.innerHTML =
+          '<button class="rfl-btn rfl-btn--primary" data-action="go-academy">Ir a la Academia →</button>';
+      }
+    } catch (err) {
+      clearInterval(timer);
+      var msg = err && err.message ? err.message : 'Error desconocido';
+      if (note) note.textContent = 'No se pudo generar el curso.';
+
+      var markErr = document.getElementById('rfl-loader-mark');
+      if (markErr) {
+        markErr.style.animation = 'none';
+        markErr.textContent = '⚠';
+      }
+      if (errBox) {
+        errBox.style.display = 'block';
+        errBox.textContent = msg;
+      }
+      if (done) {
+        done.style.display = 'block';
+        done.innerHTML =
+          '<button class="rfl-btn rfl-btn--ghost" data-action="retry-generate">Reintentar</button>';
+      }
+    }
   }
 
   function onRestart() {
@@ -531,6 +610,17 @@
       if (t.dataset.action === 'generate') { onGenerate(); return; }
       if (t.dataset.action === 'restart') { onRestart(); return; }
       if (t.dataset.action === 'back-to-inicio') { onBackToInicio(); return; }
+      if (t.dataset.action === 'go-academy') {
+        window.location.href = '/pages/archive-template.html';
+        return;
+      }
+      if (t.dataset.action === 'retry-generate') {
+        state.error = null;
+        state.step = 10;
+        render();
+        callGenerateCourse();
+        return;
+      }
 
       if (t.dataset.fill === 'tema') { onFillTema(t.dataset.value); return; }
       if (t.dataset.answer) { onAnswer(t.dataset.answer, t.dataset.value); return; }
@@ -547,6 +637,14 @@
 
   function mount() {
     loadDraft();
+
+    // Si el draft quedó atascado en el loader (step 10) pero no hay
+    // una generación corriendo, volver al resumen para desbloquear.
+    if (state.step === 10) {
+      state.step = 9;
+      saveDraft();
+    }
+
     render();
     bindEvents();
   }

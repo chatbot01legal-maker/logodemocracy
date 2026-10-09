@@ -1774,26 +1774,13 @@ var views = {
             <div class="view-eyebrow">Perfil de aprendizaje</div>
             <h1 class="view-title">Zona de Desarrollo Próximo</h1>
             <div class="view-body">
-              <p>
-                La ZDP muestra la distancia entre aquello que puedes hacer
-                autónomamente y aquello que puedes alcanzar con ayuda.
+              <p class="epistemic">
+                <strong>En construcción.</strong>
               </p>
               <p>
-                No es una nota ni una clasificación. Es una representación
-                dinámica del punto en que te encuentras y del tipo de
-                acompañamiento que puede ayudarte a avanzar.
-              </p>
-              <div class="epistemic">
-                <p><strong>Autónomo</strong><br>
-                Lo que actualmente puedes comprender o realizar por ti mismo.</p>
-                <p><strong>Con acompañamiento</strong><br>
-                Lo que puedes alcanzar con preguntas, ejemplos o explicaciones.</p>
-                <p><strong>En desarrollo</strong><br>
-                Lo que todavía requiere aprendizaje y nueva evidencia.</p>
-              </div>
-              <p>
-                Esta información se actualizará a medida que interactúes,
-                leas, respondas y avances.
+                Esta sección todavía no está disponible. Se habilitará cuando
+                la infraestructura de microtests y evidencia acumulada esté
+                completa.
               </p>
             </div>
           </div>
@@ -1842,34 +1829,21 @@ var views = {
           <div class="view">
             <div class="view-eyebrow">Aprendizaje autodirigido</div>
             <h1 class="view-title">Aprende lo que tú quieras</h1>
-            <div class="view-body">
-              <p>
-                Dile a Rey Filósofo qué quieres aprender.
-              </p>
-              <p>
-                Puede ser Fórmula 1, historia, música, ajedrez, astronomía
-                o cualquier otro tema que quieras comprender mejor.
-              </p>
-              <p>
-                Rey Filósofo comenzará por conocerte: qué sabes, qué te
-                interesa, qué has visto o leído y qué quieres conseguir.
-              </p>
-              <p>
-                A partir de ese diálogo podrá construir una biblioteca
-                personal dentro de la Academia.
-              </p>
-              <p>
-                El proceso mantiene una lógica sencilla:
-                <strong>leer → comprender → preguntar → pensar → volver al texto
-                → comprender mejor</strong>.
-              </p>
-              <p class="epistemic">
-                <strong>El objetivo es que aprendas a comprender, no que una IA
-                piense por ti.</strong>
-              </p>
-            </div>
+            <div id="rf-libreria-root"></div>
           </div>
         `;
+      },
+      onEnter: function() {
+        if (window.ReyFilosofoLibreria && typeof window.ReyFilosofoLibreria.mount === 'function') {
+          window.ReyFilosofoLibreria.mount();
+        } else {
+          console.error('[RF] ReyFilosofoLibreria no está cargado.');
+        }
+      },
+      onExit: function() {
+        if (window.ReyFilosofoLibreria && typeof window.ReyFilosofoLibreria.unmount === 'function') {
+          window.ReyFilosofoLibreria.unmount();
+        }
       }
     },
 

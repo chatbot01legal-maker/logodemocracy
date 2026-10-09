@@ -96,9 +96,11 @@ app.use((req, res, next) => {
 
 // ─── Rutas del Rey Filósofo (RESTORED) ────────────────
 const rfRoutes = require("./logodemocracy-api/src/routes/rfRoutes");
+const libraryRoutes = require("./logodemocracy-api/src/routes/libraryRoutes");
 app.use("/api/reyfilosofo/microtests", mongooseServerless, microtestRoutes);
 app.use("/api/profile", mongooseServerless, profileRoutes);
 app.use("/auth", mongooseServerless, authRoutes);
+app.use("/api/reyfilosofo/library", mongooseServerless, libraryRoutes);
 app.use("/api/reyfilosofo", mongooseServerless, rfRoutes);
 
 // ─── Utilidad para normalizar texto ───────────────────

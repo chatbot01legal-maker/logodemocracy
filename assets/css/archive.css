@@ -918,3 +918,24 @@ main.document > .document-content {
 .sophia-score-card {
   border-radius: 0;
 }
+
+
+
+
+/* ============================================================
+   Rey Filósofo · sticky en tablet/desktop
+   En pantallas grandes el sidebar tiene su propio scroll.
+   Mantenemos el bloque del filósofo pegado arriba para que
+   el botón "Preguntar" siempre esté visible.
+============================================================ */
+@media (min-width: 761px) {
+  .sidebar-content .philosopher {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: #050a12;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+    /* Compensa el gap visual del sidebar-content sin moverlo del flujo */
+    margin-bottom: 4px;
+  }
+}
