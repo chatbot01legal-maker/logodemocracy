@@ -653,3 +653,37 @@ body {
     overflow: visible;
   }
 }
+
+
+/* ============================================================
+   FIX ZOOM MOBILE · Regla general con !important
+   iOS/Android hacen zoom automático cuando el input tiene
+   font-size < 16px. Forzamos 16px y así ninguna regla más
+   específica lo puede romper.
+============================================================ */
+input,
+textarea,
+select,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+[contenteditable="true"] {
+  font-size: 16px !important;
+}
+
+.chat-popup-input-area input,
+#chatInput,
+#rf-input,
+#academy-cartero-question,
+#rfl-tema,
+#rfl-atraccion,
+#rfl-titulo,
+.rf-input,
+.rf-textarea,
+.profile-input {
+  font-size: 16px !important;
+}

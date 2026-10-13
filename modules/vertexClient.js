@@ -1,4 +1,15 @@
 const { GoogleGenAI } = require("@google/genai");
+
+/* ============================================================
+   FALLBACK CHAIN · modelos alternativos por saturación.
+   Cuando el modelo principal falla con 503, probamos el siguiente.
+============================================================ */
+const FALLBACK_MODELS = [
+  'gemini-3.6-flash',
+  'gemini-3-flash-preview',
+  'gemini-3.5-flash'
+];
+
 const db = require("./database");
 const {
   canUseAI
@@ -254,7 +265,7 @@ async function enforceAILimit(stage) {
 
 async function askVertex(
   prompt,
-  model = "gemini-flash-lite-latest",
+  model = "gemini-3.6-flash",
   timeoutMs = 50000,
   generationConfig = null,
   stage = "unknown"
@@ -279,25 +290,101 @@ async function askVertex(
       ? { ...generationConfig }
       : undefined;
 
-  const requestPromise =
-    client.models.generateContent({
-      model,
+  // Timeout POR INTENTO (no global).
+  // Cada intento tiene su propio presupuesto. Si un intento se cuelga,
+  // se cancela y se pasa al siguiente. El timeout global se reserva
+  // solo como red de seguridad externa.
+  const PER_ATTEMPT_TIMEOUT = Math.max(8000, Math.floor(timeoutMs / 3));
+  const MAX_ATTEMPTS = 3;
+  const DELAYS_MS = [800, 2000];
+
+  const _attemptGeminiWithModel = (attemptNum, currentModel) => {
+    const request = client.models.generateContent({
+      model: currentModel,
       contents: prompt,
       config: requestConfig
     });
 
-  const timeoutPromise =
-    new Promise((_, reject) =>
+    const timeout = new Promise((_, reject) =>
       setTimeout(
         () =>
           reject(
             new Error(
-              `Google AI Studio Timeout excedido (${timeoutMs}ms)`
+              `Google AI Studio Timeout por intento (${PER_ATTEMPT_TIMEOUT}ms)`
             )
           ),
-        timeoutMs
+        PER_ATTEMPT_TIMEOUT
       )
     );
+
+    return Promise.race([request, timeout]);
+  };
+
+  // Cadena de modelos: empezamos con el solicitado, después los fallback.
+  const modelChain = [model].concat(
+    FALLBACK_MODELS.filter(m => m !== model)
+  );
+
+  const _callGemini = async () => {
+    let lastError = null;
+
+    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+      const currentModel = modelChain[attempt] || modelChain[0];
+
+      try {
+        console.log(
+          '[SOPHIA-GENAI] Intento ' + (attempt + 1) + '/' + MAX_ATTEMPTS +
+          ' model=' + currentModel +
+          ' (timeout por intento: ' + PER_ATTEMPT_TIMEOUT + 'ms)'
+        );
+        return await _attemptGeminiWithModel(attempt, currentModel);
+      } catch (err) {
+        lastError = err;
+        const msg = (err && err.message) || '';
+
+        const isTimeout = msg.indexOf('Timeout por intento') !== -1;
+        const isTransient =
+          isTimeout ||
+          (err && err.status === 503) ||
+          msg.indexOf('503') !== -1 ||
+          msg.indexOf('UNAVAILABLE') !== -1 ||
+          msg.indexOf('high demand') !== -1 ||
+          msg.indexOf('overloaded') !== -1;
+
+        if (!isTransient || attempt === MAX_ATTEMPTS - 1) {
+          throw err;
+        }
+
+        const wait = DELAYS_MS[attempt] || 2000;
+        console.warn(
+          '[SOPHIA-GENAI] Retry ' + (attempt + 1) + '/' + MAX_ATTEMPTS +
+          ' tras ' + (isTimeout ? 'timeout' : 'error transitorio') +
+          '. Siguiente modelo: ' + (modelChain[attempt + 1] || 'ninguno') +
+          '. Esperando ' + wait + 'ms.'
+        );
+        await new Promise(r => setTimeout(r, wait));
+      }
+    }
+
+    throw lastError || new Error('Error desconocido en llamadas a Gemini');
+  };
+
+  const requestPromise = _callGemini();
+
+  // Red de seguridad: si algo se cuelga más allá del presupuesto total
+  // (3 intentos × PER_ATTEMPT_TIMEOUT + delays), forzamos el fallo.
+  const GLOBAL_TIMEOUT = PER_ATTEMPT_TIMEOUT * MAX_ATTEMPTS + 8000;
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(
+      () =>
+        reject(
+          new Error(
+            `Google AI Studio Timeout global (${GLOBAL_TIMEOUT}ms)`
+          )
+        ),
+      GLOBAL_TIMEOUT
+    )
+  );
 
   const startTime =
     Date.now();
@@ -412,7 +499,7 @@ async function askVertex(
 
 async function askVertexWithSearch(
   prompt,
-  model = "gemini-flash-lite-latest",
+  model = "gemini-3.6-flash",
   timeoutMs = 50000,
   stage = "unknown"
 ) {

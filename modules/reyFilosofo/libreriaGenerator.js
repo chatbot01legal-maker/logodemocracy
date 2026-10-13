@@ -12,8 +12,8 @@ const {
   buildSingleDocumentPrompt
 } = require('./libreriaPrompt');
 
-const MODEL_OUTLINE = 'gemini-flash-lite-latest';
-const MODEL_DOC = 'gemini-flash-lite-latest';
+const MODEL_OUTLINE = 'gemini-3.6-flash';
+const MODEL_DOC = 'gemini-3.6-flash';
 const TIMEOUT_OUTLINE_MS = 15000;
 const TIMEOUT_DOC_MS = 50000;
 

@@ -433,13 +433,17 @@
           'placeholder="Escribe tu pregunta..."></textarea>' +
 
         '<div class="academy-cartero-actions">' +
-          '<button type="button" id="academy-cartero-share"' +
-            (!state.selection ? ' disabled' : '') +
-            '>Enviar a una IA externa</button>' +
-
           '<button type="button" id="academy-cartero-copy"' +
             (!state.selection ? ' disabled' : '') +
-            '>Copiar prompt</button>' +
+            '>Copiar para IA externa</button>' +
+
+          '<button type="button" id="academy-cartero-share"' +
+            (!state.selection ? ' disabled' : '') +
+            '>IA Interna</button>' +
+
+          '<button type="button" id="academy-cartero-info"' +
+            ' title="Advertencia sobre IA interna" ' +
+            ' aria-label="Advertencia sobre IA interna">ⓘ</button>' +
         '</div>' +
       '</div>';
 
@@ -464,25 +468,11 @@
       });
     }
 
-    var share =
-      document.getElementById('academy-cartero-share');
-
-    if (share) {
-      share.addEventListener('click', function () {
-        if (!state.selection || !state.question.trim()) {
-          alert('Selecciona un fragmento y escribe una pregunta.');
-          return;
-        }
-
-        sharePackage();
-      });
-    }
-
-    var copy =
+    var copyBtn =
       document.getElementById('academy-cartero-copy');
 
-    if (copy) {
-      copy.addEventListener('click', function () {
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
         if (!state.selection || !state.question.trim()) {
           alert('Selecciona un fragmento y escribe una pregunta.');
           return;
@@ -491,6 +481,146 @@
         copyPackage();
       });
     }
+
+    var iaBtn =
+      document.getElementById('academy-cartero-share');
+
+    if (iaBtn) {
+      iaBtn.addEventListener('click', function () {
+        if (!state.selection || !state.question.trim()) {
+          alert('Selecciona un fragmento y escribe una pregunta.');
+          return;
+        }
+
+        openInternalChat();
+      });
+    }
+
+    var infoBtn =
+      document.getElementById('academy-cartero-info');
+
+    if (infoBtn) {
+      infoBtn.addEventListener('click', function () {
+        showInternalAiDisclaimer();
+      });
+    }
+  }
+
+  /* ============================================================
+     IA INTERNA · abre el chat del Rey Filósofo con el contexto
+     del documento activo + fragmento + pregunta.
+  ============================================================ */
+  function openInternalChat() {
+    if (
+      !window.ReyFilosofoChat ||
+      typeof window.ReyFilosofoChat.open !== 'function'
+    ) {
+      alert('El chat interno no está disponible todavía.');
+      return;
+    }
+
+    if (
+      !window.CognitiveSessionFactory ||
+      typeof window.CognitiveSessionFactory.fromAcademy !== 'function'
+    ) {
+      alert('La fábrica de sesiones cognitivas no está disponible.');
+      return;
+    }
+
+    var asset = getAsset();
+
+    if (!asset || !asset.asset) {
+      alert('No hay un documento activo en Academia.');
+      return;
+    }
+
+    // El paquete del Cartero (el mismo string que se copia para la IA externa)
+    // se convierte en el input idéntico para la IA interna.
+    buildPackage()
+      .then(function (packageText) {
+        // Asset reducido: solo metadatos para trazabilidad.
+        // Quitamos el content crudo del documento (nunca se envía a la IA).
+        var enrichedAsset = JSON.parse(JSON.stringify(asset));
+        enrichedAsset.asset = enrichedAsset.asset || {};
+        delete enrichedAsset.asset.content;
+        enrichedAsset.asset.selectedFragment = state.selection;
+        enrichedAsset.asset.userQuestion = state.question.trim();
+
+        var session;
+
+        try {
+          session = window.CognitiveSessionFactory.fromAcademy(enrichedAsset);
+        } catch (e) {
+          console.error('Cartero IA Interna:', e);
+          alert('No se pudo preparar el contexto del chat.');
+          return;
+        }
+
+        // Cerramos el Cartero y abrimos el chat con el paquete completo
+        // como primer mensaje (oculto al usuario, ya lo vio en el Cartero).
+        state.open = false;
+        render();
+
+        try {
+          window.ReyFilosofoChat.open(session, packageText);
+        } catch (e) {
+          console.error('ReyFilosofoChat.open:', e);
+          alert('No se pudo abrir el chat interno.');
+        }
+      })
+      .catch(function (error) {
+        console.error('Cartero IA Interna: no se pudo armar el paquete.', error);
+        alert('No se pudo preparar el paquete para la IA interna.');
+      });
+  }
+
+  /* ============================================================
+     ADVERTENCIA · modal con información sobre IA interna.
+  ============================================================ */
+  function showInternalAiDisclaimer() {
+    var existing = document.getElementById('academy-cartero-disclaimer');
+    if (existing) existing.remove();
+
+    var overlay = document.createElement('div');
+    overlay.id = 'academy-cartero-disclaimer';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.innerHTML =
+      '<div class="academy-cartero-disclaimer-box">' +
+        '<div class="academy-cartero-disclaimer-header">' +
+          '<span>ⓘ Advertencia</span>' +
+          '<button type="button" class="academy-cartero-disclaimer-close" aria-label="Cerrar">×</button>' +
+        '</div>' +
+        '<div class="academy-cartero-disclaimer-body">' +
+          '<p>Esta conversación se procesa con <strong>Google AI Studio</strong>. ' +
+          'Google puede usar los datos enviados para mejorar sus modelos.</p>' +
+          '<p>No compartas información personal sensible: nombres completos, ' +
+          'documentos de identidad, datos bancarios, direcciones ni contraseñas.</p>' +
+          '<p>El Rey Filósofo no decide por ti. Aumenta la robustez de tu propio examen.</p>' +
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(overlay);
+
+    var close = function () {
+      if (overlay && overlay.parentNode) {
+        overlay.parentNode.removeChild(overlay);
+      }
+    };
+
+    overlay.addEventListener('click', function (ev) {
+      if (ev.target === overlay) close();
+    });
+
+    var btn = overlay.querySelector('.academy-cartero-disclaimer-close');
+    if (btn) btn.addEventListener('click', close);
+
+    document.addEventListener('keydown', function onEsc(ev) {
+      if (ev.key === 'Escape') {
+        close();
+        document.removeEventListener('keydown', onEsc);
+      }
+    });
   }
 
   function open() {

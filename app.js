@@ -78,6 +78,8 @@ app.post("/api/debug-log", (req, res) => {
   res.sendStatus(204);
 });
 
+
+
 // ─── LOG de cada petición con ID ÚNICO ────────────────
 app.use((req, res, next) => {
   req.headers["x-request-id"] = crypto.randomUUID();

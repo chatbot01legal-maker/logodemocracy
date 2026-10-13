@@ -47,6 +47,7 @@
   const state = {
     sessionId: null,
     activeAsset: null,
+    hideNextUserMessage: false,
     conversation: [],
     isOpen: false,
     isSending: false
@@ -163,7 +164,12 @@
       timestamp: new Date().toISOString()
     };
 
-    state.conversation.push(userMessage);
+    // Si el flag está activo, no mostramos el mensaje del usuario
+    // (fue enviado desde el Cartero, el usuario ya lo vio ahí).
+    if (!state.hideNextUserMessage) {
+      state.conversation.push(userMessage);
+    }
+    state.hideNextUserMessage = false;
     state.isSending = true;
 
     renderPanel();
@@ -249,7 +255,10 @@
       state.conversation.push({
         role: 'assistant',
         content:
-          'No pude conectar con el Rey Filósofo en este momento. Intenta nuevamente en unos segundos.',
+          'El servicio interno está saturado en este momento.\n\n' +
+          'Puedes intentar de nuevo en unos minutos, o usar el botón ' +
+          '"Copiar para IA externa" para llevar tu pregunta a ChatGPT, ' +
+          'Gemini o DeepSeek.',
         timestamp: new Date().toISOString(),
         isError: true
       });
@@ -1255,7 +1264,7 @@ function renderSpeechText(content, messageIndex) {
       return true;
     },
 
-    open(cognitiveAsset) {
+    open(cognitiveAsset, initialMessage) {
       let normalized;
 
       try {
@@ -1286,6 +1295,24 @@ function renderSpeechText(content, messageIndex) {
       }
 
       renderPanel();
+
+      // Si viene un mensaje inicial, dispararlo automáticamente.
+      var initial = (initialMessage && typeof initialMessage === 'string')
+        ? initialMessage.trim()
+        : '';
+
+      if (initial) {
+        var self = this;
+        // El usuario ya escribió la pregunta en el Cartero, no la repetimos.
+        state.hideNextUserMessage = true;
+        setTimeout(function () {
+          self.sendMessage(initial);
+        }, 300);
+      }
+    },
+
+    sendMessage(text) {
+      return sendMessage(text);
     },
 
 

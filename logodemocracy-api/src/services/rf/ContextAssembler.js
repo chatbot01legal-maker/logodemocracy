@@ -4,6 +4,37 @@ const RFSession = require('../../models/RFSession');
 const PersistenceManager = require('./PersistenceManager');
 const mongoose = require('mongoose');
 
+/* ============================================================
+   NORMALIZACIÓN DE PROVIDER_MODULE
+   El frontend envía identificadores cortos ('academy', 'sophia',
+   'logos'). El modelo RFSession espera valores enum canónicos
+   ('AcademiaContextProvider', etc.). Mapeamos ambos.
+============================================================ */
+const PROVIDER_MAP = {
+  'academy': 'AcademiaContextProvider',
+  'academia': 'AcademiaContextProvider',
+  'academicacontextprovider': 'AcademiaContextProvider',
+  'sophia': 'SophiaContextProvider',
+  'sophiacontextprovider': 'SophiaContextProvider',
+  'logos': 'LogosContextProvider',
+  'logoscontextprovider': 'LogosContextProvider',
+  'aletheia': 'AletheiaContextProvider',
+  'aletheiacontextprovider': 'AletheiaContextProvider',
+  'agora': 'AgoraContextProvider',
+  'agoracontextprovider': 'AgoraContextProvider',
+  'mythos': 'MithosContextProvider',
+  'mithos': 'MithosContextProvider',
+  'mithoscontextprovider': 'MithosContextProvider',
+  'reyfilosofo': 'AcademiaContextProvider'
+};
+
+function normalizeProviderModule(p) {
+  if (!p) return 'AcademiaContextProvider';
+  const key = String(p).toLowerCase().trim();
+  return PROVIDER_MAP[key] || 'AcademiaContextProvider';
+}
+
+
 const ContextAssembler = {
   async assemble(userId, sessionId, provider_module) {
     const query = userId ? { userId } : { sessionId };
@@ -34,10 +65,10 @@ const ContextAssembler = {
       session = await RFSession.create({ 
         userId: userId || undefined, 
         sessionId, 
-        provider_module: provider_module || 'AcademiaContextProvider' 
+        provider_module: normalizeProviderModule(provider_module) 
       });
-    } else if (provider_module && session.provider_module !== provider_module) {
-      session.provider_module = provider_module;
+    } else if (provider_module && session.provider_module !== normalizeProviderModule(provider_module)) {
+      session.provider_module = normalizeProviderModule(provider_module);
     }
 
     return { profile, learningMap, session };
