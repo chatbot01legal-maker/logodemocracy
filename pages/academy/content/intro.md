@@ -19,7 +19,7 @@ La Academia de LogoDemocracy existe para desarrollar una capacidad básica pero 
 
 ## 2. Cómo funciona y cómo se navega
 
-La Academia está diseñada como un sistema de navegación por módulos. Cada sección contiene contenidos que pueden explorarse de forma libre o secuencial a través del árbol de archivos ubicado en la barra lateral.
+La Academia está diseñada como un sistema de navegación por librerias. Cada sección contiene contenidos que pueden explorarse de forma libre o secuencial a través del árbol de archivos ubicado en la barra lateral.
 
 Dentro de la plataforma existen herramientas integradas que acompañan el proceso de aprendizaje:
 
@@ -39,7 +39,7 @@ Por eso, cada idea presentada puede estar acompañada de su estatus epistemológ
 
 Este enfoque no busca relativizar todo, sino lo contrario: hacer visible la diferencia entre creer, interpretar y saber. La transparencia epistemológica es una condición básica para una ciudadanía capaz de pensar con responsabilidad en contextos complejos.
 
-## 4. La resistencia Pensante
+## 4. La resistencia de los que dicen que piensan
 
 La democracia es el producto más importante y sofisticado que ha emergido del pensamiento filosófico a lo largo de la historia. Es la gran tecnología civilizatoria que la filosofía ha construido para permitir la vida en común sin recurrir a la fuerza, reemplazando la violencia por deliberación, evidencia y razón.
 
