@@ -1,7 +1,7 @@
 ---
 library: "Logodemocracia"
 folder: "Plataforma Tecnológica"
-title: "5. Introducción"
+title: "1. Introducción"
 tags:
 - Logodemocracia
 - Fundamentos
@@ -39,9 +39,9 @@ Por eso, cada idea presentada puede estar acompañada de su estatus epistemológ
 
 Este enfoque no busca relativizar todo, sino lo contrario: hacer visible la diferencia entre creer, interpretar y saber. La transparencia epistemológica es una condición básica para una ciudadanía capaz de pensar con responsabilidad en contextos complejos.
 
-## 4. La resistencia Pensante
+## 4. La resistencia de los que dicen que piensan 
 
-La democracia es el producto más importante y sofisticado que ha emergido del pensamiento filosófico a lo largo de la historia. Es la gran tecnología civilizatoria que la filosofía ha construido para permitir la vida en común sin recurrir a la fuerza, reemplazando la violencia por deliberación, evidencia y razón.
+La democracia es el producto más grande que importante y sofisticado que ha emergido del pensamiento filosófico a lo largo de la historia. Es la gran tecnología civilizatoria que la filosofía ha construido para permitir la vida en común sin recurrir a la fuerza, reemplazando la violencia por deliberación, evidencia y razón.
 
 Resistir significa sostener la capacidad de pensar cuando el entorno empuja hacia la reacción automática, la polarización o la simplificación excesiva. Significa no renunciar al análisis, incluso cuando es más fácil reaccionar que comprender.
 
