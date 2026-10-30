@@ -398,6 +398,3 @@ Pretende construir una infraestructura en la que los ciudadanos puedan seguir ap
 
 > «La democracia no necesita ciudadanos perfectos. Necesita ciudadanos que nunca dejen de aprender.»
 
-
----
-
