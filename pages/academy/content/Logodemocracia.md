@@ -397,7 +397,7 @@ LogoDemocracy no pretende construir ciudadanos perfectos.
 Pretende construir una infraestructura en la que los ciudadanos puedan seguir aprendiendo, pensar mejor juntos y participar de manera cada vez más autónoma.
 
 > «La democracia no necesita ciudadanos perfectos. Necesita ciudadanos que nunca dejen de aprender.»
-```
+
 
 ---
 
