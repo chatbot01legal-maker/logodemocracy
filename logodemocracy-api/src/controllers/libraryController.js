@@ -7,7 +7,12 @@
 'use strict';
 
 const { UserLibrary, UserFolder } = require('../models/UserLibrary');
-const { generateCourse } = require('../../../modules/reyFilosofo/libreriaGenerator');
+const {
+  generateCourse,
+  _getOutline,
+  _getSingleDocument,
+  _buildMarkdownFile
+} = require('../../../modules/reyFilosofo/libreriaGenerator');
 
 /* ============================================================
    Helper: título único por usuario.
@@ -698,6 +703,256 @@ exports.renameDocument = async (req, res, next) => {
 
     return res.json({ ok: true, document: { order: doc.order, title: doc.title } });
   } catch (error) {
+    next(error);
+  }
+};
+
+/* ============================================================
+   FLUJO SECUENCIAL (Vercel Hobby · Google Free Tier)
+   Google AI Studio permite 5 requests/minuto por modelo.
+   Un curso son 6 llamadas (outline + 5 docs). Al hacerlas en
+   paralelo, se agota la cuota al instante. El flujo secuencial
+   permite al frontend orquestar: 1 request del usuario → 1
+   llamada a Gemini, con pausas entre cada una.
+============================================================ */
+
+/* POST /library/generate-outline
+   Paso 1: crear el outline del curso (5 títulos + resúmenes).
+   Crea la librería en estado 'pending' con el outline guardado. */
+exports.generateOutline = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Se requiere sesión.' });
+    }
+
+    const params = (req.body && req.body.params) || {};
+    const tema = (params.tema || '').trim();
+
+    if (!tema) {
+      return res.status(400).json({ error: 'El campo "tema" es obligatorio.' });
+    }
+
+    // Verificar si hay un curso pendiente del mismo usuario y tema
+    // (permite retomar si cerró la pestaña a mitad de camino).
+    const resumeId = (req.body && req.body.libraryId) || null;
+    if (resumeId) {
+      const existing = await UserLibrary.findOne({
+        _id: resumeId,
+        userId: req.user._id,
+        status: 'pending'
+      }).lean();
+      if (existing && existing.outline) {
+        return res.json({
+          libraryId: existing._id,
+          outline: existing.outline,
+          totalDocs: 5,
+          generatedCount: existing.generatedCount || 0,
+          resumed: true
+        });
+      }
+    }
+
+    // Crear outline con Gemini
+    console.log('[LIBRERIA-SEQ] Generando outline sobre: ' + tema);
+    const outline = await _getOutline(params);
+    console.log('[LIBRERIA-SEQ] Outline OK, 5 títulos definidos');
+
+    // Título único
+    const requestedTitle = (req.body.title || tema).trim();
+    const finalTitle = await uniqueTitleForUser(req.user._id, requestedTitle);
+
+    // Carpeta automática
+    const lastFolder = await UserFolder
+      .findOne({ userId: req.user._id })
+      .sort({ order: -1 })
+      .select('order')
+      .lean();
+    const nextFolderOrder = lastFolder ? (lastFolder.order || 0) + 1 : 0;
+
+    const folder = await UserFolder.create({
+      userId: req.user._id,
+      name: finalTitle,
+      order: nextFolderOrder
+    });
+
+    // Crear la librería en pending con el outline
+    const library = await UserLibrary.create({
+      userId: req.user._id,
+      title: finalTitle,
+      params: {
+        tema: tema,
+        proposito: params.proposito || null,
+        dificultad: params.dificultad || null,
+        conocimiento: params.conocimiento || null,
+        atraccion: params.atraccion || '',
+        tecnico: params.tecnico || null,
+        estilo: params.estilo || null,
+        referencias: params.referencias || null
+      },
+      folderId: folder._id,
+      status: 'pending',
+      outline: outline,
+      documents: [],
+      generatedCount: 0
+    });
+
+    return res.status(201).json({
+      libraryId: library._id,
+      outline: outline,
+      totalDocs: 5,
+      generatedCount: 0,
+      resumed: false
+    });
+  } catch (error) {
+    console.error('[LIBRERIA-SEQ] Error en outline:', error.message);
+    next(error);
+  }
+};
+
+/* POST /library/generate-document
+   Paso 2-6: generar UN documento específico (index 0-4).
+   Es idempotente: si ya existe, lo devuelve sin llamar a Gemini. */
+exports.generateDocument = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Se requiere sesión.' });
+    }
+
+    const libraryId = (req.body && req.body.libraryId) || null;
+    const index = Number((req.body && req.body.index));
+
+    if (!libraryId) {
+      return res.status(400).json({ error: 'Falta libraryId.' });
+    }
+    if (isNaN(index) || index < 0 || index > 4) {
+      return res.status(400).json({ error: 'index debe ser 0-4.' });
+    }
+
+    const library = await UserLibrary.findOne({
+      _id: libraryId,
+      userId: req.user._id,
+      status: 'pending'
+    });
+
+    if (!library) {
+      return res.status(404).json({ error: 'Curso pendiente no encontrado.' });
+    }
+    if (!library.outline || !Array.isArray(library.outline.documents)) {
+      return res.status(400).json({ error: 'El curso no tiene outline.' });
+    }
+
+    const order = index + 1;
+
+    // Idempotente: si ya existe ese doc, devolverlo
+    const existingDoc = (library.documents || []).find(function (d) {
+      return Number(d.order) === order;
+    });
+    if (existingDoc) {
+      return res.json({
+        libraryId: library._id,
+        document: {
+          order: existingDoc.order,
+          title: existingDoc.title,
+          summary: existingDoc.summary,
+          ideas_fuerza: existingDoc.ideas_fuerza
+        },
+        generatedCount: library.generatedCount || 0,
+        totalDocs: 5,
+        alreadyExisted: true
+      });
+    }
+
+    // Generar con Gemini
+    console.log('[LIBRERIA-SEQ] Generando doc ' + order + '/5');
+    const doc = await _getSingleDocument(
+      library.params,
+      library.outline,
+      index
+    );
+
+    // Ensamblar con frontmatter
+    const courseTitle = library.outline.title || library.params.tema;
+    const contentWithFm = _buildMarkdownFile(library.params, doc, courseTitle);
+
+    // Guardar
+    library.documents.push({
+      order: doc.order,
+      title: doc.title,
+      content_md: contentWithFm,
+      summary: doc.summary,
+      ideas_fuerza: doc.ideas_fuerza
+    });
+    library.documents.sort(function (a, b) { return a.order - b.order; });
+    library.generatedCount = library.documents.length;
+    await library.save();
+
+    console.log('[LIBRERIA-SEQ] Doc ' + order + '/5 guardado. Total: ' + library.generatedCount);
+
+    return res.json({
+      libraryId: library._id,
+      document: {
+        order: doc.order,
+        title: doc.title,
+        summary: doc.summary,
+        ideas_fuerza: doc.ideas_fuerza
+      },
+      generatedCount: library.generatedCount,
+      totalDocs: 5,
+      alreadyExisted: false
+    });
+  } catch (error) {
+    console.error('[LIBRERIA-SEQ] Error en doc:', error.message);
+    next(error);
+  }
+};
+
+/* POST /library/finalize
+   Paso 7: cerrar la librería. Marca 'ready' si están los 5,
+   'partial' si faltan algunos. */
+exports.finalizeLibrary = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Se requiere sesión.' });
+    }
+
+    const libraryId = (req.body && req.body.libraryId) || null;
+    if (!libraryId) {
+      return res.status(400).json({ error: 'Falta libraryId.' });
+    }
+
+    const library = await UserLibrary.findOne({
+      _id: libraryId,
+      userId: req.user._id,
+      status: 'pending'
+    });
+
+    if (!library) {
+      return res.status(404).json({ error: 'Curso pendiente no encontrado.' });
+    }
+
+    const count = (library.documents || []).length;
+
+    if (count === 5) {
+      library.status = 'ready';
+    } else if (count > 0) {
+      library.status = 'partial';
+    } else {
+      library.status = 'failed';
+      library.error = 'No se generó ningún documento.';
+    }
+
+    await library.save();
+
+    console.log('[LIBRERIA-SEQ] Finalizada. Status: ' + library.status + ' (' + count + '/5)');
+
+    return res.json({
+      libraryId: library._id,
+      status: library.status,
+      generatedCount: count,
+      totalDocs: 5
+    });
+  } catch (error) {
+    console.error('[LIBRERIA-SEQ] Error en finalize:', error.message);
     next(error);
   }
 };

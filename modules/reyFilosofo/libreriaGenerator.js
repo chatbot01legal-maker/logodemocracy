@@ -162,4 +162,12 @@ async function generateCourse(params) {
   };
 }
 
-module.exports = { generateCourse };
+module.exports = {
+  generateCourse,
+  // Funciones expuestas para el flujo secuencial (Vercel Hobby):
+  // cada documento se genera en un request separado para respetar
+  // el límite de 5 requests/minuto del free tier de Google AI Studio.
+  _getOutline,
+  _getSingleDocument,
+  _buildMarkdownFile
+};

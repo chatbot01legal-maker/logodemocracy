@@ -34,8 +34,25 @@ const userLibrarySchema = new mongoose.Schema({
   documents: { type: [documentSchema], default: [] },
   status: {
     type: String,
-    enum: ['pending', 'ready', 'failed'],
+    enum: ['pending', 'ready', 'failed', 'partial'],
     default: 'pending'
+  },
+  // Outline generado por el primer endpoint. Necesario para que
+  // los requests de docs individuales sepan qué escribir.
+  outline: {
+    type: mongoose.Schema.Types.Mixed,
+    default: null
+  },
+  // Contador de documentos ya generados (0-5). El frontend lo usa
+  // para saber en qué paso va y cuántos faltan.
+  generatedCount: {
+    type: Number,
+    default: 0
+  },
+  // Errores por documento (si alguno falló dos veces, se salta)
+  docErrors: {
+    type: [String],
+    default: []
   },
   error: { type: String, default: null },
   model: { type: String, default: null },

@@ -494,6 +494,8 @@
     callGenerateCourse();
   }
 
+  // Orquestador secuencial: 1 outline + 5 docs, uno por request
+  // para respetar el límite de 5 req/min de Google AI Studio Free Tier.
   async function callGenerateCourse() {
     var note = document.getElementById('rfl-loader-note');
     var done = document.getElementById('rfl-loader-done');
@@ -504,83 +506,143 @@
       return;
     }
 
-    var phases = [
-      'Iniciando la generación…',
-      'Diseñando los cinco documentos…',
-      'Escribiendo el contenido…',
-      'Revisando el conjunto…',
-      'Casi listo…'
-    ];
-    var pi = 0;
-    var timer = setInterval(function () {
-      if (note && pi < phases.length) {
-        note.textContent = phases[pi];
-        pi++;
-      }
-    }, 4000);
+    var setStatus = function (msg) {
+      if (note) note.textContent = msg;
+    };
 
-    try {
-      var payload = {
-        title: state.answers.titulo,
-        params: {
-          tema: state.answers.tema,
-          proposito: state.answers.proposito,
-          dificultad: state.answers.dificultad,
-          conocimiento: state.answers.conocimiento,
-          atraccion: state.answers.atraccion,
-          tecnico: state.answers.tecnico,
-          estilo: state.answers.estilo,
-          referencias: state.answers.referencias
-        }
-      };
-
-      var result = await ApiClient.post('reyfilosofo', '/library/generate', payload);
-
-      clearInterval(timer);
-
-      if (!result || !result.library) {
-        throw new Error('Respuesta inválida del servidor');
-      }
-
-      state.result = result.library;
-      clearDraft();
-
-      if (note) note.textContent = '¡Listo! Tu curso ya está en la Academia.';
-
-      // Detener animación del reloj de arena
+    var markSuccess = function () {
       var mark = document.getElementById('rfl-loader-mark');
       if (mark) {
         mark.style.animation = 'none';
-        mark.textContent = '✓';
+        mark.textContent = '\u2713';
         mark.style.fontSize = '2.4rem';
       }
+    };
 
-      if (done) {
-        done.style.display = 'block';
-        done.innerHTML =
-          '<button class="rfl-btn rfl-btn--primary" data-action="go-academy">Ir a la Academia →</button>';
+    var markError = function () {
+      var mark = document.getElementById('rfl-loader-mark');
+      if (mark) {
+        mark.style.animation = 'none';
+        mark.textContent = '\u26A0';
       }
+    };
+
+    var showFinalButtons = function (success) {
+      if (!done) return;
+      done.style.display = 'block';
+      if (success) {
+        done.innerHTML = '<button class="rfl-btn rfl-btn--primary" data-action="go-academy">Ir a la Academia \u2192</button>';
+      } else {
+        done.innerHTML = '<button class="rfl-btn rfl-btn--ghost" data-action="retry-generate">Reintentar</button>';
+      }
+    };
+
+    var payload = {
+      title: state.answers.titulo,
+      params: {
+        tema: state.answers.tema,
+        proposito: state.answers.proposito,
+        dificultad: state.answers.dificultad,
+        conocimiento: state.answers.conocimiento,
+        atraccion: state.answers.atraccion,
+        tecnico: state.answers.tecnico,
+        estilo: state.answers.estilo,
+        referencias: state.answers.referencias
+      }
+    };
+
+    try {
+      setStatus('Paso 1/7 \u00B7 Dise\u00F1ando los cinco documentos\u2026');
+
+      var outlineRes = await ApiClient.post(
+        'reyfilosofo',
+        '/library/generate-outline',
+        payload
+      );
+
+      if (!outlineRes || !outlineRes.libraryId) {
+        throw new Error('Respuesta inv\u00E1lida al generar el outline');
+      }
+
+      var libraryId = outlineRes.libraryId;
+      state.libraryId = libraryId;
+      saveDraft();
+
+      var failedIndexes = [];
+
+      for (var i = 0; i < 5; i++) {
+        var docNum = i + 1;
+        var stepNum = i + 2;
+        setStatus('Paso ' + stepNum + '/7 \u00B7 Escribiendo documento ' + docNum + ' de 5\u2026');
+
+        var docSuccess = false;
+
+        for (var attempt = 0; attempt < 2; attempt++) {
+          try {
+            var docRes = await ApiClient.post(
+              'reyfilosofo',
+              '/library/generate-document',
+              { libraryId: libraryId, index: i }
+            );
+
+            if (docRes && docRes.document) {
+              docSuccess = true;
+              break;
+            }
+          } catch (docErr) {
+            console.warn('[LIBRERIA-SEQ] Doc ' + docNum + ' intento ' + (attempt + 1) + ' fall\u00F3:', docErr.message);
+          }
+
+          if (attempt === 0) {
+            setStatus('Paso ' + stepNum + '/7 \u00B7 Reintentando documento ' + docNum + '\u2026');
+            await new Promise(function (r) { setTimeout(r, 5000); });
+          }
+        }
+
+        if (!docSuccess) {
+          failedIndexes.push(docNum);
+        }
+
+        if (i < 4) {
+          await new Promise(function (r) { setTimeout(r, 12000); });
+        }
+      }
+
+      setStatus('Paso 7/7 \u00B7 Revisando el conjunto\u2026');
+
+      var finalRes = await ApiClient.post(
+        'reyfilosofo',
+        '/library/finalize',
+        { libraryId: libraryId }
+      );
+
+      state.result = { libraryId: libraryId, status: finalRes.status };
+      clearDraft();
+      markSuccess();
+
+      if (failedIndexes.length === 0) {
+        setStatus('\u00A1Listo! Tu curso tiene los 5 documentos. Ya est\u00E1 en la Academia.');
+      } else {
+        var missing = failedIndexes.join(', ');
+        setStatus('Curso creado con ' + finalRes.generatedCount + ' de 5 documentos. Faltaron: ' + missing + '.');
+      }
+
+      showFinalButtons(true);
+
     } catch (err) {
-      clearInterval(timer);
+      markError();
       var msg = err && err.message ? err.message : 'Error desconocido';
-      if (note) note.textContent = 'No se pudo generar el curso.';
+      setStatus('No se pudo completar el curso.');
 
-      var markErr = document.getElementById('rfl-loader-mark');
-      if (markErr) {
-        markErr.style.animation = 'none';
-        markErr.textContent = '⚠';
-      }
       if (errBox) {
         errBox.style.display = 'block';
         errBox.textContent = msg;
       }
-      if (done) {
-        done.style.display = 'block';
-        done.innerHTML =
-          '<button class="rfl-btn rfl-btn--ghost" data-action="retry-generate">Reintentar</button>';
-      }
+
+      showFinalButtons(false);
     }
   }
+
 
   function onRestart() {
     if (!confirm('¿Empezar de nuevo? Se van a borrar tus respuestas.')) return;

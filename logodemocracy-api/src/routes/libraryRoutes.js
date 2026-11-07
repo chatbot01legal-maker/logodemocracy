@@ -24,4 +24,9 @@ router.post('/folders', requireAuth, c.createFolder);
 router.patch('/folders/:id', requireAuth, c.renameFolder);
 router.delete('/folders/:id', requireAuth, c.deleteFolder);
 
+// Flujo secuencial (Vercel Hobby · Google Free Tier)
+router.post('/generate-outline', requireAuth, c.generateOutline);
+router.post('/generate-document', requireAuth, c.generateDocument);
+router.post('/finalize', requireAuth, c.finalizeLibrary);
+
 module.exports = router;
